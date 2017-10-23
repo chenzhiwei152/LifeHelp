@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content" >
 
-    <com.jyall.health.client.view.adviewpager.AutoScrollViewPager
+    <com.yuanchangyuan.lifehelp.view.adviewpager.AutoScrollViewPager
         android:id="@+id/advs_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

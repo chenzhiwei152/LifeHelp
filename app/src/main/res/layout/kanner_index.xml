@@ -14,7 +14,7 @@
 
         <include layout="@layout/bg_grident_layout" />
 
-        <com.yuanchangyuan.wanbei.view.DropDownMenu xmlns:app="http://schemas.android.com/apk/res-auto"
+        <com.yuanchangyuan.lifehelp.view.DropDownMenu xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/dropDownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

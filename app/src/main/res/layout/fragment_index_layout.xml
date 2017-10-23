@@ -53,7 +53,7 @@
             android:text="搜索" />
     </RelativeLayout>
 
-    <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/swiperefreshlayout"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -105,5 +105,5 @@
 
         </android.support.v4.widget.NestedScrollView>
 
-    </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 </LinearLayout>
