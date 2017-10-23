@@ -35,13 +35,13 @@ public interface JyApi {
     /**
      * 登陆
      */
-    @POST("/resource/user/login")
+    @POST("/api/user/login")
     Call<SuperBean<UserInfoBean>> login(@Body Map<String, String> map);
 
     /**
      * 第三方登录
      */
-    @POST("/resource/user/userAuthLogin")
+    @POST("/api/user/userAuthLogin")
     Call<SuperBean<UserInfoBean>> authLogin(@Body Map<String, String> map);
 
     /**
@@ -50,7 +50,7 @@ public interface JyApi {
      * @param phone
      * @return
      */
-    @GET("/resource/sms/getCheckCode")
+    @GET("/api/sms/getCheckCode")
     Call<ErrorBean> getCheckCode(@Query("phone") String phone);
 
     /**
@@ -59,7 +59,7 @@ public interface JyApi {
      * @param map
      * @return
      */
-    @POST("/resource/user/userRegister")
+    @POST("/api/user/userRegister")
     Call<String> reister(@Body Map<String, String> map);
 
     /**
@@ -68,7 +68,7 @@ public interface JyApi {
      * @param map
      * @return
      */
-    @POST("/resource/user/forgetPwd")
+    @POST("/api/user/forgetPwd")
     Call<ErrorBean> commitNewPassword(@Body Map<String, String> map);
 
     /**
@@ -77,7 +77,7 @@ public interface JyApi {
      * @param map
      * @return
      */
-    @POST("/resource/user/accountSecurity")
+    @POST("/api/user/accountSecurity")
     Call<ErrorBean> accountSafety(@Body Map<String, String> map);
 
 
@@ -87,7 +87,7 @@ public interface JyApi {
      * @param map
      * @return
      */
-    @POST("/resource/deliveryAddress/addAddress")
+    @POST("/api/deliveryAddress/addAddress")
     Call<String> addAddress(@Body Map<String, String> map);
 
     /**
@@ -96,7 +96,7 @@ public interface JyApi {
      * @param map
      * @return
      */
-    @POST("/resource/deliveryAddress/updateDeliveryAddress")
+    @POST("/api/deliveryAddress/updateDeliveryAddress")
     Call<String> editAddress(@Body Map<String, String> map);
 
     /**
@@ -105,7 +105,7 @@ public interface JyApi {
      * @param id
      * @return
      */
-    @GET("/resource/deliveryAddress/deleteById")
+    @GET("/api/deliveryAddress/deleteById")
     Call<ErrorBean> deleteAddress(@Query("id") String id);
 
     /**
@@ -114,7 +114,7 @@ public interface JyApi {
      * @param userid
      * @return
      */
-    @GET("/resource/deliveryAddress/getAllDeliveryAddress")
+    @GET("/api/deliveryAddress/getAllDeliveryAddress")
     Call<SuperBean<List<ShoppingAddressListItemBean>>> getAddressList(@Query("userid") String userid);
 
 
@@ -123,7 +123,7 @@ public interface JyApi {
      *
      * @return
      */
-    @GET("/resource/goodstype/appGetAllList")
+    @GET("/api/goodstype/appGetAllList")
     Call<SuperBean<List<GoodsFilterBean>>> getAllFilterType();
 
     /**
@@ -131,7 +131,7 @@ public interface JyApi {
      *
      * @return
      */
-    @POST("/resource/shop/appGetAllList")
+    @POST("/api/shop/appGetAllList")
     Call<SuperBean<List<ShopsFilterBean>>> getAllFilterShops();
 
     /**
@@ -140,7 +140,7 @@ public interface JyApi {
      * @param map
      * @return
      */
-    @POST("/resource/goods/goodsAllList")
+    @POST("/api/goods/goodsAllList")
     Call<SuperBean<List<GoodsListBean>>> getGoodsList(@Body Map<String, String> map);
 
     /**
@@ -149,7 +149,7 @@ public interface JyApi {
      * @param map
      * @return
      */
-    @POST("/resource/user/userAuth")
+    @POST("/api/user/userAuth")
     Call<String> commitRealName(@Body Map<String, String> map);
 
     /**
@@ -157,13 +157,13 @@ public interface JyApi {
      *
      * @return
      */
-    @GET("/resource/viptype/appGetAllList")
+    @GET("/api/viptype/appGetAllList")
     Call<SuperBean<List<MemberRankBean>>> getMemberRank();
 
     /**
      * 广告位数据
      */
-    @GET("/resource/goods/adList")
+    @GET("/api/goods/adList")
     Call<SuperBean<List<GoodsListBean>>> getAdList(@Query("userId") String userId);
 
     /**
@@ -182,7 +182,7 @@ public interface JyApi {
      * @param map
      * @return
      */
-    @POST("/resource/user/userUpdate")
+    @POST("/api/user/userUpdate")
     Call<String> upLoadInfo(@Body Map<String, String> map);
 
     /**
@@ -192,7 +192,7 @@ public interface JyApi {
      * @param userId
      * @return
      */
-    @GET("/resource/goods/appGetDetail")
+    @GET("/api/goods/appGetDetail")
     Call<SuperBean<GoodsListBean>> getGoodsDetail(@Query("id") String id, @Query("userId") String userId);
 
     /**
@@ -201,7 +201,7 @@ public interface JyApi {
      * @param map
      * @return
      */
-    @POST("/resource/buyorder/insert")
+    @POST("/api/buyorder/insert")
     Call<SuperBean<String>> getCommitOrder(@Body Map<String, String> map);
 
     /**
@@ -210,7 +210,7 @@ public interface JyApi {
      * @param map
      * @return
      */
-    @POST("/resource/buyorder/appGetAllList")
+    @POST("/api/buyorder/appGetAllList")
     Call<SuperBean<BuyOrderListItemBean>> getBuyOrderList(@Body Map<String, String> map);
 
     /**
@@ -219,7 +219,7 @@ public interface JyApi {
      * @param map
      * @return
      */
-    @POST("/resource/pay/payConfirm")
+    @POST("/api/pay/payConfirm")
     Call<SuperBean<String>> getRsaOrderInfo(@Body Map<String, String> map);
 
     /**
@@ -228,7 +228,7 @@ public interface JyApi {
      * @param id
      * @return
      */
-    @GET("/resource/buyorder/appGetBuyOrderDetail")
+    @GET("/api/buyorder/appGetBuyOrderDetail")
     Call<SuperBean<OrderDetailBean>> getOrderDetails(@Query("id") String id);
     /**
      * 获取租赁订单详情
@@ -236,7 +236,7 @@ public interface JyApi {
      * @param id
      * @return
      */
-    @GET("/resource/zuorder/getDetail")
+    @GET("/api/zuorder/getDetail")
     Call<SuperBean<OrderDetailBean>> getRentOrderDetails(@Query("id") String id);
 
 
@@ -246,7 +246,7 @@ public interface JyApi {
      * @param map
      * @return
      */
-    @POST("/resource/vipDeposit/insert")
+    @POST("/api/vipDeposit/insert")
     Call<SuperBean<String>> getDepositOrder(@Body Map<String, String> map);
 
 
@@ -257,7 +257,7 @@ public interface JyApi {
      * @param map
      * @return
      */
-    @POST("/resource/zuorder/insert")
+    @POST("/api/zuorder/insert")
     Call<SuperBean<String>> getRentOrder(@Body Map<String, String> map);
 
 
@@ -267,6 +267,6 @@ public interface JyApi {
      * @param map
      * @return
      */
-    @POST("/resource/zuorder/appGetAllList")
+    @POST("/api/zuorder/appGetAllList")
     Call<SuperBean<BuyOrderListItemBean>> getRentOrderList(@Body Map<String, String> map);
 }
