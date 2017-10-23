@@ -284,7 +284,7 @@ public class RegisterActivity extends BaseActivity implements
 //                "pwd": "123456"
         map.put("phone", etPhone.getText().toString());
         map.put("checkCode", etCode.getText().toString());
-        map.put("nickName", user_nick_name.getText().toString());
+//        map.put("nickName", user_nick_name.getText().toString());
         map.put("pwd", user_password.getText().toString());
 
         call = RestAdapterManager.getApi().reister(map);

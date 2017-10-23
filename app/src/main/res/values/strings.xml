@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">玩呗</string>
+    <string name="app_name">生活帮</string>
     <string name="empty_message">信息跑丢了</string>
     <string name="no_net_message">网络连接失败\n请检查您的网络</string>
     <string name="no_net_message_t">网络异常，请检查</string>

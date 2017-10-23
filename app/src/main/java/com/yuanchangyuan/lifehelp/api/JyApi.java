@@ -59,7 +59,7 @@ public interface JyApi {
      * @param map
      * @return
      */
-    @POST("/api/user/userRegister")
+    @POST("/api/user/registerUser")
     Call<String> reister(@Body Map<String, String> map);
 
     /**
