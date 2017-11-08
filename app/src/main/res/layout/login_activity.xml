@@ -6,7 +6,7 @@
     android:background="@color/color_f0f0f2"
     android:orientation="vertical">
 
-    <com.yuanchangyuan.lifehelp.view.TitleBar
+    <com.bozhengjianshe.shenghuobang.view.TitleBar
         android:id="@+id/title_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
@@ -35,7 +35,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp">
 
-                <com.yuanchangyuan.lifehelp.view.CleanableEditText
+                <com.bozhengjianshe.shenghuobang.view.CleanableEditText
                     android:id="@+id/user_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

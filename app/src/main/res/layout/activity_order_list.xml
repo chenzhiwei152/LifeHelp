@@ -5,7 +5,7 @@
     android:background="@color/color_eeeeee"
     android:orientation="vertical">
 
-    <com.yuanchangyuan.lifehelp.view.TitleBar
+    <com.bozhengjianshe.shenghuobang.view.TitleBar
         android:id="@+id/title_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -78,7 +78,7 @@
             android:layout_height="1dp"
             android:background="@color/color_eeeeee" />
 
-        <com.yuanchangyuan.lifehelp.view.ClickChangeViewPager
+        <com.bozhengjianshe.shenghuobang.view.ClickChangeViewPager
             android:id="@+id/customViewpager"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

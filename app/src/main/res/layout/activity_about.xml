@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.yuanchangyuan.lifehelp.view.TitleBar
+    <com.bozhengjianshe.shenghuobang.view.TitleBar
         android:id="@+id/title_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

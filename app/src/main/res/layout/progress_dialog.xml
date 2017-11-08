@@ -11,7 +11,7 @@
     android:paddingRight="40dp"
     android:paddingTop="10dp">
 
-    <com.yuanchangyuan.lifehelp.view.ProgressBarCircularIndeterminate
+    <com.bozhengjianshe.shenghuobang.view.ProgressBarCircularIndeterminate
         android:id="@+id/loadingImageView"
         android:layout_width="50dp"
         android:layout_height="50dp" />

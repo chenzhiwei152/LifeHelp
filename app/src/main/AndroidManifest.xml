@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.yuanchangyuan.lifehelp">
+    package="com.bozhengjianshe.shenghuobang">
     <!-- 用于访问wifi网络信息，wifi信息会用于进行网络定位 -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <!-- 获取运营商信息，用于支持提供运营商信息相关的接口 -->
@@ -44,7 +44,7 @@
             android:value="99d41d780cbd3671367ee840d2381578" />
 
         <activity
-            android:name="com.yuanchangyuan.lifehelp.ui.activity.LoginActivity"
+            android:name="com.bozhengjianshe.shenghuobang.ui.activity.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppStartLoadTranslucent"
             android:windowSoftInputMode="adjustUnspecified|stateHidden">
@@ -57,7 +57,7 @@
 
         <!-- ShareSDK的activity -->
         <activity
-            android:name="com.yuanchangyuan.lifehelp.ui.utils.login.RegisterPage"
+            android:name="com.bozhengjianshe.shenghuobang.ui.utils.login.RegisterPage"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
@@ -117,7 +117,7 @@
         </activity>
         <!-- 微信分享回调 -->
         <activity
-            android:name="com.yuanchangyuan.lifehelp.wxapi.WXEntryActivity"
+            android:name="com.bozhengjianshe.shenghuobang.wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />

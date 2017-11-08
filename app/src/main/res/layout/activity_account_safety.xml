@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.yuanchangyuan.lifehelp.view.TitleBar
+    <com.bozhengjianshe.shenghuobang.view.TitleBar
         android:id="@+id/title_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
@@ -15,7 +15,7 @@
         android:layout_marginTop="20dp"
         android:padding="10dp">
 
-        <com.yuanchangyuan.lifehelp.view.CleanableEditText
+        <com.bozhengjianshe.shenghuobang.view.CleanableEditText
             android:id="@+id/user_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -107,7 +107,7 @@
         android:layout_height="60dp"
         android:padding="10dp">
 
-        <com.yuanchangyuan.lifehelp.view.CleanableEditText
+        <com.bozhengjianshe.shenghuobang.view.CleanableEditText
             android:id="@+id/user_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -137,7 +137,7 @@
         android:layout_height="60dp"
         android:padding="10dp">
 
-        <com.yuanchangyuan.lifehelp.view.CleanableEditText
+        <com.bozhengjianshe.shenghuobang.view.CleanableEditText
             android:id="@+id/user_new_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
