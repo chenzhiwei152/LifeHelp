@@ -137,11 +137,11 @@ public interface JyApi {
     /**
      * 获取首页列表
      *
-     * @param map
+     * @param type
      * @return
      */
-    @POST("/api/goods/goodsAllList")
-    Call<SuperBean<List<GoodsListBean>>> getGoodsList(@Body Map<String, String> map);
+    @GET("/resource/appIndex/getAppIndexData")
+    Call<GoodsListBean> getGoodsList(@Query("type") String type);
 
     /**
      * 实名认证
@@ -230,6 +230,7 @@ public interface JyApi {
      */
     @GET("/api/buyorder/appGetBuyOrderDetail")
     Call<SuperBean<OrderDetailBean>> getOrderDetails(@Query("id") String id);
+
     /**
      * 获取租赁订单详情
      *
@@ -248,7 +249,6 @@ public interface JyApi {
      */
     @POST("/api/vipDeposit/insert")
     Call<SuperBean<String>> getDepositOrder(@Body Map<String, String> map);
-
 
 
     /**

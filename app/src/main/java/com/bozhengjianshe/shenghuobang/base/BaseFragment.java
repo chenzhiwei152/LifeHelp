@@ -36,7 +36,7 @@ public abstract class BaseFragment extends Fragment {
     private CustomProgressDialog progressDialog;
     private EmptyLayout emptyLayout;
     private boolean isOpenTitle = true;
-    private int barTintColor = R.color.color_ff6900;
+    private int barTintColor = R.color.color_f6c01c;
 
     public BaseFragment() {
         super();

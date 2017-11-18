@@ -26,7 +26,6 @@ import com.bozhengjianshe.shenghuobang.ui.bean.GoodsListBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.ShoppingAddressListItemBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.SuperBean;
 import com.bozhengjianshe.shenghuobang.utils.DialogUtils;
-import com.bozhengjianshe.shenghuobang.utils.ImageLoadedrManager;
 import com.bozhengjianshe.shenghuobang.utils.LogUtils;
 import com.bozhengjianshe.shenghuobang.utils.NetUtil;
 import com.bozhengjianshe.shenghuobang.utils.UIUtil;
@@ -160,7 +159,7 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
             vv_v1.setVisibility(View.VISIBLE);
             rl_rent_days.setVisibility(View.GONE);
             vv_v2.setVisibility(View.GONE);
-            mxCount = goodsBean.getStock();
+//            mxCount = goodsBean.getStock();
             orderType = 0;
             setDefaultTimeArea();
             setSalePrice();
@@ -217,27 +216,27 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void setRentPrice() {
-        if (goodsBean.getBillingmode() == 1) {
-            //按照天算
-            if (BaseContext.getInstance().getUserInfo().vipgrade > 0) {
-                price = goodsBean.getVipprice() * days + goodsBean.getDeposit();
-            } else {
-                price = goodsBean.getPrice() * days + goodsBean.getDeposit();
-            }
-        } else {
-            //按照小时算
-            if (BaseContext.getInstance().getUserInfo().vipgrade > 0) {
-                price = goodsBean.getVipprice() * hour + goodsBean.getDeposit();
-            } else {
-                price = goodsBean.getPrice() * hour + goodsBean.getDeposit();
-            }
-        }
+//        if (goodsBean.getBillingmode() == 1) {
+//            //按照天算
+//            if (BaseContext.getInstance().getUserInfo().vipgrade > 0) {
+//                price = goodsBean.getVipprice() * days + goodsBean.getDeposit();
+//            } else {
+//                price = goodsBean.getPrice() * days + goodsBean.getDeposit();
+//            }
+//        } else {
+//            //按照小时算
+//            if (BaseContext.getInstance().getUserInfo().vipgrade > 0) {
+//                price = goodsBean.getVipprice() * hour + goodsBean.getDeposit();
+//            } else {
+//                price = goodsBean.getPrice() * hour + goodsBean.getDeposit();
+//            }
+//        }
         tv_num_price.setText("共计1件商品，合计￥" + price / 100.00);
         tv_price_all.setText("￥" + price / 100.00);
     }
 
     private void setSalePrice() {
-        price = goodsBean.getPurchase() * count;
+//        price = goodsBean.getPurchase() * count;
         tv_num_price.setText("共计" + count + "件商品，合计￥" + price / 100.00);
         tv_price_all.setText("￥" + price / 100.00);
     }
@@ -248,18 +247,18 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void setValueDefault() {
-        ImageLoadedrManager.getInstance().display(this, goodsBean.getGoodsImg(), iv_goods);
-        tv_title.setText(goodsBean.getName());
-        if (tag.equals("rent")) {
-            if (BaseContext.getInstance().getUserInfo().vipgrade > 0) {
-
-                tv_price.setText("￥" + goodsBean.getVipprice() / 100.00);
-            } else {
-                tv_price.setText("￥" + goodsBean.getPrice() / 100.00);
-            }
-        } else {
-            tv_price.setText("￥" + goodsBean.getPurchase() / 100.00);
-        }
+//        ImageLoadedrManager.getInstance().display(this, goodsBean.getGoodsImg(), iv_goods);
+//        tv_title.setText(goodsBean.getName());
+//        if (tag.equals("rent")) {
+//            if (BaseContext.getInstance().getUserInfo().vipgrade > 0) {
+//
+//                tv_price.setText("￥" + goodsBean.getVipprice() / 100.00);
+//            } else {
+//                tv_price.setText("￥" + goodsBean.getPrice() / 100.00);
+//            }
+//        } else {
+//            tv_price.setText("￥" + goodsBean.getPurchase() / 100.00);
+//        }
 
 
     }
@@ -630,8 +629,8 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
         map.put("ordername", tv_address_name.getText().toString());
         map.put("orderphone", tv_address_phone.getText().toString());
         map.put("orderaddress", tv_address_detail.getText().toString());
-        map.put("goodsid", goodsBean.getId() + "");
-        map.put("goodsprice", goodsBean.getPrice() + "");
+//        map.put("goodsid", goodsBean.getId() + "");
+//        map.put("goodsprice", goodsBean.getPrice() + "");
         map.put("count", tvNum.getText().toString());
         map.put("deliverytype", deliverytype + "");
         map.put("payType", orderType + "");
@@ -683,8 +682,8 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
         map.put("ordername", tv_address_name.getText().toString());
         map.put("orderphone", tv_address_phone.getText().toString());
         map.put("orderaddress", tv_address_detail.getText().toString());
-        map.put("goodsid", goodsBean.getId() + "");
-        map.put("price", goodsBean.getPrice() + "");
+//        map.put("goodsid", goodsBean.getId() + "");
+//        map.put("price", goodsBean.getPrice() + "");
         map.put("count", "1");
         map.put("starttime", UIUtil.getTime(beginDate, "yyyy-MM-dd HH:mm:ss"));
         map.put("endtime", UIUtil.getTime(endDate, "yyyy-MM-dd HH:mm:ss"));
@@ -692,7 +691,7 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
         map.put("payType", orderType + "");
         map.put("totalmoney", price + "");
         map.put("userid", BaseContext.getInstance().getUserInfo().userId);
-        map.put("deposit", goodsBean.getDeposit() + "");
+//        map.put("deposit", goodsBean.getDeposit() + "");
         LogUtils.e(JSON.toJSONString(map));
         DialogUtils.showDialog(CommitOrderActivity.this, "获取订单...", false);
         commitRentCall = RestAdapterManager.getApi().getRentOrder(map);

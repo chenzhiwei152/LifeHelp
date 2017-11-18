@@ -7,12 +7,12 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:background="@color/color_ff6900" />
+        android:background="@color/color_f6c01c" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/color_ff6900"
+        android:background="@color/color_f6c01c"
         android:padding="10dp">
 
         <EditText
@@ -68,7 +68,45 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <include layout="@layout/kanner_index" />
+                <include layout="@layout/kanner" />
+
+                <com.bozhengjianshe.shenghuobang.view.AutoGridView
+                    android:id="@+id/gv_menu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/color_ffffff"
+                    android:gravity="center_vertical"
+                    android:listSelector="@drawable/selector_general_click"
+                    android:numColumns="4"
+                    android:paddingBottom="15dp"
+                    android:paddingLeft="12.5dp"
+                    android:paddingRight="12.5dp"
+                    android:paddingTop="15dp"
+                    android:verticalSpacing="5dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal"
+                    android:background="#efefef"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="本周优惠"
+                        android:textColor="@color/color_000000"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="sale"
+                        android:textColor="#FF00273B"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/sf_listview"

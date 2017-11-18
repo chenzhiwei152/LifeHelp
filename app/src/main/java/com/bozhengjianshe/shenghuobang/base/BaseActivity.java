@@ -31,7 +31,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     private EmptyLayout emptyLayout;
     private CustomProgressDialog progressDialog;
     private boolean isOpenTitle = true;
-    private int barTintColor = R.color.color_ff6900;
+    private int barTintColor = R.color.color_f6c01c;
 
     @Override
     protected void onStop() {

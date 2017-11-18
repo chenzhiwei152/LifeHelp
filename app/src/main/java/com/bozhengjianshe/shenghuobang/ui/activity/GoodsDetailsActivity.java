@@ -16,8 +16,6 @@ import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
 import com.bozhengjianshe.shenghuobang.R;
-import com.bozhengjianshe.shenghuobang.api.JyCallBack;
-import com.bozhengjianshe.shenghuobang.api.RestAdapterManager;
 import com.bozhengjianshe.shenghuobang.base.BaseActivity;
 import com.bozhengjianshe.shenghuobang.base.BaseContext;
 import com.bozhengjianshe.shenghuobang.base.Constants;
@@ -36,7 +34,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import retrofit2.Call;
-import retrofit2.Response;
 
 /**
  * Created by chen.zhiwei on 2017-6-21.
@@ -126,57 +123,57 @@ public class GoodsDetailsActivity extends BaseActivity {
             return;
         }
         DialogUtils.showDialog(this, "加载中", false);
-        if (BaseContext.getInstance().getUserInfo() != null) {
-            call = RestAdapterManager.getApi().getGoodsDetail(goodsBean.getId() + "", BaseContext.getInstance().getUserInfo().userId);
-        } else {
-            call = RestAdapterManager.getApi().getGoodsDetail(goodsBean.getId() + "", "");
-        }
-        call.enqueue(new JyCallBack<SuperBean<GoodsListBean>>() {
-            @Override
-            public void onSuccess(Call<SuperBean<GoodsListBean>> call, Response<SuperBean<GoodsListBean>> response) {
-                DialogUtils.closeDialog();
-                if (response != null && response.body() != null && response.body().getCode() == Constants.successCode) {
-                    goodsBean = response.body().getData();
-                    setData();
-                    isNewData = true;
-                } else {
-                    try {
-                        UIUtil.showToast(response.body().getMsg());
-                    } catch (Exception e) {
-                    }
-                }
-            }
-
-            @Override
-            public void onError(Call<SuperBean<GoodsListBean>> call, Throwable t) {
-                DialogUtils.closeDialog();
-            }
-
-            @Override
-            public void onError(Call<SuperBean<GoodsListBean>> call, Response<SuperBean<GoodsListBean>> response) {
-                DialogUtils.closeDialog();
-            }
-        });
+//        if (BaseContext.getInstance().getUserInfo() != null) {
+//            call = RestAdapterManager.getApi().getGoodsDetail(goodsBean.getId() + "", BaseContext.getInstance().getUserInfo().userId);
+//        } else {
+//            call = RestAdapterManager.getApi().getGoodsDetail(goodsBean.getId() + "", "");
+//        }
+//        call.enqueue(new JyCallBack<SuperBean<GoodsListBean>>() {
+//            @Override
+//            public void onSuccess(Call<SuperBean<GoodsListBean>> call, Response<SuperBean<GoodsListBean>> response) {
+//                DialogUtils.closeDialog();
+//                if (response != null && response.body() != null && response.body().getCode() == Constants.successCode) {
+//                    goodsBean = response.body().getData();
+//                    setData();
+//                    isNewData = true;
+//                } else {
+//                    try {
+//                        UIUtil.showToast(response.body().getMsg());
+//                    } catch (Exception e) {
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onError(Call<SuperBean<GoodsListBean>> call, Throwable t) {
+//                DialogUtils.closeDialog();
+//            }
+//
+//            @Override
+//            public void onError(Call<SuperBean<GoodsListBean>> call, Response<SuperBean<GoodsListBean>> response) {
+//                DialogUtils.closeDialog();
+//            }
+//        });
     }
 
     private void setData() {
-        if (goodsBean != null) {
-            if (goodsBean.getBinners() != null) {
-                //广告位
-                for (int i = 0; i < goodsBean.getBinners().size(); i++) {
-                    bannerBean bannerBean = new bannerBean();
-                    bannerBean.setImage(goodsBean.getBinners().get(i));
-                    list.add(bannerBean);
-                }
-                //初始化广告栏
-                initAD(list);
-            }
-            //大图
-            if (goodsBean.getDetails() != null) {
-                listAdapter.addList(goodsBean.getDetails());
-            }
-
-        }
+//        if (goodsBean != null) {
+//            if (goodsBean.getBinners() != null) {
+//                //广告位
+//                for (int i = 0; i < goodsBean.getBinners().size(); i++) {
+//                    bannerBean bannerBean = new bannerBean();
+//                    bannerBean.setImage(goodsBean.getBinners().get(i));
+//                    list.add(bannerBean);
+//                }
+//                //初始化广告栏
+//                initAD(list);
+//            }
+//            //大图
+//            if (goodsBean.getDetails() != null) {
+//                listAdapter.addList(goodsBean.getDetails());
+//            }
+//
+//        }
     }
 
     /**
@@ -305,39 +302,39 @@ public class GoodsDetailsActivity extends BaseActivity {
     }
 
     private void setPriceValue() {
-        tv_goods_name.setText(goodsBean.getName());//标题
-        tv_goods_detail_describe.setText(goodsBean.getGoodsdetail());
-        if (bt_buy.getText().equals("立即租赁")) {
-            if (goodsBean.getPrice() > 0) {
-                tv_price_title.setText("￥" + goodsBean.getPrice() / 100.00);
-                tv_price.setVisibility(View.VISIBLE);
-                if (goodsBean.getBillingmode()==1){
-                    tv_price.setText("/日");
-                }else {
-                    tv_price.setText("/时");
-                }
-            } else {
-                tv_price_title.setText("");
-                tv_price.setVisibility(View.GONE);
-            }
-            if (goodsBean.getVipprice() > 0) {
-                tv_member_price.setText("￥" + goodsBean.getVipprice() / 100.00);
-                tv_member_price_title.setVisibility(View.VISIBLE);
-            } else {
-                tv_member_price.setText("");
-                tv_member_price_title.setVisibility(View.GONE);
-            }
-        } else {
-            if (goodsBean.getPurchase() > 0) {
-                tv_price_title.setText("￥" + goodsBean.getPurchase() / 100.00);
-                tv_price.setVisibility(View.GONE);
-            } else {
-                tv_price_title.setText("");
-                tv_price.setVisibility(View.GONE);
-            }
-            tv_member_price.setText("");
-            tv_member_price_title.setVisibility(View.GONE);
-        }
+//        tv_goods_name.setText(goodsBean.getName());//标题
+//        tv_goods_detail_describe.setText(goodsBean.getGoodsdetail());
+//        if (bt_buy.getText().equals("立即租赁")) {
+//            if (goodsBean.getPrice() > 0) {
+//                tv_price_title.setText("￥" + goodsBean.getPrice() / 100.00);
+//                tv_price.setVisibility(View.VISIBLE);
+//                if (goodsBean.getBillingmode()==1){
+//                    tv_price.setText("/日");
+//                }else {
+//                    tv_price.setText("/时");
+//                }
+//            } else {
+//                tv_price_title.setText("");
+//                tv_price.setVisibility(View.GONE);
+//            }
+//            if (goodsBean.getVipprice() > 0) {
+//                tv_member_price.setText("￥" + goodsBean.getVipprice() / 100.00);
+//                tv_member_price_title.setVisibility(View.VISIBLE);
+//            } else {
+//                tv_member_price.setText("");
+//                tv_member_price_title.setVisibility(View.GONE);
+//            }
+//        } else {
+//            if (goodsBean.getPurchase() > 0) {
+//                tv_price_title.setText("￥" + goodsBean.getPurchase() / 100.00);
+//                tv_price.setVisibility(View.GONE);
+//            } else {
+//                tv_price_title.setText("");
+//                tv_price.setVisibility(View.GONE);
+//            }
+//            tv_member_price.setText("");
+//            tv_member_price_title.setVisibility(View.GONE);
+//        }
     }
 
     @Override

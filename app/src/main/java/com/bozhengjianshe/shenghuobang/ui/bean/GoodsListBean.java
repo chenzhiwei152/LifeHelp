@@ -12,167 +12,186 @@ import java.util.List;
 
 public class GoodsListBean extends ErrorBean implements Serializable {
 
+
     /**
-     * id : 1
-     * name : 随便
-     * price : 10
-     * vipprice : 8
-     * purchase : 10
-     * goodstype : 1
-     * shop : 3
-     * goodsdetail : 阿斯蒂芬地方撒旦法师的法师打发
-     * binners : ["//img13.360buyimg.com/n1/jfs/t2731/27/3738229696/379848/274ca0dc/579aeb6aNdc1f6ed5.jpg","//img13.360buyimg.com/n1/jfs/t2602/30/3884890450/309662/2c8cfb1d/579aeb60N78ba24cb.jpg","//img13.360buyimg.com/n1/jfs/t2911/359/2070652650/421509/3ebec13a/579aeb82N71a513b6.jpg","//img13.360buyimg.com/n1/jfs/t3016/238/302627775/261748/dfbb658f/579aeb7dN10f1d0b5.jpg"]
-     * details : ["https://img10.360buyimg.com/imgzone/jfs/t3040/330/1092199623/523176/112c0a18/57bd3bcfN57bd4117.jpg","https://img10.360buyimg.com/imgzone/jfs/t3067/295/690060163/351438/96c83443/57bd3bd0N4db75a57.jpg","https://img10.360buyimg.com/imgzone/jfs/t3157/114/652856633/336899/98a40fa5/57bd3bd0N9e3675dd.jpg","https://img10.360buyimg.com/imgzone/jfs/t3187/142/706300869/352432/2bf80dc3/57bd3bd1Nc6dd803c.jpg","https://img10.360buyimg.com/imgzone/jfs/t3187/142/706300869/352432/2bf80dc3/57bd3bd1Nc6dd803c.jpg","https://img10.360buyimg.com/imgzone/jfs/t3034/187/1108666807/334427/a405a803/57bd3bd1N5bb30d36.jpg","https://img10.360buyimg.com/imgzone/jfs/t3142/85/678921523/551754/602c129/57bd3bd2N7583c634.jpg"]
-     * shopName : 天安门店
-     * typeName : null
+     * data : {"banners":[{"id":1,"img":"https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=2390632991,220987804&fm=173&s=0FC0FC068F244C03984DA0D20000C0B7&w=639&h=216&img.JPEG","type":2},{"id":2,"img":"https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=2390632991,220987804&fm=173&s=0FC0FC068F244C03984DA0D20000C0B7&w=639&h=216&img.JPEG","type":2},{"id":3,"img":"https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=2390632991,220987804&fm=173&s=0FC0FC068F244C03984DA0D20000C0B7&w=639&h=216&img.JPEG","type":2}],"recService":[{"id":1,"serviceName":"测试1","servicePrice":1,"serviceType":0,"isBanner":1,"serviceDetail":null,"serviceImg":"https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=2390632991,220987804&fm=173&s=0FC0FC068F244C03984DA0D20000C0B7&w=639&h=216&img.JPEG","seeType":1,"isRec":1},{"id":2,"serviceName":"测试1","servicePrice":1,"serviceType":0,"isBanner":1,"serviceDetail":null,"serviceImg":"https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=2390632991,220987804&fm=173&s=0FC0FC068F244C03984DA0D20000C0B7&w=639&h=216&img.JPEG","seeType":1,"isRec":1},{"id":3,"serviceName":"测试1","servicePrice":1,"serviceType":0,"isBanner":1,"serviceDetail":null,"serviceImg":"https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=2390632991,220987804&fm=173&s=0FC0FC068F244C03984DA0D20000C0B7&w=639&h=216&img.JPEG","seeType":1,"isRec":1}],"recGoods":null}
      */
 
-    private int id;
-    private String name;
-    private int price;
-    private int vipprice;
-    private int purchase;
+    private DataBean data;
 
-    public int getBillingmode() {
-        return billingmode;
+    public DataBean getData() {
+        return data;
     }
 
-    public void setBillingmode(int billingmode) {
-        this.billingmode = billingmode;
+    public void setData(DataBean data) {
+        this.data = data;
     }
 
-    private int billingmode;
+    public static class DataBean implements Serializable{
+        /**
+         * banners : [{"id":1,"img":"https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=2390632991,220987804&fm=173&s=0FC0FC068F244C03984DA0D20000C0B7&w=639&h=216&img.JPEG","type":2},{"id":2,"img":"https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=2390632991,220987804&fm=173&s=0FC0FC068F244C03984DA0D20000C0B7&w=639&h=216&img.JPEG","type":2},{"id":3,"img":"https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=2390632991,220987804&fm=173&s=0FC0FC068F244C03984DA0D20000C0B7&w=639&h=216&img.JPEG","type":2}]
+         * recService : [{"id":1,"serviceName":"测试1","servicePrice":1,"serviceType":0,"isBanner":1,"serviceDetail":null,"serviceImg":"https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=2390632991,220987804&fm=173&s=0FC0FC068F244C03984DA0D20000C0B7&w=639&h=216&img.JPEG","seeType":1,"isRec":1},{"id":2,"serviceName":"测试1","servicePrice":1,"serviceType":0,"isBanner":1,"serviceDetail":null,"serviceImg":"https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=2390632991,220987804&fm=173&s=0FC0FC068F244C03984DA0D20000C0B7&w=639&h=216&img.JPEG","seeType":1,"isRec":1},{"id":3,"serviceName":"测试1","servicePrice":1,"serviceType":0,"isBanner":1,"serviceDetail":null,"serviceImg":"https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=2390632991,220987804&fm=173&s=0FC0FC068F244C03984DA0D20000C0B7&w=639&h=216&img.JPEG","seeType":1,"isRec":1}]
+         * recGoods : null
+         */
 
-    public int getDeposit() {
-        return deposit;
-    }
+        private Object recGoods;
+        private List<BannersBean> banners;
+        private List<RecServiceBean> recService;
 
-    public void setDeposit(int deposit) {
-        this.deposit = deposit;
-    }
+        public Object getRecGoods() {
+            return recGoods;
+        }
 
-    private int deposit;
-    private int goodstype;
-    private int shop;
-    private int stock;//商品库存
+        public void setRecGoods(Object recGoods) {
+            this.recGoods = recGoods;
+        }
 
-    public int getStock() {
-        return stock;
-    }
+        public List<BannersBean> getBanners() {
+            return banners;
+        }
 
-    public void setStock(int stock) {
-        this.stock = stock;
-    }
+        public void setBanners(List<BannersBean> banners) {
+            this.banners = banners;
+        }
 
-    public String getTypeName() {
-        return typeName;
-    }
+        public List<RecServiceBean> getRecService() {
+            return recService;
+        }
 
-    private String goodsdetail;
-    private String shopName;
-    private String typeName;
-    private String goodsImg;
+        public void setRecService(List<RecServiceBean> recService) {
+            this.recService = recService;
+        }
 
-    public void setTypeName(String typeName) {
-        this.typeName = typeName;
-    }
+        public static class BannersBean implements Serializable{
+            /**
+             * id : 1
+             * img : https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=2390632991,220987804&fm=173&s=0FC0FC068F244C03984DA0D20000C0B7&w=639&h=216&img.JPEG
+             * type : 2
+             */
 
-    public String getGoodsImg() {
-        return goodsImg;
-    }
+            private int id;
+            private String img;
+            private int type;
 
-    public void setGoodsImg(String goodsImg) {
-        this.goodsImg = goodsImg;
-    }
+            public int getId() {
+                return id;
+            }
 
-    private List<String> binners;
-    private List<String> details;
+            public void setId(int id) {
+                this.id = id;
+            }
 
-    public int getId() {
-        return id;
-    }
+            public String getImg() {
+                return img;
+            }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+            public void setImg(String img) {
+                this.img = img;
+            }
 
-    public String getName() {
-        return name;
-    }
+            public int getType() {
+                return type;
+            }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+            public void setType(int type) {
+                this.type = type;
+            }
+        }
 
-    public int getPrice() {
-        return price;
-    }
+        public static class RecServiceBean implements Serializable{
+            /**
+             * id : 1
+             * serviceName : 测试1
+             * servicePrice : 1
+             * serviceType : 0
+             * isBanner : 1
+             * serviceDetail : null
+             * serviceImg : https://ss2.baidu.com/6ONYsjip0QIZ8tyhnq/it/u=2390632991,220987804&fm=173&s=0FC0FC068F244C03984DA0D20000C0B7&w=639&h=216&img.JPEG
+             * seeType : 1
+             * isRec : 1
+             */
 
-    public void setPrice(int price) {
-        this.price = price;
-    }
+            private int id;
+            private String serviceName;
+            private int servicePrice;
+            private int serviceType;
+            private int isBanner;
+            private Object serviceDetail;
+            private String serviceImg;
+            private int seeType;
+            private int isRec;
 
-    public int getVipprice() {
-        return vipprice;
-    }
+            public int getId() {
+                return id;
+            }
 
-    public void setVipprice(int vipprice) {
-        this.vipprice = vipprice;
-    }
+            public void setId(int id) {
+                this.id = id;
+            }
 
-    public int getPurchase() {
-        return purchase;
-    }
+            public String getServiceName() {
+                return serviceName;
+            }
 
-    public void setPurchase(int purchase) {
-        this.purchase = purchase;
-    }
+            public void setServiceName(String serviceName) {
+                this.serviceName = serviceName;
+            }
 
-    public int getGoodstype() {
-        return goodstype;
-    }
+            public int getServicePrice() {
+                return servicePrice;
+            }
 
-    public void setGoodstype(int goodstype) {
-        this.goodstype = goodstype;
-    }
+            public void setServicePrice(int servicePrice) {
+                this.servicePrice = servicePrice;
+            }
 
-    public int getShop() {
-        return shop;
-    }
+            public int getServiceType() {
+                return serviceType;
+            }
 
-    public void setShop(int shop) {
-        this.shop = shop;
-    }
+            public void setServiceType(int serviceType) {
+                this.serviceType = serviceType;
+            }
 
-    public String getGoodsdetail() {
-        return goodsdetail;
-    }
+            public int getIsBanner() {
+                return isBanner;
+            }
 
-    public void setGoodsdetail(String goodsdetail) {
-        this.goodsdetail = goodsdetail;
-    }
+            public void setIsBanner(int isBanner) {
+                this.isBanner = isBanner;
+            }
 
-    public String getShopName() {
-        return shopName;
-    }
+            public Object getServiceDetail() {
+                return serviceDetail;
+            }
 
-    public void setShopName(String shopName) {
-        this.shopName = shopName;
-    }
+            public void setServiceDetail(Object serviceDetail) {
+                this.serviceDetail = serviceDetail;
+            }
 
-    public List<String> getBinners() {
-        return binners;
-    }
+            public String getServiceImg() {
+                return serviceImg;
+            }
 
-    public void setBinners(List<String> binners) {
-        this.binners = binners;
-    }
+            public void setServiceImg(String serviceImg) {
+                this.serviceImg = serviceImg;
+            }
 
-    public List<String> getDetails() {
-        return details;
-    }
+            public int getSeeType() {
+                return seeType;
+            }
 
-    public void setDetails(List<String> details) {
-        this.details = details;
+            public void setSeeType(int seeType) {
+                this.seeType = seeType;
+            }
+
+            public int getIsRec() {
+                return isRec;
+            }
+
+            public void setIsRec(int isRec) {
+                this.isRec = isRec;
+            }
+        }
     }
 }

@@ -25,31 +25,27 @@ import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.bozhengjianshe.shenghuobang.R;
 import com.bozhengjianshe.shenghuobang.api.JyCallBack;
 import com.bozhengjianshe.shenghuobang.api.RestAdapterManager;
-import com.bozhengjianshe.shenghuobang.base.BaseContext;
 import com.bozhengjianshe.shenghuobang.base.BaseFragment;
 import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
+import com.bozhengjianshe.shenghuobang.ui.activity.AboutActivity;
 import com.bozhengjianshe.shenghuobang.ui.activity.GoodsDetailsActivity;
 import com.bozhengjianshe.shenghuobang.ui.adapter.MainListItemAdapter;
-import com.bozhengjianshe.shenghuobang.ui.adapter.PoPuMenuListAdapter;
-import com.bozhengjianshe.shenghuobang.ui.adapter.PoPuMenuListShopAdapter;
+import com.bozhengjianshe.shenghuobang.ui.adapter.MainMenusAdapter;
 import com.bozhengjianshe.shenghuobang.ui.bean.GoodsFilterBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.GoodsListBean;
+import com.bozhengjianshe.shenghuobang.ui.bean.MainMenuInfo;
 import com.bozhengjianshe.shenghuobang.ui.bean.ShopsFilterBean;
-import com.bozhengjianshe.shenghuobang.ui.bean.SuperBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.bannerBean;
 import com.bozhengjianshe.shenghuobang.utils.ImageLoadedrManager;
-import com.bozhengjianshe.shenghuobang.utils.LogUtils;
 import com.bozhengjianshe.shenghuobang.utils.UIUtil;
-import com.bozhengjianshe.shenghuobang.view.DropDownMenu;
-import com.bozhengjianshe.shenghuobang.view.MaxHeighListView;
+import com.bozhengjianshe.shenghuobang.view.AutoGridView;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -68,8 +64,8 @@ public class IndexFragment extends BaseFragment {
     RecyclerView sf_listview;
     @BindView(R.id.convenientBanner)
     ConvenientBanner kanner;
-    @BindView(R.id.dropDownMenu)
-    DropDownMenu dropDownMenu;
+    //    @BindView(R.id.dropDownMenu)
+//    DropDownMenu dropDownMenu;
     @BindView(R.id.swiperefreshlayout)
     SmartRefreshLayout swiperefreshlayout;
     @BindView(R.id.edit_search)
@@ -82,7 +78,8 @@ public class IndexFragment extends BaseFragment {
     TextView tv_no_data;
     @BindView(R.id.bt_search)
     TextView bt_search;
-
+    @BindView(R.id.gv_menu)
+    AutoGridView gv_menu;
     List<bannerBean> list = new ArrayList<>();
     List<GoodsListBean> adList = new ArrayList<>();
     //    private DropDownMenu dropDownMenu;
@@ -93,16 +90,16 @@ public class IndexFragment extends BaseFragment {
     //    private List<SelectedBean> demands = new ArrayList<>();
     private List<ShopsFilterBean> shopsList = new ArrayList<>();
     private List<GoodsFilterBean> typesList = new ArrayList<>();
-    private PoPuMenuListShopAdapter mMenuAdapter2;
-    private PoPuMenuListAdapter mMenuAdapter;
+    //    private PoPuMenuListShopAdapter mMenuAdapter2;
+//    private PoPuMenuListAdapter mMenuAdapter;
     private MainListItemAdapter listAdapter;
 
-    private Call<SuperBean<List<ShopsFilterBean>>> shopsCall;
-    private Call<SuperBean<List<GoodsFilterBean>>> typesCall;
-    private Call<SuperBean<List<GoodsListBean>>> goodsListCall;
-    private Call<SuperBean<List<GoodsListBean>>> adListCall;
-
-
+    //    private Call<SuperBean<List<ShopsFilterBean>>> shopsCall;
+//    private Call<SuperBean<List<GoodsFilterBean>>> typesCall;
+    private Call<GoodsListBean> goodsListCall;
+    private Call<GoodsListBean> adListCall;
+    private ArrayList<MainMenuInfo> menus = new ArrayList<>();
+    private MainMenusAdapter menusAdapter;
     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
 
     //筛选的关键字
@@ -158,13 +155,31 @@ public class IndexFragment extends BaseFragment {
                 getList();
             }
         });
+        gv_menu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                MainMenuInfo menuItem = (MainMenuInfo) parent.getAdapter().getItem(position);
+                if (menuItem != null) {
+                    if (menuItem.aClass != null) {
+                        Intent intent = new Intent(getActivity(), menuItem.aClass);
+                        if (menuItem.bundle != null) {
+                            intent.putExtras(menuItem.bundle);
+                        }
+                        startActivity(intent);
+                    } else {
+                        UIUtil.showToast(getActivity(), "敬请期待!");
+                    }
+                }
+            }
+        });
     }
 
     @Override
     protected void loadData() {
-        getAdList();
-        getFilterList();
+//        getAdList();
+//        getFilterList();
         getList();
+        initMenus();
     }
 
     @Override
@@ -187,112 +202,135 @@ public class IndexFragment extends BaseFragment {
 
     }
 
-    private void getAdList() {
-        String userId = "0";
-        list.clear();
-        adList.clear();
-        if (BaseContext.getInstance().getUserInfo() != null) {
-            userId = BaseContext.getInstance().getUserInfo().userId;
-        }
-        adListCall = RestAdapterManager.getApi().getAdList(userId);
-        adListCall.enqueue(new JyCallBack<SuperBean<List<GoodsListBean>>>() {
-            @Override
-            public void onSuccess(Call<SuperBean<List<GoodsListBean>>> call, Response<SuperBean<List<GoodsListBean>>> response) {
-                //初始化广告栏
-                if (response != null && response.body() != null && response.body().getCode() == Constants.successCode) {
-                    adList.addAll(response.body().getData());
-                    for (int i = 0; i < adList.size(); i++) {
-                        bannerBean bannerBean = new bannerBean();
-                        bannerBean.setImage(adList.get(i).getGoodsImg());
-                        list.add(bannerBean);
-                    }
-                } else {
-                    try {
-                        UIUtil.showToast(response.body().getMsg());
-                    } catch (Exception E) {
+    /**
+     * 初始化菜单
+     */
+    private void initMenus() {
+        //
+        Bundle bundle1 = new Bundle();
+        MainMenuInfo Home1 = new MainMenuInfo("居家常备", R.mipmap.ic_home_1, AboutActivity.class, bundle1);
+        menus.add(Home1);
+        MainMenuInfo Home2 = new MainMenuInfo("五金挂件", R.mipmap.ic_home_2, AboutActivity.class, bundle1);
+        menus.add(Home2);
+        MainMenuInfo Home3 = new MainMenuInfo("家居家纺", R.mipmap.ic_home_3, AboutActivity.class, bundle1);
+        menus.add(Home3);
+        MainMenuInfo Home4 = new MainMenuInfo("装修装饰", R.mipmap.ic_home_4, AboutActivity.class, bundle1);
+        menus.add(Home4);
+        MainMenuInfo Home5 = new MainMenuInfo("厨房卫浴", R.mipmap.ic_home_5, AboutActivity.class, bundle1);
+        menus.add(Home5);
+        MainMenuInfo Home6 = new MainMenuInfo("灯饰照明", R.mipmap.ic_home_6, AboutActivity.class, bundle1);
+        menus.add(Home6);
+        MainMenuInfo Home7 = new MainMenuInfo("灯饰照明", R.mipmap.ic_home_7, AboutActivity.class, bundle1);
+        menus.add(Home7);
+        MainMenuInfo Home8 = new MainMenuInfo("绿植花卉", R.mipmap.ic_home_8, AboutActivity.class, bundle1);
+        menus.add(Home8);
 
-                    }
-                }
-                if (list.size() > 0) {
-                    kanner.setVisibility(View.VISIBLE);
-                    initAD(list);
-                } else {
-                    kanner.setVisibility(View.GONE);
-                }
-            }
 
-            @Override
-            public void onError(Call<SuperBean<List<GoodsListBean>>> call, Throwable t) {
-                kanner.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onError(Call<SuperBean<List<GoodsListBean>>> call, Response<SuperBean<List<GoodsListBean>>> response) {
-                kanner.setVisibility(View.GONE);
-            }
-        });
+        menusAdapter = new MainMenusAdapter(getContext(), menus);
+        gv_menu.setAdapter(menusAdapter);
     }
+
+//    private void getAdList() {
+//        String userId = "0";
+//        list.clear();
+//        adList.clear();
+//        if (BaseContext.getInstance().getUserInfo() != null) {
+//            userId = BaseContext.getInstance().getUserInfo().userId;
+//        }
+//        adListCall = RestAdapterManager.getApi().getAdList(userId);
+//        adListCall.enqueue(new JyCallBack<GoodsListBean>() {
+//            @Override
+//            public void onSuccess(Call<GoodsListBean> call, Response<GoodsListBean> response) {
+//                //初始化广告栏
+//                if (response != null && response.body() != null && response.body().getCode() == Constants.successCode) {
+//                    adList.addAll(response.body().getData());
+//                    for (int i = 0; i < adList.size(); i++) {
+//                        bannerBean bannerBean = new bannerBean();
+//                        bannerBean.setImage(adList.get(i).getGoodsImg());
+//                        list.add(bannerBean);
+//                    }
+//                } else {
+//                    try {
+//                        UIUtil.showToast(response.body().getMsg());
+//                    } catch (Exception E) {
+//
+//                    }
+//                }
+//                if (list.size() > 0) {
+//                    kanner.setVisibility(View.VISIBLE);
+//                    initAD(list);
+//                } else {
+//                    kanner.setVisibility(View.GONE);
+//                }
+//            }
+//
+//            @Override
+//            public void onError(Call<GoodsListBean> call, Throwable t) {
+//                kanner.setVisibility(View.GONE);
+//            }
+//
+//            @Override
+//            public void onError(Call<GoodsListBean> call, Response<GoodsListBean> response) {
+//                kanner.setVisibility(View.GONE);
+//            }
+//        });
+//    }
 
     private void getList() {
         Map<String, String> map = new HashMap<>();
-//        map.put("pageNum", pageNum + "");
-//        map.put("pageSize", pageSize + "");
-        map.put("shop", shop);
-        map.put("goodstype", goodstype);
-        if (!TextUtils.isEmpty(keyWord)) {
-
-            map.put("name", keyWord);
-        }
-        if (BaseContext.getInstance().getUserInfo() != null) {
-            map.put("userId", BaseContext.getInstance().getUserInfo().userId);
-        } else {
-            map.put("userId", "0");
-        }
-        goodsListCall = RestAdapterManager.getApi().getGoodsList(map);
-        goodsListCall.enqueue(new JyCallBack<SuperBean<List<GoodsListBean>>>() {
+        goodsListCall = RestAdapterManager.getApi().getGoodsList("1");
+        goodsListCall.enqueue(new JyCallBack<GoodsListBean>() {
             @Override
-            public void onSuccess(Call<SuperBean<List<GoodsListBean>>> call, Response<SuperBean<List<GoodsListBean>>> response) {
+            public void onSuccess(Call<GoodsListBean> call, Response<GoodsListBean> response) {
                 swiperefreshlayout.finishRefresh();
                 swiperefreshlayout.finishLoadmore();
-                if (response != null && response.body() != null && response.body().getCode() == Constants.successCode) {
-                    if (response.body().getData().size() > 0) {
+                if (response != null && response.body() != null && response.body().code == Constants.successCode) {
+                    if (response.body().getData().getRecService().size() > 0) {
                         ll_empty.setVisibility(View.GONE);
                         sf_listview.setVisibility(View.VISIBLE);
                         listAdapter.ClearData();
-                        listAdapter.addList(response.body().getData());
+                        listAdapter.addList(response.body().getData().getRecService());
                         pageNum++;
                     } else {
                         if (!TextUtils.isEmpty(keyWord)) {
                             //搜索数据为空
-                            tv_no_data.setText("没有“" + keyWord + "”的搜索结果");
-                            ll_empty.setVisibility(View.VISIBLE);
-                            sf_listview.setVisibility(View.GONE);
-                            listAdapter.ClearData();
+//                            tv_no_data.setText("没有“" + keyWord + "”的搜索结果");
+//                            ll_empty.setVisibility(View.VISIBLE);
+//                            sf_listview.setVisibility(View.GONE);
+//                            listAdapter.ClearData();
                         } else {
                             ll_empty.setVisibility(View.GONE);
                             sf_listview.setVisibility(View.VISIBLE);
-                            if (pageNum == 1) {
-                                //无数据
-                                listAdapter.ClearData();
-                            } else {
-                                //加载完全部数据
-                                UIUtil.showToast("已加载完全部数据");
-                                swiperefreshlayout.setEnableLoadmore(false);
-                            }
+                            listAdapter.ClearData();
+//                            if (pageNum == 1) {
+//                                //无数据
+//                                listAdapter.ClearData();
+//                            } else {
+//                                //加载完全部数据
+//                                UIUtil.showToast("已加载完全部数据");
+//                                swiperefreshlayout.setEnableLoadmore(false);
+//                            }
                         }
-
+                    }
+                    if (response.body().getData().getBanners().size() > 0) {
+                        for (int i = 0; i < response.body().getData().getBanners().size(); i++) {
+                            bannerBean bannerBean = new bannerBean();
+                            bannerBean.setImage(response.body().getData().getBanners().get(i).getImg());
+                            list.add(bannerBean);
+                        }
+                        initAD(list);
                     }
 
                 } else {
                     try {
-                        UIUtil.showToast(response.body().getMsg());
+                        UIUtil.showToast(response.body().msg);
                     } catch (Exception e) {
                     }
                 }
             }
 
             @Override
-            public void onError(Call<SuperBean<List<GoodsListBean>>> call, Throwable t) {
+            public void onError(Call<GoodsListBean> call, Throwable t) {
                 if (swiperefreshlayout != null) {
                     swiperefreshlayout.finishRefresh();
                     swiperefreshlayout.finishLoadmore();
@@ -301,7 +339,7 @@ public class IndexFragment extends BaseFragment {
             }
 
             @Override
-            public void onError(Call<SuperBean<List<GoodsListBean>>> call, Response<SuperBean<List<GoodsListBean>>> response) {
+            public void onError(Call<GoodsListBean> call, Response<GoodsListBean> response) {
                 if (swiperefreshlayout != null) {
                     swiperefreshlayout.finishRefresh();
                     swiperefreshlayout.finishLoadmore();
@@ -311,114 +349,47 @@ public class IndexFragment extends BaseFragment {
     }
 
     //筛选
-    private void setFilter() {
-        types.clear();
-        popupViews.clear();
-        //益智类
-        final MaxHeighListView sortView = new MaxHeighListView(getActivity());
-        sortView.setDividerHeight(0);
-        sortView.setMaxHeight(199);
-        mMenuAdapter = new PoPuMenuListAdapter(getActivity(), typesList);
-        sortView.setAdapter(mMenuAdapter);
-        sortView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                dropDownMenu.setTabText(typesList.get(position).getTypename());
-                dropDownMenu.closeMenu();
-                goodstype = typesList.get(position).getId() + "";
-                getList();
-            }
-        });
-        types.add("全部");
-        popupViews.add(sortView);
+//    private void setFilter() {
+//        types.clear();
+//        popupViews.clear();
+//        //益智类
+//        final MaxHeighListView sortView = new MaxHeighListView(getActivity());
+//        sortView.setDividerHeight(0);
+//        sortView.setMaxHeight(199);
+//        mMenuAdapter = new PoPuMenuListAdapter(getActivity(), typesList);
+//        sortView.setAdapter(mMenuAdapter);
+//        sortView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+//                dropDownMenu.setTabText(typesList.get(position).getTypename());
+//                dropDownMenu.closeMenu();
+//                goodstype = typesList.get(position).getId() + "";
+//                getList();
+//            }
+//        });
+//        types.add("全部");
+//        popupViews.add(sortView);
+//
+//
+//        final MaxHeighListView softView = new MaxHeighListView(getActivity());
+//        softView.setDividerHeight(0);
+//        softView.setMaxHeight(199);
+//        mMenuAdapter2 = new PoPuMenuListShopAdapter(getActivity(), shopsList);
+//        softView.setAdapter(mMenuAdapter2);
+//        softView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+//                dropDownMenu.setTabText(shopsList.get(position).getShopname());
+//                dropDownMenu.closeMenu();
+//                shop = shopsList.get(position).getId() + "";
+//                getList();
+//            }
+//        });
+//        types.add("全部");
+//        popupViews.add(softView);
+//        dropDownMenu.setDropDownMenu(types, popupViews);
+//    }
 
-
-        final MaxHeighListView softView = new MaxHeighListView(getActivity());
-        softView.setDividerHeight(0);
-        softView.setMaxHeight(199);
-        mMenuAdapter2 = new PoPuMenuListShopAdapter(getActivity(), shopsList);
-        softView.setAdapter(mMenuAdapter2);
-        softView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                dropDownMenu.setTabText(shopsList.get(position).getShopname());
-                dropDownMenu.closeMenu();
-                shop = shopsList.get(position).getId() + "";
-                getList();
-            }
-        });
-        types.add("全部");
-        popupViews.add(softView);
-        dropDownMenu.setDropDownMenu(types, popupViews);
-    }
-
-    private void getFilterList() {
-        shopsCall = RestAdapterManager.getApi().getAllFilterShops();
-        shopsCall.enqueue(new JyCallBack<SuperBean<List<ShopsFilterBean>>>() {
-            @Override
-            public void onSuccess(Call<SuperBean<List<ShopsFilterBean>>> call, Response<SuperBean<List<ShopsFilterBean>>> response) {
-
-                if (response != null && response.body() != null && response.body().getCode() == Constants.successCode) {
-
-                    shopsList.clear();
-                    shopsList.addAll(response.body().getData());
-                    shopsList.add(0, new ShopsFilterBean(0, "全部"));
-                    typesCall = RestAdapterManager.getApi().getAllFilterType();
-                    typesCall.enqueue(new JyCallBack<SuperBean<List<GoodsFilterBean>>>() {
-                        @Override
-                        public void onSuccess(Call<SuperBean<List<GoodsFilterBean>>> call, Response<SuperBean<List<GoodsFilterBean>>> response) {
-                            if (response != null && response.body() != null && response.body().getCode() == Constants.successCode) {
-                                typesList.clear();
-                                typesList.addAll(response.body().getData());
-                                typesList.add(0, new GoodsFilterBean(0, "全部"));
-                                setFilter();
-                            } else {
-                                try {
-                                    UIUtil.showToast(response.body().getMsg());
-                                } catch (Exception e) {
-                                }
-                            }
-                        }
-
-                        @Override
-                        public void onError(Call<SuperBean<List<GoodsFilterBean>>> call, Throwable t) {
-                            LogUtils.e(t.getMessage());
-                        }
-
-                        @Override
-                        public void onError(Call<SuperBean<List<GoodsFilterBean>>> call, Response<SuperBean<List<GoodsFilterBean>>> response) {
-                            try {
-                                LogUtils.e(response.errorBody().string());
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-                } else {
-                    try {
-                        UIUtil.showToast(response.body().getMsg());
-                    } catch (Exception e) {
-                    }
-                }
-
-
-            }
-
-            @Override
-            public void onError(Call<SuperBean<List<ShopsFilterBean>>> call, Throwable t) {
-                LogUtils.e(t.getMessage());
-            }
-
-            @Override
-            public void onError(Call<SuperBean<List<ShopsFilterBean>>> call, Response<SuperBean<List<ShopsFilterBean>>> response) {
-                try {
-                    LogUtils.e(response.errorBody().string());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
 
     /**
      * 初始化标题
@@ -505,12 +476,6 @@ public class IndexFragment extends BaseFragment {
     public void onDestroy() {
         if (adListCall != null) {
             adListCall.cancel();
-        }
-        if (shopsCall != null) {
-            shopsCall.cancel();
-        }
-        if (typesCall != null) {
-            typesCall.cancel();
         }
         if (goodsListCall != null) {
             goodsListCall.cancel();

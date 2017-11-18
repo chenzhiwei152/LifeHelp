@@ -11,14 +11,11 @@ import android.widget.Toast;
 import com.bozhengjianshe.shenghuobang.R;
 import com.bozhengjianshe.shenghuobang.base.AppManager;
 import com.bozhengjianshe.shenghuobang.base.BaseActivity;
-import com.bozhengjianshe.shenghuobang.base.BaseFragment;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
 import com.bozhengjianshe.shenghuobang.ui.fragment.IndexFragment;
 import com.bozhengjianshe.shenghuobang.ui.fragment.MyFragment;
 import com.bozhengjianshe.shenghuobang.view.NoScrollViewPager;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -39,7 +36,7 @@ public class MainActivity extends BaseActivity {
     Class[] fragments = {IndexFragment.class, MyFragment.class};
     private int[] tabNames = {R.string.main_tab_name_index, R.string.main_tab_name_me};
     private int[] tabIcons = {R.drawable.selector_main_tab_index, R.drawable.selector_main_tab_mine};
-    private List<BaseFragment> fragmentList;
+//    private List<BaseFragment> fragmentList;
     @Override
     public int getContentViewLayoutId() {
         return R.layout.activity_main;
@@ -48,9 +45,9 @@ public class MainActivity extends BaseActivity {
     @Override
     public void initViewsAndEvents() {
 
-        fragmentList = new ArrayList<>();
-        fragmentList.add(new IndexFragment());
-        fragmentList.add(new MyFragment());
+//        fragmentList = new ArrayList<>();
+//        fragmentList.add(new IndexFragment());
+//        fragmentList.add(new MyFragment());
         for (int i = 0; i < tabNames.length; i++) {
             View tabView = View.inflate(this, R.layout.layout_tab_item, null);
             TextView textView = (TextView) tabView.findViewById(R.id.tab_title);
@@ -59,8 +56,8 @@ public class MainActivity extends BaseActivity {
             textView.setCompoundDrawablesWithIntrinsicBounds(0, tabIcons[i], 0, 0);
             mTabLayout.addTab(mTabLayout.newTab().setCustomView(textView));
         }
-
-        viewPager.setOffscreenPageLimit(2);
+        viewPager.setCurrentItem(0);
+//        viewPager.setOffscreenPageLimit(2);
         viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
             public int getCount() {
@@ -71,7 +68,6 @@ public class MainActivity extends BaseActivity {
             public Fragment getItem(int position) {
                 return Fragment.instantiate(MainActivity.this, fragments[position].getName());
             }
-
 
         });
         // Tablayout选择tab监听
