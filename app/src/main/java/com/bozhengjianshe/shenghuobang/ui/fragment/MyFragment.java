@@ -22,7 +22,7 @@ import com.bozhengjianshe.shenghuobang.ui.activity.PersonInformationActivity;
 import com.bozhengjianshe.shenghuobang.ui.activity.ShoppingAddressActivity;
 import com.bozhengjianshe.shenghuobang.utils.DialogUtils;
 import com.bozhengjianshe.shenghuobang.utils.ImageLoadedrManager;
-import com.bozhengjianshe.shenghuobang.view.CircularImageView;
+import com.bozhengjianshe.shenghuobang.view.TitleBar;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -33,14 +33,14 @@ import butterknife.BindView;
  */
 
 public class MyFragment extends BaseFragment implements View.OnClickListener {
+    @BindView(R.id.title_view)
+    TitleBar title_view;
     @BindView(R.id.iv_head)
-    CircularImageView ivHead;
+    ImageView ivHead;
     @BindView(R.id.tv_member)
     TextView tvMember;
-    @BindView(R.id.iv_image_order)
-    ImageView ivImageOrder;
-    @BindView(R.id.rl_order)
-    RelativeLayout rlOrder;
+    @BindView(R.id.tv_order)
+    TextView tv_order;
     @BindView(R.id.iv_safe)
     ImageView ivSafe;
     @BindView(R.id.rl_safety)
@@ -59,8 +59,8 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
     RelativeLayout rlRealName;
     @BindView(R.id.iv_abount)
     ImageView ivAbount;
-    @BindView(R.id.rl_about)
-    RelativeLayout rlAbout;
+    @BindView(R.id.tv_about)
+    TextView tv_about;
     @BindView(R.id.tv_setting)
     TextView tv_setting;
     @BindView(R.id.rl_quit_login)
@@ -77,14 +77,15 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
 
     @Override
     protected void initViewsAndEvents() {
-        rlOrder.setOnClickListener(this);
+        tv_order.setOnClickListener(this);
         rlSafety.setOnClickListener(this);
         rlLocation.setOnClickListener(this);
         rlMember.setOnClickListener(this);
         rlRealName.setOnClickListener(this);
-        rlAbout.setOnClickListener(this);
+        tv_about.setOnClickListener(this);
         tv_setting.setOnClickListener(this);
         rl_quit_login.setOnClickListener(this);
+        initTitle();
     }
 
     @Override
@@ -141,7 +142,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.rl_order:
+            case R.id.tv_order:
                 //订单
                 if (BaseContext.getInstance().getUserInfo() == null) {
                     startActivity(new Intent(getActivity(), LoginActivity.class));
@@ -182,7 +183,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
                 }
                 startActivity(new Intent(getActivity(), CommitRealNameActivity.class));
                 break;
-            case R.id.rl_about:
+            case R.id.tv_about:
                 //关于
                 startActivity(new Intent(getActivity(), AboutActivity.class));
                 break;
@@ -223,5 +224,12 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
 //
 //            }
         });
+    }
+
+    /**
+     * 初始化标题
+     */
+    private void initTitle() {
+        title_view.setTitle("生活帮");
     }
 }
