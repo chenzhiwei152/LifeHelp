@@ -1,7 +1,6 @@
 package com.bozhengjianshe.shenghuobang.ui.activity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -199,7 +198,7 @@ public class PersonInformationActivity extends BaseActivity implements View.OnCl
         });
     }
 
-        private void upLoadImage() {
+    private void upLoadImage() {
         DialogUtils.showDialog(this, "上传中", false);
         List<MultipartBody.Part> parts = UploadFile.filesToMultipartBody(list);
         upLoadImageCall = RestAdapterManager.getApi().uploadFile(parts.get(0));
@@ -265,15 +264,16 @@ public class PersonInformationActivity extends BaseActivity implements View.OnCl
      */
     private void initTitle() {
         title_view.setLeftImageResource(R.mipmap.ic_title_back);
-        title_view.setLeftText("返回");
-        title_view.setLeftTextColor(Color.WHITE);
+        title_view.setTitle("我的账号");
+//        title_view.setLeftText("返回");
+//        title_view.setLeftTextColor(Color.WHITE);
         title_view.setLeftClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
-        title_view.setBackgroundColor(getResources().getColor(R.color.color_ff6900));
+//        title_view.setBackgroundColor(getResources().getColor(R.color.color_ff6900));
         title_view.setImmersive(true);
 
 

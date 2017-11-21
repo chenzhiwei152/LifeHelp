@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
     android:id="@+id/ll_address"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/color_ffffff"
     android:orientation="vertical">
@@ -13,10 +13,31 @@
         android:orientation="horizontal"
         android:padding="10dp">
 
-        <ImageView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ic_my_location" />
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_1C86F6_corner_box"
+                android:paddingBottom="2dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="2dp"
+                android:text="地址一"
+                android:textColor="@color/color_1C86F6"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_address_detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="14sp" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -33,7 +54,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="收货人："
-                    android:textSize="14sp" />
+                    android:textSize="14sp"
+                    android:visibility="gone" />
 
                 <TextView
                     android:id="@+id/tv_address_name"
@@ -51,25 +73,6 @@
                     android:textSize="14sp" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="收货地址："
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/tv_address_detail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:textSize="14sp" />
-            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

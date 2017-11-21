@@ -157,11 +157,11 @@ public class ShoppingAddressActivity extends BaseActivity {
                 if (response != null && response.body() != null && response.body().getCode() == Constants.successCode) {
                     shoppingAddressListAdapter.ClearData();
                     shoppingAddressListAdapter.addList(response.body().getData());
-                    if (response.body().getData().size() > 0) {
-                        mCollectView.setVisibility(View.GONE);
-                    } else {
-                        mCollectView.setVisibility(View.VISIBLE);
-                    }
+//                    if (response.body().getData().size() > 0) {
+//                        mCollectView.setVisibility(View.GONE);
+//                    } else {
+//                        mCollectView.setVisibility(View.VISIBLE);
+//                    }
                 } else {
                     try {
                         UIUtil.showToast(response.body().getMsg());
@@ -227,18 +227,17 @@ public class ShoppingAddressActivity extends BaseActivity {
      * 初始化标题
      */
     private void initTitle() {
-        title_view.setTitle("收货地址");
+        title_view.setTitle(R.string.app_name);
         title_view.setTitleColor(Color.WHITE);
         title_view.setLeftImageResource(R.mipmap.ic_title_back);
-        title_view.setLeftText("返回");
-        title_view.setLeftTextColor(Color.WHITE);
+//        title_view.setLeftText("返回");
+//        title_view.setLeftTextColor(Color.WHITE);
         title_view.setLeftClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
-        title_view.setBackgroundColor(getResources().getColor(R.color.color_ff6900));
         mCollectView = (ImageView) title_view.addAction(new TitleBar.ImageAction(R.mipmap.ic_add_new) {
             @Override
             public void performAction(View view) {
