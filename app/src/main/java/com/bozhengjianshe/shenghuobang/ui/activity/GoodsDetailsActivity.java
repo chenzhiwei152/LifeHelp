@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -18,12 +20,16 @@ import com.bigkoo.convenientbanner.holder.Holder;
 import com.bozhengjianshe.shenghuobang.R;
 import com.bozhengjianshe.shenghuobang.base.BaseActivity;
 import com.bozhengjianshe.shenghuobang.base.BaseContext;
+import com.bozhengjianshe.shenghuobang.base.BaseFragment;
 import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
 import com.bozhengjianshe.shenghuobang.ui.adapter.GoodsDetailItemAdapter;
+import com.bozhengjianshe.shenghuobang.ui.adapter.IndexFragmentPagerAdapter;
 import com.bozhengjianshe.shenghuobang.ui.bean.GoodsListBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.SuperBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.bannerBean;
+import com.bozhengjianshe.shenghuobang.ui.fragment.GoodsDetailLeftFragment;
+import com.bozhengjianshe.shenghuobang.ui.fragment.GoodsDetailRightFragment;
 import com.bozhengjianshe.shenghuobang.utils.DialogUtils;
 import com.bozhengjianshe.shenghuobang.utils.ImageLoadedrManager;
 import com.bozhengjianshe.shenghuobang.utils.UIUtil;
@@ -60,7 +66,15 @@ public class GoodsDetailsActivity extends BaseActivity {
     private TextView tv_price;
     private Call<SuperBean<GoodsListBean>> call;
     private boolean isNewData = true;
+    private IndexFragmentPagerAdapter adapter;
 
+    public static int mCurrentTab = 0;
+    private String[] tabNames = {"详情", "评价"};
+    @BindView(R.id.viewpager)
+    ViewPager viewPager;
+
+    @BindView(R.id.tabLayout)
+    TabLayout mTabLayout;
     @Override
     public int getContentViewLayoutId() {
         return R.layout.activity_goods_details;
@@ -90,6 +104,42 @@ public class GoodsDetailsActivity extends BaseActivity {
 
         sf_listview.setAdapter(listAdapter);
 
+
+
+
+        List<BaseFragment> fragmentList = new ArrayList<>();
+        fragmentList.add(new GoodsDetailLeftFragment());
+        fragmentList.add(new GoodsDetailRightFragment());
+        adapter = new IndexFragmentPagerAdapter(getSupportFragmentManager(), fragmentList);
+        for (int i = 0; i < tabNames.length; i++) {
+            View tabView = View.inflate(this, R.layout.layout_tab_item, null);
+            TextView textView = (TextView) tabView.findViewById(R.id.tab_title);
+            textView.setText(tabNames[i]);
+            // 利用这种办法设置图标是为了解决默认设置图标和文字出现的距离较大问题
+//            textView.setCompoundDrawablesWithIntrinsicBounds(0, tabIcons[i], 0, 0);
+            mTabLayout.addTab(mTabLayout.newTab().setCustomView(textView));
+        }
+        viewPager.setAdapter(adapter);
+
+        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                int position = mTabLayout.getSelectedTabPosition();//tab.getPosition();
+                mCurrentTab = position;
+                viewPager.setCurrentItem(position, false);
+//                EventBus.getDefault().post(new EventBusCenter<Integer>(Constants.CHECK_AGREE));
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
     }
 

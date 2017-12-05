@@ -47,6 +47,6 @@
             android:background="@color/color_000000"
             android:gravity="center"
             android:text="结算"
-            android:textColor="@color/color_ffffff" />
+            style="@style/TextThirdly" />
     </LinearLayout>
 </RelativeLayout>

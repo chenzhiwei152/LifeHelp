@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -12,7 +13,8 @@
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/title_view">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -21,10 +23,33 @@
 
             <include layout="@layout/kanner_goods_detail" />
 
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/tabHeight"
+                android:layout_weight="0"
+                android:background="@color/color_ffffff"
+                app:tabGravity="fill"
+                app:tabIndicatorColor="@color/color_f6c01c"
+                app:tabMode="fixed"
+                app:tabSelectedTextColor="@android:color/transparent" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/color_eeeeee" />
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/sf_listview"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:visibility="gone">
 
             </android.support.v7.widget.RecyclerView>
 
@@ -32,4 +57,38 @@
 
     </android.support.v4.widget.NestedScrollView>
 
-</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="4"
+            android:background="@color/color_f6c01c"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_stars" />
+
+            <TextView
+                style="@style/TextFourth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="定金：￥100" />
+        </LinearLayout>
+
+        <TextView
+            style="@style/TextThirdly"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/color_000000"
+            android:gravity="center"
+            android:text="立即预约" />
+    </LinearLayout>
+</RelativeLayout>

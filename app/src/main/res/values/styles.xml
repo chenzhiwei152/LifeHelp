@@ -160,12 +160,12 @@
     </style>
     <!-- 三级文字 #999  12sp-->
     <style name="TextThirdly">
-        <item name="android:textColor">#999999</item>
-        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
     <style name="TextFourth">
-        <item name="android:textColor">#999999</item>
+        <item name="android:textColor">#000000</item>
         <item name="android:textSize">14sp</item>
     </style>
 
