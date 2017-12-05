@@ -14,6 +14,7 @@ import com.bozhengjianshe.shenghuobang.base.BaseActivity;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
 import com.bozhengjianshe.shenghuobang.ui.fragment.IndexFragment;
 import com.bozhengjianshe.shenghuobang.ui.fragment.MyFragment;
+import com.bozhengjianshe.shenghuobang.ui.fragment.ShoppingCartFragment;
 import com.bozhengjianshe.shenghuobang.view.NoScrollViewPager;
 
 import java.util.Timer;
@@ -33,9 +34,9 @@ public class MainActivity extends BaseActivity {
      * 是否退出
      **/
     private boolean isWaitingExit = false;
-    Class[] fragments = {IndexFragment.class, MyFragment.class};
-    private int[] tabNames = {R.string.main_tab_name_index, R.string.main_tab_name_me};
-    private int[] tabIcons = {R.drawable.selector_main_tab_index, R.drawable.selector_main_tab_mine};
+    Class[] fragments = {IndexFragment.class, ShoppingCartFragment.class, MyFragment.class};
+    private int[] tabNames = {R.string.main_tab_name_index,R.string.main_tab_name_shopping_cart, R.string.main_tab_name_me};
+    private int[] tabIcons = {R.drawable.selector_main_tab_index,R.drawable.selector_main_tab_index, R.drawable.selector_main_tab_mine};
 //    private List<BaseFragment> fragmentList;
     @Override
     public int getContentViewLayoutId() {

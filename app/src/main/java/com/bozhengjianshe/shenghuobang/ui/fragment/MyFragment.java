@@ -230,6 +230,6 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
      * 初始化标题
      */
     private void initTitle() {
-        title_view.setTitle("生活帮");
+        title_view.setTitle(R.string.app_name);
     }
 }

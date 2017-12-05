@@ -6,6 +6,7 @@
 
 
     <dimen name="dp_0">0dp</dimen>
+    <dimen name="dp_0.5">0.5dp</dimen>
     <dimen name="dp_0.7">0.7dp</dimen>
     <dimen name="dp_14.5">14.5dp</dimen>
     <dimen name="dp_1">1dp</dimen>
