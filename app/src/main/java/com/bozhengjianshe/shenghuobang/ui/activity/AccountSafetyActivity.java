@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bozhengjianshe.shenghuobang.R;
 import com.bozhengjianshe.shenghuobang.api.JyCallBack;
@@ -165,13 +164,8 @@ public class AccountSafetyActivity extends BaseActivity {
 
     private void commitData() {
         Map<String, String> map = new HashMap<>();
-        String phoneNumber = BaseContext.getInstance().getUserInfo().phone;
-        if (TextUtils.isEmpty(phoneNumber)) {
-            phoneNumber = user_phone.getText().toString();
-        }
-        map.put("checkCode", et_check_code.getText().toString());
         map.put("newPwd", user_password.getText().toString());
-        map.put("phone", phoneNumber);
+        map.put("oldPwd", user_phone.getText().toString());
         map.put("userId", BaseContext.getInstance().getUserInfo().userId);
         call = RestAdapterManager.getApi().accountSafety(map);
         call.enqueue(new JyCallBack<ErrorBean>() {
@@ -206,27 +200,27 @@ public class AccountSafetyActivity extends BaseActivity {
     }
 
     private boolean checkData() {
-        String phoneNumber = BaseContext.getInstance().getUserInfo().phone;
-        if (TextUtils.isEmpty(phoneNumber)) {
-            phoneNumber = user_phone.getText().toString();
-        }
+//        String phoneNumber = BaseContext.getInstance().getUserInfo().phone;
+//        if (TextUtils.isEmpty(phoneNumber)) {
+//            phoneNumber = user_phone.getText().toString();
+//        }
 
-        if (TextUtils.isEmpty(phoneNumber)) {
-            UIUtil.showToast("手机号不能为空");
+        if (TextUtils.isEmpty(user_phone.getText())) {
+            UIUtil.showToast("当前密码不能为空");
             return false;
         }
-        if (phoneNumber.trim().length() != 11) {
-            Toast.makeText(this, "请输入11位账号", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        if (!TelephoneUtils.isMobile(phoneNumber)) {
-            UIUtil.showToast("手机号格式错误");
-            return false;
-        }
-        if (TextUtils.isEmpty(et_check_code.getText())) {
-            UIUtil.showToast("验证码不能为空");
-            return false;
-        }
+//        if (phoneNumber.trim().length() != 11) {
+//            Toast.makeText(this, "请输入11位账号", Toast.LENGTH_SHORT).show();
+//            return false;
+//        }
+//        if (!TelephoneUtils.isMobile(phoneNumber)) {
+//            UIUtil.showToast("手机号格式错误");
+//            return false;
+//        }
+//        if (TextUtils.isEmpty(et_check_code.getText())) {
+//            UIUtil.showToast("验证码不能为空");
+//            return false;
+//        }
         if (TextUtils.isEmpty(user_password.getText())) {
             UIUtil.showToast("新密码不能为空");
             return false;
@@ -246,18 +240,23 @@ public class AccountSafetyActivity extends BaseActivity {
      * 初始化标题
      */
     private void initTitle() {
-        title_view.setTitle("账户安全");
+        title_view.setTitle("修改密码");
         title_view.setTitleColor(Color.WHITE);
         title_view.setLeftImageResource(R.mipmap.ic_title_back);
-        title_view.setLeftText("返回");
-        title_view.setLeftTextColor(Color.WHITE);
         title_view.setLeftClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
-        title_view.setBackgroundColor(getResources().getColor(R.color.color_ff6900));
+        title_view.addAction(new TitleBar.TextAction("确定") {
+            @Override
+            public void performAction(View view) {
+                if (checkData()) {
+                    commitData();
+                }
+            }
+        });
         title_view.setImmersive(true);
     }
 

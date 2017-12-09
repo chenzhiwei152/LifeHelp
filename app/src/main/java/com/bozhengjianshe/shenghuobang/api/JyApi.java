@@ -3,6 +3,8 @@ package com.bozhengjianshe.shenghuobang.api;
 
 import com.bozhengjianshe.shenghuobang.bean.ErrorBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.BuyOrderListItemBean;
+import com.bozhengjianshe.shenghuobang.ui.bean.CardListItemBean;
+import com.bozhengjianshe.shenghuobang.ui.bean.GoodsDetailBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.GoodsFilterBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.GoodsListBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.MemberRankBean;
@@ -186,14 +188,37 @@ public interface JyApi {
     Call<String> upLoadInfo(@Body Map<String, String> map);
 
     /**
+     * 修改姓名
+     *
+     * @param map
+     * @return
+     */
+    @POST("/api/user/updateUserName")
+    Call<SuperBean<String>> updateName(@Body Map<String, String> map);
+
+    /**
      * 获取商品详细信息
      *
      * @param id
-     * @param userId
+     * @param type
      * @return
      */
-    @GET("/api/goods/appGetDetail")
-    Call<SuperBean<GoodsListBean>> getGoodsDetail(@Query("id") String id, @Query("userId") String userId);
+    @GET("/api/data/appGetProductDetailById")
+    Call<SuperBean<GoodsDetailBean>> getGoodsDetail(@Query("id") String id, @Query("type") String type);
+
+    /*** 添加到购物车
+     *
+     * @return
+     */
+    @POST("/api/cart/addCart")
+    Call<SuperBean<String>> addTocard(@Body Map<String, String> map);
+
+    /*** 获取购物车列表
+     *
+     * @return
+     */
+    @GET("/api/cart/getCartList")
+    Call<SuperBean<List<CardListItemBean>>> getCardList(@Query("userId") String userId);
 
     /**
      * 提交购买订单

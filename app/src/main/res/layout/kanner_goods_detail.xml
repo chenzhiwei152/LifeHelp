@@ -13,11 +13,27 @@
         android:orientation="vertical"
         android:padding="10dp">
 
-        <TextView
-            android:id="@+id/tv_goods_name"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="" />
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_goods_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/tv_goods_price"
+                android:text="" />
+
+            <TextView
+                android:id="@+id/tv_goods_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:textColor="@color/color_f6c01c"
+                android:text="" />
+
+        </RelativeLayout>
+
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -30,7 +46,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:text=""
-                android:textColor="@color/color_D9C83C" />
+                android:textColor="@color/color_D9C83C"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/tv_price"
@@ -38,17 +55,16 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@+id/tv_price_title"
-                android:text="/日" />
+                android:text="/日"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/tv_member_price_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="15dp"
                 android:layout_toRightOf="@+id/tv_price"
-                android:text="会员价：" />
+                android:text="月售：" />
 
             <TextView
                 android:id="@+id/tv_member_price"
@@ -69,7 +85,8 @@
                 android:background="@drawable/bg_ffa726"
                 android:text="立即租赁"
                 android:textColor="@color/color_ffffff"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:visibility="gone" />
         </RelativeLayout>
 
         <Button
@@ -81,20 +98,23 @@
             android:gravity="center"
             android:text="切换至购买"
             android:textColor="@color/color_ffffff"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:visibility="gone" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="产品详情"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/tv_goods_detail_describe"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text=""
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:visibility="gone" />
     </LinearLayout>
 </LinearLayout>

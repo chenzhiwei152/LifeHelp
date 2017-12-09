@@ -5,14 +5,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bozhengjianshe.shenghuobang.R;
-import com.bozhengjianshe.shenghuobang.ui.bean.ShoppingAddressListItemBean;
+import com.bozhengjianshe.shenghuobang.ui.bean.CardListItemBean;
 import com.bozhengjianshe.shenghuobang.ui.listerner.ShoppingAddressItemOnClickListerner;
+import com.bozhengjianshe.shenghuobang.utils.ImageLoadedrManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
@@ -20,7 +25,7 @@ import butterknife.ButterKnife;
  * Created by chenzhiwei 2016/6/14.
  */
 public class ShoppingCardListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private static List<ShoppingAddressListItemBean> list;
+    private static List<CardListItemBean> list;
     private static Context context;
     private String type;
     private ShoppingAddressItemOnClickListerner onClickListerner;
@@ -61,14 +66,14 @@ public class ShoppingCardListAdapter extends RecyclerView.Adapter<RecyclerView.V
         mLayoutInflater = LayoutInflater.from(context);
     }
 
-    public ShoppingCardListAdapter(Context context, List<ShoppingAddressListItemBean> items) {
+    public ShoppingCardListAdapter(Context context, List<CardListItemBean> items) {
         this.context = context;
         this.list = new ArrayList<>();
         this.list.addAll(items);
         mLayoutInflater = LayoutInflater.from(context);
     }
 
-    public void addList(List<ShoppingAddressListItemBean> items) {
+    public void addList(List<CardListItemBean> items) {
         this.list.addAll(items);
         notifyDataSetChanged();
     }
@@ -78,7 +83,7 @@ public class ShoppingCardListAdapter extends RecyclerView.Adapter<RecyclerView.V
         notifyDataSetChanged();
     }
 
-    public static List<ShoppingAddressListItemBean> getEntities() {
+    public static List<CardListItemBean> getEntities() {
         return list;
     }
 
@@ -92,67 +97,31 @@ public class ShoppingCardListAdapter extends RecyclerView.Adapter<RecyclerView.V
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final int position) {
         if (list != null) {
 
-//            ((ImageViewHolder) viewHolder).tv_address_name.setText(list.get(position).getName());
-//            ((ImageViewHolder) viewHolder).tv_address_phone.setText(list.get(position).getPhone());
-//            ((ImageViewHolder) viewHolder).tv_address_detail.setText(list.get(position).getDetail());
-//            ((ImageViewHolder) viewHolder).tv_address_edit.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    //编辑
-//                    Intent intent = new Intent(context, ShoppingAddressEditActivity.class);
-//                    Bundle bundle = new Bundle();
-//                    bundle.putString("flag", "1");
-//                    bundle.putString("phone", list.get(position).getPhone());
-//                    bundle.putString("name", list.get(position).getName());
-//                    bundle.putString("detail", list.get(position).getDetail());
-//                    bundle.putString("id", list.get(position).getId() + "");
-//                    intent.putExtras(bundle);
-//                    context.startActivity(intent);
-//                }
-//            });
-//            ((ImageViewHolder) viewHolder).tv_address_delete.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    //删除
-////                    if (onDeleteListerner != null) {
-////                        onDeleteListerner.onDeleteListerner();
-////                    }
-//                    if (onClickListerner != null)
-//                        onClickListerner.onDeleteListerner(list.get(position));
-//                }
-//            });
-//            if (!TextUtils.isEmpty(type) && type.equals("getAddress")) {
-//                ((ImageViewHolder) viewHolder).ll_address.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        if (onClickListerner != null)
-//                            onClickListerner.onClick(list.get(position));
-//                    }
-//                });
-//            }
+            ((ImageViewHolder) viewHolder).tv_number.setText(list.get(position).getProductCount()+"");
+            ((ImageViewHolder) viewHolder).tv_price.setText(list.get(position).getProductPrice()+"");
+            ((ImageViewHolder) viewHolder).tv_goods_name.setText(list.get(position).getProductName());
+            ImageLoadedrManager.getInstance().display(context, list.get(position).getProductImg(), ((ImageViewHolder) viewHolder).iv_pic);
         }
     }
 
     @Override
     public int getItemCount() {
-        return list == null ? 10 : 10;
+        return list == null ? 0 : list.size();
     }
 
 
     public static class ImageViewHolder extends RecyclerView.ViewHolder {
 
-//        @BindView(R.id.tv_address_name)
-//        TextView tv_address_name;
-//        @BindView(R.id.tv_address_phone)
-//        TextView tv_address_phone;
-//        @BindView(R.id.tv_address_detail)
-//        TextView tv_address_detail;
-//        @BindView(R.id.ll_address)
-//        LinearLayout ll_address;
-//        @BindView(R.id.tv_address_edit)
-//        TextView tv_address_edit;
-//        @BindView(R.id.tv_address_delete)
-//        TextView tv_address_delete;
+        @BindView(R.id.tv_number)
+        TextView tv_number;
+        @BindView(R.id.tv_price)
+        TextView tv_price;
+        @BindView(R.id.tv_goods_name)
+        TextView tv_goods_name;
+        @BindView(R.id.rb_check)
+        CheckBox rb_check;
+        @BindView(R.id.iv_pic)
+        ImageView iv_pic;
 
         ImageViewHolder(final View view) {
             super(view);

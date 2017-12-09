@@ -26,19 +26,19 @@ import butterknife.ButterKnife;
 /**
  * Created by chenzhiwei 2016/6/14.
  */
-public class MainListItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class MainListItemAdapter1 extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static List<GoodsListBean.DataBean.RecServiceBean> list;
     private static Context context;
     private boolean isLight;
     private final LayoutInflater mLayoutInflater;
 
-    public MainListItemAdapter(Context context) {
+    public MainListItemAdapter1(Context context) {
         this.context = context;
         this.list = new ArrayList<>();
         mLayoutInflater = LayoutInflater.from(context);
     }
 
-    public MainListItemAdapter(Context context, List<GoodsListBean.DataBean.RecServiceBean> items) {
+    public MainListItemAdapter1(Context context, List<GoodsListBean.DataBean.RecServiceBean> items) {
         this.context = context;
         this.list = new ArrayList<>();
         this.list.addAll(items);

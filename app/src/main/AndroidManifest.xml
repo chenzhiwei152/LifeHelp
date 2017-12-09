@@ -162,7 +162,7 @@
             android:name=".ui.activity.FindPasswordActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.EditActivity"
+            android:name=".ui.activity.EditNameActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.RegisterActivity"

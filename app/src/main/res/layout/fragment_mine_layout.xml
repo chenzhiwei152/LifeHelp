@@ -149,7 +149,7 @@
                     android:drawablePadding="5dp"
                     android:drawableTop="@mipmap/ic_my_abount"
                     android:gravity="center"
-                    android:text="订单"
+                    android:text="我的订单"
                     android:textColor="@color/color_6e6e6e"
                     android:textSize="12sp" />
 
@@ -165,16 +165,17 @@
                     android:textSize="12sp" />
 
                 <TextView
+                    android:id="@+id/tv_info"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:drawablePadding="5dp"
                     android:drawableTop="@mipmap/ic_my_abount"
                     android:gravity="center"
-                    android:text="我的订单"
+                    android:text="个人信息"
                     android:textColor="@color/color_6e6e6e"
                     android:textSize="12sp" />
-
+个人信息
                 <TextView
                     android:id="@+id/tv_about"
                     android:layout_width="0dp"
@@ -226,7 +227,7 @@
                 android:background="@color/color_eeeeee" />
 
             <RelativeLayout
-                android:id="@+id/rl_safety"
+                android:id="@+id/rl_help"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/color_ffffff"
@@ -264,7 +265,7 @@
                 android:background="@color/color_eeeeee" />
 
             <RelativeLayout
-                android:id="@+id/rl_location"
+                android:id="@+id/rl_safety"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/color_ffffff"

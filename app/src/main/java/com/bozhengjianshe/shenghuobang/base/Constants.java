@@ -22,6 +22,7 @@ public class Constants {
     public static final int LOGIN_SUCCESS = 0x41;//登录失败
     public static final int CHANGE_PASSWORD_SUCCESS = 0x23;//修改密码成功
     public static final int PAY_MEMBER_SUCCESS = 0x24;//修改密码成功
+    public static final int UPDA_GOODS_DETAIL_H5 = 0x25;//更新详情页h5
 
 
 }

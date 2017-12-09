@@ -1,14 +1,11 @@
 package com.bozhengjianshe.shenghuobang.ui.activity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -18,6 +15,8 @@ import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
 import com.bozhengjianshe.shenghuobang.R;
+import com.bozhengjianshe.shenghuobang.api.JyCallBack;
+import com.bozhengjianshe.shenghuobang.api.RestAdapterManager;
 import com.bozhengjianshe.shenghuobang.base.BaseActivity;
 import com.bozhengjianshe.shenghuobang.base.BaseContext;
 import com.bozhengjianshe.shenghuobang.base.BaseFragment;
@@ -25,27 +24,34 @@ import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
 import com.bozhengjianshe.shenghuobang.ui.adapter.GoodsDetailItemAdapter;
 import com.bozhengjianshe.shenghuobang.ui.adapter.IndexFragmentPagerAdapter;
-import com.bozhengjianshe.shenghuobang.ui.bean.GoodsListBean;
+import com.bozhengjianshe.shenghuobang.ui.bean.GoodsDetailBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.SuperBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.bannerBean;
 import com.bozhengjianshe.shenghuobang.ui.fragment.GoodsDetailLeftFragment;
 import com.bozhengjianshe.shenghuobang.ui.fragment.GoodsDetailRightFragment;
 import com.bozhengjianshe.shenghuobang.utils.DialogUtils;
+import com.bozhengjianshe.shenghuobang.utils.ErrorMessageUtils;
 import com.bozhengjianshe.shenghuobang.utils.ImageLoadedrManager;
 import com.bozhengjianshe.shenghuobang.utils.UIUtil;
 import com.bozhengjianshe.shenghuobang.view.TitleBar;
 
+import org.greenrobot.eventbus.EventBus;
+
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import retrofit2.Call;
+import retrofit2.Response;
 
 /**
  * Created by chen.zhiwei on 2017-6-21.
  */
 
-public class GoodsDetailsActivity extends BaseActivity {
+public class GoodsDetailsActivity extends BaseActivity implements View.OnClickListener {
 
     @BindView(R.id.sf_listview)
     RecyclerView sf_listview;
@@ -53,18 +59,22 @@ public class GoodsDetailsActivity extends BaseActivity {
     TitleBar title_view;
     @BindView(R.id.tv_goods_detail_describe)
     TextView tv_goods_detail_describe;
+    @BindView(R.id.tv_goods_price)
+    TextView tv_goods_price;
+    @BindView(R.id.iv_add_card)
+    ImageView iv_add_card;
     private ConvenientBanner kanner;
     List<bannerBean> list = new ArrayList<>();
     private GoodsDetailItemAdapter listAdapter;
     private Button bt_buy;
     private Button bt_exchange_state;
-    private GoodsListBean goodsBean;
+    private GoodsDetailBean goodsBean;
     private TextView tv_goods_name;
     private TextView tv_price_title;
     private TextView tv_member_price;
     private TextView tv_member_price_title;
     private TextView tv_price;
-    private Call<SuperBean<GoodsListBean>> call;
+    private Call<SuperBean<GoodsDetailBean>> call;
     private boolean isNewData = true;
     private IndexFragmentPagerAdapter adapter;
 
@@ -75,6 +85,11 @@ public class GoodsDetailsActivity extends BaseActivity {
 
     @BindView(R.id.tabLayout)
     TabLayout mTabLayout;
+
+    private String type;
+    private String id;
+
+
     @Override
     public int getContentViewLayoutId() {
         return R.layout.activity_goods_details;
@@ -92,9 +107,10 @@ public class GoodsDetailsActivity extends BaseActivity {
         tv_member_price = (TextView) findViewById(R.id.tv_member_price);
         tv_member_price_title = (TextView) findViewById(R.id.tv_member_price_title);
         tv_price = (TextView) findViewById(R.id.tv_price);
+        iv_add_card.setOnClickListener(this);
 
-
-        goodsBean = (GoodsListBean) getIntent().getExtras().getSerializable("detail");
+        type = getIntent().getStringExtra("type");
+        id = getIntent().getStringExtra("id");
 
 //        sf_listview.setSwipeEnable(true);//open swipe
         sf_listview.setLayoutManager(new LinearLayoutManager(this));
@@ -103,10 +119,6 @@ public class GoodsDetailsActivity extends BaseActivity {
         listAdapter = new GoodsDetailItemAdapter(this);
 
         sf_listview.setAdapter(listAdapter);
-
-
-
-
         List<BaseFragment> fragmentList = new ArrayList<>();
         fragmentList.add(new GoodsDetailLeftFragment());
         fragmentList.add(new GoodsDetailRightFragment());
@@ -145,7 +157,7 @@ public class GoodsDetailsActivity extends BaseActivity {
 
     @Override
     public void loadData() {
-        setData();
+        getGoodsDetail();
     }
 
     @Override
@@ -169,61 +181,61 @@ public class GoodsDetailsActivity extends BaseActivity {
     }
 
     private void getGoodsDetail() {
-        if (goodsBean == null) {
-            return;
-        }
         DialogUtils.showDialog(this, "加载中", false);
-//        if (BaseContext.getInstance().getUserInfo() != null) {
-//            call = RestAdapterManager.getApi().getGoodsDetail(goodsBean.getId() + "", BaseContext.getInstance().getUserInfo().userId);
-//        } else {
-//            call = RestAdapterManager.getApi().getGoodsDetail(goodsBean.getId() + "", "");
-//        }
-//        call.enqueue(new JyCallBack<SuperBean<GoodsListBean>>() {
-//            @Override
-//            public void onSuccess(Call<SuperBean<GoodsListBean>> call, Response<SuperBean<GoodsListBean>> response) {
-//                DialogUtils.closeDialog();
-//                if (response != null && response.body() != null && response.body().getCode() == Constants.successCode) {
-//                    goodsBean = response.body().getData();
-//                    setData();
-//                    isNewData = true;
-//                } else {
-//                    try {
-//                        UIUtil.showToast(response.body().getMsg());
-//                    } catch (Exception e) {
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onError(Call<SuperBean<GoodsListBean>> call, Throwable t) {
-//                DialogUtils.closeDialog();
-//            }
-//
-//            @Override
-//            public void onError(Call<SuperBean<GoodsListBean>> call, Response<SuperBean<GoodsListBean>> response) {
-//                DialogUtils.closeDialog();
-//            }
-//        });
+        call = RestAdapterManager.getApi().getGoodsDetail(id, type);
+        call.enqueue(new JyCallBack<SuperBean<GoodsDetailBean>>() {
+            @Override
+            public void onSuccess(Call<SuperBean<GoodsDetailBean>> call, Response<SuperBean<GoodsDetailBean>> response) {
+                DialogUtils.closeDialog();
+                if (response != null && response.body() != null && response.body().getCode() == Constants.successCode) {
+                    goodsBean = response.body().getData();
+                    setData();
+                    isNewData = true;
+
+                } else {
+                    try {
+                        UIUtil.showToast(response.body().getMsg());
+                    } catch (Exception e) {
+                    }
+                }
+            }
+
+            @Override
+            public void onError(Call<SuperBean<GoodsDetailBean>> call, Throwable t) {
+                DialogUtils.closeDialog();
+            }
+
+            @Override
+            public void onError(Call<SuperBean<GoodsDetailBean>> call, Response<SuperBean<GoodsDetailBean>> response) {
+                DialogUtils.closeDialog();
+                try {
+                    ErrorMessageUtils.taostErrorMessage(GoodsDetailsActivity.this, response.errorBody().string());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     private void setData() {
-//        if (goodsBean != null) {
-//            if (goodsBean.getBinners() != null) {
-//                //广告位
-//                for (int i = 0; i < goodsBean.getBinners().size(); i++) {
-//                    bannerBean bannerBean = new bannerBean();
-//                    bannerBean.setImage(goodsBean.getBinners().get(i));
-//                    list.add(bannerBean);
-//                }
-//                //初始化广告栏
-//                initAD(list);
-//            }
-//            //大图
+        EventBus.getDefault().post(new EventBusCenter<>(Constants.UPDA_GOODS_DETAIL_H5, goodsBean.getDetailUrl()));
+        if (goodsBean != null) {
+            if (goodsBean.getImages() != null) {
+                //广告位
+                for (int i = 0; i < goodsBean.getImages().size(); i++) {
+                    bannerBean bannerBean = new bannerBean();
+                    bannerBean.setImage(goodsBean.getImages().get(i));
+                    list.add(bannerBean);
+                }
+                //初始化广告栏
+                initAD(list);
+            }
+            //大图
 //            if (goodsBean.getDetails() != null) {
 //                listAdapter.addList(goodsBean.getDetails());
 //            }
-//
-//        }
+
+        }
     }
 
     /**
@@ -244,6 +256,43 @@ public class GoodsDetailsActivity extends BaseActivity {
         title_view.setImmersive(true);
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.iv_add_card:
+                addToCard();
+                break;
+        }
+    }
+
+    private void addToCard() {
+        Map map = new HashMap();
+        map.put("productCount", "1");
+        map.put("productId", goodsBean.getId());
+        map.put("productType", type);
+        map.put("userId", BaseContext.getInstance().getUserInfo().userId);
+        Call<SuperBean<String>> addTocard = RestAdapterManager.getApi().addTocard(map);
+        addTocard.enqueue(new JyCallBack<SuperBean<String>>() {
+            @Override
+            public void onSuccess(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
+                UIUtil.showToast(response.body().getMsg());
+            }
+
+            @Override
+            public void onError(Call<SuperBean<String>> call, Throwable t) {
+
+            }
+
+            @Override
+            public void onError(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
+                try {
+                    ErrorMessageUtils.taostErrorMessage(GoodsDetailsActivity.this,response.errorBody().string());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
     /**
      * 广告栏定义图片地址
@@ -266,55 +315,7 @@ public class GoodsDetailsActivity extends BaseActivity {
 
     private void initAD(final List<bannerBean> list) {
 
-
         setPriceValue();
-        bt_exchange_state.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (bt_buy.getText().equals("立即租赁")) {
-                    bt_exchange_state.setText("切换至租赁");
-                    bt_buy.setText("立即购买");
-                    setPriceValue();
-                } else {
-                    bt_exchange_state.setText("切换至购买");
-                    bt_buy.setText("立即租赁");
-                    setPriceValue();
-                }
-            }
-        });
-
-        bt_buy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (BaseContext.getInstance().getUserInfo() == null) {
-                    startActivity(new Intent(GoodsDetailsActivity.this, LoginActivity.class));
-                } else {
-                    if (!isNewData) {
-                        getGoodsDetail();
-                        return;
-                    }
-                    if (checkbuyOrRentValiable()) {
-                        Intent intent = new Intent(GoodsDetailsActivity.this, CommitOrderActivity.class);
-                        Bundle bundle = new Bundle();
-
-                        if (bt_buy.getText().equals("立即租赁")) {
-//                        if (goodsBean.getVipprice() > 0) {
-                            bundle.putString("type", "rent");
-//                        }
-                        } else {
-//                        if (goodsBean.getPrice() > 0) {
-                            bundle.putString("type", "sale");
-//                        }
-                        }
-                        bundle.putSerializable("detail", goodsBean);
-                        intent.putExtras(bundle);
-                        startActivity(intent);
-                    }
-
-
-                }
-            }
-        });
 
 
 //自定义你的Holder，实现更多复杂的界面，不一定是图片翻页，其他任何控件翻页亦可。
@@ -335,23 +336,9 @@ public class GoodsDetailsActivity extends BaseActivity {
 
     }
 
-    private boolean checkbuyOrRentValiable() {
-        if (bt_buy.getText().equals("立即租赁")) {
-            if (TextUtils.isEmpty(BaseContext.getInstance().getUserInfo().phone) || TextUtils.isEmpty(BaseContext.getInstance().getUserInfo().ID)) {
-                UIUtil.showToast("请先绑定手机号码并实名制");
-                return true;
-            }
-        } else {
-            if (TextUtils.isEmpty(BaseContext.getInstance().getUserInfo().phone)) {
-                UIUtil.showToast("请先绑定手机号码");
-                return false;
-            }
-        }
-        return true;
-    }
 
     private void setPriceValue() {
-//        tv_goods_name.setText(goodsBean.getName());//标题
+        tv_goods_name.setText(goodsBean.getName());//标题
 //        tv_goods_detail_describe.setText(goodsBean.getGoodsdetail());
 //        if (bt_buy.getText().equals("立即租赁")) {
 //            if (goodsBean.getPrice() > 0) {
@@ -366,13 +353,14 @@ public class GoodsDetailsActivity extends BaseActivity {
 //                tv_price_title.setText("");
 //                tv_price.setVisibility(View.GONE);
 //            }
-//            if (goodsBean.getVipprice() > 0) {
-//                tv_member_price.setText("￥" + goodsBean.getVipprice() / 100.00);
-//                tv_member_price_title.setVisibility(View.VISIBLE);
-//            } else {
-//                tv_member_price.setText("");
-//                tv_member_price_title.setVisibility(View.GONE);
-//            }
+        if (goodsBean.getPrice() > 0) {
+            tv_member_price.setText("111" + "件");
+            tv_member_price_title.setVisibility(View.VISIBLE);
+        } else {
+            tv_member_price.setText("");
+            tv_member_price_title.setVisibility(View.GONE);
+        }
+        tv_goods_price.setText(goodsBean.getPrice() + "");
 //        } else {
 //            if (goodsBean.getPurchase() > 0) {
 //                tv_price_title.setText("￥" + goodsBean.getPurchase() / 100.00);

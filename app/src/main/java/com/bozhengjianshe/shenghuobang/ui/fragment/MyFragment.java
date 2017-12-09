@@ -19,7 +19,6 @@ import com.bozhengjianshe.shenghuobang.ui.activity.LoginActivity;
 import com.bozhengjianshe.shenghuobang.ui.activity.MyMemberRankActivity;
 import com.bozhengjianshe.shenghuobang.ui.activity.OrderListActivity;
 import com.bozhengjianshe.shenghuobang.ui.activity.PersonInformationActivity;
-import com.bozhengjianshe.shenghuobang.ui.activity.ShoppingAddressActivity;
 import com.bozhengjianshe.shenghuobang.utils.DialogUtils;
 import com.bozhengjianshe.shenghuobang.utils.ImageLoadedrManager;
 import com.bozhengjianshe.shenghuobang.view.TitleBar;
@@ -47,8 +46,8 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
     RelativeLayout rlSafety;
     @BindView(R.id.iv_location)
     ImageView ivLocation;
-    @BindView(R.id.rl_location)
-    RelativeLayout rlLocation;
+//    @BindView(R.id.rl_location)
+//    RelativeLayout rlLocation;
     @BindView(R.id.iv_mumber)
     ImageView ivMumber;
     @BindView(R.id.rl_member)
@@ -69,6 +68,8 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
     TextView tv_user_name;
     @BindView(R.id.rb_rank)
     RatingBar rb_rank;
+    @BindView(R.id.tv_info)
+    TextView tv_info;
 
     @Override
     protected int getContentViewLayoutId() {
@@ -79,12 +80,13 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
     protected void initViewsAndEvents() {
         tv_order.setOnClickListener(this);
         rlSafety.setOnClickListener(this);
-        rlLocation.setOnClickListener(this);
+//        rlLocation.setOnClickListener(this);
         rlMember.setOnClickListener(this);
         rlRealName.setOnClickListener(this);
         tv_about.setOnClickListener(this);
         tv_setting.setOnClickListener(this);
         rl_quit_login.setOnClickListener(this);
+        tv_info.setOnClickListener(this);
         initTitle();
     }
 
@@ -158,15 +160,15 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
                 }
                 startActivity(new Intent(getActivity(), AccountSafetyActivity.class));
                 break;
-            case R.id.rl_location:
-                //收货地址
-                if (BaseContext.getInstance().getUserInfo() == null) {
-                    startActivity(new Intent(getActivity(), LoginActivity.class));
-                    return;
-                }
-                startActivity(new Intent(getActivity(), ShoppingAddressActivity.class));
-
-                break;
+//            case R.id.rl_location:
+//                //收货地址
+//                if (BaseContext.getInstance().getUserInfo() == null) {
+//                    startActivity(new Intent(getActivity(), LoginActivity.class));
+//                    return;
+//                }
+//                startActivity(new Intent(getActivity(), ShoppingAddressActivity.class));
+//
+//                break;
             case R.id.rl_member:
                 //会员
                 if (BaseContext.getInstance().getUserInfo() == null) {
@@ -187,7 +189,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
                 //关于
                 startActivity(new Intent(getActivity(), AboutActivity.class));
                 break;
-            case R.id.tv_setting:
+            case R.id.tv_info:
                 //设置
                 if (BaseContext.getInstance().getUserInfo() == null) {
                     startActivity(new Intent(getActivity(), LoginActivity.class));

@@ -29,7 +29,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/iv_store"
             android:layout_centerHorizontal="true"
-            android:text="玩具购" />
+            android:text="玩具购"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/tv_version"
@@ -39,7 +40,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
             android:text="版本号V1.0"
-            android:textColor="@color/color_0880BD" />
+            android:textColor="@color/color_6e6e6e" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -47,8 +48,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_below="@+id/rl_base"
-        android:layout_marginBottom="20dp"
-        android:gravity="bottom">
+        android:layout_margin="20dp"
+        android:gravity="top">
 
         <TextView
             android:id="@+id/tv_mail"
@@ -56,39 +57,8 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
-            android:text="联系邮箱:xxxx@163.com"
-            android:textColor="@color/color_0880BD" />
-
-        <TextView
-            android:id="@+id/tv_phone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_mail"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            android:text="联系电话:18888888888"
-            android:textColor="@color/color_0880BD" />
-
-
-        <TextView
-            android:id="@+id/tv_tel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_phone"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            android:text="联系电话:328837476"
-            android:textColor="@color/color_0880BD" />
-
-        <TextView
-            android:id="@+id/tv_company"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_tel"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            android:text="北京XX有限公司"
-            android:textColor="@color/color_0880BD" />
+            android:text="说明：生活帮是一个可通过线上下单预约家政或者装修服务的平台，有意见扫面上方二维码添加客服微信反馈。\n网址：http://www.shb-bzjs.com\n负责说明：请下单前仔细阅读各项声明以及工艺流程"
+            android:textColor="@color/color_6e6e6e" />
 
 
     </RelativeLayout>

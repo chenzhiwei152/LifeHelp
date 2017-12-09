@@ -21,8 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/tv_phone_title"
-            android:background="@drawable/bg_bbb_4"
-            android:hint="@string/plz_input_phone"
+            android:hint="请输入当前密码"
             android:paddingLeft="10dp"
             android:textColor="@color/color_999999"
             android:textColorHint="@color/color_cccccc"
@@ -37,7 +36,8 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="12dp"
             android:layout_marginRight="9dp"
-            android:text="手机号    " />
+            android:text="手机号    "
+            android:visibility="gone" />
     </RelativeLayout>
 
     <LinearLayout
@@ -46,7 +46,7 @@
         android:layout_height="60dp"
         android:orientation="vertical"
         android:padding="10dp"
-        android:visibility="visible">
+        android:visibility="gone">
 
 
         <RelativeLayout
@@ -113,7 +113,6 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/tv_password_title"
-            android:background="@drawable/bg_bbb_4"
             android:hint="@string/password_hint"
             android:paddingLeft="10dp"
             android:textColor="@color/color_999999"
@@ -129,7 +128,8 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="12dp"
             android:layout_marginRight="9dp"
-            android:text="新密码    " />
+            android:text="新密码    "
+            android:visibility="gone" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -143,8 +143,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/tv_new_password_title"
-            android:background="@drawable/bg_bbb_4"
-            android:hint="@string/password_hint"
+            android:hint="请确认密码"
             android:paddingLeft="10dp"
             android:textColor="@color/color_999999"
             android:textColorHint="@color/color_cccccc"
@@ -159,10 +158,12 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="12dp"
             android:layout_marginRight="9dp"
-            android:text="确认密码" />
+            android:text="确认密码"
+            android:visibility="gone" />
     </RelativeLayout>
 
     <RelativeLayout
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp">

@@ -27,8 +27,7 @@ import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
 import com.bozhengjianshe.shenghuobang.ui.activity.AboutActivity;
 import com.bozhengjianshe.shenghuobang.ui.activity.GoodsDetailsActivity;
-import com.bozhengjianshe.shenghuobang.ui.adapter.MainListItemAdapter;
-import com.bozhengjianshe.shenghuobang.ui.adapter.MainListItemAdapter1;
+import com.bozhengjianshe.shenghuobang.ui.adapter.BuildingListItemAdapter;
 import com.bozhengjianshe.shenghuobang.ui.adapter.MainMenusAdapter;
 import com.bozhengjianshe.shenghuobang.ui.bean.GoodsListBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.MainMenuInfo;
@@ -53,11 +52,9 @@ import retrofit2.Response;
  * Created by chen.zhiwei on 2017-6-19.
  */
 
-public class IndexFragment extends BaseFragment {
+public class BuildingMaterialsFragment extends BaseFragment {
     @BindView(R.id.sf_listview)
     RecyclerView sf_listview;
-    @BindView(R.id.sf_recomment_listview)
-    RecyclerView sf_recomment_listview;
     @BindView(R.id.convenientBanner)
     ConvenientBanner kanner;
     @BindView(R.id.swiperefreshlayout)
@@ -76,8 +73,7 @@ public class IndexFragment extends BaseFragment {
     AutoGridView gv_menu;
     List<bannerBean> list = new ArrayList<>();
     List<GoodsListBean> adList = new ArrayList<>();
-    private MainListItemAdapter listAdapter;
-    private MainListItemAdapter1 listAdapter1;
+    private BuildingListItemAdapter listAdapter;
 
     private Call<GoodsListBean> goodsListCall;
     private ArrayList<MainMenuInfo> menus = new ArrayList<>();
@@ -92,7 +88,7 @@ public class IndexFragment extends BaseFragment {
 
     @Override
     protected int getContentViewLayoutId() {
-        return R.layout.fragment_index_layout;
+        return R.layout.fragment_building_layout;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -103,8 +99,6 @@ public class IndexFragment extends BaseFragment {
 
         sf_listview.setLayoutManager(new GridLayoutManager(getActivity(),2));
         sf_listview.setNestedScrollingEnabled(false);
-        sf_recomment_listview.setLayoutManager(new GridLayoutManager(getActivity(),2));
-        sf_recomment_listview.setNestedScrollingEnabled(false);
         swiperefreshlayout.setEnableHeaderTranslationContent(false);
         swiperefreshlayout.setEnableLoadmore(false);
         swiperefreshlayout.setOnRefreshListener(new OnRefreshListener() {
@@ -119,10 +113,8 @@ public class IndexFragment extends BaseFragment {
 //                getList();
 //            }
 //        });
-        listAdapter = new MainListItemAdapter(getActivity());
-        listAdapter1 = new MainListItemAdapter1(getActivity());
+        listAdapter = new BuildingListItemAdapter(getActivity());
         sf_listview.setAdapter(listAdapter);
-        sf_recomment_listview.setAdapter(listAdapter1);
         bt_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -194,21 +186,21 @@ public class IndexFragment extends BaseFragment {
     private void initMenus() {
         //
         Bundle bundle1 = new Bundle();
-        MainMenuInfo Home1 = new MainMenuInfo("便捷生活", R.mipmap.ic_home_1, AboutActivity.class, bundle1);
+        MainMenuInfo Home1 = new MainMenuInfo("居家常备", R.mipmap.ic_home_1, AboutActivity.class, bundle1);
         menus.add(Home1);
-        MainMenuInfo Home2 = new MainMenuInfo("生活维修", R.mipmap.ic_home_2, AboutActivity.class, bundle1);
+        MainMenuInfo Home2 = new MainMenuInfo("五金挂件", R.mipmap.ic_home_2, AboutActivity.class, bundle1);
         menus.add(Home2);
-        MainMenuInfo Home3 = new MainMenuInfo("家政月嫂", R.mipmap.ic_home_3, AboutActivity.class, bundle1);
+        MainMenuInfo Home3 = new MainMenuInfo("家居家纺", R.mipmap.ic_home_3, AboutActivity.class, bundle1);
         menus.add(Home3);
-        MainMenuInfo Home4 = new MainMenuInfo("家庭改造", R.mipmap.ic_home_4, AboutActivity.class, bundle1);
+        MainMenuInfo Home4 = new MainMenuInfo("装修装饰", R.mipmap.ic_home_4, AboutActivity.class, bundle1);
         menus.add(Home4);
-        MainMenuInfo Home5 = new MainMenuInfo("搬家搬运", R.mipmap.ic_home_5, AboutActivity.class, bundle1);
+        MainMenuInfo Home5 = new MainMenuInfo("厨房卫浴", R.mipmap.ic_home_5, AboutActivity.class, bundle1);
         menus.add(Home5);
-        MainMenuInfo Home6 = new MainMenuInfo("居家安装", R.mipmap.ic_home_6, AboutActivity.class, bundle1);
+        MainMenuInfo Home6 = new MainMenuInfo("灯饰照明", R.mipmap.ic_home_6, AboutActivity.class, bundle1);
         menus.add(Home6);
-        MainMenuInfo Home7 = new MainMenuInfo("居家装饰", R.mipmap.ic_home_7, AboutActivity.class, bundle1);
+        MainMenuInfo Home7 = new MainMenuInfo("灯饰照明", R.mipmap.ic_home_7, AboutActivity.class, bundle1);
         menus.add(Home7);
-        MainMenuInfo Home8 = new MainMenuInfo("保洁清洗", R.mipmap.ic_home_8, AboutActivity.class, bundle1);
+        MainMenuInfo Home8 = new MainMenuInfo("绿植花卉", R.mipmap.ic_home_8, AboutActivity.class, bundle1);
         menus.add(Home8);
 
 
@@ -219,20 +211,18 @@ public class IndexFragment extends BaseFragment {
 
     private void getList() {
         Map<String, String> map = new HashMap<>();
-        goodsListCall = RestAdapterManager.getApi().getGoodsList("1");
+        goodsListCall = RestAdapterManager.getApi().getGoodsList("2");
         goodsListCall.enqueue(new JyCallBack<GoodsListBean>() {
             @Override
             public void onSuccess(Call<GoodsListBean> call, Response<GoodsListBean> response) {
                 swiperefreshlayout.finishRefresh();
                 swiperefreshlayout.finishLoadmore();
                 if (response != null && response.body() != null && response.body().code == Constants.successCode) {
-                    if (response.body().getData().getRecService().size() > 0) {
+                    if (response.body().getData().getRecGoods().size() > 0) {
                         ll_empty.setVisibility(View.GONE);
                         sf_listview.setVisibility(View.VISIBLE);
                         listAdapter.ClearData();
-                        listAdapter.addList(response.body().getData().getNewDiscount());
-                        listAdapter1.ClearData();
-                        listAdapter1.addList(response.body().getData().getRecService());
+                        listAdapter.addList(response.body().getData().getRecGoods());
                         pageNum++;
                     } else {
                         if (!TextUtils.isEmpty(keyWord)) {
@@ -245,7 +235,6 @@ public class IndexFragment extends BaseFragment {
                             ll_empty.setVisibility(View.GONE);
                             sf_listview.setVisibility(View.VISIBLE);
                             listAdapter.ClearData();
-                            listAdapter1.ClearData();
 //                            if (pageNum == 1) {
 //                                //无数据
 //                                listAdapter.ClearData();

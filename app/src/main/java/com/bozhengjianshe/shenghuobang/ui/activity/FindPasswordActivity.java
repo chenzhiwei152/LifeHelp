@@ -1,6 +1,5 @@
 package com.bozhengjianshe.shenghuobang.ui.activity;
 
-import android.graphics.Color;
 import android.os.CountDownTimer;
 import android.text.InputFilter;
 import android.text.TextUtils;
@@ -86,8 +85,12 @@ public class FindPasswordActivity extends BaseActivity {
     private void initTitle() {
 
         titleView.setTitle("忘记密码");
-        titleView.setTitleColor(Color.WHITE);
-        titleView.setBackgroundColor(getResources().getColor(R.color.color_ff6900));
+        titleView.addAction(new TitleBar.TextAction("确定") {
+            @Override
+            public void performAction(View view) {
+                onNextClick(view);
+            }
+        });
         titleView.setImmersive(true);
     }
 

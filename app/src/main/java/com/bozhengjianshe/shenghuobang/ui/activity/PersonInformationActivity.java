@@ -2,12 +2,10 @@ package com.bozhengjianshe.shenghuobang.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bozhengjianshe.shenghuobang.R;
@@ -26,7 +24,6 @@ import com.bozhengjianshe.shenghuobang.utils.UIUtil;
 import com.bozhengjianshe.shenghuobang.utils.UploadFile;
 import com.bozhengjianshe.shenghuobang.utils.photoTool.PhotoPicActivity;
 import com.bozhengjianshe.shenghuobang.utils.photoTool.TakingPicturesActivity;
-import com.bozhengjianshe.shenghuobang.utils.timepicker.TimePickerView;
 import com.bozhengjianshe.shenghuobang.view.CircularImageView;
 import com.bozhengjianshe.shenghuobang.view.MyDialog;
 import com.bozhengjianshe.shenghuobang.view.TitleBar;
@@ -54,15 +51,20 @@ public class PersonInformationActivity extends BaseActivity implements View.OnCl
     @BindView(R.id.title_view)
     TitleBar title_view;
     @BindView(R.id.tv_sick_name)
-    EditText tv_sick_name;
+    TextView tv_sick_name;
+    @BindView(R.id.rl_name)
+    RelativeLayout rl_name;
     @BindView(R.id.tv_sex)
     TextView tv_sex;
     @BindView(R.id.tv_birthday)
     TextView tv_birthday;
+    @BindView(R.id.tv_address)
+    TextView tv_address;
     @BindView(R.id.bt_commit)
     Button bt_commit;
     @BindView(R.id.iv_head)
     CircularImageView iv_head;
+
     private Call<String> upLoadImageCall;
     private Call<String> upLoadInfoCall;
     private String headimg;
@@ -85,25 +87,27 @@ public class PersonInformationActivity extends BaseActivity implements View.OnCl
         initTitle();
         bt_commit.setOnClickListener(this);
         tv_sick_name.setOnClickListener(this);
+        rl_name.setOnClickListener(this);
         tv_sex.setOnClickListener(this);
         tv_birthday.setOnClickListener(this);
         iv_head.setOnClickListener(this);
-        tv_sick_name.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                nickname = tv_sick_name.getText().toString();
-            }
-        });
+        tv_address.setOnClickListener(this);
+//        tv_sick_name.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable editable) {
+//                nickname = tv_sick_name.getText().toString();
+//            }
+//        });
     }
 
     @Override
@@ -111,9 +115,9 @@ public class PersonInformationActivity extends BaseActivity implements View.OnCl
         if (BaseContext.getInstance().getUserInfo() != null) {
 
             tv_sick_name.setText(BaseContext.getInstance().getUserInfo().nickname);
-            if (!TextUtils.isEmpty(BaseContext.getInstance().getUserInfo().sex)) {
-                tv_sex.setText(BaseContext.getInstance().getUserInfo().sex.equals("1") ? "男" : "女");
-            }
+//            if (!TextUtils.isEmpty(BaseContext.getInstance().getUserInfo().sex)) {
+//                tv_sex.setText(BaseContext.getInstance().getUserInfo().sex.equals("1") ? "男" : "女");
+//            }
             tv_birthday.setText(UIUtil.timeStamp2Date(BaseContext.getInstance().getUserInfo().birthday));
             ImageLoadedrManager.getInstance().displayNoFilter(this, BaseContext.getInstance().getUserInfo().headimg, iv_head);
         }
@@ -295,24 +299,21 @@ public class PersonInformationActivity extends BaseActivity implements View.OnCl
                 }
                 break;
             case R.id.tv_sex:
-//性别
-                sexDialog();
+//zhanghao密码
+                startActivity(new Intent(this, AccountSafetyActivity.class));
+                break;
+            case R.id.rl_name:
+//xingming
+                startActivity(new Intent(this, EditNameActivity.class));
                 break;
             case R.id.tv_birthday:
-                //出生年月日
-                DialogUtils.showTimePcikerDialog(this, new TimePickerView.OnTimeSelectListener() {
-
-                    @Override
-                    public void onTimeSelect(Date date) {
-                        if (date != null) {
-                            birthday = getTime(date);
-                            tv_birthday.setText(birthday);
-                        }
-                    }
-                });
+                startActivity(new Intent(this, FindPasswordActivity.class));
                 break;
             case R.id.iv_head:
                 photodialog();
+                break;
+            case R.id.tv_address:
+                startActivity(new Intent(this, ShoppingAddressActivity.class));
                 break;
         }
     }

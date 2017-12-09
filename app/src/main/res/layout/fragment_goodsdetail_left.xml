@@ -4,11 +4,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/sf_listview"
+    <com.bozhengjianshe.shenghuobang.view.NoScrollWebView
+        android:id="@+id/web_vv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone">
+        android:visibility="visible">
 
-    </android.support.v7.widget.RecyclerView>
+    </com.bozhengjianshe.shenghuobang.view.NoScrollWebView>
 </LinearLayout>
