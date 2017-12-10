@@ -218,8 +218,8 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void setData() {
-        EventBus.getDefault().post(new EventBusCenter<>(Constants.UPDA_GOODS_DETAIL_H5, goodsBean.getDetailUrl()));
         if (goodsBean != null) {
+            EventBus.getDefault().post(new EventBusCenter<>(Constants.UPDA_GOODS_DETAIL_H5, goodsBean.getDetailUrl()));
             if (goodsBean.getImages() != null) {
                 //广告位
                 for (int i = 0; i < goodsBean.getImages().size(); i++) {

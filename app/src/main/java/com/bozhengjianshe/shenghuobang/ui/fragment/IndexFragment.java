@@ -380,7 +380,8 @@ public class IndexFragment extends BaseFragment {
             public void onItemClick(int position) {
                 Intent intent = new Intent(getActivity(), GoodsDetailsActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("detail", adList.get(position));
+                bundle.putString("id", list.get(position).getId()+"");
+                bundle.putString("type", "2");
                 intent.putExtras(bundle);
                 startActivity(intent);
             }

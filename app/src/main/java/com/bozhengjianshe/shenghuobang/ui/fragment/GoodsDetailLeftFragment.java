@@ -1,15 +1,17 @@
 package com.bozhengjianshe.shenghuobang.ui.fragment;
 
 import android.view.View;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.LinearLayout;
 
 import com.bozhengjianshe.shenghuobang.R;
 import com.bozhengjianshe.shenghuobang.base.BaseFragment;
 import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
-import com.bozhengjianshe.shenghuobang.view.NoScrollWebView;
+import com.tobiasrohloff.view.NestedScrollWebView;
 
 import butterknife.BindView;
 
@@ -19,7 +21,7 @@ import butterknife.BindView;
 
 public class GoodsDetailLeftFragment extends BaseFragment {
     @BindView(R.id.web_vv)
-    NoScrollWebView web_vv;
+    NestedScrollWebView web_vv;
 
     @Override
     protected int getContentViewLayoutId() {
@@ -41,9 +43,30 @@ public class GoodsDetailLeftFragment extends BaseFragment {
                 return true;
             }
         });
+
+//        web_vv.setWebViewClient(new WebViewClient() {
+//            @Override
+//            public void onPageFinished(WebView view, String url) {
+//                web_vv.loadUrl("javascript:App.resize(document.body.getBoundingClientRect().height)");
+//                super.onPageFinished(view, url);
+//            }
+//        });
+//        web_vv.addJavascriptInterface(this, "App");
+
+
+
         web_vv.loadUrl("https://www.baidu.com");
     }
-
+    @JavascriptInterface
+    public void resize(final float height) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                //Toast.makeText(getActivity(), height + "", Toast.LENGTH_LONG).show();
+                web_vv.setLayoutParams(new LinearLayout.LayoutParams(getResources().getDisplayMetrics().widthPixels, (int) (height * getResources().getDisplayMetrics().density)));
+            }
+        });
+    }
     @Override
     protected void loadData() {
 

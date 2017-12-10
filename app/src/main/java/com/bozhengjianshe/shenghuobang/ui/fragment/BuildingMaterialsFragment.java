@@ -369,7 +369,8 @@ public class BuildingMaterialsFragment extends BaseFragment {
             public void onItemClick(int position) {
                 Intent intent = new Intent(getActivity(), GoodsDetailsActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("detail", adList.get(position));
+                bundle.putString("id", list.get(position).getId()+"");
+                bundle.putString("type", "1");
                 intent.putExtras(bundle);
                 startActivity(intent);
             }

@@ -2,13 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <com.bozhengjianshe.shenghuobang.view.NoScrollWebView
+    <com.tobiasrohloff.view.NestedScrollWebView
         android:id="@+id/web_vv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="visible">
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    </com.bozhengjianshe.shenghuobang.view.NoScrollWebView>
+    </com.tobiasrohloff.view.NestedScrollWebView>
 </LinearLayout>
