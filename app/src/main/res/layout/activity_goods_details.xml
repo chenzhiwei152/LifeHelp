@@ -11,7 +11,7 @@
         android:layout_height="wrap_content" />
 
 
-    <android.support.v4.widget.NestedScrollView
+    <com.bozhengjianshe.shenghuobang.view.MyObservableScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/title_view">
@@ -55,8 +55,69 @@
 
         </LinearLayout>
 
-    </android.support.v4.widget.NestedScrollView>
+    </com.bozhengjianshe.shenghuobang.view.MyObservableScrollView>
+    <LinearLayout
+        android:id="@+id/stickyView"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/color_ffffff"
+        android:orientation="horizontal">
 
+        <RelativeLayout
+            android:id="@+id/rl_left"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/tv_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:text="跟进"
+                 />
+
+            <View
+                android:id="@+id/line_left"
+                android:layout_width="match_parent"
+                android:layout_height="1sp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                 />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/color_d3d3d3" />
+
+        <RelativeLayout
+            android:id="@+id/rl_right"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/tv_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:text="订单" />
+
+            <View
+                android:id="@+id/line_right"
+                android:layout_width="match_parent"
+                android:layout_height="1sp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp" />
+        </RelativeLayout>
+    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"

@@ -11,7 +11,7 @@ import com.bozhengjianshe.shenghuobang.R;
 import com.bozhengjianshe.shenghuobang.base.BaseFragment;
 import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
-import com.tobiasrohloff.view.NestedScrollWebView;
+import com.bozhengjianshe.shenghuobang.view.NoScrollWebView;
 
 import butterknife.BindView;
 
@@ -21,7 +21,7 @@ import butterknife.BindView;
 
 public class GoodsDetailLeftFragment extends BaseFragment {
     @BindView(R.id.web_vv)
-    NestedScrollWebView web_vv;
+    NoScrollWebView web_vv;
 
     @Override
     protected int getContentViewLayoutId() {

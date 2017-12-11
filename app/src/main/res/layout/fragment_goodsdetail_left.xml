@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <com.tobiasrohloff.view.NestedScrollWebView
+    <com.bozhengjianshe.shenghuobang.view.NoScrollWebView
         android:id="@+id/web_vv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -13,5 +13,5 @@
         android:focusableInTouchMode="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    </com.tobiasrohloff.view.NestedScrollWebView>
+    </com.bozhengjianshe.shenghuobang.view.NoScrollWebView>
 </LinearLayout>

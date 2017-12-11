@@ -25,7 +25,7 @@ import com.bozhengjianshe.shenghuobang.api.RestAdapterManager;
 import com.bozhengjianshe.shenghuobang.base.BaseFragment;
 import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
-import com.bozhengjianshe.shenghuobang.ui.activity.AboutActivity;
+import com.bozhengjianshe.shenghuobang.ui.activity.AllBuildingActivity;
 import com.bozhengjianshe.shenghuobang.ui.activity.GoodsDetailsActivity;
 import com.bozhengjianshe.shenghuobang.ui.adapter.BuildingListItemAdapter;
 import com.bozhengjianshe.shenghuobang.ui.adapter.MainMenusAdapter;
@@ -185,23 +185,46 @@ public class BuildingMaterialsFragment extends BaseFragment {
      */
     private void initMenus() {
         //
+
+
+
         Bundle bundle1 = new Bundle();
-        MainMenuInfo Home1 = new MainMenuInfo("居家常备", R.mipmap.ic_home_1, AboutActivity.class, bundle1);
+        bundle1.putString(Constants.homeTypeTag,"1");
+        MainMenuInfo Home1 = new MainMenuInfo("居家常备", R.mipmap.ic_home_1, AllBuildingActivity.class, bundle1);
         menus.add(Home1);
-        MainMenuInfo Home2 = new MainMenuInfo("五金挂件", R.mipmap.ic_home_2, AboutActivity.class, bundle1);
+
+        Bundle bundle2 = new Bundle();
+        bundle2.putString(Constants.homeTypeTag,"5");
+        MainMenuInfo Home2 = new MainMenuInfo("五金挂件", R.mipmap.ic_home_2, AllBuildingActivity.class, bundle2);
         menus.add(Home2);
-        MainMenuInfo Home3 = new MainMenuInfo("家居家纺", R.mipmap.ic_home_3, AboutActivity.class, bundle1);
+
+        Bundle bundle3 = new Bundle();
+        bundle3.putString(Constants.homeTypeTag,"7");
+        MainMenuInfo Home3 = new MainMenuInfo("家居家纺", R.mipmap.ic_home_3, AllBuildingActivity.class, bundle3);
         menus.add(Home3);
-        MainMenuInfo Home4 = new MainMenuInfo("装修装饰", R.mipmap.ic_home_4, AboutActivity.class, bundle1);
+
+        Bundle bundle4 = new Bundle();
+        bundle4.putString(Constants.homeTypeTag,"3");
+        MainMenuInfo Home4 = new MainMenuInfo("装修装饰", R.mipmap.ic_home_4, AllBuildingActivity.class, bundle4);
         menus.add(Home4);
-        MainMenuInfo Home5 = new MainMenuInfo("厨房卫浴", R.mipmap.ic_home_5, AboutActivity.class, bundle1);
+        Bundle bundle5 = new Bundle();
+        bundle5.putString(Constants.homeTypeTag,"6");
+        MainMenuInfo Home5 = new MainMenuInfo("厨房卫浴", R.mipmap.ic_home_5, AllBuildingActivity.class, bundle5);
         menus.add(Home5);
-        MainMenuInfo Home6 = new MainMenuInfo("灯饰照明", R.mipmap.ic_home_6, AboutActivity.class, bundle1);
+
+        Bundle bundle6 = new Bundle();
+        bundle6.putString(Constants.homeTypeTag,"4");
+        MainMenuInfo Home6 = new MainMenuInfo("灯饰照明", R.mipmap.ic_home_6, AllBuildingActivity.class, bundle6);
         menus.add(Home6);
-        MainMenuInfo Home7 = new MainMenuInfo("灯饰照明", R.mipmap.ic_home_7, AboutActivity.class, bundle1);
+        Bundle bundle7 = new Bundle();
+        bundle7.putString(Constants.homeTypeTag,"2");
+        MainMenuInfo Home7 = new MainMenuInfo("水电材料", R.mipmap.ic_home_7, AllBuildingActivity.class, bundle7);
         menus.add(Home7);
-        MainMenuInfo Home8 = new MainMenuInfo("绿植花卉", R.mipmap.ic_home_8, AboutActivity.class, bundle1);
+        Bundle bundle8 = new Bundle();
+        bundle8.putString(Constants.homeTypeTag,"8");
+        MainMenuInfo Home8 = new MainMenuInfo("绿植花卉", R.mipmap.ic_home_8, AllBuildingActivity.class, bundle8);
         menus.add(Home8);
+
 
 
         menusAdapter = new MainMenusAdapter(getContext(), menus);

@@ -6,13 +6,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bozhengjianshe.shenghuobang.R;
+import com.bozhengjianshe.shenghuobang.base.Constants;
+import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
 import com.bozhengjianshe.shenghuobang.ui.bean.CardListItemBean;
-import com.bozhengjianshe.shenghuobang.ui.listerner.ShoppingAddressItemOnClickListerner;
+import com.bozhengjianshe.shenghuobang.ui.listerner.CommonOnClickListerner;
 import com.bozhengjianshe.shenghuobang.utils.ImageLoadedrManager;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,23 +33,41 @@ public class ShoppingCardListAdapter extends RecyclerView.Adapter<RecyclerView.V
     private static List<CardListItemBean> list;
     private static Context context;
     private String type;
-    private ShoppingAddressItemOnClickListerner onClickListerner;
+    private boolean isAllChecked;
+    private boolean isEditMode = false;
+    private CommonOnClickListerner onClickListerner;
+    private CommonOnClickListerner onDeleteListerner;
 
-//    public ShoppingAddressItemDeleteListerner getOnDeleteListerner() {
-//        return onDeleteListerner;
-//    }
-//
-//    public void setOnDeleteListerner(ShoppingAddressItemDeleteListerner onDeleteListerner) {
-//        this.onDeleteListerner = onDeleteListerner;
-//    }
-//
-//    private ShoppingAddressItemDeleteListerner onDeleteListerner;
+    public void setOnDeleteListerner(CommonOnClickListerner onDeleteListerner) {
+        this.onDeleteListerner = onDeleteListerner;
+    }
 
-    public ShoppingAddressItemOnClickListerner getOnClickListerner() {
+    public boolean isAllChecked() {
+        return isAllChecked;
+    }
+
+    public boolean isEditMode() {
+        return isEditMode;
+    }
+
+    public void setEditMode(boolean editMode) {
+        isEditMode = editMode;
+    }
+
+    public void removeItem(CardListItemBean bean) {
+        this.list.remove(bean);
+        notifyDataSetChanged();
+    }
+
+    public void setAllChecked(boolean allChecked) {
+        isAllChecked = allChecked;
+    }
+
+    public CommonOnClickListerner getOnClickListerner() {
         return onClickListerner;
     }
 
-    public void setOnClickListerner(ShoppingAddressItemOnClickListerner onClickListerner) {
+    public void setOnClickListerner(CommonOnClickListerner onClickListerner) {
         this.onClickListerner = onClickListerner;
     }
 
@@ -78,6 +101,10 @@ public class ShoppingCardListAdapter extends RecyclerView.Adapter<RecyclerView.V
         notifyDataSetChanged();
     }
 
+    public List<CardListItemBean> getList() {
+        return list;
+    }
+
     public void ClearData() {
         list.clear();
         notifyDataSetChanged();
@@ -97,9 +124,30 @@ public class ShoppingCardListAdapter extends RecyclerView.Adapter<RecyclerView.V
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final int position) {
         if (list != null) {
 
-            ((ImageViewHolder) viewHolder).tv_number.setText(list.get(position).getProductCount()+"");
-            ((ImageViewHolder) viewHolder).tv_price.setText(list.get(position).getProductPrice()+"");
+            ((ImageViewHolder) viewHolder).tv_number.setText(list.get(position).getProductCount() + "");
+            ((ImageViewHolder) viewHolder).tv_price.setText(list.get(position).getProductPrice() + "");
             ((ImageViewHolder) viewHolder).tv_goods_name.setText(list.get(position).getProductName());
+            if (isEditMode) {
+                ((ImageViewHolder) viewHolder).rb_check.setVisibility(View.GONE);
+                ((ImageViewHolder) viewHolder).iv_delete.setVisibility(View.VISIBLE);
+            } else {
+                ((ImageViewHolder) viewHolder).iv_delete.setVisibility(View.GONE);
+                ((ImageViewHolder) viewHolder).rb_check.setVisibility(View.VISIBLE);
+            }
+            ((ImageViewHolder) viewHolder).rb_check.setChecked(list.get(position).isChecked());
+            ((ImageViewHolder) viewHolder).rb_check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    list.get(position).setChecked(b);
+                    EventBus.getDefault().post(new EventBusCenter<Integer>(Constants.UPDA_CARD_GOODS_SELECTED));
+                }
+            });
+            ((ImageViewHolder) viewHolder).iv_delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
             ImageLoadedrManager.getInstance().display(context, list.get(position).getProductImg(), ((ImageViewHolder) viewHolder).iv_pic);
         }
     }
@@ -110,7 +158,7 @@ public class ShoppingCardListAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
 
-    public static class ImageViewHolder extends RecyclerView.ViewHolder {
+    public class ImageViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.tv_number)
         TextView tv_number;
@@ -122,6 +170,8 @@ public class ShoppingCardListAdapter extends RecyclerView.Adapter<RecyclerView.V
         CheckBox rb_check;
         @BindView(R.id.iv_pic)
         ImageView iv_pic;
+        @BindView(R.id.iv_delete)
+        ImageView iv_delete;
 
         ImageViewHolder(final View view) {
             super(view);

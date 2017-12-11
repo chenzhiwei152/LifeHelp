@@ -1,6 +1,5 @@
 package com.bozhengjianshe.shenghuobang.ui.activity;
 
-import android.graphics.Color;
 import android.os.CountDownTimer;
 import android.text.InputFilter;
 import android.text.TextUtils;
@@ -241,14 +240,7 @@ public class AccountSafetyActivity extends BaseActivity {
      */
     private void initTitle() {
         title_view.setTitle("修改密码");
-        title_view.setTitleColor(Color.WHITE);
-        title_view.setLeftImageResource(R.mipmap.ic_title_back);
-        title_view.setLeftClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        title_view.setShowDefaultRightValue();
         title_view.addAction(new TitleBar.TextAction("确定") {
             @Override
             public void performAction(View view) {
@@ -257,7 +249,6 @@ public class AccountSafetyActivity extends BaseActivity {
                 }
             }
         });
-        title_view.setImmersive(true);
     }
 
     @Override

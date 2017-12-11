@@ -10,6 +10,9 @@ public class Constants {
     public static final String APP_KEY = "c3c5a51f3a4c70827523f8";
     public static int ADD_REQUEST_CODE = 11;
     public static int successCode = 1000;
+    public static String typeService="2";
+    public static String typeGoods="1";
+    public static String homeTypeTag="homeTypeTag";
 
     public static class ErrorCode {
         public static String check_code = "400001039";//验证码错误
@@ -23,6 +26,7 @@ public class Constants {
     public static final int CHANGE_PASSWORD_SUCCESS = 0x23;//修改密码成功
     public static final int PAY_MEMBER_SUCCESS = 0x24;//修改密码成功
     public static final int UPDA_GOODS_DETAIL_H5 = 0x25;//更新详情页h5
+    public static final int UPDA_CARD_GOODS_SELECTED = 0x26;//更新购物车选中的商品
 
 
 }

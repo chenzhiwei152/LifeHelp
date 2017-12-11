@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bozhengjianshe.shenghuobang.R;
+import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.ui.activity.GoodsDetailsActivity;
 import com.bozhengjianshe.shenghuobang.ui.bean.GoodsListBean;
 import com.bozhengjianshe.shenghuobang.utils.ImageLoadedrManager;
@@ -85,8 +86,8 @@ public class MainListItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 public void onClick(View view) {
                     Intent intent = new Intent(context, GoodsDetailsActivity.class);
                     Bundle bundle = new Bundle();
-                    bundle.putString("id", list.get(position).getId()+"");
-                    bundle.putString("type", "2");
+                    bundle.putString("id", list.get(position).getId() + "");
+                    bundle.putString("type", Constants.typeService);
                     intent.putExtras(bundle);
                     context.startActivity(intent);
                 }
@@ -100,7 +101,7 @@ public class MainListItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
 
-    public static class ImageViewHolder extends RecyclerView.ViewHolder {
+    public class ImageViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.iv_image)
         ImageView iv_image;
         @BindView(R.id.tv_title)

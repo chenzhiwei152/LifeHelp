@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="10dp"
     android:background="@color/color_ffffff"
     android:orientation="vertical"
     android:padding="10dp">
@@ -10,8 +11,6 @@
         android:id="@+id/iv_image"
         android:layout_width="fill_parent"
         android:layout_height="150dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
         android:scaleType="centerCrop" />
 
 
@@ -19,6 +18,8 @@
         android:id="@+id/tv_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp_5"
+        android:layout_marginTop="@dimen/dp_5"
         android:textSize="16sp" />
 
     <LinearLayout

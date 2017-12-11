@@ -63,6 +63,8 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
     TextView tv_goods_price;
     @BindView(R.id.iv_add_card)
     ImageView iv_add_card;
+    @BindView(R.id.iv_add_star)
+    ImageView iv_add_star;
     private ConvenientBanner kanner;
     List<bannerBean> list = new ArrayList<>();
     private GoodsDetailItemAdapter listAdapter;
@@ -108,11 +110,11 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
         tv_member_price_title = (TextView) findViewById(R.id.tv_member_price_title);
         tv_price = (TextView) findViewById(R.id.tv_price);
         iv_add_card.setOnClickListener(this);
+        iv_add_star.setOnClickListener(this);
 
         type = getIntent().getStringExtra("type");
         id = getIntent().getStringExtra("id");
 
-//        sf_listview.setSwipeEnable(true);//open swipe
         sf_listview.setLayoutManager(new LinearLayoutManager(this));
         sf_listview.setNestedScrollingEnabled(false);
 
@@ -262,9 +264,15 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
             case R.id.iv_add_card:
                 addToCard();
                 break;
+            case R.id.iv_add_star:
+                addCollection();
+                break;
         }
     }
 
+    /**
+     * 添加到购物车
+     */
     private void addToCard() {
         Map map = new HashMap();
         map.put("productCount", "1");
@@ -286,10 +294,37 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
             @Override
             public void onError(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
                 try {
-                    ErrorMessageUtils.taostErrorMessage(GoodsDetailsActivity.this,response.errorBody().string());
+                    ErrorMessageUtils.taostErrorMessage(GoodsDetailsActivity.this, response.errorBody().string());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+            }
+        });
+    }
+
+    /**
+     * 添加到搜藏夹
+     */
+    private void addCollection() {
+        Map<String, String> map = new HashMap<>();
+        map.put("productId", goodsBean.getId() + "");
+        map.put("productType", type);
+        map.put("userId", BaseContext.getInstance().getUserInfo().userId);
+        Call<SuperBean<String>> addCollection = RestAdapterManager.getApi().addCollection(map);
+        addCollection.enqueue(new JyCallBack<SuperBean<String>>() {
+            @Override
+            public void onSuccess(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
+                UIUtil.showToast(response.body().getMsg());
+            }
+
+            @Override
+            public void onError(Call<SuperBean<String>> call, Throwable t) {
+
+            }
+
+            @Override
+            public void onError(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
+
             }
         });
     }

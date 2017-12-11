@@ -1,42 +1,28 @@
 package com.bozhengjianshe.shenghuobang.ui.bean;
 
-import java.io.Serializable;
-
 /**
- * Created by Administrator on 2017/12/9.
+ * Created by chen.zhiwei on 2017-12-11.
  */
 
-public class CardListItemBean implements Serializable{
-
+public class CollectionItemBean {
 
     /**
-     * id : 4
+     * id : 3
      * productId : 0
-     * productName : 测试服务1
-     * productPrice : 121
-     * productCount : 1
-     * productImg : http://47.92.24.138:8080/upload/goodsImg/20171209110834241.jpg
-     * productType : 2
+     * productName : 服务测试反反复复
+     * productPrice : 234
+     * productImg : http://47.92.24.138:8080/upload/goodsImg/20171211134148241.jpg
      * userId : 2
+     * productType : 2
      */
 
     private int id;
     private int productId;
     private String productName;
     private int productPrice;
-    private int productCount;
     private String productImg;
-    private int productType;
     private int userId;
-    private boolean checked;
-
-    public boolean isChecked() {
-        return checked;
-    }
-
-    public void setChecked(boolean checked) {
-        this.checked = checked;
-    }
+    private int productType;
 
     public int getId() {
         return id;
@@ -70,14 +56,6 @@ public class CardListItemBean implements Serializable{
         this.productPrice = productPrice;
     }
 
-    public int getProductCount() {
-        return productCount;
-    }
-
-    public void setProductCount(int productCount) {
-        this.productCount = productCount;
-    }
-
     public String getProductImg() {
         return productImg;
     }
@@ -86,19 +64,19 @@ public class CardListItemBean implements Serializable{
         this.productImg = productImg;
     }
 
-    public int getProductType() {
-        return productType;
-    }
-
-    public void setProductType(int productType) {
-        this.productType = productType;
-    }
-
     public int getUserId() {
         return userId;
     }
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public int getProductType() {
+        return productType;
+    }
+
+    public void setProductType(int productType) {
+        this.productType = productType;
     }
 }

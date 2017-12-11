@@ -30,7 +30,7 @@ public class TitleBar extends ViewGroup implements View.OnClickListener {
     private static final int DEFAULT_TITLE_BAR_HEIGHT = 48;
     private int DEFAULT_BACKGROUND_COLOR = R.color.color_f6c01c;
     private int DEFAULT_BACK_ICON = R.mipmap.ic_title_back;
-    private int DEFAULT_TEXT_COLOR = Color.WHITE;
+    private int DEFAULT_TEXT_COLOR = Color.BLACK;
     private static final String STATUS_BAR_HEIGHT_RES_NAME = "status_bar_height";
 
     private TextView mLeftText;
@@ -117,10 +117,16 @@ public class TitleBar extends ViewGroup implements View.OnClickListener {
      * 初始化默认值
      */
     private void initDefaultValue() {
-        setLeftImageResource(DEFAULT_BACK_ICON);
+
         setTitleColor(DEFAULT_TEXT_COLOR);
         setLeftTextColor(DEFAULT_TEXT_COLOR);
         setBackgroundColor(getResources().getColor(DEFAULT_BACKGROUND_COLOR));
+
+        setImmersive(true);
+    }
+
+    public void setShowDefaultRightValue() {
+        setLeftImageResource(DEFAULT_BACK_ICON);
         this.setLeftClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -129,7 +135,6 @@ public class TitleBar extends ViewGroup implements View.OnClickListener {
                 }
             }
         });
-        setImmersive(true);
     }
 
     public void setImmersive(boolean immersive) {

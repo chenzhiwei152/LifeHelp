@@ -159,6 +159,15 @@
 
         <!-- alipay sdk end -->
         <activity
+            android:name=".ui.activity.CollectionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.AllBuildingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.AllServiceActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.activity.FindPasswordActivity"
             android:screenOrientation="portrait" />
         <activity

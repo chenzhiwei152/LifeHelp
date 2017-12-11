@@ -2,8 +2,11 @@ package com.bozhengjianshe.shenghuobang.api;
 
 
 import com.bozhengjianshe.shenghuobang.bean.ErrorBean;
+import com.bozhengjianshe.shenghuobang.ui.bean.AllServiceContentBean;
+import com.bozhengjianshe.shenghuobang.ui.bean.AllServiceTypeBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.BuyOrderListItemBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.CardListItemBean;
+import com.bozhengjianshe.shenghuobang.ui.bean.CollectionItemBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.GoodsDetailBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.GoodsFilterBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.GoodsListBean;
@@ -24,6 +27,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 
@@ -219,6 +223,12 @@ public interface JyApi {
      */
     @GET("/api/cart/getCartList")
     Call<SuperBean<List<CardListItemBean>>> getCardList(@Query("userId") String userId);
+    /*** 删除购物车数据
+     *
+     * @return
+     */
+    @GET("/api/cart/deleteCart")
+    Call<SuperBean<String>> deleteCardList(@Query("id") String id);
 
     /**
      * 提交购买订单
@@ -294,4 +304,31 @@ public interface JyApi {
      */
     @POST("/api/zuorder/appGetAllList")
     Call<SuperBean<BuyOrderListItemBean>> getRentOrderList(@Body Map<String, String> map);
+
+    /**
+     * 获取所有服务分类
+     */
+    @GET("/api/productType/getProductClassify/{parentId}/{type}")
+    Call<SuperBean<List<AllServiceTypeBean>>> getAllServiceTypeList(@Path("parentId") String parentId, @Path("type") String type);
+
+    /**
+     * 服务类列表获取
+     */
+    @POST("/api/data/appGetProductList")
+    Call<SuperBean<AllServiceContentBean>> getAllServiceContentList(@Body Map<String, String> map);
+    /**
+     * 添加收藏
+     */
+    @POST("/api/collection/addCollection")
+    Call<SuperBean<String>> addCollection(@Body Map<String, String> map);
+    /**
+     * 获取收藏
+     */
+    @GET("/api/collection/getAllCollection")
+    Call<SuperBean<List<CollectionItemBean>>> getCollection(@Query("userId")String userId);
+    /**
+     * 删除收藏
+     */
+    @GET("/api/collection/deleteCollection")
+    Call<SuperBean<String>> deleteCollection(@Query("id")String id);
 }

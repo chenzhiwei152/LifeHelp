@@ -14,9 +14,9 @@ import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
 import com.bozhengjianshe.shenghuobang.ui.activity.AboutActivity;
 import com.bozhengjianshe.shenghuobang.ui.activity.AccountSafetyActivity;
+import com.bozhengjianshe.shenghuobang.ui.activity.CollectionActivity;
 import com.bozhengjianshe.shenghuobang.ui.activity.CommitRealNameActivity;
 import com.bozhengjianshe.shenghuobang.ui.activity.LoginActivity;
-import com.bozhengjianshe.shenghuobang.ui.activity.MyMemberRankActivity;
 import com.bozhengjianshe.shenghuobang.ui.activity.OrderListActivity;
 import com.bozhengjianshe.shenghuobang.ui.activity.PersonInformationActivity;
 import com.bozhengjianshe.shenghuobang.utils.DialogUtils;
@@ -70,6 +70,8 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
     RatingBar rb_rank;
     @BindView(R.id.tv_info)
     TextView tv_info;
+    @BindView(R.id.tv_collection)
+    TextView tv_collection;
 
     @Override
     protected int getContentViewLayoutId() {
@@ -87,6 +89,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
         tv_setting.setOnClickListener(this);
         rl_quit_login.setOnClickListener(this);
         tv_info.setOnClickListener(this);
+        tv_collection.setOnClickListener(this);
         initTitle();
     }
 
@@ -169,13 +172,13 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
 //                startActivity(new Intent(getActivity(), ShoppingAddressActivity.class));
 //
 //                break;
-            case R.id.rl_member:
-                //会员
+            case R.id.tv_collection:
+                //收藏
                 if (BaseContext.getInstance().getUserInfo() == null) {
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                     return;
                 }
-                startActivity(new Intent(getActivity(), MyMemberRankActivity.class));
+                startActivity(new Intent(getActivity(), CollectionActivity.class));
                 break;
             case R.id.rl_real_name:
                 //实名制
