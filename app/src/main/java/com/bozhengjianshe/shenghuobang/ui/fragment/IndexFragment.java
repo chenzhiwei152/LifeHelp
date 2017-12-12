@@ -310,47 +310,6 @@ public class IndexFragment extends BaseFragment {
         });
     }
 
-    //筛选
-//    private void setFilter() {
-//        types.clear();
-//        popupViews.clear();
-//        //益智类
-//        final MaxHeighListView sortView = new MaxHeighListView(getActivity());
-//        sortView.setDividerHeight(0);
-//        sortView.setMaxHeight(199);
-//        mMenuAdapter = new PoPuMenuListAdapter(getActivity(), typesList);
-//        sortView.setAdapter(mMenuAdapter);
-//        sortView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-//                dropDownMenu.setTabText(typesList.get(position).getTypename());
-//                dropDownMenu.closeMenu();
-//                goodstype = typesList.get(position).getId() + "";
-//                getList();
-//            }
-//        });
-//        types.add("全部");
-//        popupViews.add(sortView);
-//
-//
-//        final MaxHeighListView softView = new MaxHeighListView(getActivity());
-//        softView.setDividerHeight(0);
-//        softView.setMaxHeight(199);
-//        mMenuAdapter2 = new PoPuMenuListShopAdapter(getActivity(), shopsList);
-//        softView.setAdapter(mMenuAdapter2);
-//        softView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-//                dropDownMenu.setTabText(shopsList.get(position).getShopname());
-//                dropDownMenu.closeMenu();
-//                shop = shopsList.get(position).getId() + "";
-//                getList();
-//            }
-//        });
-//        types.add("全部");
-//        popupViews.add(softView);
-//        dropDownMenu.setDropDownMenu(types, popupViews);
-//    }
 
 
 
@@ -399,7 +358,7 @@ public class IndexFragment extends BaseFragment {
                 Intent intent = new Intent(getActivity(), GoodsDetailsActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("id", list.get(position).getId()+"");
-                bundle.putString("type", "2");
+                bundle.putString("type", Constants.typeService);
                 intent.putExtras(bundle);
                 startActivity(intent);
             }

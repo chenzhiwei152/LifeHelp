@@ -11,12 +11,12 @@ public class GoodsDetailBean implements Serializable{
 
 
     /**
-     * id : 5
-     * images : []
-     * name : 测试服务1
-     * price : 121
-     * img : http://47.92.24.138:8080/upload/goodsImg/20171209110834241.jpg
-     * detailUrl : http://47.92.24.138:8080/controller/service/getServiceDetailHtml?id=5
+     * id : 11
+     * images : [{"id":37,"url":"http://47.92.24.138:8080/upload/goodsImg/20171211134148241.jpg","productId":11,"productType":2},{"id":38,"url":"http://47.92.24.138:8080/upload/goodsImg/20171211134148366.jpg","productId":11,"productType":2},{"id":39,"url":"http://47.92.24.138:8080/upload/goodsImg/20171211134148429.jpg","productId":11,"productType":2}]
+     * name : 服务测试反反复复
+     * price : 234
+     * img : http://47.92.24.138:8080/upload/goodsImg/20171211134148241.jpg
+     * detailUrl : http://47.92.24.138:8080/controller/service/getServiceDetailHtml?id=11
      * type : 2
      */
 
@@ -26,7 +26,7 @@ public class GoodsDetailBean implements Serializable{
     private String img;
     private String detailUrl;
     private int type;
-    private List<String> images;
+    private List<ImagesBean> images;
 
     public int getId() {
         return id;
@@ -76,11 +76,57 @@ public class GoodsDetailBean implements Serializable{
         this.type = type;
     }
 
-    public List<String> getImages() {
+    public List<ImagesBean> getImages() {
         return images;
     }
 
-    public void setImages(List<String> images) {
+    public void setImages(List<ImagesBean> images) {
         this.images = images;
+    }
+
+    public static class ImagesBean {
+        /**
+         * id : 37
+         * url : http://47.92.24.138:8080/upload/goodsImg/20171211134148241.jpg
+         * productId : 11
+         * productType : 2
+         */
+
+        private int id;
+        private String url;
+        private int productId;
+        private int productType;
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public String getUrl() {
+            return url;
+        }
+
+        public void setUrl(String url) {
+            this.url = url;
+        }
+
+        public int getProductId() {
+            return productId;
+        }
+
+        public void setProductId(int productId) {
+            this.productId = productId;
+        }
+
+        public int getProductType() {
+            return productType;
+        }
+
+        public void setProductType(int productType) {
+            this.productType = productType;
+        }
     }
 }

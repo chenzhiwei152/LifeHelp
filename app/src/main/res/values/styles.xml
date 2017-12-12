@@ -59,6 +59,16 @@
         <item name="android:layout_centerVertical">true</item>
         <item name="android:background">@drawable/bg_bbb_4</item>
     </style>
+    <style name="clearEditText_primary">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:drawableRight">@mipmap/ic_edittext_clear</item>
+        <item name="android:paddingRight">15dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/color_999999</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:background">@drawable/bg_bbb_ffffff</item>
+    </style>
 
     <style name="Theme.AppStartLoadTranslucent" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowIsTranslucent">true</item>
@@ -125,6 +135,29 @@
         <attr name="pickerview_textColorCenter" format="color"/>
         <attr name="pickerview_dividerColor" format="color"/>
     </declare-styleable>
+    <!--  主要用于Dialog的蓝色按钮 -->
+    <style name="TextPrimary">
+        <item name="android:textColor">@color/color_333333</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+    <!-- 带删除按钮的文本输入框 -->
+    <style name="clear_editText_userName">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:textSize">@dimen/ts_32</item>
+        <item name="android:paddingRight">@dimen/dp_22</item>
+        <item name="android:drawableRight">@mipmap/emotionstore_progresscancelbtn</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:background">@null</item>
+    </style>
+    <!-- 密码输入框 -->
+    <style name="password_editText_userName" parent="clear_editText_userName">
+        <item name="android:digits">0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ
+        </item>
+        <item name="android:inputType">textPassword</item>
+        <item name="android:maxLength">20</item>
+        <item name="android:textColor">@color/color_333333</item>
+    </style>
     <!-- *****************  提示文字  ************************！-->
     <!--提示文字  普通-->
     <style name="TipsTextNormal">
@@ -207,5 +240,37 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/dp_10</item>
         <item name="android:background">@color/color_efefef</item>
+    </style>
+    <declare-styleable name="MenuItem">
+        <attr name="leftText" format="reference|string"/>
+        <attr name="leftTextColor" format="integer" />
+        <attr name="leftTextSize" format="dimension" />
+        <attr name="autoHeight" format="dimension" />
+        <attr name="leftTextDrawableImage" format="reference"/>
+        <attr name="rightText" format="reference|string" />
+        <attr name="rightTextColor" format="integer" />
+        <attr name="rightTextSize" format="integer" />
+        <attr name="rightHintText" format="reference|string" />
+        <attr name="rightImage" format="reference"/>
+        <attr name="enterImage" format="reference"/>
+
+    </declare-styleable>
+    <declare-styleable name="MenuItemEdittext">
+        <attr name="leftText1" format="reference|string"/>
+        <attr name="editText" format="reference|string"/>
+        <attr name="editTextHint" format="reference|string"/>
+        <attr name="editTextMaxLength" format="integer"/>
+    </declare-styleable>
+    <!-- 按钮  黄色-->
+    <style name="ButtonFirst" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/button_secondary_text_color</item>
+        <item name="android:background">@drawable/button_first_background</item>
+    </style>
+    <!-- 按钮  黄色 ，shape 5-->
+    <style name="ButtonSecondary" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/button_secondary_text_color</item>
+        <item name="android:background">@drawable/button_secondary_background</item>
     </style>
 </resources>

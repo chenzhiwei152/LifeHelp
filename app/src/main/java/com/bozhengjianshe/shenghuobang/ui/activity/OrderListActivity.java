@@ -1,6 +1,5 @@
 package com.bozhengjianshe.shenghuobang.ui.activity;
 
-import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.view.View;
@@ -10,7 +9,6 @@ import android.widget.TextView;
 import com.bozhengjianshe.shenghuobang.R;
 import com.bozhengjianshe.shenghuobang.base.BaseActivity;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
-import com.bozhengjianshe.shenghuobang.ui.fragment.BuyGoodsOrderListFragment;
 import com.bozhengjianshe.shenghuobang.ui.fragment.RentGoodsOrderListFragment;
 import com.bozhengjianshe.shenghuobang.view.ClickChangeViewPager;
 import com.bozhengjianshe.shenghuobang.view.TitleBar;
@@ -55,14 +53,14 @@ public class OrderListActivity extends BaseActivity implements View.OnClickListe
     @Override
     public void initViewsAndEvents() {
         initTitle();
-        rl_left.setOnClickListener(this);
-        rl_right.setOnClickListener(this);
+//        rl_left.setOnClickListener(this);
+//        rl_right.setOnClickListener(this);
         //出售fragment
         leftFragment = new RentGoodsOrderListFragment();
         //出租fragment
-        rightFragment = new BuyGoodsOrderListFragment();
+//        rightFragment = new BuyGoodsOrderListFragment();
         fragments.add(leftFragment);
-        fragments.add(rightFragment);
+//        fragments.add(rightFragment);
         customViewpager.setOffscreenPageLimit(2);
         FragmentStatePagerAdapter fAdapter = new FragmentStatePagerAdapter(getSupportFragmentManager()) {
             @Override
@@ -77,11 +75,11 @@ public class OrderListActivity extends BaseActivity implements View.OnClickListe
         };
         customViewpager.setAdapter(fAdapter);
         customViewpager.setCurrentItem(currentItem);
-        if (currentItem==0){
-            rl_left.performClick();
-        }else {
-            rl_right.performClick();
-        }
+//        if (currentItem==0){
+//            rl_left.performClick();
+//        }else {
+//            rl_right.performClick();
+//        }
     }
 
     @Override
@@ -107,22 +105,22 @@ public class OrderListActivity extends BaseActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.rl_left:
-                tv_left.setTextColor(getResources().getColor(R.color.color_ff6900));
-                line_left.setBackgroundColor(getResources().getColor(R.color.color_ff6900));
-
-                tv_right.setTextColor(getResources().getColor(R.color.color_333333));
-                line_right.setBackgroundColor(getResources().getColor(R.color.color_ffffffff));
-                customViewpager.setCurrentItem(0);
-                break;
-            case R.id.rl_right:
-                tv_left.setTextColor(getResources().getColor(R.color.color_333333));
-                line_left.setBackgroundColor(getResources().getColor(R.color.color_ffffffff));
-
-                tv_right.setTextColor(getResources().getColor(R.color.color_ff6900));
-                line_right.setBackgroundColor(getResources().getColor(R.color.color_ff6900));
-                customViewpager.setCurrentItem(1);
-                break;
+//            case R.id.rl_left:
+//                tv_left.setTextColor(getResources().getColor(R.color.color_ff6900));
+//                line_left.setBackgroundColor(getResources().getColor(R.color.color_ff6900));
+//
+//                tv_right.setTextColor(getResources().getColor(R.color.color_333333));
+//                line_right.setBackgroundColor(getResources().getColor(R.color.color_ffffffff));
+//                customViewpager.setCurrentItem(0);
+//                break;
+//            case R.id.rl_right:
+//                tv_left.setTextColor(getResources().getColor(R.color.color_333333));
+//                line_left.setBackgroundColor(getResources().getColor(R.color.color_ffffffff));
+//
+//                tv_right.setTextColor(getResources().getColor(R.color.color_ff6900));
+//                line_right.setBackgroundColor(getResources().getColor(R.color.color_ff6900));
+//                customViewpager.setCurrentItem(1);
+//                break;
         }
     }
     /**
@@ -130,19 +128,7 @@ public class OrderListActivity extends BaseActivity implements View.OnClickListe
      */
     private void initTitle() {
         title_view.setTitle("订单");
-        title_view.setTitleColor(Color.WHITE);
-        title_view.setLeftImageResource(R.mipmap.ic_title_back);
-        title_view.setLeftText("返回");
-        title_view.setLeftTextColor(Color.WHITE);
-        title_view.setLeftClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
-        title_view.setBackgroundColor(getResources().getColor(R.color.color_ff6900));
-        title_view.setImmersive(true);
-
+        title_view.setShowDefaultRightValue();
     }
 
 }

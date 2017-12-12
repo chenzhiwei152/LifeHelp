@@ -159,6 +159,9 @@
 
         <!-- alipay sdk end -->
         <activity
+            android:name=".ui.activity.CommitServiceOrderActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.activity.CollectionActivity"
             android:screenOrientation="portrait" />
         <activity

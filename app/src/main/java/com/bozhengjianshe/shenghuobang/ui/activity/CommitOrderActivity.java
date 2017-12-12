@@ -1,7 +1,6 @@
 package com.bozhengjianshe.shenghuobang.ui.activity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -9,7 +8,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,7 +27,7 @@ import com.bozhengjianshe.shenghuobang.utils.DialogUtils;
 import com.bozhengjianshe.shenghuobang.utils.LogUtils;
 import com.bozhengjianshe.shenghuobang.utils.NetUtil;
 import com.bozhengjianshe.shenghuobang.utils.UIUtil;
-import com.bozhengjianshe.shenghuobang.utils.timepicker.TimePickerView;
+import com.bozhengjianshe.shenghuobang.view.MenuItem;
 import com.bozhengjianshe.shenghuobang.view.MyDialog;
 import com.bozhengjianshe.shenghuobang.view.TitleBar;
 import com.jpay.JPay;
@@ -55,8 +53,6 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
 
     @BindView(R.id.title_view)
     TitleBar title_view;
-    //    private BuyGoodsFragment buyGoodsFragment;
-//    private RentGoodsFragment rentGoodsFragment;
     @BindView(R.id.tv_goods_num)
     TextView tvNum;
     @BindView(R.id.btn_des_goods_num)
@@ -71,49 +67,26 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
     TextView tv_price_all;
     @BindView(R.id.tv_price)
     TextView tv_price;
-    @BindView(R.id.ll_add_addresss)
-    LinearLayout ll_add_addresss;
-    @BindView(R.id.ll_address)
-    LinearLayout ll_address;
-    @BindView(R.id.tv_address_name)
-    TextView tv_address_name;
-    @BindView(R.id.tv_address_phone)
-    TextView tv_address_phone;
-    @BindView(R.id.tv_address_detail)
-    TextView tv_address_detail;
+    @BindView(R.id.mi_name)
+    MenuItem mi_name;
+    @BindView(R.id.mi_phone)
+    MenuItem mi_phone;
+    @BindView(R.id.mi_addresss)
+    MenuItem mi_addresss;
+
     @BindView(R.id.bt_commit)
     Button bt_commit;
     @BindView(R.id.rl_number)
     RelativeLayout rl_number;
-    @BindView(R.id.vv_v1)
-    View vv_v1;
-    @BindView(R.id.vv_v2)
-    View vv_v2;
-    @BindView(R.id.rl_rent_days)
-    RelativeLayout rl_rent_days;
-    @BindView(R.id.ll_end_time)
-    LinearLayout ll_end_time;
-    @BindView(R.id.ll_begin_time)
-    LinearLayout ll_begin_time;
     @BindView(R.id.tv_num_price)
     TextView tv_num_price;
     @BindView(R.id.tv_delivery_type)
     TextView tv_delivery_type;
     @BindView(R.id.rl_delivery_type)
     RelativeLayout rl_delivery_type;
-    @BindView(R.id.tv_begin_time)
-    TextView tv_begin_time;
-    @BindView(R.id.tv_end_time)
-    TextView tv_end_time;
-    @BindView(R.id.tv_during_days)
-    TextView tv_during_days;
-    @BindView(R.id.tv_end_week)
-    TextView tv_end_week;
-    @BindView(R.id.tv_begin_week)
-    TextView tv_begin_week;
 
 
-    private String tag;//rent,sale
+//    private String tag;//rent,sale
     private String id;
     private int price;
     private int count = 1;
@@ -144,34 +117,17 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             goodsBean = (GoodsListBean) bundle.getSerializable("detail");
-            tag = bundle.getString("type");
+//            tag = bundle.getString("type");
         }
-        if (tag.equals("rent")) {
-            rl_number.setVisibility(View.GONE);
-            vv_v1.setVisibility(View.GONE);
-            rl_rent_days.setVisibility(View.VISIBLE);
-            vv_v2.setVisibility(View.VISIBLE);
-            orderType = 1;
-            setDefaultTimeArea();
-            setRentPrice();
-        } else {
-            rl_number.setVisibility(View.VISIBLE);
-            vv_v1.setVisibility(View.VISIBLE);
-            rl_rent_days.setVisibility(View.GONE);
-            vv_v2.setVisibility(View.GONE);
-//            mxCount = goodsBean.getStock();
-            orderType = 0;
-            setDefaultTimeArea();
-            setSalePrice();
-        }
-        setDeliveryType();
-        ll_add_addresss.setOnClickListener(this);
-        ll_address.setOnClickListener(this);
-        bt_commit.setOnClickListener(this);
-        ll_begin_time.setOnClickListener(this);
-        ll_end_time.setOnClickListener(this);
-        rl_delivery_type.setOnClickListener(this);
 
+        setDeliveryType();
+        bt_commit.setOnClickListener(this);
+//        ll_begin_time.setOnClickListener(this);
+//        ll_end_time.setOnClickListener(this);
+        rl_delivery_type.setOnClickListener(this);
+        mi_name.setOnClickListener(this);
+        mi_phone.setOnClickListener(this);
+        mi_addresss.setOnClickListener(this);
 
         tvDes.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -292,15 +248,13 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
 
     private void setAddress(ShoppingAddressListItemBean bean) {
         if (bean != null && !TextUtils.isEmpty(bean.getName()) && !TextUtils.isEmpty(bean.getPhone()) && !TextUtils.isEmpty(bean.getDetail())) {
-            tv_address_name.setText(bean.getName());
-            tv_address_phone.setText(bean.getPhone());
-            tv_address_detail.setText(bean.getDetail());
-            ll_address.setVisibility(View.VISIBLE);
-            ll_add_addresss.setVisibility(View.GONE);
+            mi_name.getRightText().setText(bean.getName());
+            mi_phone.getRightText().setText(bean.getPhone());
+            mi_addresss.getRightText().setText(bean.getDetail());
         } else {
             //
-            ll_address.setVisibility(View.GONE);
-            ll_add_addresss.setVisibility(View.VISIBLE);
+//            ll_address.setVisibility(View.GONE);
+//            ll_add_addresss.setVisibility(View.VISIBLE);
             UIUtil.showToast("地址获取失败");
         }
     }
@@ -309,7 +263,7 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
         if (!TextUtils.isEmpty(orderId)) {
             Intent intent = new Intent(this, OrderDetailsActivity.class);
             intent.putExtra("orderId", orderId);
-            intent.putExtra("type", tag);
+//            intent.putExtra("type", tag);
             startActivity(intent);
             finish();
         } else {
@@ -323,20 +277,7 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
      */
     private void initTitle() {
         title_view.setTitle("提交订单");
-        title_view.setTitleColor(Color.WHITE);
-        title_view.setLeftImageResource(R.mipmap.ic_title_back);
-        title_view.setLeftText("返回");
-        title_view.setLeftTextColor(Color.WHITE);
-        title_view.setLeftClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
-        title_view.setBackgroundColor(getResources().getColor(R.color.color_ff6900));
-        title_view.setImmersive(true);
-
-
+        title_view.setShowDefaultRightValue();
     }
 
     /**
@@ -420,8 +361,8 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
         View view = View.inflate(CommitOrderActivity.this, R.layout.dialog_publish_photo, null);
         showdialog(view);
 
-        final TextView photo = (TextView) view.findViewById(R.id.photo);
-        final TextView picture = (TextView) view.findViewById(R.id.picture);
+        final TextView photo = view.findViewById(R.id.photo);
+        final TextView picture =  view.findViewById(R.id.picture);
         photo.setText("到店自取");
         picture.setText("快递配送");
         photo.setOnClickListener(new View.OnClickListener() {
@@ -471,110 +412,45 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.ll_add_addresss:
-            case R.id.ll_address:
-                Intent intent = new Intent(this, ShoppingAddressActivity.class);
-                intent.putExtra("type", "getAddress");
-                startActivityForResult(intent, ADD_REQUEST_CODE);
-                break;
             case R.id.bt_commit:
                 if (checkData())
                     if (!UIUtil.isFastDoubleClick()) {
-                        if (tag.equals("rent")) {
+//                        if (tag.equals("rent")) {
                             commitRentOrder();
-                        } else {
-                            commitOrder();
-                        }
+//                        } else {
+//                            commitOrder();
+//                        }
                     }
-                break;
-            case R.id.ll_end_time:
-                DialogUtils.showTimePcikerDialog(this, TimePickerView.Type.YEAR_MONTH_DAY_HOUS, new TimePickerView.OnTimeSelectListener() {
-                    @Override
-                    public void onTimeSelect(Date date) {
-                        endDate = date;
-//                        UIUtil.showToast(UIUtil.getTime(date));
-                        setTimeArea();
-                    }
-                });
-                break;
-            case R.id.ll_begin_time:
-                DialogUtils.showTimePcikerDialog(this, TimePickerView.Type.YEAR_MONTH_DAY_HOUS, new TimePickerView.OnTimeSelectListener() {
-                    @Override
-                    public void onTimeSelect(Date date) {
-                        beginDate = date;
-//                        UIUtil.showToast(UIUtil.getTime(date));
-                        setTimeArea();
-                    }
-                });
                 break;
             case R.id.rl_delivery_type:
                 //
                 sendDialog();
                 break;
+            case R.id.mi_name:
+            case R.id.mi_phone:
+            case R.id.mi_addresss:
+                //地址
+                Intent intent1 = new Intent(this, ShoppingAddressActivity.class);
+                intent1.putExtra("type", "getAddress");
+                startActivityForResult(intent1, ADD_REQUEST_CODE);
+                break;
 
         }
     }
 
-    private void setTimeArea() {
-        if (beginDate != null) {
-            tv_begin_time.setText(UIUtil.getTime(beginDate, "yyyy-MM-dd HH") + "时");
-            tv_begin_week.setText(UIUtil.getWeekOfDate(beginDate));
-        }
-        if (endDate != null) {
-            tv_end_time.setText(UIUtil.getTime(endDate, "yyyy-MM-dd HH") + "时");
-            tv_end_week.setText(UIUtil.getWeekOfDate(endDate));
-        }
 
-        if (beginDate != null && endDate != null) {
-            if (UIUtil.twoDateDistance(beginDate, endDate) < 0) {
-                //
-                beginDate = endDate;
-                tv_begin_time.setText(UIUtil.getTime(beginDate, "yyyy-MM-dd HH") + "时");
-                tv_begin_week.setText(UIUtil.getWeekOfDate(beginDate));
-                UIUtil.showToast("请选择正确的时间");
-            }
-            days = (int) (UIUtil.twoDateDistance(beginDate, endDate));
-            hour = (int) UIUtil.twoDateHourDistance(beginDate, endDate);
-            UIUtil.showToast(hour + "个小时");
-            if (tag.endsWith("rent")) {
-                setRentPrice();
-            } else {
-                setSalePrice();
-            }
-            tv_during_days.setText((UIUtil.twoDateDistance(beginDate, endDate)) + "天");
-        }
-    }
-
-    private void setDefaultTimeArea() {
-        if (beginDate == null) {
-//            beginDate=new Date(Long.valueOf(UIUtil.getTime(new Date(),"yyyy-MM-dd HH")));
-            beginDate= UIUtil.strToDate(UIUtil.getTime(new Date(),"yyyy-MM-dd HH"));
-        }
-        if (endDate == null) {
-            endDate = UIUtil.strToDate(UIUtil.getTime(new Date(),"yyyy-MM-dd HH"));
-        }
-        tv_begin_time.setText(UIUtil.getTime(beginDate, "yyyy-MM-dd HH") + "时");
-        tv_begin_week.setText(UIUtil.getWeekOfDate(beginDate));
-        tv_end_time.setText(UIUtil.getTime(endDate, "yyyy-MM-dd HH") + "时");
-        tv_end_week.setText(UIUtil.getWeekOfDate(endDate));
-        if (beginDate != null && endDate != null) {
-            tv_during_days.setText((UIUtil.twoDateDistance(beginDate, endDate)) + "天");
-            days = (int) (UIUtil.twoDateDistance(beginDate, endDate));
-            hour = (int) UIUtil.twoDateHourDistance(beginDate, endDate);
-        }
-    }
 
     private boolean checkData() {
-        if (TextUtils.isEmpty(tv_address_name.getText().toString())) {
+        if (TextUtils.isEmpty(mi_addresss.getRightText().getText().toString())) {
             UIUtil.showToast("请选择收货地址");
             return false;
         }
-        if (tag.equals("rent")) {
-            if (hour == 0) {
-                UIUtil.showToast("请选择正确的时间");
-                return false;
-            }
-        }
+//        if (tag.equals("rent")) {
+//            if (hour == 0) {
+//                UIUtil.showToast("请选择正确的时间");
+//                return false;
+//            }
+//        }
 
         return true;
     }
@@ -626,9 +502,9 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
             return;
         }
         Map<String, String> map = new HashMap<>();
-        map.put("ordername", tv_address_name.getText().toString());
-        map.put("orderphone", tv_address_phone.getText().toString());
-        map.put("orderaddress", tv_address_detail.getText().toString());
+        map.put("ordername", mi_name.getRightText().getText().toString());
+        map.put("orderphone", mi_phone.getRightText().getText().toString());
+        map.put("orderaddress", mi_addresss.getRightText().getText().toString());
 //        map.put("goodsid", goodsBean.getId() + "");
 //        map.put("goodsprice", goodsBean.getPrice() + "");
         map.put("count", tvNum.getText().toString());
@@ -679,9 +555,9 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
             return;
         }
         Map<String, String> map = new HashMap<>();
-        map.put("ordername", tv_address_name.getText().toString());
-        map.put("orderphone", tv_address_phone.getText().toString());
-        map.put("orderaddress", tv_address_detail.getText().toString());
+        map.put("ordername", mi_name.getRightText().getText().toString());
+        map.put("orderphone", mi_phone.getRightText().getText().toString());
+        map.put("orderaddress", mi_addresss.getRightText().getText().toString());
 //        map.put("goodsid", goodsBean.getId() + "");
 //        map.put("price", goodsBean.getPrice() + "");
         map.put("count", "1");

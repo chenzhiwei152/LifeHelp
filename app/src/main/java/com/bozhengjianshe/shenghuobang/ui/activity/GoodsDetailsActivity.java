@@ -1,7 +1,7 @@
 package com.bozhengjianshe.shenghuobang.ui.activity;
 
 import android.content.Context;
-import android.graphics.Color;
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -65,6 +65,8 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
     ImageView iv_add_card;
     @BindView(R.id.iv_add_star)
     ImageView iv_add_star;
+    @BindView(R.id.tv_commit)
+    TextView tv_commit;
     private ConvenientBanner kanner;
     List<bannerBean> list = new ArrayList<>();
     private GoodsDetailItemAdapter listAdapter;
@@ -79,6 +81,7 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
     private Call<SuperBean<GoodsDetailBean>> call;
     private boolean isNewData = true;
     private IndexFragmentPagerAdapter adapter;
+
 
     public static int mCurrentTab = 0;
     private String[] tabNames = {"详情", "评价"};
@@ -111,6 +114,7 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
         tv_price = (TextView) findViewById(R.id.tv_price);
         iv_add_card.setOnClickListener(this);
         iv_add_star.setOnClickListener(this);
+        tv_commit.setOnClickListener(this);
 
         type = getIntent().getStringExtra("type");
         id = getIntent().getStringExtra("id");
@@ -154,7 +158,7 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
 
             }
         });
-
+        setDefault();
     }
 
     @Override
@@ -180,6 +184,16 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
     @Override
     protected View isNeedLec() {
         return null;
+    }
+
+    private void setDefault() {
+        if (type.equals(Constants.typeService)) {
+            //服务类
+            tv_commit.setText("立即预约");
+        } else {
+            //建材城
+            tv_commit.setText("立即购买");
+        }
     }
 
     private void getGoodsDetail() {
@@ -226,16 +240,12 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
                 //广告位
                 for (int i = 0; i < goodsBean.getImages().size(); i++) {
                     bannerBean bannerBean = new bannerBean();
-                    bannerBean.setImage(goodsBean.getImages().get(i));
+                    bannerBean.setImage(goodsBean.getImages().get(i).getUrl());
                     list.add(bannerBean);
                 }
                 //初始化广告栏
                 initAD(list);
             }
-            //大图
-//            if (goodsBean.getDetails() != null) {
-//                listAdapter.addList(goodsBean.getDetails());
-//            }
 
         }
     }
@@ -245,17 +255,6 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
      */
     private void initTitle() {
         title_view.setTitle(R.string.app_name);
-        title_view.setTitleColor(Color.WHITE);
-        title_view.setLeftImageResource(R.mipmap.ic_title_back);
-//        title_view.setLeftText("返回");
-//        title_view.setLeftTextColor(Color.WHITE);
-        title_view.setLeftClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
-        title_view.setImmersive(true);
     }
 
     @Override
@@ -266,6 +265,13 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
                 break;
             case R.id.iv_add_star:
                 addCollection();
+                break;
+            case R.id.tv_commit:
+                if (type.equals(Constants.typeService)){
+                    startActivity(new Intent(this, CommitServiceOrderActivity.class));
+                }else {
+                    startActivity(new Intent(this, CommitOrderActivity.class));
+                }
                 break;
         }
     }
@@ -374,20 +380,6 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
 
     private void setPriceValue() {
         tv_goods_name.setText(goodsBean.getName());//标题
-//        tv_goods_detail_describe.setText(goodsBean.getGoodsdetail());
-//        if (bt_buy.getText().equals("立即租赁")) {
-//            if (goodsBean.getPrice() > 0) {
-//                tv_price_title.setText("￥" + goodsBean.getPrice() / 100.00);
-//                tv_price.setVisibility(View.VISIBLE);
-//                if (goodsBean.getBillingmode()==1){
-//                    tv_price.setText("/日");
-//                }else {
-//                    tv_price.setText("/时");
-//                }
-//            } else {
-//                tv_price_title.setText("");
-//                tv_price.setVisibility(View.GONE);
-//            }
         if (goodsBean.getPrice() > 0) {
             tv_member_price.setText("111" + "件");
             tv_member_price_title.setVisibility(View.VISIBLE);
@@ -396,17 +388,6 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
             tv_member_price_title.setVisibility(View.GONE);
         }
         tv_goods_price.setText(goodsBean.getPrice() + "");
-//        } else {
-//            if (goodsBean.getPurchase() > 0) {
-//                tv_price_title.setText("￥" + goodsBean.getPurchase() / 100.00);
-//                tv_price.setVisibility(View.GONE);
-//            } else {
-//                tv_price_title.setText("");
-//                tv_price.setVisibility(View.GONE);
-//            }
-//            tv_member_price.setText("");
-//            tv_member_price_title.setVisibility(View.GONE);
-//        }
     }
 
     @Override
