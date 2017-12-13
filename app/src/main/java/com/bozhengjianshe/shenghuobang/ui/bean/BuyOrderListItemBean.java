@@ -1,7 +1,6 @@
 package com.bozhengjianshe.shenghuobang.ui.bean;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Created by chen.zhiwei on 2017-7-4.
@@ -9,200 +8,148 @@ import java.util.List;
 
 public class BuyOrderListItemBean implements Serializable {
 
-    /**
-     * data : {"pageNo":1,"totalCount":4,"pageCount":1,"pageSize":20,"data":[{"shopName":"中关村苏州街店","shop":1,"orderStatus":"交易进行","goodsimg":null,"count":1,"purchase":100,"totalmoney":1},{"shopName":"三里屯店","shop":3,"orderStatus":"交易进行","goodsimg":"http://img12.360buyimg.com/n1/jfs/t3094/355/4810845975/174436/87328e1b/585387d9Ne07010fd.jpg","count":1,"purchase":30,"totalmoney":1}]}
-     */
 
     /**
-     * pageNo : 1
-     * totalCount : 4
-     * pageCount : 1
-     * pageSize : 20
-     * data : [{"shopName":"中关村苏州街店","shop":1,"orderStatus":"交易进行","goodsimg":null,"count":1,"purchase":100,"totalmoney":1},{"shopName":"三里屯店","shop":3,"orderStatus":"交易进行","goodsimg":"http://img12.360buyimg.com/n1/jfs/t3094/355/4810845975/174436/87328e1b/585387d9Ne07010fd.jpg","count":1,"purchase":30,"totalmoney":1}]
+     * id : 11
+     * userId : 2
+     * createTime : 1513149137000
+     * receiveName : 测试
+     * receivePhone : 132151515
+     * receiveAddress : 详细地址详细地址
+     * transportType : 0
+     * serviceTime : null
+     * orderState : 1
+     * orderStateCn : 待支付
+     * outTradeNo : TNO2017121315121714700000001
+     * serviceProviderId : 0
+     * orderType : 1
+     * orderAmount : 233
      */
 
-    private int pageNo;
-    private int totalCount;
-    private int pageCount;
-    private int pageSize;
-    private List<DataBean> data;
+    private int id;
+    private int userId;
+    private long createTime;
+    private String receiveName;
+    private String receivePhone;
+    private String receiveAddress;
+    private int transportType;
+    private Object serviceTime;
+    private int orderState;
+    private String orderStateCn;
+    private String outTradeNo;
+    private int serviceProviderId;
+    private int orderType;
+    private int orderAmount;
 
-    public int getPageNo() {
-        return pageNo;
+    public int getId() {
+        return id;
     }
 
-    public void setPageNo(int pageNo) {
-        this.pageNo = pageNo;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public int getTotalCount() {
-        return totalCount;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setTotalCount(int totalCount) {
-        this.totalCount = totalCount;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
-    public int getPageCount() {
-        return pageCount;
+    public long getCreateTime() {
+        return createTime;
     }
 
-    public void setPageCount(int pageCount) {
-        this.pageCount = pageCount;
+    public void setCreateTime(long createTime) {
+        this.createTime = createTime;
     }
 
-    public int getPageSize() {
-        return pageSize;
+    public String getReceiveName() {
+        return receiveName;
     }
 
-    public void setPageSize(int pageSize) {
-        this.pageSize = pageSize;
+    public void setReceiveName(String receiveName) {
+        this.receiveName = receiveName;
     }
 
-    public List<DataBean> getData() {
-        return data;
+    public String getReceivePhone() {
+        return receivePhone;
     }
 
-    public void setData(List<DataBean> data) {
-        this.data = data;
+    public void setReceivePhone(String receivePhone) {
+        this.receivePhone = receivePhone;
     }
 
-    public static class DataBean {
-        /**
-         * shopName : 中关村苏州街店
-         * shop : 1
-         * orderStatus : 交易进行
-         * goodsimg : null
-         * count : 1
-         * purchase : 100
-         * totalmoney : 1
-         */
+    public String getReceiveAddress() {
+        return receiveAddress;
+    }
 
-        private String shopName;
-        private int shop;
-        private String orderStatus;
-        private String goodsimg;
-        private int count;
-        private int purchase;
-        private int totalmoney;
-        private String goodsName;
-        private String id;
-        private int deposit;
-        private int days;
-        private int price;
+    public void setReceiveAddress(String receiveAddress) {
+        this.receiveAddress = receiveAddress;
+    }
 
-        public int getPrice() {
-            return price;
-        }
+    public int getTransportType() {
+        return transportType;
+    }
 
-        public void setPrice(int price) {
-            this.price = price;
-        }
+    public void setTransportType(int transportType) {
+        this.transportType = transportType;
+    }
 
-        public int getDays() {
-            return days;
-        }
+    public Object getServiceTime() {
+        return serviceTime;
+    }
 
-        public void setDays(int days) {
-            this.days = days;
-        }
+    public void setServiceTime(Object serviceTime) {
+        this.serviceTime = serviceTime;
+    }
 
-        public String getStarttime() {
-            return starttime;
-        }
+    public int getOrderState() {
+        return orderState;
+    }
 
-        public void setStarttime(String starttime) {
-            this.starttime = starttime;
-        }
+    public void setOrderState(int orderState) {
+        this.orderState = orderState;
+    }
 
-        public String getEndtime() {
-            return endtime;
-        }
+    public String getOrderStateCn() {
+        return orderStateCn;
+    }
 
-        public void setEndtime(String endtime) {
-            this.endtime = endtime;
-        }
+    public void setOrderStateCn(String orderStateCn) {
+        this.orderStateCn = orderStateCn;
+    }
 
-        private String starttime;
-        private String endtime;
+    public String getOutTradeNo() {
+        return outTradeNo;
+    }
 
-        public int getDeposit() {
-            return deposit;
-        }
+    public void setOutTradeNo(String outTradeNo) {
+        this.outTradeNo = outTradeNo;
+    }
 
-        public void setDeposit(int deposit) {
-            this.deposit = deposit;
-        }
-        public String getGoodsName() {
-            return goodsName;
-        }
+    public int getServiceProviderId() {
+        return serviceProviderId;
+    }
 
-        public void setGoodsName(String goodsName) {
-            this.goodsName = goodsName;
-        }
+    public void setServiceProviderId(int serviceProviderId) {
+        this.serviceProviderId = serviceProviderId;
+    }
 
-        public String getId() {
-            return id;
-        }
+    public int getOrderType() {
+        return orderType;
+    }
 
-        public void setId(String id) {
-            this.id = id;
-        }
+    public void setOrderType(int orderType) {
+        this.orderType = orderType;
+    }
 
-        public String getShopName() {
-            return shopName;
-        }
+    public int getOrderAmount() {
+        return orderAmount;
+    }
 
-        public void setShopName(String shopName) {
-            this.shopName = shopName;
-        }
-
-        public int getShop() {
-            return shop;
-        }
-
-        public void setShop(int shop) {
-            this.shop = shop;
-        }
-
-        public String getOrderStatus() {
-            return orderStatus;
-        }
-
-        public void setOrderStatus(String orderStatus) {
-            this.orderStatus = orderStatus;
-        }
-
-        public String getGoodsimg() {
-            return goodsimg;
-        }
-
-        public void setGoodsimg(String goodsimg) {
-            this.goodsimg = goodsimg;
-        }
-
-        public int getCount() {
-            return count;
-        }
-
-        public void setCount(int count) {
-            this.count = count;
-        }
-
-        public int getPurchase() {
-            return purchase;
-        }
-
-        public void setPurchase(int purchase) {
-            this.purchase = purchase;
-        }
-
-        public int getTotalmoney() {
-            return totalmoney;
-        }
-
-        public void setTotalmoney(int totalmoney) {
-            this.totalmoney = totalmoney;
-        }
+    public void setOrderAmount(int orderAmount) {
+        this.orderAmount = orderAmount;
     }
 }

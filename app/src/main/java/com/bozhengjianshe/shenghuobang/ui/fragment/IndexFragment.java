@@ -275,9 +275,12 @@ public class IndexFragment extends BaseFragment {
                         }
                     }
                     if (response.body().getData().getBanners().size() > 0) {
+                        list.clear();
                         for (int i = 0; i < response.body().getData().getBanners().size(); i++) {
                             bannerBean bannerBean = new bannerBean();
                             bannerBean.setImage(response.body().getData().getBanners().get(i).getImg());
+                            bannerBean.setId(response.body().getData().getBanners().get(i).getId());
+                            bannerBean.setType(response.body().getData().getBanners().get(i).getType());
                             list.add(bannerBean);
                         }
                         initAD(list);
@@ -358,7 +361,7 @@ public class IndexFragment extends BaseFragment {
                 Intent intent = new Intent(getActivity(), GoodsDetailsActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("id", list.get(position).getId()+"");
-                bundle.putString("type", Constants.typeService);
+                bundle.putString("type", list.get(position).getType()+"");
                 intent.putExtras(bundle);
                 startActivity(intent);
             }

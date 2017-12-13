@@ -84,7 +84,7 @@ public class GoodsDetailBean implements Serializable{
         this.images = images;
     }
 
-    public static class ImagesBean {
+    public static class ImagesBean implements Serializable{
         /**
          * id : 37
          * url : http://47.92.24.138:8080/upload/goodsImg/20171211134148241.jpg

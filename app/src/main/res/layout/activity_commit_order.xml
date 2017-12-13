@@ -15,9 +15,9 @@
         android:layout_below="@+id/title_view">
 
         <LinearLayout
-            android:layout_margin="@dimen/dp_10"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_10"
             android:orientation="vertical">
             <!--收货地址-->
             <RelativeLayout
@@ -55,18 +55,24 @@
                     android:layout_toRightOf="@+id/iv_goods"
                     android:text="" />
 
+                <TextView
+                    android:id="@+id/tv_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv_title"
+                    android:layout_toLeftOf="@+id/ll_price"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:textColor="@color/color_f6c01c"
+                    android:layout_toRightOf="@+id/iv_goods"
+                    android:text="" />
+
                 <LinearLayout
                     android:id="@+id/ll_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/tv_price"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="" />
 
                     <TextView
                         android:id="@+id/tv_number_per"
@@ -102,16 +108,14 @@
                 </LinearLayout>
             </RelativeLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/color_eeeeee" />
 
             <RelativeLayout
                 android:id="@+id/rl_delivery_type"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginTop="@dimen/dp_1"
                 android:background="@color/color_ffffff"
+                android:gravity="center_vertical"
                 android:padding="10dp">
 
                 <TextView
@@ -140,16 +144,13 @@
                 </LinearLayout>
             </RelativeLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/color_eeeeee" />
 
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/color_ffffff"
-                android:padding="10dp">
+                android:padding="10dp"
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/tv_num_price"

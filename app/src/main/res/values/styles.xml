@@ -267,10 +267,17 @@
         <item name="android:textColor">@color/button_secondary_text_color</item>
         <item name="android:background">@drawable/button_first_background</item>
     </style>
+
     <!-- 按钮  黄色 ，shape 5-->
     <style name="ButtonSecondary" parent="Widget.AppCompat.Button.Borderless">
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/button_secondary_text_color</item>
         <item name="android:background">@drawable/button_secondary_background</item>
+    </style>
+    <!-- 按钮  白色-->
+    <style name="ButtonThird" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/button_secondary_text_color</item>
+        <item name="android:background">@drawable/button_third_background</item>
     </style>
 </resources>

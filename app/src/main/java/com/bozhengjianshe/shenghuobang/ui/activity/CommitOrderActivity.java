@@ -20,10 +20,11 @@ import com.bozhengjianshe.shenghuobang.base.BaseActivity;
 import com.bozhengjianshe.shenghuobang.base.BaseContext;
 import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
-import com.bozhengjianshe.shenghuobang.ui.bean.GoodsListBean;
+import com.bozhengjianshe.shenghuobang.ui.bean.GoodsDetailBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.ShoppingAddressListItemBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.SuperBean;
 import com.bozhengjianshe.shenghuobang.utils.DialogUtils;
+import com.bozhengjianshe.shenghuobang.utils.ImageLoadedrManager;
 import com.bozhengjianshe.shenghuobang.utils.LogUtils;
 import com.bozhengjianshe.shenghuobang.utils.NetUtil;
 import com.bozhengjianshe.shenghuobang.utils.UIUtil;
@@ -86,14 +87,14 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
     RelativeLayout rl_delivery_type;
 
 
-//    private String tag;//rent,sale
+    //    private String tag;//rent,sale
     private String id;
     private int price;
     private int count = 1;
     private int days;
     private int hour;
     private int mxCount = 200;
-    private GoodsListBean goodsBean;
+    private GoodsDetailBean goodsBean;
     private Date beginDate;
     private Date endDate;
     private int payChannel = 0;//支付通道0为支付宝1为微信
@@ -116,7 +117,7 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            goodsBean = (GoodsListBean) bundle.getSerializable("detail");
+            goodsBean = (GoodsDetailBean) bundle.getSerializable("detail");
 //            tag = bundle.getString("type");
         }
 
@@ -203,20 +204,9 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void setValueDefault() {
-//        ImageLoadedrManager.getInstance().display(this, goodsBean.getGoodsImg(), iv_goods);
-//        tv_title.setText(goodsBean.getName());
-//        if (tag.equals("rent")) {
-//            if (BaseContext.getInstance().getUserInfo().vipgrade > 0) {
-//
-//                tv_price.setText("￥" + goodsBean.getVipprice() / 100.00);
-//            } else {
-//                tv_price.setText("￥" + goodsBean.getPrice() / 100.00);
-//            }
-//        } else {
-//            tv_price.setText("￥" + goodsBean.getPurchase() / 100.00);
-//        }
-
-
+        ImageLoadedrManager.getInstance().display(this, goodsBean.getImg(), iv_goods);
+        tv_title.setText(goodsBean.getName());
+        tv_price.setText("￥" + goodsBean.getPrice());
     }
 
     @Override
@@ -362,7 +352,7 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
         showdialog(view);
 
         final TextView photo = view.findViewById(R.id.photo);
-        final TextView picture =  view.findViewById(R.id.picture);
+        final TextView picture = view.findViewById(R.id.picture);
         photo.setText("到店自取");
         picture.setText("快递配送");
         photo.setOnClickListener(new View.OnClickListener() {
@@ -416,7 +406,7 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
                 if (checkData())
                     if (!UIUtil.isFastDoubleClick()) {
 //                        if (tag.equals("rent")) {
-                            commitRentOrder();
+                        commitRentOrder();
 //                        } else {
 //                            commitOrder();
 //                        }
@@ -437,7 +427,6 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
 
         }
     }
-
 
 
     private boolean checkData() {
@@ -555,19 +544,15 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
             return;
         }
         Map<String, String> map = new HashMap<>();
-        map.put("ordername", mi_name.getRightText().getText().toString());
-        map.put("orderphone", mi_phone.getRightText().getText().toString());
-        map.put("orderaddress", mi_addresss.getRightText().getText().toString());
-//        map.put("goodsid", goodsBean.getId() + "");
-//        map.put("price", goodsBean.getPrice() + "");
-        map.put("count", "1");
-        map.put("starttime", UIUtil.getTime(beginDate, "yyyy-MM-dd HH:mm:ss"));
-        map.put("endtime", UIUtil.getTime(endDate, "yyyy-MM-dd HH:mm:ss"));
-        map.put("deliverytype", deliverytype + "");
-        map.put("payType", orderType + "");
-        map.put("totalmoney", price + "");
+        map.put("receiveName", mi_name.getRightText().getText().toString());
+        map.put("receivePhone", mi_phone.getRightText().getText().toString());
+        map.put("receiveAddress", mi_addresss.getRightText().getText().toString());
+        map.put("productCount", "1");
+//        map.put("serviceTime", UIUtil.getTime(beginDate, "yyyy-MM-dd HH:mm:ss"));
+        map.put("transportType", deliverytype + "");
+        map.put("productId", goodsBean.getId() + "");
+        map.put("productType", goodsBean.getType() + "");
         map.put("userid", BaseContext.getInstance().getUserInfo().userId);
-//        map.put("deposit", goodsBean.getDeposit() + "");
         LogUtils.e(JSON.toJSONString(map));
         DialogUtils.showDialog(CommitOrderActivity.this, "获取订单...", false);
         commitRentCall = RestAdapterManager.getApi().getRentOrder(map);
@@ -578,8 +563,10 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
                     LogUtils.e(response.body().getMsg());
                     DialogUtils.closeDialog();
                     orderId = response.body().getData();
-                    payStyleDialog();
-
+                    Intent intent=new Intent(CommitOrderActivity.this,OrderDetailsActivity.class);
+                    intent.putExtra("orderId",orderId);
+                    startActivity(intent);
+//                    payStyleDialog();
                 }
             }
 
@@ -607,7 +594,7 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
      * @param string
      */
     private void pay(String string) {
-        if (payChannel==0){
+        if (payChannel == 0) {
             JPay.getIntance(this).toPay(JPay.PayMode.ALIPAY, string, new JPay.JPayListener() {
                 @Override
                 public void onPaySuccess() {
@@ -628,7 +615,7 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
                     Toast.makeText(CommitOrderActivity.this, "取消了支付", Toast.LENGTH_SHORT).show();
                 }
             });
-        }else if (payChannel==1){
+        } else if (payChannel == 1) {
             JPay.getIntance(this).toPay(JPay.PayMode.WXPAY, string, new JPay.JPayListener() {
                 @Override
                 public void onPaySuccess() {

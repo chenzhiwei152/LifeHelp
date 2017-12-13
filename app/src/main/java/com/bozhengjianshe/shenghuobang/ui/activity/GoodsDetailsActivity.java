@@ -2,6 +2,7 @@ package com.bozhengjianshe.shenghuobang.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -267,11 +268,20 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
                 addCollection();
                 break;
             case R.id.tv_commit:
-                if (type.equals(Constants.typeService)){
-                    startActivity(new Intent(this, CommitServiceOrderActivity.class));
-                }else {
-                    startActivity(new Intent(this, CommitOrderActivity.class));
+                if (goodsBean!=null){
+                    Bundle bundle=new Bundle();
+                    bundle.putSerializable("detail",goodsBean);
+                    if (type.equals(Constants.typeService)){
+                        Intent intent=new Intent(this,CommitServiceOrderActivity.class);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                    }else {
+                        Intent intent=new Intent(this,CommitOrderActivity.class);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                    }
                 }
+
                 break;
         }
     }

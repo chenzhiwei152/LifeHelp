@@ -13,14 +13,11 @@ import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
 import com.bozhengjianshe.shenghuobang.ui.adapter.RentOrderListAdapter;
 import com.bozhengjianshe.shenghuobang.ui.bean.BuyOrderListItemBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.SuperBean;
-import com.bozhengjianshe.shenghuobang.utils.UIUtil;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 import butterknife.BindView;
 import retrofit2.Call;
@@ -37,7 +34,7 @@ public class RentGoodsOrderListFragment extends BaseFragment {
     @BindView(R.id.swiperefreshlayout)
     SmartRefreshLayout swiperefreshlayout;
     private RentOrderListAdapter rentOrderListAdapter;
-    private Call<SuperBean<BuyOrderListItemBean>> orderListCall;
+    private Call<SuperBean<List<BuyOrderListItemBean>>> orderListCall;
     private int pageNum = 1;
     private int pageSize = 10;
 
@@ -49,7 +46,7 @@ public class RentGoodsOrderListFragment extends BaseFragment {
     @Override
     protected void initViewsAndEvents() {
         sf_listview.setLayoutManager(new LinearLayoutManager(getActivity()));
-        swiperefreshlayout.setEnableLoadmore(true);
+        swiperefreshlayout.setEnableLoadmore(false);
         rentOrderListAdapter = new RentOrderListAdapter(getActivity());
         sf_listview.setAdapter(rentOrderListAdapter);
         swiperefreshlayout.setEnableHeaderTranslationContent(false);
@@ -60,12 +57,12 @@ public class RentGoodsOrderListFragment extends BaseFragment {
                 getOrderList();
             }
         });
-        swiperefreshlayout.setOnLoadmoreListener(new OnLoadmoreListener() {
-            @Override
-            public void onLoadmore(RefreshLayout refreshlayout) {
-                getOrderList();
-            }
-        });
+//        swiperefreshlayout.setOnLoadmoreListener(new OnLoadmoreListener() {
+//            @Override
+//            public void onLoadmore(RefreshLayout refreshlayout) {
+//                getOrderList();
+//            }
+//        });
     }
 
     @Override
@@ -89,39 +86,39 @@ public class RentGoodsOrderListFragment extends BaseFragment {
     }
 
     private void getOrderList() {
-        Map<String, String> map = new HashMap<>();
-        map.put("pageNum", pageNum + "");
-        map.put("pageSize", pageSize + "");
-        map.put("userid", BaseContext.getInstance().getUserInfo().userId);
-        orderListCall = RestAdapterManager.getApi().getRentOrderList(map);
-        orderListCall.enqueue(new JyCallBack<SuperBean<BuyOrderListItemBean>>() {
+//        Map<String, String> map = new HashMap<>();
+//        map.put("pageNum", pageNum + "");
+//        map.put("pageSize", pageSize + "");
+//        map.put("userid", BaseContext.getInstance().getUserInfo().userId);
+        orderListCall = RestAdapterManager.getApi().getRentOrderList(BaseContext.getInstance().getUserInfo().userId);
+        orderListCall.enqueue(new JyCallBack<SuperBean<List<BuyOrderListItemBean>>>() {
             @Override
-            public void onSuccess(Call<SuperBean<BuyOrderListItemBean>> call, Response<SuperBean<BuyOrderListItemBean>> response) {
+            public void onSuccess(Call<SuperBean<List<BuyOrderListItemBean>>> call, Response<SuperBean<List<BuyOrderListItemBean>>> response) {
                 if (swiperefreshlayout != null) {
                     swiperefreshlayout.finishRefresh();
                     swiperefreshlayout.finishLoadmore();
                 }
                 if (response != null && response.body() != null) {
-                    if (response.body().getData().getData().size() > 0) {
+                    if (response.body().getData().size() > 0) {
                         if (pageNum == 1) {
                             rentOrderListAdapter.ClearData();
                         }
-                        rentOrderListAdapter.addList(response.body().getData().getData());
-                        pageNum++;
+                        rentOrderListAdapter.addList(response.body().getData());
+//                        pageNum++;
                     } else {
-                        if (pageNum == 1) {
-//无数据
-                        } else {
-                            UIUtil.showToast("已加载完全部数据");
-                            swiperefreshlayout.setEnableLoadmore(false);
-                        }
+//                        if (pageNum == 1) {
+////无数据
+//                        } else {
+//                            UIUtil.showToast("已加载完全部数据");
+//                            swiperefreshlayout.setEnableLoadmore(false);
+//                        }
 
                     }
                 }
             }
 
             @Override
-            public void onError(Call<SuperBean<BuyOrderListItemBean>> call, Throwable t) {
+            public void onError(Call<SuperBean<List<BuyOrderListItemBean>>> call, Throwable t) {
                 if (swiperefreshlayout != null) {
                     swiperefreshlayout.finishRefresh();
                     swiperefreshlayout.finishLoadmore();
@@ -129,7 +126,7 @@ public class RentGoodsOrderListFragment extends BaseFragment {
             }
 
             @Override
-            public void onError(Call<SuperBean<BuyOrderListItemBean>> call, Response<SuperBean<BuyOrderListItemBean>> response) {
+            public void onError(Call<SuperBean<List<BuyOrderListItemBean>>> call, Response<SuperBean<List<BuyOrderListItemBean>>> response) {
                 if (swiperefreshlayout != null) {
                     swiperefreshlayout.finishRefresh();
                     swiperefreshlayout.finishLoadmore();

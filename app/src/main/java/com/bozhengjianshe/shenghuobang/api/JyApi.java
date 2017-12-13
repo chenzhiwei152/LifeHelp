@@ -267,13 +267,13 @@ public interface JyApi {
     Call<SuperBean<OrderDetailBean>> getOrderDetails(@Query("id") String id);
 
     /**
-     * 获取租赁订单详情
+     * 获取订单详情
      *
-     * @param id
+     * @param orderId
      * @return
      */
-    @GET("/api/zuorder/getDetail")
-    Call<SuperBean<OrderDetailBean>> getRentOrderDetails(@Query("id") String id);
+    @GET("/api/order/getOrderDetail")
+    Call<SuperBean<OrderDetailBean>> getRentOrderDetails(@Query("orderId") String orderId);
 
 
     /**
@@ -287,23 +287,23 @@ public interface JyApi {
 
 
     /**
-     * 提交租赁订单
+     * 提交订单
      *
      * @param map
      * @return
      */
-    @POST("/api/zuorder/insert")
+    @POST("/api/order/submitOrder")
     Call<SuperBean<String>> getRentOrder(@Body Map<String, String> map);
 
 
     /**
-     * 获取租赁订单列表
+     * 获取订单列表
      *
-     * @param map
+     * @param userId
      * @return
      */
-    @POST("/api/zuorder/appGetAllList")
-    Call<SuperBean<BuyOrderListItemBean>> getRentOrderList(@Body Map<String, String> map);
+    @GET("/api/order/getOrderListByUserId")
+    Call<SuperBean<List<BuyOrderListItemBean>>> getRentOrderList(@Query("userId")String userId);
 
     /**
      * 获取所有服务分类

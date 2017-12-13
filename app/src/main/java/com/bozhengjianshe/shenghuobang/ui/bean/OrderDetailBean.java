@@ -1,6 +1,7 @@
 package com.bozhengjianshe.shenghuobang.ui.bean;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by chen.zhiwei on 2017-7-5.
@@ -8,117 +9,254 @@ import java.io.Serializable;
 
 public class OrderDetailBean implements Serializable{
 
+
     /**
-     * ordername : hhhhh
-     * orderphone : 13214151415
-     * orderaddress : yggvvbbh
-     * count : 1
-     * goodsprice : 1000
-     * payamount : null
-     * goodsName : null
-     * goodsImg : null
-     * orderpayno : null
-     * createtime : null
-     * paytime : null
+     * id : 0
+     * userId : 0
+     * createTime : null
+     * receiveName : null
+     * receivePhone : null
+     * receiveAddress : null
+     * transportType : 0
+     * serviceTime : null
+     * orderState : 0
+     * orderStateCn : null
+     * outTradeNo : null
+     * serviceProviderId : 0
+     * orderType : 0
+     * orderAmount : 0
+     * products : [{"id":11,"orderId":12,"userId":0,"productId":9,"productType":1,"productPrice":233,"productName":"测试建材推荐","productCount":1,"productImg":"http://47.92.24.138:8080/upload/goodsImg/20171213105428022.jpg"}]
      */
 
-    private String ordername;
-    private String orderphone;
-    private String orderaddress;
-    private int count;
-    private int goodsprice;
-    private int payamount;
-    private String goodsName;
-    private String goodsImg;
-    private String orderpayno;
-    private String createtime;
-    private String paytime;
+    private int id;
+    private int userId;
+    private String createTime;
+    private String receiveName;
+    private String receivePhone;
+    private String receiveAddress;
+    private int transportType;
+    private String serviceTime;
+    private int orderState;
+    private String orderStateCn;
+    private String outTradeNo;
+    private int serviceProviderId;
+    private int orderType;
+    private int orderAmount;
+    private List<ProductsBean> products;
 
-    public String getOrdername() {
-        return ordername;
+    public int getId() {
+        return id;
     }
 
-    public void setOrdername(String ordername) {
-        this.ordername = ordername;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getOrderphone() {
-        return orderphone;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setOrderphone(String orderphone) {
-        this.orderphone = orderphone;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
-    public String getOrderaddress() {
-        return orderaddress;
+    public String getCreateTime() {
+        return createTime;
     }
 
-    public void setOrderaddress(String orderaddress) {
-        this.orderaddress = orderaddress;
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
     }
 
-    public int getCount() {
-        return count;
+    public String getReceiveName() {
+        return receiveName;
     }
 
-    public void setCount(int count) {
-        this.count = count;
+    public void setReceiveName(String receiveName) {
+        this.receiveName = receiveName;
     }
 
-    public int getGoodsprice() {
-        return goodsprice;
+    public String getReceivePhone() {
+        return receivePhone;
     }
 
-    public void setGoodsprice(int goodsprice) {
-        this.goodsprice = goodsprice;
+    public void setReceivePhone(String receivePhone) {
+        this.receivePhone = receivePhone;
     }
 
-    public int getPayamount() {
-        return payamount;
+    public String getReceiveAddress() {
+        return receiveAddress;
     }
 
-    public void setPayamount(int payamount) {
-        this.payamount = payamount;
+    public void setReceiveAddress(String receiveAddress) {
+        this.receiveAddress = receiveAddress;
     }
 
-    public String getGoodsName() {
-        return goodsName;
+    public int getTransportType() {
+        return transportType;
     }
 
-    public void setGoodsName(String goodsName) {
-        this.goodsName = goodsName;
+    public void setTransportType(int transportType) {
+        this.transportType = transportType;
     }
 
-    public String getGoodsImg() {
-        return goodsImg;
+    public String getServiceTime() {
+        return serviceTime;
     }
 
-    public void setGoodsImg(String goodsImg) {
-        this.goodsImg = goodsImg;
+    public void setServiceTime(String serviceTime) {
+        this.serviceTime = serviceTime;
     }
 
-    public String getOrderpayno() {
-        return orderpayno;
+    public int getOrderState() {
+        return orderState;
     }
 
-    public void setOrderpayno(String orderpayno) {
-        this.orderpayno = orderpayno;
+    public void setOrderState(int orderState) {
+        this.orderState = orderState;
     }
 
-    public String getCreatetime() {
-        return createtime;
+    public String getOrderStateCn() {
+        return orderStateCn;
     }
 
-    public void setCreatetime(String createtime) {
-        this.createtime = createtime;
+    public void setOrderStateCn(String orderStateCn) {
+        this.orderStateCn = orderStateCn;
     }
 
-    public String getPaytime() {
-        return paytime;
+    public String getOutTradeNo() {
+        return outTradeNo;
     }
 
-    public void setPaytime(String paytime) {
-        this.paytime = paytime;
+    public void setOutTradeNo(String outTradeNo) {
+        this.outTradeNo = outTradeNo;
+    }
+
+    public int getServiceProviderId() {
+        return serviceProviderId;
+    }
+
+    public void setServiceProviderId(int serviceProviderId) {
+        this.serviceProviderId = serviceProviderId;
+    }
+
+    public int getOrderType() {
+        return orderType;
+    }
+
+    public void setOrderType(int orderType) {
+        this.orderType = orderType;
+    }
+
+    public int getOrderAmount() {
+        return orderAmount;
+    }
+
+    public void setOrderAmount(int orderAmount) {
+        this.orderAmount = orderAmount;
+    }
+
+    public List<ProductsBean> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<ProductsBean> products) {
+        this.products = products;
+    }
+
+    public static class ProductsBean implements Serializable{
+        /**
+         * id : 11
+         * orderId : 12
+         * userId : 0
+         * productId : 9
+         * productType : 1
+         * productPrice : 233
+         * productName : 测试建材推荐
+         * productCount : 1
+         * productImg : http://47.92.24.138:8080/upload/goodsImg/20171213105428022.jpg
+         */
+
+        private int id;
+        private int orderId;
+        private int userId;
+        private int productId;
+        private int productType;
+        private int productPrice;
+        private String productName;
+        private int productCount;
+        private String productImg;
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public int getOrderId() {
+            return orderId;
+        }
+
+        public void setOrderId(int orderId) {
+            this.orderId = orderId;
+        }
+
+        public int getUserId() {
+            return userId;
+        }
+
+        public void setUserId(int userId) {
+            this.userId = userId;
+        }
+
+        public int getProductId() {
+            return productId;
+        }
+
+        public void setProductId(int productId) {
+            this.productId = productId;
+        }
+
+        public int getProductType() {
+            return productType;
+        }
+
+        public void setProductType(int productType) {
+            this.productType = productType;
+        }
+
+        public int getProductPrice() {
+            return productPrice;
+        }
+
+        public void setProductPrice(int productPrice) {
+            this.productPrice = productPrice;
+        }
+
+        public String getProductName() {
+            return productName;
+        }
+
+        public void setProductName(String productName) {
+            this.productName = productName;
+        }
+
+        public int getProductCount() {
+            return productCount;
+        }
+
+        public void setProductCount(int productCount) {
+            this.productCount = productCount;
+        }
+
+        public String getProductImg() {
+            return productImg;
+        }
+
+        public void setProductImg(String productImg) {
+            this.productImg = productImg;
+        }
     }
 }
