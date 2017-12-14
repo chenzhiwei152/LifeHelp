@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
@@ -82,7 +83,8 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
     private Call<SuperBean<GoodsDetailBean>> call;
     private boolean isNewData = true;
     private IndexFragmentPagerAdapter adapter;
-
+    @BindView(R.id.ll_content)
+    LinearLayout ll_content;
 
     public static int mCurrentTab = 0;
     private String[] tabNames = {"详情", "评价"};
@@ -158,9 +160,22 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
             public void onTabReselected(TabLayout.Tab tab) {
 
             }
-            
+
         });
         setDefault();
+    }
+
+    /**
+     * 设置ViewPager的自适应
+     *
+     * @param childViewHeight
+     */
+    private void setViewPagerWrapContentHeight(int childViewHeight) {
+
+        int viewPagerIndex = ll_content.indexOfChild(viewPager);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, childViewHeight);//这里设置params的高度。
+        ll_content.removeView(viewPager);
+        ll_content.addView(viewPager, viewPagerIndex, params);//使用这个params
     }
 
     @Override
@@ -179,6 +194,9 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
             if (eventBusCenter.getEvenCode() == Constants.LOGIN_SUCCESS) {
                 isNewData = false;
                 getGoodsDetail();
+            }
+            if (eventBusCenter.getEvenCode() == Constants.AddressUpdateSuccess) {
+                setViewPagerWrapContentHeight(Integer.valueOf((String)eventBusCenter.getData()));
             }
         }
     }
@@ -269,15 +287,15 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
                 addCollection();
                 break;
             case R.id.tv_commit:
-                if (goodsBean!=null){
-                    Bundle bundle=new Bundle();
-                    bundle.putSerializable("detail",goodsBean);
-                    if (type.equals(Constants.typeService)){
-                        Intent intent=new Intent(this,CommitServiceOrderActivity.class);
+                if (goodsBean != null) {
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("detail", goodsBean);
+                    if (type.equals(Constants.typeService)) {
+                        Intent intent = new Intent(this, CommitServiceOrderActivity.class);
                         intent.putExtras(bundle);
                         startActivity(intent);
-                    }else {
-                        Intent intent=new Intent(this,CommitOrderActivity.class);
+                    } else {
+                        Intent intent = new Intent(this, CommitOrderActivity.class);
                         intent.putExtras(bundle);
                         startActivity(intent);
                     }

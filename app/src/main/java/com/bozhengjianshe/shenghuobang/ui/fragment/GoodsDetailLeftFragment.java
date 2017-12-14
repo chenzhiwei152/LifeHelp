@@ -2,7 +2,6 @@ package com.bozhengjianshe.shenghuobang.ui.fragment;
 
 import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewGroup;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -13,7 +12,8 @@ import com.bozhengjianshe.shenghuobang.R;
 import com.bozhengjianshe.shenghuobang.base.BaseFragment;
 import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
-import com.bozhengjianshe.shenghuobang.utils.UIUtil;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 
@@ -129,7 +129,8 @@ public class GoodsDetailLeftFragment extends BaseFragment {
         public void run(final String height) {
             getActivity().runOnUiThread(new Runnable() {
                 public void run() { //获取到的高度 转换为dp
-                    parentView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, UIUtil.px2dp(getActivity(), Integer.valueOf(height))));
+//                    parentView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, UIUtil.px2dp(getActivity(), Integer.valueOf(height))));
+                    EventBus.getDefault().post(new EventBusCenter<>(Constants.AddressUpdateSuccess,height));
                 }
             });
         }
