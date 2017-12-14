@@ -1,6 +1,8 @@
 package com.bozhengjianshe.shenghuobang.ui.fragment;
 
+import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -11,7 +13,7 @@ import com.bozhengjianshe.shenghuobang.R;
 import com.bozhengjianshe.shenghuobang.base.BaseFragment;
 import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
-import com.bozhengjianshe.shenghuobang.view.NoScrollWebView;
+import com.bozhengjianshe.shenghuobang.utils.UIUtil;
 
 import butterknife.BindView;
 
@@ -21,7 +23,7 @@ import butterknife.BindView;
 
 public class GoodsDetailLeftFragment extends BaseFragment {
     @BindView(R.id.web_vv)
-    NoScrollWebView web_vv;
+    WebView web_vv;
 
     @Override
     protected int getContentViewLayoutId() {
@@ -55,7 +57,8 @@ public class GoodsDetailLeftFragment extends BaseFragment {
 
 
 
-        web_vv.loadUrl("https://www.baidu.com");
+//        web_vv.loadUrl("https://www.baidu.com");
+        refresh("https://www.baidu.com");
     }
     @JavascriptInterface
     public void resize(final float height) {
@@ -93,8 +96,42 @@ public class GoodsDetailLeftFragment extends BaseFragment {
 
     private void initDate(String url) {
 
-        web_vv.loadUrl(url);
+//        web_vv.loadUrl(url);
 
 
+    }
+    public void refresh(String url) {
+        //设置外层高度
+        final View parentView = (View) web_vv;
+        web_vv.getSettings().setJavaScriptEnabled(true);
+        web_vv.addJavascriptInterface(new HeightGetter(web_vv), "jo");
+        web_vv.setWebViewClient(new WebViewClient() {
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                return false;
+            }
+
+            public void onPageFinished(WebView view, String url) {
+                web_vv.loadUrl("javascript:window.jo.run(document.documentElement.scrollHeight+'');");
+            }
+        });
+        if (!TextUtils.isEmpty(url)) {
+            web_vv.loadUrl(url);
+        }
+    }
+
+    private class HeightGetter {
+        private final View parentView;
+        public HeightGetter(View parentView) {
+            this.parentView = parentView;
+        }
+
+        @JavascriptInterface
+        public void run(final String height) {
+            getActivity().runOnUiThread(new Runnable() {
+                public void run() { //获取到的高度 转换为dp
+                    parentView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, UIUtil.px2dp(getActivity(), Integer.valueOf(height))));
+                }
+            });
+        }
     }
 }

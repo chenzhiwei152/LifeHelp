@@ -11,7 +11,7 @@
         android:layout_height="wrap_content" />
 
 
-    <com.bozhengjianshe.shenghuobang.view.MyObservableScrollView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/title_view">
@@ -55,8 +55,9 @@
 
         </LinearLayout>
 
-    </com.bozhengjianshe.shenghuobang.view.MyObservableScrollView>
+    </ScrollView>
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/stickyView"
         android:layout_width="match_parent"
         android:layout_height="50dp"

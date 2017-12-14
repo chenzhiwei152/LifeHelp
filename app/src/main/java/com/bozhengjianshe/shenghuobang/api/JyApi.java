@@ -56,7 +56,7 @@ public interface JyApi {
      * @param phone
      * @return
      */
-    @GET("/api/sms/getCheckCode")
+    @GET("/resource/sms/getCheckCode")
     Call<ErrorBean> getCheckCode(@Query("phone") String phone);
 
     /**
@@ -74,7 +74,7 @@ public interface JyApi {
      * @param map
      * @return
      */
-    @POST("/api/user/forgetPwd")
+    @POST("/api/user/updateUserPhone")
     Call<ErrorBean> commitNewPassword(@Body Map<String, String> map);
 
     /**
@@ -83,7 +83,7 @@ public interface JyApi {
      * @param map
      * @return
      */
-    @POST("/api/user/accountSecurity")
+    @POST("/api/user/updateUserPwd")
     Call<ErrorBean> accountSafety(@Body Map<String, String> map);
 
 
@@ -179,8 +179,8 @@ public interface JyApi {
      * @return
      */
     @Multipart
-    @POST("/sys/uploadFile")
-    Call<String> uploadFile(@Part MultipartBody.Part file);
+    @POST("/sys/uploadUserImg")
+    Call<SuperBean<String>> uploadFile(@Part MultipartBody.Part file);
 
     /**
      * 上传个人信息
@@ -188,7 +188,7 @@ public interface JyApi {
      * @param map
      * @return
      */
-    @POST("/api/user/userUpdate")
+    @POST("/api/user/updateUserHeadImg")
     Call<String> upLoadInfo(@Body Map<String, String> map);
 
     /**

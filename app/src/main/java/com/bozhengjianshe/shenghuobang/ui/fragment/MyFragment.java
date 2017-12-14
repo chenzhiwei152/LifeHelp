@@ -15,7 +15,6 @@ import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
 import com.bozhengjianshe.shenghuobang.ui.activity.AboutActivity;
 import com.bozhengjianshe.shenghuobang.ui.activity.AccountSafetyActivity;
 import com.bozhengjianshe.shenghuobang.ui.activity.CollectionActivity;
-import com.bozhengjianshe.shenghuobang.ui.activity.CommitRealNameActivity;
 import com.bozhengjianshe.shenghuobang.ui.activity.LoginActivity;
 import com.bozhengjianshe.shenghuobang.ui.activity.OrderListActivity;
 import com.bozhengjianshe.shenghuobang.ui.activity.PersonInformationActivity;
@@ -54,8 +53,8 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
     RelativeLayout rlMember;
     @BindView(R.id.iv_real_name)
     ImageView ivRealName;
-    @BindView(R.id.rl_real_name)
-    RelativeLayout rlRealName;
+//    @BindView(R.id.rl_real_name)
+//    RelativeLayout rlRealName;
     @BindView(R.id.iv_abount)
     ImageView ivAbount;
     @BindView(R.id.tv_about)
@@ -72,6 +71,8 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
     TextView tv_info;
     @BindView(R.id.tv_collection)
     TextView tv_collection;
+    @BindView(R.id.tv_name)
+    TextView tv_name;
 
     @Override
     protected int getContentViewLayoutId() {
@@ -84,7 +85,6 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
         rlSafety.setOnClickListener(this);
 //        rlLocation.setOnClickListener(this);
         rlMember.setOnClickListener(this);
-        rlRealName.setOnClickListener(this);
         tv_about.setOnClickListener(this);
         tv_setting.setOnClickListener(this);
         rl_quit_login.setOnClickListener(this);
@@ -101,18 +101,23 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
     private void setUserInfo() {
         if (BaseContext.getInstance().getUserInfo() != null) {
             rl_quit_login.setVisibility(View.VISIBLE);
-            tv_user_name.setText(BaseContext.getInstance().getUserInfo().nickname);
-            if (BaseContext.getInstance().getUserInfo().vipgrade > 0) {
-                rb_rank.setNumStars(BaseContext.getInstance().getUserInfo().vipgrade);
-                rb_rank.setVisibility(View.VISIBLE);
-            } else {
-                rb_rank.setVisibility(View.GONE);
-            }
-            ImageLoadedrManager.getInstance().display(getActivity(), BaseContext.getInstance().getUserInfo().headimg, ivHead, R.mipmap.ic_head_default, R.mipmap.ic_head_default);
+            tv_name.setText(BaseContext.getInstance().getUserInfo().userName);
+//            if (BaseContext.getInstance().getUserInfo().vipgrade > 0) {
+//                rb_rank.setNumStars(BaseContext.getInstance().getUserInfo().vipgrade);
+//                rb_rank.setVisibility(View.VISIBLE);
+//            } else {
+//                rb_rank.setVisibility(View.GONE);
+//            }
+            ImageLoadedrManager.getInstance().display(getActivity(), BaseContext.getInstance().getUserInfo().headImg, ivHead, R.mipmap.ic_head_default, R.mipmap.ic_head_default);
         } else {
             rl_quit_login.setVisibility(View.GONE);
-            tv_user_name.setText("");
-            rb_rank.setVisibility(View.GONE);
+            tv_user_name.setText("点击登录");
+            ivHead.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(getActivity(),LoginActivity.class));
+                }
+            });
 //            ImageLoadedrManager.getInstance().display(getActivity(), "", ivHead, R.mipmap.ic_head_default, R.mipmap.ic_head_default);
             ivHead.setImageResource(R.mipmap.ic_head_default);
         }
@@ -180,14 +185,14 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
                 }
                 startActivity(new Intent(getActivity(), CollectionActivity.class));
                 break;
-            case R.id.rl_real_name:
-                //实名制
-                if (BaseContext.getInstance().getUserInfo() == null) {
-                    startActivity(new Intent(getActivity(), LoginActivity.class));
-                    return;
-                }
-                startActivity(new Intent(getActivity(), CommitRealNameActivity.class));
-                break;
+//            case R.id.rl_real_name:
+//                //实名制
+//                if (BaseContext.getInstance().getUserInfo() == null) {
+//                    startActivity(new Intent(getActivity(), LoginActivity.class));
+//                    return;
+//                }
+//                startActivity(new Intent(getActivity(), CommitRealNameActivity.class));
+//                break;
             case R.id.tv_about:
                 //关于
                 startActivity(new Intent(getActivity(), AboutActivity.class));

@@ -59,7 +59,7 @@ public class MainActivity extends BaseActivity {
             mTabLayout.addTab(mTabLayout.newTab().setCustomView(textView));
         }
         viewPager.setCurrentItem(0);
-//        viewPager.setOffscreenPageLimit(2);
+        viewPager.setOffscreenPageLimit(4);
         viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
             public int getCount() {

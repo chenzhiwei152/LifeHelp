@@ -158,6 +158,7 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
             public void onTabReselected(TabLayout.Tab tab) {
 
             }
+            
         });
         setDefault();
     }

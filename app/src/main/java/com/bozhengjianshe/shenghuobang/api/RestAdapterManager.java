@@ -97,7 +97,7 @@ public class RestAdapterManager {
 //        String sign = Utils.getSign(hashMap);
 //        hashMap.put("sign", sign);//加密串
         if (null != BaseContext.getInstance().getUserInfo()) {
-            hashMap.put("token", BaseContext.getInstance().getUserInfo().token);
+//            hashMap.put("token", BaseContext.getInstance().getUserInfo().token);
         }
         return hashMap;
     }

@@ -65,7 +65,7 @@ public class OrderGoodsItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final int position) {
         if (list != null) {
             ImageLoadedrManager.getInstance().display(context, list.get(position).getProductImg(), ((ImageViewHolder) viewHolder).iv_goods);
-            ((ImageViewHolder) viewHolder).tv_count.setText(list.get(position).getProductCount() + "");
+            ((ImageViewHolder) viewHolder).tv_count.setText("x"+list.get(position).getProductCount() + "");
             ((ImageViewHolder) viewHolder).tv_price.setText(list.get(position).getProductPrice() + "");
             ((ImageViewHolder) viewHolder).tv_goods_name.setText(list.get(position).getProductName());
 //            ((ImageViewHolder) viewHolder).tv_detail.setOnClickListener(new View.OnClickListener() {

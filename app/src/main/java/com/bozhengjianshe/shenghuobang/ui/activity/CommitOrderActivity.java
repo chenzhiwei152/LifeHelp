@@ -118,7 +118,6 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             goodsBean = (GoodsDetailBean) bundle.getSerializable("detail");
-//            tag = bundle.getString("type");
         }
 
         setDeliveryType();
@@ -536,7 +535,7 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
     }
 
     /**
-     * 提交租赁订单
+     * 提交订单
      */
     private void commitRentOrder() {
         if (!NetUtil.isNetworkConnected(this)) {
@@ -563,9 +562,10 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
                     LogUtils.e(response.body().getMsg());
                     DialogUtils.closeDialog();
                     orderId = response.body().getData();
-                    Intent intent=new Intent(CommitOrderActivity.this,OrderDetailsActivity.class);
-                    intent.putExtra("orderId",orderId);
+                    Intent intent = new Intent(CommitOrderActivity.this, OrderDetailsActivity.class);
+                    intent.putExtra("orderId", orderId);
                     startActivity(intent);
+                    finish();
 //                    payStyleDialog();
                 }
             }

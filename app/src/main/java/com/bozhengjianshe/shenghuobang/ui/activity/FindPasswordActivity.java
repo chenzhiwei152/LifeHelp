@@ -13,6 +13,7 @@ import com.bozhengjianshe.shenghuobang.R;
 import com.bozhengjianshe.shenghuobang.api.JyCallBack;
 import com.bozhengjianshe.shenghuobang.api.RestAdapterManager;
 import com.bozhengjianshe.shenghuobang.base.BaseActivity;
+import com.bozhengjianshe.shenghuobang.base.BaseContext;
 import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
 import com.bozhengjianshe.shenghuobang.bean.ErrorBean;
@@ -205,8 +206,9 @@ public class FindPasswordActivity extends BaseActivity {
     private void commitData() {
         Map<String, String> map = new HashMap<>();
         map.put("checkCode", etCode.getText().toString());
-        map.put("newPwd", user_new_pass.getText().toString());
+        map.put("pwd", user_new_pass.getText().toString());
         map.put("phone", etPhone.getText().toString());
+        map.put("userId", BaseContext.getInstance().getUserInfo().userId);
         call = RestAdapterManager.getApi().commitNewPassword(map);
         call.enqueue(new JyCallBack<ErrorBean>() {
             @Override
@@ -216,16 +218,16 @@ public class FindPasswordActivity extends BaseActivity {
                         UIUtil.showToast(response.body().msg);
                         finish();
                     } else {
-                        UIUtil.showToast("修改密码失败~请稍后重试");
+                        UIUtil.showToast("修改手机号码失败~请稍后重试");
                     }
                 } else {
-                    UIUtil.showToast("修改密码失败~请稍后重试");
+                    UIUtil.showToast("修改手机号码失败~请稍后重试");
                 }
             }
 
             @Override
             public void onError(Call<ErrorBean> call, Throwable t) {
-                UIUtil.showToast("修改密码失败~请稍后重试");
+                UIUtil.showToast("修改手机号码失败~请稍后重试");
             }
 
             @Override

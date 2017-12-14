@@ -15,6 +15,7 @@ import com.bozhengjianshe.shenghuobang.base.BaseActivity;
 import com.bozhengjianshe.shenghuobang.base.BaseContext;
 import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
+import com.bozhengjianshe.shenghuobang.ui.bean.SuperBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.UserInfoBean;
 import com.bozhengjianshe.shenghuobang.utils.DialogUtils;
 import com.bozhengjianshe.shenghuobang.utils.ErrorMessageUtils;
@@ -65,7 +66,7 @@ public class PersonInformationActivity extends BaseActivity implements View.OnCl
     @BindView(R.id.iv_head)
     CircularImageView iv_head;
 
-    private Call<String> upLoadImageCall;
+    private Call<SuperBean<String>> upLoadImageCall;
     private Call<String> upLoadInfoCall;
     private String headimg;
     private String nickname;
@@ -114,12 +115,12 @@ public class PersonInformationActivity extends BaseActivity implements View.OnCl
     public void loadData() {
         if (BaseContext.getInstance().getUserInfo() != null) {
 
-            tv_sick_name.setText(BaseContext.getInstance().getUserInfo().nickname);
+            tv_sick_name.setText(BaseContext.getInstance().getUserInfo().userName);
 //            if (!TextUtils.isEmpty(BaseContext.getInstance().getUserInfo().sex)) {
 //                tv_sex.setText(BaseContext.getInstance().getUserInfo().sex.equals("1") ? "男" : "女");
 //            }
-            tv_birthday.setText(UIUtil.timeStamp2Date(BaseContext.getInstance().getUserInfo().birthday));
-            ImageLoadedrManager.getInstance().displayNoFilter(this, BaseContext.getInstance().getUserInfo().headimg, iv_head);
+//            tv_birthday.setText(UIUtil.timeStamp2Date(BaseContext.getInstance().getUserInfo().birthday));
+            ImageLoadedrManager.getInstance().displayNoFilter(this, BaseContext.getInstance().getUserInfo().headImg, iv_head);
         }
     }
 
@@ -140,17 +141,17 @@ public class PersonInformationActivity extends BaseActivity implements View.OnCl
 
     private void upLoadInfo() {
 
-        if (TextUtils.isEmpty(nickname) && TextUtils.isEmpty(sex) && TextUtils.isEmpty(birthday) && TextUtils.isEmpty(headimg)) {
-            UIUtil.showToast("信息没有更改");
-            return;
-        }
+//        if (TextUtils.isEmpty(nickname) && TextUtils.isEmpty(sex) && TextUtils.isEmpty(birthday) && TextUtils.isEmpty(headimg)) {
+//            UIUtil.showToast("信息没有更改");
+//            return;
+//        }
         DialogUtils.showDialog(this, "上传中", false);
         Map<String, String> map = new HashMap<>();
         map.put("userId", BaseContext.getInstance().getUserInfo().userId);
-        map.put("nickname", nickname);
-        map.put("sex", sex);
-        map.put("birthday", birthday);
-        map.put("headimg", headimg);
+//        map.put("nickname", nickname);
+//        map.put("sex", sex);
+//        map.put("birthday", birthday);
+        map.put("imgUrl", headimg);
         upLoadInfoCall = RestAdapterManager.getApi().upLoadInfo(map);
         upLoadInfoCall.enqueue(new JyCallBack<String>() {
             @Override
@@ -161,18 +162,18 @@ public class PersonInformationActivity extends BaseActivity implements View.OnCl
                         UIUtil.showToast("修改成功");
                         UserInfoBean userInfo = BaseContext.getInstance().getUserInfo();
                         if (userInfo != null) {
-                            if (!TextUtils.isEmpty(sex)) {
-                                userInfo.sex = sex;
-                            }
+//                            if (!TextUtils.isEmpty(sex)) {
+//                                userInfo.sex = sex;
+//                            }
                             if (!TextUtils.isEmpty(headimg)) {
-                                userInfo.headimg = headimg;
+                                userInfo.headImg = headimg;
                             }
-                            if (!TextUtils.isEmpty(nickname)) {
-                                userInfo.nickname = nickname;
-                            }
-                            if (!TextUtils.isEmpty(birthday)) {
-                                userInfo.birthday = birthday;
-                            }
+//                            if (!TextUtils.isEmpty(nickname)) {
+//                                userInfo.nickname = nickname;
+//                            }
+//                            if (!TextUtils.isEmpty(birthday)) {
+//                                userInfo.birthday = birthday;
+//                            }
                             BaseContext.getInstance().updateUserInfo(userInfo);
                         }
                         sex = "";
@@ -206,28 +207,29 @@ public class PersonInformationActivity extends BaseActivity implements View.OnCl
         DialogUtils.showDialog(this, "上传中", false);
         List<MultipartBody.Part> parts = UploadFile.filesToMultipartBody(list);
         upLoadImageCall = RestAdapterManager.getApi().uploadFile(parts.get(0));
-        upLoadImageCall.enqueue(new JyCallBack<String>() {
+        upLoadImageCall.enqueue(new JyCallBack<SuperBean<String>>() {
             @Override
-            public void onSuccess(Call<String> call, Response<String> response) {
+            public void onSuccess(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
 //                UIUtil.showToast(response.body());
                 DialogUtils.closeDialog();
-                if (response != null && response.body() != null) {
-                    if (!TextUtils.isEmpty(response.body())) {
+                UIUtil.showToast(response.body().getMsg());
+                if (response != null && response.body() != null&&response.body().getCode()==Constants.successCode) {
+                    if (!TextUtils.isEmpty(response.body().getData())) {
                         //上传图片成功
-                        headimg = response.body();
+                        headimg = response.body().getData();
                         upLoadInfo();
                     }
                 }
             }
 
             @Override
-            public void onError(Call<String> call, Throwable t) {
+            public void onError(Call<SuperBean<String>> call, Throwable t) {
                 DialogUtils.closeDialog();
                 UIUtil.showToast("上传头像失败");
             }
 
             @Override
-            public void onError(Call<String> call, Response<String> response) {
+            public void onError(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
                 try {
                     DialogUtils.closeDialog();
                     ErrorMessageUtils.taostErrorMessage(PersonInformationActivity.this, response.errorBody().string(), "");
@@ -260,27 +262,20 @@ public class PersonInformationActivity extends BaseActivity implements View.OnCl
             LogUtils.e("image路径--" + list.get(0));
         }
 //        headIsChange = true;
-        ImageLoadedrManager.getInstance().displayNoFilter(this, list.get(0), iv_head);
+        if (list.size()>0){
+            ImageLoadedrManager.getInstance().displayNoFilter(this, list.get(0), iv_head);
+            bt_commit.performClick();
+        }
+
     }
 
     /**
      * 初始化标题
      */
     private void initTitle() {
-        title_view.setLeftImageResource(R.mipmap.ic_title_back);
         title_view.setTitle("我的账号");
-//        title_view.setLeftText("返回");
-//        title_view.setLeftTextColor(Color.WHITE);
-        title_view.setLeftClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
-//        title_view.setBackgroundColor(getResources().getColor(R.color.color_ff6900));
+        title_view.setShowDefaultRightValue();
         title_view.setImmersive(true);
-
-
     }
 
 
@@ -307,6 +302,7 @@ public class PersonInformationActivity extends BaseActivity implements View.OnCl
                 startActivity(new Intent(this, EditNameActivity.class));
                 break;
             case R.id.tv_birthday:
+                //修改手机号码
                 startActivity(new Intent(this, FindPasswordActivity.class));
                 break;
             case R.id.iv_head:
