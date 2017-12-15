@@ -195,8 +195,9 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
                 isNewData = false;
                 getGoodsDetail();
             }
-            if (eventBusCenter.getEvenCode() == Constants.AddressUpdateSuccess) {
-                setViewPagerWrapContentHeight(Integer.valueOf((String)eventBusCenter.getData()));
+            if (eventBusCenter.getEvenCode() == Constants.UPDA_DETAIL_WEBVIEW_HEIGHT) {
+//                UIUtil.showToast((String)eventBusCenter.getData());
+                setViewPagerWrapContentHeight((Integer) eventBusCenter.getData());
             }
         }
     }

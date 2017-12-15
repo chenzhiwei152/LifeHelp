@@ -27,6 +27,7 @@ public class Constants {
     public static final int PAY_MEMBER_SUCCESS = 0x24;//修改密码成功
     public static final int UPDA_GOODS_DETAIL_H5 = 0x25;//更新详情页h5
     public static final int UPDA_CARD_GOODS_SELECTED = 0x26;//更新购物车选中的商品
+    public static final int UPDA_DETAIL_WEBVIEW_HEIGHT = 0x27;//更新购物车选中的商品
 
 
 }

@@ -12,6 +12,7 @@ import com.bozhengjianshe.shenghuobang.R;
 import com.bozhengjianshe.shenghuobang.base.BaseFragment;
 import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
+import com.bozhengjianshe.shenghuobang.utils.LogUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -105,6 +106,7 @@ public class GoodsDetailLeftFragment extends BaseFragment {
         final View parentView = (View) web_vv;
         web_vv.getSettings().setJavaScriptEnabled(true);
         web_vv.addJavascriptInterface(new HeightGetter(web_vv), "jo");
+        final Mobile mobile=new Mobile();
         web_vv.setWebViewClient(new WebViewClient() {
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 return false;
@@ -112,10 +114,26 @@ public class GoodsDetailLeftFragment extends BaseFragment {
 
             public void onPageFinished(WebView view, String url) {
                 web_vv.loadUrl("javascript:window.jo.run(document.documentElement.scrollHeight+'');");
+                mobile.onGetWebContentHeight();
             }
         });
         if (!TextUtils.isEmpty(url)) {
             web_vv.loadUrl(url);
+        }
+    }
+    private class Mobile {
+        @JavascriptInterface
+        public void onGetWebContentHeight() {
+            //重新调整webview高度
+            web_vv.post(new Runnable() {
+                @Override
+                public void run() {
+                    web_vv.measure(0, 0);
+                    int measuredHeight = web_vv.getMeasuredHeight();
+                    LogUtils.e("measure"+measuredHeight);
+                    EventBus.getDefault().post(new EventBusCenter<>(Constants.UPDA_DETAIL_WEBVIEW_HEIGHT,measuredHeight));
+                }
+            });
         }
     }
 
@@ -130,7 +148,7 @@ public class GoodsDetailLeftFragment extends BaseFragment {
             getActivity().runOnUiThread(new Runnable() {
                 public void run() { //获取到的高度 转换为dp
 //                    parentView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, UIUtil.px2dp(getActivity(), Integer.valueOf(height))));
-                    EventBus.getDefault().post(new EventBusCenter<>(Constants.AddressUpdateSuccess,height));
+//                    EventBus.getDefault().post(new EventBusCenter<>(Constants.AddressUpdateSuccess,height));
                 }
             });
         }
