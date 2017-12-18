@@ -59,7 +59,7 @@ public class GoodsDetailLeftFragment extends BaseFragment {
 
 
 //        web_vv.loadUrl("https://www.baidu.com");
-        refresh("https://www.baidu.com");
+//        refresh("https://www.baidu.com");
     }
     @JavascriptInterface
     public void resize(final float height) {
@@ -97,7 +97,7 @@ public class GoodsDetailLeftFragment extends BaseFragment {
 
     private void initDate(String url) {
 
-//        web_vv.loadUrl(url);
+        web_vv.loadUrl(url);
 
 
     }
