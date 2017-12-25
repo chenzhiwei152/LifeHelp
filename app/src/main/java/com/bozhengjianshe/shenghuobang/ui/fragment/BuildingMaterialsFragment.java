@@ -138,6 +138,7 @@ public class BuildingMaterialsFragment extends BaseFragment {
 //            }
 //        });
         edit_search.clearFocus();
+        edit_search.setFocusable(false);
         gv_menu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -155,7 +156,7 @@ public class BuildingMaterialsFragment extends BaseFragment {
                 }
             }
         });
-        rl_search_view.setOnClickListener(new View.OnClickListener() {
+        edit_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle bundle1 = new Bundle();

@@ -289,4 +289,7 @@
         <item name="android:windowEnterAnimation">@anim/menu_up</item>
         <item name="android:windowExitAnimation">@anim/menu_in</item>
     </style>
+    <declare-styleable name="MaxHeightRecyclerView">
+        <attr name="maxHeight" format="reference|dimension" />
+    </declare-styleable>
 </resources>

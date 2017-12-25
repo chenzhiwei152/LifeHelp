@@ -223,6 +223,7 @@ public interface JyApi {
      */
     @GET("/api/cart/getCartList")
     Call<SuperBean<List<CardListItemBean>>> getCardList(@Query("userId") String userId);
+
     /*** 删除购物车数据
      *
      * @return
@@ -303,7 +304,7 @@ public interface JyApi {
      * @return
      */
     @GET("/api/order/getOrderListByUserId")
-    Call<SuperBean<List<BuyOrderListItemBean>>> getRentOrderList(@Query("userId")String userId);
+    Call<SuperBean<List<BuyOrderListItemBean>>> getRentOrderList(@Query("userId") String userId);
 
     /**
      * 获取所有服务分类
@@ -316,19 +317,35 @@ public interface JyApi {
      */
     @POST("/api/data/appGetProductList")
     Call<SuperBean<AllServiceContentBean>> getAllServiceContentList(@Body Map<String, String> map);
+
     /**
      * 添加收藏
      */
     @POST("/api/collection/addCollection")
     Call<SuperBean<String>> addCollection(@Body Map<String, String> map);
+
     /**
      * 获取收藏
      */
     @GET("/api/collection/getAllCollection")
-    Call<SuperBean<List<CollectionItemBean>>> getCollection(@Query("userId")String userId);
+    Call<SuperBean<List<CollectionItemBean>>> getCollection(@Query("userId") String userId);
+
     /**
      * 删除收藏
      */
     @GET("/api/collection/deleteCollection")
-    Call<SuperBean<String>> deleteCollection(@Query("id")String id);
+    Call<SuperBean<String>> deleteCollection(@Query("id") String id);
+
+    /**
+     * 获取商户信息
+     */
+    @GET("/api/provider/getProviderInfo")
+    Call<SuperBean<String>> getMerchantInfo(@Query("userId") String userId);
+
+
+    /**
+     * 提交商户信息
+     */
+    @POST("/api/provider/add")
+    Call<SuperBean<String>> addMerchantInfo(@Body Map<String, String> map);
 }

@@ -26,7 +26,7 @@
 
         <com.bozhengjianshe.shenghuobang.view.CleanableEditText
             android:id="@+id/edit"
-            style="@style/password_editText_userName"
+            style="@style/clear_editText_userName"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>

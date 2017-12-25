@@ -1,13 +1,16 @@
 package com.bozhengjianshe.shenghuobang.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
 
 import com.bozhengjianshe.shenghuobang.utils.timepicker.TimePickerView;
 import com.bozhengjianshe.shenghuobang.view.BottomSheetListDialog;
 import com.bozhengjianshe.shenghuobang.view.ConfirmDialog;
+import com.bozhengjianshe.shenghuobang.view.SelectDialog;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by sun.luwei on 2017/11/10.
@@ -129,8 +132,8 @@ public class DialogManager {
      * @param singalSelect true 单选  false 多选
      * @return
      */
-//    public SelectDialog creatSelectDialog(Activity context, String title, List<String> data, boolean singalSelect) {
-//        SelectDialog da = new SelectDialog(context, title, data, singalSelect);
-//        return da;
-//    }
+    public SelectDialog creatSelectDialog(Activity context, String title, List<String> data, boolean singalSelect) {
+        SelectDialog da = new SelectDialog(context, title, data, singalSelect);
+        return da;
+    }
 }

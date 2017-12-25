@@ -127,6 +127,7 @@ public class IndexFragment extends BaseFragment {
         sf_listview.setAdapter(listAdapter);
         sf_recomment_listview.setAdapter(listAdapter1);
         edit_search.clearFocus();
+        edit_search.setFocusable(false);
 //        bt_search.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
@@ -162,7 +163,7 @@ public class IndexFragment extends BaseFragment {
                 }
             }
         });
-        rl_search_view.setOnClickListener(new View.OnClickListener() {
+        edit_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Bundle bundle1 = new Bundle();
