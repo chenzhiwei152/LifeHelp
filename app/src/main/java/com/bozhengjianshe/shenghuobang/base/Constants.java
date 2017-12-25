@@ -10,9 +10,9 @@ public class Constants {
     public static final String APP_KEY = "c3c5a51f3a4c70827523f8";
     public static int ADD_REQUEST_CODE = 11;
     public static int successCode = 1000;
-    public static String typeService="2";
-    public static String typeGoods="1";
-    public static String homeTypeTag="homeTypeTag";
+    public static String typeService = "2";
+    public static String typeGoods = "1";
+    public static String homeTypeTag = "homeTypeTag";
 
     public static class ErrorCode {
         public static String check_code = "400001039";//验证码错误
@@ -28,6 +28,7 @@ public class Constants {
     public static final int UPDA_GOODS_DETAIL_H5 = 0x25;//更新详情页h5
     public static final int UPDA_CARD_GOODS_SELECTED = 0x26;//更新购物车选中的商品
     public static final int UPDA_DETAIL_WEBVIEW_HEIGHT = 0x27;//更新购物车选中的商品
+    public static final int ADD_TO_CARD = 0x28;//加入购入车
 
 
 }

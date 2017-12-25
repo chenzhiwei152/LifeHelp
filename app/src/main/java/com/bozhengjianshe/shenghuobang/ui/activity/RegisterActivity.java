@@ -1,7 +1,6 @@
 package com.bozhengjianshe.shenghuobang.ui.activity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.CountDownTimer;
 import android.text.InputFilter;
 import android.text.TextUtils;
@@ -188,9 +187,9 @@ public class RegisterActivity extends BaseActivity implements
     private void initTitle() {
 
         titleView.setTitle(regist);
-        titleView.setTitleColor(Color.WHITE);
-        titleView.setBackgroundColor(getResources().getColor(R.color.color_ff6900));
-        titleView.setImmersive(true);
+//        titleView.setTitleColor(Color.WHITE);
+//        titleView.setBackgroundColor(getResources().getColor(R.color.color_ff6900));
+//        titleView.setImmersive(true);
     }
 
 

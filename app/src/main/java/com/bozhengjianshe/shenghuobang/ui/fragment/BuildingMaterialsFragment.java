@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
@@ -26,6 +27,7 @@ import com.bozhengjianshe.shenghuobang.base.BaseFragment;
 import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
 import com.bozhengjianshe.shenghuobang.ui.activity.AllBuildingActivity;
+import com.bozhengjianshe.shenghuobang.ui.activity.AllServiceActivity;
 import com.bozhengjianshe.shenghuobang.ui.activity.GoodsDetailsActivity;
 import com.bozhengjianshe.shenghuobang.ui.adapter.BuildingListItemAdapter;
 import com.bozhengjianshe.shenghuobang.ui.adapter.MainMenusAdapter;
@@ -71,6 +73,8 @@ public class BuildingMaterialsFragment extends BaseFragment {
     TextView bt_search;
     @BindView(R.id.gv_menu)
     AutoGridView gv_menu;
+    @BindView(R.id.rl_search_view)
+    RelativeLayout rl_search_view;
     List<bannerBean> list = new ArrayList<>();
     List<GoodsListBean> adList = new ArrayList<>();
     private BuildingListItemAdapter listAdapter;
@@ -115,24 +119,25 @@ public class BuildingMaterialsFragment extends BaseFragment {
 //        });
         listAdapter = new BuildingListItemAdapter(getActivity());
         sf_listview.setAdapter(listAdapter);
-        bt_search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!TextUtils.isEmpty(edit_search.getText().toString())) {
-                    keyWord = edit_search.getText().toString();
-                    getList();
-                    UIUtil.ShowOrHideSoftInput(getActivity(), false);
-                }
-            }
-        });
-        iv_clear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                edit_search.setText("");
-                keyWord = "";
-                getList();
-            }
-        });
+//        bt_search.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (!TextUtils.isEmpty(edit_search.getText().toString())) {
+//                    keyWord = edit_search.getText().toString();
+//                    getList();
+//                    UIUtil.ShowOrHideSoftInput(getActivity(), false);
+//                }
+//            }
+//        });
+//        iv_clear.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                edit_search.setText("");
+//                keyWord = "";
+//                getList();
+//            }
+//        });
+        edit_search.clearFocus();
         gv_menu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -148,6 +153,16 @@ public class BuildingMaterialsFragment extends BaseFragment {
                         UIUtil.showToast(getActivity(), "敬请期待!");
                     }
                 }
+            }
+        });
+        rl_search_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle1 = new Bundle();
+                bundle1.putString(Constants.homeTypeTag,"1");
+                Intent intent=new Intent(getActivity(),AllServiceActivity.class);
+                intent.putExtras(bundle1);
+                startActivity(intent);
             }
         });
     }

@@ -202,13 +202,13 @@ public class AllServiceActivity extends BaseActivity {
      */
     private void initTitle() {
         title_view.setTitle("分类详情");
-        title_view.setLeftImageResource(R.mipmap.ic_title_back);
-        title_view.setLeftClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
-        title_view.setImmersive(true);
+//        title_view.setLeftImageResource(R.mipmap.ic_title_back);
+//        title_view.setLeftClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                finish();
+//            }
+//        });
+//        title_view.setImmersive(true);
     }
 }

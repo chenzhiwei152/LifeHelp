@@ -151,8 +151,10 @@
 
         <Button
             android:id="@+id/login"
-            style="@style/btn_blue_btn"
+            style="@style/ButtonSecondary"
             android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:enabled="true"
             android:text="登陆" />
 

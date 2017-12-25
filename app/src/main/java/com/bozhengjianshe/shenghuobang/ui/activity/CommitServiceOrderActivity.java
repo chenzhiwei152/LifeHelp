@@ -25,6 +25,8 @@ import com.bozhengjianshe.shenghuobang.utils.timepicker.TimePickerView;
 import com.bozhengjianshe.shenghuobang.view.MenuItem;
 import com.bozhengjianshe.shenghuobang.view.TitleBar;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
@@ -58,6 +60,7 @@ public class CommitServiceOrderActivity extends BaseActivity implements View.OnC
     Call<SuperBean<String>> commitRentCall;
     private String orderId;
     private GoodsDetailBean goodsBean;
+    private String type;
 
 
     @Override
@@ -71,6 +74,7 @@ public class CommitServiceOrderActivity extends BaseActivity implements View.OnC
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             goodsBean = (GoodsDetailBean) bundle.getSerializable("detail");
+            type = bundle.getString("type");
         }
         bt_commit.setOnClickListener(this);
         mi_reservation_project.setOnClickListener(this);
@@ -78,6 +82,9 @@ public class CommitServiceOrderActivity extends BaseActivity implements View.OnC
         mi_name.setOnClickListener(this);
         mi_phone.setOnClickListener(this);
         mi_addresss.setOnClickListener(this);
+        if (!TextUtils.isEmpty(type) && "ToCard".equals(type)) {
+            bt_commit.setText("加入购物车");
+        }
     }
 
     @Override
@@ -113,7 +120,12 @@ public class CommitServiceOrderActivity extends BaseActivity implements View.OnC
         switch (v.getId()) {
             case R.id.bt_commit:
                 if (checkData() && !UIUtil.isFastDoubleClick()) {
-                    commitRentOrder();
+                    if (!TextUtils.isEmpty(type) && "ToCard".equals(type)) {
+                        EventBus.getDefault().post(new EventBusCenter<>(Constants.ADD_TO_CARD, getMap()));
+                        finish();
+                    } else {
+                        commitRentOrder();
+                    }
                 }
                 //提交
                 break;
@@ -179,7 +191,7 @@ public class CommitServiceOrderActivity extends BaseActivity implements View.OnC
 
     private void setValueDefault() {
         if (goodsBean != null) {
-            mi_reservation_project.getRightText().setText(goodsBean.getType()+"");
+            mi_reservation_project.getRightText().setText(goodsBean.getType() + "");
         }
     }
 
@@ -191,19 +203,8 @@ public class CommitServiceOrderActivity extends BaseActivity implements View.OnC
             UIUtil.showToast(R.string.net_state_error);
             return;
         }
-        Map<String, String> map = new HashMap<>();
-        map.put("receiveName", mi_name.getRightText().getText().toString());
-        map.put("receivePhone", mi_phone.getRightText().getText().toString());
-        map.put("receiveAddress", mi_addresss.getRightText().getText().toString());
-        map.put("productCount", "1");
-        map.put("serviceTime", mi_reservation_time.getRightText().getText().toString());
-//        map.put("transportType", deliverytype + "");
-        map.put("productId", goodsBean.getId() + "");
-        map.put("productType", goodsBean.getType() + "");
-        map.put("userid", BaseContext.getInstance().getUserInfo().userId);
-        LogUtils.e(JSON.toJSONString(map));
         DialogUtils.showDialog(CommitServiceOrderActivity.this, "获取订单...", false);
-        commitRentCall = RestAdapterManager.getApi().getRentOrder(map);
+        commitRentCall = RestAdapterManager.getApi().getRentOrder(getMap());
         commitRentCall.enqueue(new JyCallBack<SuperBean<String>>() {
             @Override
             public void onSuccess(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
@@ -234,5 +235,20 @@ public class CommitServiceOrderActivity extends BaseActivity implements View.OnC
                 }
             }
         });
+    }
+
+    private Map<String, String> getMap() {
+        Map<String, String> map = new HashMap<>();
+        map.put("receiveName", mi_name.getRightText().getText().toString());
+        map.put("receivePhone", mi_phone.getRightText().getText().toString());
+        map.put("receiveAddress", mi_addresss.getRightText().getText().toString());
+        map.put("productCount", "1");
+        map.put("serviceTime", mi_reservation_time.getRightText().getText().toString());
+//        map.put("transportType", deliverytype + "");
+        map.put("productId", goodsBean.getId() + "");
+        map.put("productType", goodsBean.getType() + "");
+        map.put("userid", BaseContext.getInstance().getUserInfo().userId);
+        LogUtils.e(JSON.toJSONString(map));
+        return map;
     }
 }

@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
@@ -74,6 +75,8 @@ public class IndexFragment extends BaseFragment {
     TextView bt_search;
     @BindView(R.id.gv_menu)
     AutoGridView gv_menu;
+    @BindView(R.id.rl_search_view)
+    RelativeLayout rl_search_view;
     List<bannerBean> list = new ArrayList<>();
     List<GoodsListBean> adList = new ArrayList<>();
     private MainListItemAdapter listAdapter;
@@ -123,24 +126,25 @@ public class IndexFragment extends BaseFragment {
         listAdapter1 = new MainListItemAdapter1(getActivity());
         sf_listview.setAdapter(listAdapter);
         sf_recomment_listview.setAdapter(listAdapter1);
-        bt_search.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!TextUtils.isEmpty(edit_search.getText().toString())) {
-                    keyWord = edit_search.getText().toString();
-                    getList();
-                    UIUtil.ShowOrHideSoftInput(getActivity(), false);
-                }
-            }
-        });
-        iv_clear.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                edit_search.setText("");
-                keyWord = "";
-                getList();
-            }
-        });
+        edit_search.clearFocus();
+//        bt_search.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (!TextUtils.isEmpty(edit_search.getText().toString())) {
+//                    keyWord = edit_search.getText().toString();
+//                    getList();
+//                    UIUtil.ShowOrHideSoftInput(getActivity(), false);
+//                }
+//            }
+//        });
+//        iv_clear.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                edit_search.setText("");
+//                keyWord = "";
+//                getList();
+//            }
+//        });
         gv_menu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -156,6 +160,16 @@ public class IndexFragment extends BaseFragment {
                         UIUtil.showToast(getActivity(), "敬请期待!");
                     }
                 }
+            }
+        });
+        rl_search_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle bundle1 = new Bundle();
+                bundle1.putString(Constants.homeTypeTag,"82");
+                Intent intent=new Intent(getActivity(),AllServiceActivity.class);
+                intent.putExtras(bundle1);
+                startActivity(intent);
             }
         });
     }

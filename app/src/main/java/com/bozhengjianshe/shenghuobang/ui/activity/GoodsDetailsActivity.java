@@ -195,9 +195,11 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
                 isNewData = false;
                 getGoodsDetail();
             }
-            if (eventBusCenter.getEvenCode() == Constants.UPDA_DETAIL_WEBVIEW_HEIGHT) {
+            else if (eventBusCenter.getEvenCode() == Constants.UPDA_DETAIL_WEBVIEW_HEIGHT) {
 //                UIUtil.showToast((String)eventBusCenter.getData());
                 setViewPagerWrapContentHeight((Integer) eventBusCenter.getData());
+            }else if (eventBusCenter.getEvenCode() == Constants.ADD_TO_CARD){
+                addToCard((Map<String, String>) eventBusCenter.getData());
             }
         }
     }
@@ -282,7 +284,12 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_add_card:
-                addToCard();
+                Bundle bundle1 = new Bundle();
+                bundle1.putSerializable("detail", goodsBean);
+                bundle1.putSerializable("type", "ToCard");
+                Intent intent1 = new Intent(this, CommitServiceOrderActivity.class);
+                intent1.putExtras(bundle1);
+                startActivity(intent1);
                 break;
             case R.id.iv_add_star:
                 addCollection();
@@ -309,7 +316,7 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
     /**
      * 添加到购物车
      */
-    private void addToCard() {
+    private void addToCard(Map<String,String> maps) {
         Map map = new HashMap();
         map.put("productCount", "1");
         map.put("productId", goodsBean.getId());
