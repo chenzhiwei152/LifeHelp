@@ -205,10 +205,10 @@
             android:name=".ui.activity.PersonInformationActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.CommitRealNameActivity"
+            android:name=".ui.activity.JoinsUsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.MyMemberRankActivity"
+            android:name=".ui.activity.MerchantOrderActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.ShoppingAddressEditActivity"

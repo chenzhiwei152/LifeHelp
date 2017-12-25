@@ -15,7 +15,9 @@ import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
 import com.bozhengjianshe.shenghuobang.ui.activity.AboutActivity;
 import com.bozhengjianshe.shenghuobang.ui.activity.AccountSafetyActivity;
 import com.bozhengjianshe.shenghuobang.ui.activity.CollectionActivity;
+import com.bozhengjianshe.shenghuobang.ui.activity.JoinsUsActivity;
 import com.bozhengjianshe.shenghuobang.ui.activity.LoginActivity;
+import com.bozhengjianshe.shenghuobang.ui.activity.MerchantOrderActivity;
 import com.bozhengjianshe.shenghuobang.ui.activity.OrderListActivity;
 import com.bozhengjianshe.shenghuobang.ui.activity.PersonInformationActivity;
 import com.bozhengjianshe.shenghuobang.utils.DialogUtils;
@@ -45,7 +47,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
     RelativeLayout rlSafety;
     @BindView(R.id.iv_location)
     ImageView ivLocation;
-//    @BindView(R.id.rl_location)
+    //    @BindView(R.id.rl_location)
 //    RelativeLayout rlLocation;
     @BindView(R.id.iv_mumber)
     ImageView ivMumber;
@@ -53,8 +55,8 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
     RelativeLayout rlMember;
     @BindView(R.id.iv_real_name)
     ImageView ivRealName;
-//    @BindView(R.id.rl_real_name)
-//    RelativeLayout rlRealName;
+    @BindView(R.id.rl_order)
+    RelativeLayout rl_order;
     @BindView(R.id.iv_abount)
     ImageView ivAbount;
     @BindView(R.id.tv_about)
@@ -73,6 +75,8 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
     TextView tv_collection;
     @BindView(R.id.tv_name)
     TextView tv_name;
+    @BindView(R.id.rl_merchant_order)
+    RelativeLayout rl_merchant_order;
 
     @Override
     protected int getContentViewLayoutId() {
@@ -83,12 +87,13 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
     protected void initViewsAndEvents() {
         tv_order.setOnClickListener(this);
         rlSafety.setOnClickListener(this);
-//        rlLocation.setOnClickListener(this);
+        rl_order.setOnClickListener(this);
         rlMember.setOnClickListener(this);
         tv_about.setOnClickListener(this);
         tv_setting.setOnClickListener(this);
         rl_quit_login.setOnClickListener(this);
         tv_info.setOnClickListener(this);
+        rl_merchant_order.setOnClickListener(this);
         tv_collection.setOnClickListener(this);
         initTitle();
     }
@@ -115,7 +120,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
             ivHead.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(getActivity(),LoginActivity.class));
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
                 }
             });
 //            ImageLoadedrManager.getInstance().display(getActivity(), "", ivHead, R.mipmap.ic_head_default, R.mipmap.ic_head_default);
@@ -160,6 +165,14 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
                 }
                 startActivity(new Intent(getActivity(), OrderListActivity.class));
                 break;
+            case R.id.rl_merchant_order:
+                //订单
+                if (BaseContext.getInstance().getUserInfo() == null) {
+                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                    return;
+                }
+                startActivity(new Intent(getActivity(), MerchantOrderActivity.class));
+                break;
             case R.id.rl_safety:
                 //账户安全
                 if (BaseContext.getInstance().getUserInfo() == null) {
@@ -168,15 +181,10 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
                 }
                 startActivity(new Intent(getActivity(), AccountSafetyActivity.class));
                 break;
-//            case R.id.rl_location:
-//                //收货地址
-//                if (BaseContext.getInstance().getUserInfo() == null) {
-//                    startActivity(new Intent(getActivity(), LoginActivity.class));
-//                    return;
-//                }
-//                startActivity(new Intent(getActivity(), ShoppingAddressActivity.class));
-//
-//                break;
+            case R.id.rl_order:
+//                //加入我们
+                startActivity(new Intent(getActivity(), JoinsUsActivity.class));
+                break;
             case R.id.tv_collection:
                 //收藏
                 if (BaseContext.getInstance().getUserInfo() == null) {

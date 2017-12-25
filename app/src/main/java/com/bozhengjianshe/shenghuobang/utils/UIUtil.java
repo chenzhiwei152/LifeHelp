@@ -258,7 +258,21 @@ public class UIUtil {
         SimpleDateFormat sdf = new SimpleDateFormat(format);
         return sdf.format(new Date(Long.valueOf(seconds)));
     }
-
+    /**
+     * 时间戳转换成日期格式字符串
+     *
+     * @param date
+     * @return
+     */
+    public static String timeStamp2Date(Date date, String format) {
+        if (date == null || date.equals("null")) {
+            return "";
+        }
+        if (format == null || format.isEmpty())
+            format = "MM-dd HH:mm";
+        SimpleDateFormat sdf = new SimpleDateFormat(format, Locale.CHINA);
+        return sdf.format(date);
+    }
     /**
      * 时间戳转换成日期格式字符串
      *
