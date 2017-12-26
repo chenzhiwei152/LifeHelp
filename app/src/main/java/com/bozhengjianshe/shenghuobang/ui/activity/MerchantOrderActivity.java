@@ -32,9 +32,9 @@ public class MerchantOrderActivity extends BaseActivity {
     TabLayout tabLayout;
     private List<String> tabName = Arrays.asList("订单市场", "待处理", "订单历史");
     private int[] tabIcons = {
-            R.drawable.selector_main_tab_index,
-            R.drawable.selector_main_tab_index,
-            R.drawable.selector_main_tab_index
+            R.drawable.selector_main_tab_order_market,
+            R.drawable.selector_main_tab_order_handle,
+            R.drawable.selector_main_tab_order_history
     };
 
     @Override
