@@ -278,6 +278,7 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
      */
     private void initTitle() {
         title_view.setTitle(R.string.app_name);
+        title_view.setShowDefaultRightValue();
     }
 
     @Override

@@ -44,7 +44,8 @@
             <android.support.v4.view.ViewPager
                 android:id="@+id/viewpager"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:background="@color/color_ffffff" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/sf_listview"
@@ -57,13 +58,14 @@
         </LinearLayout>
 
     </ScrollView>
+
     <LinearLayout
-        android:visibility="gone"
         android:id="@+id/stickyView"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/color_ffffff"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
 
         <RelativeLayout
             android:id="@+id/rl_left"
@@ -77,8 +79,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_gravity="center"
-                android:text="跟进"
-                 />
+                android:text="跟进" />
 
             <View
                 android:id="@+id/line_left"
@@ -86,8 +87,7 @@
                 android:layout_height="1sp"
                 android:layout_alignParentBottom="true"
                 android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                 />
+                android:layout_marginRight="10dp" />
         </RelativeLayout>
 
         <View
@@ -120,6 +120,7 @@
                 android:layout_marginRight="10dp" />
         </RelativeLayout>
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
@@ -138,12 +139,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
-                android:src="@mipmap/ic_stars" />
+                android:src="@mipmap/ic_tab_card_normal" />
 
             <ImageView
                 android:id="@+id/iv_add_star"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
                 android:layout_marginRight="20dp"
                 android:src="@mipmap/ic_stars" />
 

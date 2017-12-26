@@ -37,6 +37,8 @@ public class ShoppingCardListAdapter extends RecyclerView.Adapter<RecyclerView.V
     private boolean isEditMode = false;
     private CommonOnClickListerner onClickListerner;
     private CommonOnClickListerner onDeleteListerner;
+    private int count = 1;
+    private int mxCount = 200;
 
     public void setOnDeleteListerner(CommonOnClickListerner onDeleteListerner) {
         this.onDeleteListerner = onDeleteListerner;
@@ -121,7 +123,7 @@ public class ShoppingCardListAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, final int position) {
         if (list != null) {
 
             ((ImageViewHolder) viewHolder).tv_number.setText(list.get(position).getProductCount() + "");
@@ -145,6 +147,48 @@ public class ShoppingCardListAdapter extends RecyclerView.Adapter<RecyclerView.V
             ((ImageViewHolder) viewHolder).iv_delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    if (onDeleteListerner != null) {
+                        onDeleteListerner.myOnClick(list.get(position));
+                    }
+                }
+            });
+            ((ImageViewHolder) viewHolder).iv_minus.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    count = Integer.valueOf(((ImageViewHolder) viewHolder).tv_number.getText().toString());
+                    if (count == 1) {
+                        ((ImageViewHolder) viewHolder).iv_minus.setEnabled(false);
+                        return;
+
+                    }
+                    ((ImageViewHolder) viewHolder).iv_add.setEnabled(true);
+
+                    if (count > 1) {
+
+                        if (count == 2) {
+                            ((ImageViewHolder) viewHolder).iv_minus.setEnabled(false);
+                        }
+                        count--;
+                        ((ImageViewHolder) viewHolder).tv_number.setText(count + "");
+                        EventBus.getDefault().post(new EventBusCenter<>(Constants.UPDATE_CARD_PRICE));
+                    }
+                }
+            });
+            ((ImageViewHolder) viewHolder).iv_add.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ((ImageViewHolder) viewHolder).iv_minus.setEnabled(true);
+                    count = Integer.valueOf(((ImageViewHolder) viewHolder).tv_number.getText().toString());
+                    if (count < mxCount) {
+
+                        if (count == mxCount - 1) {
+                            ((ImageViewHolder) viewHolder).iv_add.setEnabled(false);
+                        }
+                        count++;
+                        ((ImageViewHolder) viewHolder).tv_number.setText(count + "");
+                        EventBus.getDefault().post(new EventBusCenter<>(Constants.UPDATE_CARD_PRICE));
+                    }
+
 
                 }
             });
@@ -172,6 +216,10 @@ public class ShoppingCardListAdapter extends RecyclerView.Adapter<RecyclerView.V
         ImageView iv_pic;
         @BindView(R.id.iv_delete)
         ImageView iv_delete;
+        @BindView(R.id.iv_add)
+        ImageView iv_add;
+        @BindView(R.id.iv_minus)
+        ImageView iv_minus;
 
         ImageViewHolder(final View view) {
             super(view);

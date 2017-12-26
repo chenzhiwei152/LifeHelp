@@ -29,6 +29,7 @@ public class Constants {
     public static final int UPDA_CARD_GOODS_SELECTED = 0x26;//更新购物车选中的商品
     public static final int UPDA_DETAIL_WEBVIEW_HEIGHT = 0x27;//更新购物车选中的商品
     public static final int ADD_TO_CARD = 0x28;//加入购入车
+    public static final int UPDATE_CARD_PRICE = 0x29;//更新购物车里面的价格
 
 
 }

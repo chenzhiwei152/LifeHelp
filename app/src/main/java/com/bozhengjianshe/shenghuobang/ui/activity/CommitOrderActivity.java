@@ -57,9 +57,9 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
     @BindView(R.id.tv_goods_num)
     TextView tvNum;
     @BindView(R.id.btn_des_goods_num)
-    TextView tvDes;
+    ImageView tvDes;
     @BindView(R.id.btn_add_goods_num)
-    TextView tvIns;
+    ImageView tvIns;
     @BindView(R.id.iv_goods)
     ImageView iv_goods;
     @BindView(R.id.tv_title)

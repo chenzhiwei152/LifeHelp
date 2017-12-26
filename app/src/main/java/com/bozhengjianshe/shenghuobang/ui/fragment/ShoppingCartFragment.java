@@ -112,6 +112,9 @@ public class ShoppingCartFragment extends BaseFragment {
                 } else {
                     rb_check_all.setChecked(false);
                 }
+            } else if (eventBusCenter.getEvenCode() == Constants.UPDATE_CARD_PRICE) {
+                //更新价格
+                CalculatePrice();
             }
         }
     }
@@ -159,7 +162,7 @@ public class ShoppingCartFragment extends BaseFragment {
             @Override
             public void onSuccess(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
                 UIUtil.showToast(response.body().getMsg());
-                if (response.body().getCode()==Constants.successCode){
+                if (response.body().getCode() == Constants.successCode) {
                     listAdapter.removeItem(bean);
                 }
             }

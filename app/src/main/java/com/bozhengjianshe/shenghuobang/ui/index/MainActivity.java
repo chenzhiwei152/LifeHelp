@@ -37,7 +37,7 @@ public class MainActivity extends BaseActivity {
     private boolean isWaitingExit = false;
     Class[] fragments = {IndexFragment.class, BuildingMaterialsFragment.class,ShoppingCartFragment.class, MyFragment.class};
     private int[] tabNames = {R.string.main_tab_name_index,R.string.main_tab_name_shopping_building,R.string.main_tab_name_shopping_cart, R.string.main_tab_name_me};
-    private int[] tabIcons = {R.drawable.selector_main_tab_index,R.drawable.selector_main_tab_index,R.drawable.selector_main_tab_index, R.drawable.selector_main_tab_mine};
+    private int[] tabIcons = {R.drawable.selector_main_tab_index,R.drawable.selector_main_tab_mathedrinal,R.drawable.selector_main_tab_cards, R.drawable.selector_main_tab_mine};
 //    private List<BaseFragment> fragmentList;
     @Override
     public int getContentViewLayoutId() {
