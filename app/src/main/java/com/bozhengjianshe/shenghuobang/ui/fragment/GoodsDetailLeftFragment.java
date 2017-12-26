@@ -97,7 +97,9 @@ public class GoodsDetailLeftFragment extends BaseFragment {
 
     private void initDate(String url) {
 
-        web_vv.loadUrl(url);
+//        web_vv.loadUrl(url);
+        refresh(url);
+        LogUtils.e("url:"+url);
 
 
     }

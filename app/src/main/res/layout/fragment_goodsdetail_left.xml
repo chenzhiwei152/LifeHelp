@@ -4,9 +4,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/web_vv"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:focusable="true"
     android:focusableInTouchMode="true"
+    android:layout_marginBottom="@dimen/dp_50"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 </WebView>

@@ -275,6 +275,14 @@ public interface JyApi {
      */
     @GET("/api/order/getOrderDetail")
     Call<SuperBean<OrderDetailBean>> getRentOrderDetails(@Query("orderId") String orderId);
+    /**
+     * 取消订单
+     * *
+     * @param orderId
+     * @return
+     */
+    @GET("/api/order/cancleOrder")
+    Call<SuperBean<OrderDetailBean>> quitOrder(@Query("orderId") String orderId);
 
 
     /**
