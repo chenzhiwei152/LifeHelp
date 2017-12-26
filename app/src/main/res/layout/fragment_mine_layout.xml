@@ -415,7 +415,8 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
-                android:background="@color/color_eeeeee" />
+                android:background="@color/color_eeeeee"
+                android:visibility="gone" />
 
             <RelativeLayout
                 android:id="@+id/rl_about"
@@ -453,15 +454,14 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
-                android:background="@color/color_eeeeee" />
+                android:background="@color/color_eeeeee"
+                android:visibility="gone" />
 
             <RelativeLayout
                 android:id="@+id/rl_quit_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:background="@color/color_f6c01c"
+                android:background="@color/color_ffffff"
                 android:padding="10dp">
 
                 <ImageView
@@ -470,17 +470,15 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:src="@mipmap/ic_my_abount"
-                    android:visibility="gone" />
+                    android:visibility="invisible" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="5dp"
                     android:layout_toRightOf="@+id/iv_quit_login"
                     android:text="退出登录"
-                    android:textColor="@color/color_ffffff"
                     android:textSize="16sp" />
 
                 <ImageView
