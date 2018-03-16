@@ -6,13 +6,14 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="color_ffffff">#ffffff</color>
+    <color name="color_ebebeb">#ebebeb</color>
     <color name="color_ff6025">#ff6025</color>
     <color name="color_efefef">#efefef</color>
     <color name="color_f6f6f6">#f6f6f6</color>
     <color name="color_000000">#000000</color>
     <color name="color_efffffff">#efffffff</color>
     <color name="color_ff6900">#ff6900</color>
-    <color name="color_f6c01c">#F6C01C</color>
+    <color name="color_f6c01c">#f6bf1b</color>
     <color name="color_ff8e00">#ff8e00</color>
     <color name="color_f1f1f1">#f1f1f1</color>
     <color name="color_ff6666">#ff6666</color>
