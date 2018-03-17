@@ -43,30 +43,15 @@
                     android:paddingTop="15dp"
                     android:verticalSpacing="5dp" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="#efefef"
-                    android:gravity="center_horizontal"
-                    android:orientation="horizontal"
-                    android:padding="10dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="本周优惠"
-                        android:textColor="@color/color_000000"
-                        android:textSize="15sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="sale"
-                        android:textColor="#FF00273B"
-                        android:textSize="15sp" />
-
-                </LinearLayout>
-
+                    android:layout_marginBottom="@dimen/dp_15"
+                    android:layout_marginTop="@dimen/dp_15"
+                    android:background="@drawable/bg_f6aa48_2_ffdc54_13"
+                    android:text="本周优惠"
+                    android:textColor="@color/color_ffffff"
+                    android:textSize="13sp" />
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/sf_listview"
                     android:layout_width="match_parent"

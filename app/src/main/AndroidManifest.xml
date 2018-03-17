@@ -214,7 +214,10 @@
             android:name=".ui.activity.ShoppingAddressEditActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.activity.PayDepositActivity"
+            android:name=".ui.activity.PropertyPaymentActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.PaymentInfoActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.AboutActivity"

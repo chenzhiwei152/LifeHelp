@@ -18,9 +18,9 @@
     <string name="plz_input_check_code">请输入验证码</string>
     <string name="regist">注册</string>
     <string name="get_verify_code">获取验证码</string>
-    <string name="agrrement_agree">我已经阅读并同意</string>
+    <string name="agrrement_agree">我已阅读并同意</string>
     <string name="agrrement_title">《用户服务协议》</string>
-    <string name="password_hint">请输入新密码</string>
+    <string name="password_hint">请输入密码</string>
     <string name="publish_photo">从图片库</string>
     <string name="publish_picture">拍照</string>
     <string name="publish_photo_max">最多添加9张图片</string>

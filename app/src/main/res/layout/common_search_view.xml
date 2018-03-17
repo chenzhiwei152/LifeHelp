@@ -1,13 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
     <RelativeLayout
+        android:id="@+id/rl_search_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/rl_search_view"
-        android:background="@color/color_f6c01c"
+        android:background="#f6c11b"
         android:padding="10dp">
+
+        <TextView
+            android:id="@+id/tv_location"
+            style="@style/Textfff_13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:drawableLeft="@mipmap/ic_navbar_location"
+            android:drawablePadding="@dimen/dp_3"
+            android:text="北京" />
 
         <com.bozhengjianshe.shenghuobang.view.CleanableEditText
             android:id="@+id/edit_search"
@@ -15,8 +27,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_10"
             android:layout_toLeftOf="@+id/bt_search"
-            android:hint="搜索服务"
+            android:layout_toRightOf="@+id/tv_location"
+            android:hint="请输入所需服务"
             android:paddingLeft="25dp" />
 
         <ImageView
@@ -26,17 +40,18 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:src="@mipmap/ic_search" />
+            android:src="@mipmap/ic_search"
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/iv_clear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
             android:layout_centerVertical="true"
             android:layout_marginLeft="-20dp"
             android:layout_toRightOf="@+id/edit_search"
-            android:src="@mipmap/ic_clear" />
+            android:src="@mipmap/ic_clear"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/bt_search"
@@ -45,8 +60,19 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:visibility="gone"
+            android:layout_toLeftOf="@+id/bt_customer"
             android:background="@drawable/bg_bbb_ffd2b2_5"
-            android:text="搜索" />
+            android:text="搜索"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/bt_customer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:src="@mipmap/ic_navbar_customer_service"
+            android:visibility="visible" />
     </RelativeLayout>
 </LinearLayout>

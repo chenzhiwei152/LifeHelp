@@ -261,10 +261,10 @@ public class RegisterActivity extends BaseActivity implements
             UIUtil.showToast("验证码不能为空");
             return;
         }
-        if (TextUtils.isEmpty(user_nick_name.getText())) {
-            UIUtil.showToast("昵称不能为空");
-            return;
-        }
+//        if (TextUtils.isEmpty(user_nick_name.getText())) {
+//            UIUtil.showToast("昵称不能为空");
+//            return;
+//        }
         if (TextUtils.isEmpty(user_password.getText())) {
             UIUtil.showToast("密码不能为空");
             return;

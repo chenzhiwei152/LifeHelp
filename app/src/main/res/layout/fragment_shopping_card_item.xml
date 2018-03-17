@@ -28,10 +28,9 @@
         android:layout_toRightOf="@+id/iv_delete"
         android:src="@mipmap/ic_about" />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
+        android:layout_height="55dp"
         android:layout_marginLeft="@dimen/dp_10"
         android:layout_toRightOf="@+id/iv_pic"
         android:orientation="vertical">
@@ -41,12 +40,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="家具"
-            android:textColor="@color/color_3f3f3f"
-            android:textSize="@dimen/dp_12" />
+            android:textColor="@color/color_333333"
+            android:textSize="13sp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
             android:orientation="horizontal">
 
             <TextView
@@ -54,17 +54,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="150"
-                android:textColor="@color/color_f6c01c"
-                android:textSize="@dimen/dp_12" />
+                android:textColor="@color/color_f6c11b"
+                android:textSize="14sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="元/套"
                 android:textColor="@color/color_3f3f3f"
-                android:textSize="@dimen/dp_12" />
+                android:textSize="@dimen/dp_12"
+                android:visibility="gone" />
         </LinearLayout>
-    </LinearLayout>
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"

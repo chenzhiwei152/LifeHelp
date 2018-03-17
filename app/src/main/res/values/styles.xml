@@ -59,6 +59,7 @@
         <item name="android:layout_centerVertical">true</item>
         <item name="android:background">@drawable/bg_bbb_4</item>
     </style>
+
     <style name="clearEditText_primary">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
@@ -115,6 +116,7 @@
         <item name="android:windowBackground">@color/color_ffffff</item>
         <item name="android:windowNoTitle">true</item>
     </style>
+
     <style name="dialog" parent="@android:style/Theme.Dialog">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowIsFloating">true</item>
@@ -125,16 +127,17 @@
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:backgroundDimAmount">0.6</item>
     </style>
+
     <declare-styleable name="pickerview">
         <attr name="pickerview_gravity">
-            <enum name="center" value="17"/>
-            <enum name="left" value="3"/>
-            <enum name="right" value="5"/>
+            <enum name="center" value="17" />
+            <enum name="left" value="3" />
+            <enum name="right" value="5" />
         </attr>
-        <attr name="pickerview_textSize" format="dimension"/>
-        <attr name="pickerview_textColorOut" format="color"/>
-        <attr name="pickerview_textColorCenter" format="color"/>
-        <attr name="pickerview_dividerColor" format="color"/>
+        <attr name="pickerview_textSize" format="dimension" />
+        <attr name="pickerview_textColorOut" format="color" />
+        <attr name="pickerview_textColorCenter" format="color" />
+        <attr name="pickerview_dividerColor" format="color" />
     </declare-styleable>
     <!--  主要用于Dialog的蓝色按钮 -->
     <style name="TextPrimary">
@@ -197,11 +200,17 @@
         <item name="android:textColor">#ffffff</item>
         <item name="android:textSize">14sp</item>
     </style>
+    <!--  #fff  13sp-->
+    <style name="Textfff_13">
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textSize">13sp</item>
+    </style>
 
     <style name="TextFourth">
         <item name="android:textColor">#000000</item>
         <item name="android:textSize">14sp</item>
     </style>
+
     <style name="TextFourth1">
         <item name="android:textColor">#000000</item>
         <item name="android:textSize">16sp</item>
@@ -217,6 +226,11 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <style name="Text333_13">
+        <item name="android:textColor">#333333</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
     <style name="TextSeven">
         <item name="android:textColor">#999999</item>
         <item name="android:textSize">14sp</item>
@@ -226,9 +240,19 @@
         <item name="android:textColor">#999999</item>
         <item name="android:textSize">12sp</item>
     </style>
+
     <style name="Text999_13">
         <item name="android:textColor">#999999</item>
         <item name="android:textSize">13sp</item>
+    </style>
+
+    <style name="Text1a1a1a_16">
+        <item name="android:textColor">#1a1a1a</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+    <style name="Text1a1a1a_14">
+        <item name="android:textColor">#1a1a1a</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
 
@@ -244,31 +268,38 @@
         <item name="android:layout_marginLeft">@dimen/dp_15</item>
         <item name="android:background">@color/color_dcdcdc</item>
     </style>
+    <!--分割线 dcdcdc 0.5dp  -->
+    <style name="divider_dcdcdc_half2">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/dp_0.5</item>
+        <item name="android:background">@color/color_dcdcdc</item>
+    </style>
     <!--分割线 dcdcdc 0.5dp  15dp-->
     <style name="divider_efefef_10">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/dp_10</item>
         <item name="android:background">@color/color_efefef</item>
     </style>
+
     <declare-styleable name="MenuItem">
-        <attr name="leftText" format="reference|string"/>
+        <attr name="leftText" format="reference|string" />
         <attr name="leftTextColor" format="integer" />
         <attr name="leftTextSize" format="dimension" />
         <attr name="autoHeight" format="dimension" />
-        <attr name="leftTextDrawableImage" format="reference"/>
+        <attr name="leftTextDrawableImage" format="reference" />
         <attr name="rightText" format="reference|string" />
         <attr name="rightTextColor" format="integer" />
         <attr name="rightTextSize" format="integer" />
         <attr name="rightHintText" format="reference|string" />
-        <attr name="rightImage" format="reference"/>
-        <attr name="enterImage" format="reference"/>
+        <attr name="rightImage" format="reference" />
+        <attr name="enterImage" format="reference" />
 
     </declare-styleable>
     <declare-styleable name="MenuItemEdittext">
-        <attr name="leftText1" format="reference|string"/>
-        <attr name="editText" format="reference|string"/>
-        <attr name="editTextHint" format="reference|string"/>
-        <attr name="editTextMaxLength" format="integer"/>
+        <attr name="leftText1" format="reference|string" />
+        <attr name="editText" format="reference|string" />
+        <attr name="editTextHint" format="reference|string" />
+        <attr name="editTextMaxLength" format="integer" />
     </declare-styleable>
     <!-- 按钮  黄色-->
     <style name="ButtonFirst" parent="Widget.AppCompat.Button.Borderless">
@@ -283,7 +314,7 @@
         <item name="android:textColor">@color/button_secondary_text_color</item>
         <item name="android:background">@drawable/button_secondary_background</item>
     </style>
-    <!-- 按钮  黄色 ，shape 5-->
+    <!-- 按钮  白色 ，shape 5-->
     <style name="Buttonfff_14" parent="Widget.AppCompat.Button.Borderless">
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/color_ffffff</item>
@@ -295,10 +326,12 @@
         <item name="android:textColor">@color/button_secondary_text_color</item>
         <item name="android:background">@drawable/button_third_background</item>
     </style>
+
     <style name="bottom_in_out_alpha_stay" parent="android:Animation">
         <item name="android:windowEnterAnimation">@anim/menu_up</item>
         <item name="android:windowExitAnimation">@anim/menu_in</item>
     </style>
+
     <declare-styleable name="MaxHeightRecyclerView">
         <attr name="maxHeight" format="reference|dimension" />
     </declare-styleable>

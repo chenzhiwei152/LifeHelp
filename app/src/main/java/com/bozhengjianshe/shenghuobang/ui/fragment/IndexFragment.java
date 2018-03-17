@@ -210,39 +210,39 @@ public class IndexFragment extends BaseFragment {
         //
         Bundle bundle1 = new Bundle();
         bundle1.putString(Constants.homeTypeTag,"82");
-        MainMenuInfo Home1 = new MainMenuInfo("便捷生活", R.mipmap.ic_home_1, AllServiceActivity.class, bundle1);
+        MainMenuInfo Home1 = new MainMenuInfo("补漏疏通", R.mipmap.ic_home_1, AllServiceActivity.class, bundle1);
         menus.add(Home1);
 
         Bundle bundle2 = new Bundle();
         bundle2.putString(Constants.homeTypeTag,"78");
-        MainMenuInfo Home2 = new MainMenuInfo("生活维修", R.mipmap.ic_home_2, AllServiceActivity.class, bundle2);
+        MainMenuInfo Home2 = new MainMenuInfo("门窗锁具", R.mipmap.ic_home_2, AllServiceActivity.class, bundle2);
         menus.add(Home2);
 
         Bundle bundle3 = new Bundle();
         bundle3.putString(Constants.homeTypeTag,"79");
-        MainMenuInfo Home3 = new MainMenuInfo("家政月嫂", R.mipmap.ic_home_3, AllServiceActivity.class, bundle3);
+        MainMenuInfo Home3 = new MainMenuInfo("水路电路", R.mipmap.ic_home_3, AllServiceActivity.class, bundle3);
         menus.add(Home3);
 
         Bundle bundle4 = new Bundle();
         bundle4.putString(Constants.homeTypeTag,"76");
-        MainMenuInfo Home4 = new MainMenuInfo("家庭改造", R.mipmap.ic_home_4, AllServiceActivity.class, bundle4);
+        MainMenuInfo Home4 = new MainMenuInfo("居家安装", R.mipmap.ic_home_4, AllServiceActivity.class, bundle4);
         menus.add(Home4);
         Bundle bundle5 = new Bundle();
         bundle5.putString(Constants.homeTypeTag,"81");
-        MainMenuInfo Home5 = new MainMenuInfo("搬家搬运", R.mipmap.ic_home_5, AllServiceActivity.class, bundle5);
+        MainMenuInfo Home5 = new MainMenuInfo("保洁清洗", R.mipmap.ic_home_5, AllServiceActivity.class, bundle5);
         menus.add(Home5);
 
         Bundle bundle6 = new Bundle();
         bundle6.putString(Constants.homeTypeTag,"77");
-        MainMenuInfo Home6 = new MainMenuInfo("居家安装", R.mipmap.ic_home_6, AllServiceActivity.class, bundle6);
+        MainMenuInfo Home6 = new MainMenuInfo("搬家搬运", R.mipmap.ic_home_6, AllServiceActivity.class, bundle6);
         menus.add(Home6);
         Bundle bundle7 = new Bundle();
         bundle7.putString(Constants.homeTypeTag,"75");
-        MainMenuInfo Home7 = new MainMenuInfo("居家装饰", R.mipmap.ic_home_7, AllServiceActivity.class, bundle7);
+        MainMenuInfo Home7 = new MainMenuInfo("家庭维修", R.mipmap.ic_home_7, AllServiceActivity.class, bundle7);
         menus.add(Home7);
         Bundle bundle8 = new Bundle();
         bundle8.putString(Constants.homeTypeTag,"80");
-        MainMenuInfo Home8 = new MainMenuInfo("保洁清洗", R.mipmap.ic_home_8, AllServiceActivity.class, bundle8);
+        MainMenuInfo Home8 = new MainMenuInfo("局部改造", R.mipmap.ic_home_8, AllServiceActivity.class, bundle8);
         menus.add(Home8);
 
         menusAdapter = new MainMenusAdapter(getContext(), menus);

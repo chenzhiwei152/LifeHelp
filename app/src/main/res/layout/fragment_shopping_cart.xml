@@ -28,7 +28,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal">
 
@@ -37,17 +37,19 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="4"
-            android:background="@color/color_f6c01c"
-            android:text="全选" />
+            android:background="@color/color_ffffff"
+            android:text="全选"
+            android:textColor="@color/color_666666"
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/tv_calculate"
+            style="@style/TextThirdly"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/color_000000"
+            android:background="@mipmap/ic_bt_cleared"
             android:gravity="center"
-            android:text="结算"
-            style="@style/TextThirdly" />
+            android:text="结算" />
     </LinearLayout>
 </RelativeLayout>

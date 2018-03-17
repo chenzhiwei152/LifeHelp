@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_ffffff"
+    android:orientation="vertical">
+
+    <com.bozhengjianshe.shenghuobang.view.TitleBar
+        android:id="@+id/title_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <com.bozhengjianshe.shenghuobang.view.AutoGridView
+        android:id="@+id/gv_menu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_ffffff"
+        android:listSelector="@drawable/selector_general_click"
+        android:numColumns="2"
+        android:padding="@dimen/dp_15"
+        android:verticalSpacing="15dp" />
+</LinearLayout>

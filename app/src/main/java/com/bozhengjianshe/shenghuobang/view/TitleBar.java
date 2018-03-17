@@ -28,9 +28,9 @@ public class TitleBar extends ViewGroup implements View.OnClickListener {
     private static final int DEFAULT_SUB_TEXT_SIZE = 12;
     private static final int DEFAULT_ACTION_TEXT_SIZE = 15;
     private static final int DEFAULT_TITLE_BAR_HEIGHT = 48;
-    private int DEFAULT_BACKGROUND_COLOR = R.color.color_f6c01c;
+    private int DEFAULT_BACKGROUND_COLOR = R.color.color_f6c11b;
     private int DEFAULT_BACK_ICON = R.mipmap.ic_title_back;
-    private int DEFAULT_TEXT_COLOR = Color.BLACK;
+    private int DEFAULT_TEXT_COLOR = Color.WHITE;
     private static final String STATUS_BAR_HEIGHT_RES_NAME = "status_bar_height";
 
     private TextView mLeftText;
@@ -47,7 +47,7 @@ public class TitleBar extends ViewGroup implements View.OnClickListener {
     private int mStatusBarHeight;
     private int mActionPadding;
     private int mOutPadding;
-    private int mActionTextColor;
+    private int mActionTextColor = Color.WHITE;
     private int mHeight;
 
     public TitleBar(Context context) {
