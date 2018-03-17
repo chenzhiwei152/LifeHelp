@@ -223,6 +223,9 @@
             android:name=".ui.activity.AboutActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.activity.PropertyOne2OneActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".utils.photoTool.TakingPicturesActivity"
             android:screenOrientation="portrait" />
         <activity

@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bozhengjianshe.shenghuobang.R;
-import com.bozhengjianshe.shenghuobang.ui.bean.AllServiceTypeBean;
+import com.bozhengjianshe.shenghuobang.ui.bean.PropertyOen2OneBean;
 import com.bozhengjianshe.shenghuobang.ui.listerner.CommonOnClickListerner;
 
 import java.util.ArrayList;
@@ -21,8 +21,8 @@ import butterknife.ButterKnife;
 /**
  * Created by chenzhiwei 2016/6/14.
  */
-public class AllServiceTypeListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private static List<AllServiceTypeBean> list;
+public class PropertyOne2OneListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private static List<PropertyOen2OneBean> list;
     private static Context context;
     private String type;
     private int selectedPosition;
@@ -57,20 +57,20 @@ public class AllServiceTypeListAdapter extends RecyclerView.Adapter<RecyclerView
     private final LayoutInflater mLayoutInflater;
 
 
-    public AllServiceTypeListAdapter(Context context) {
+    public PropertyOne2OneListAdapter(Context context) {
         this.context = context;
         this.list = new ArrayList<>();
         mLayoutInflater = LayoutInflater.from(context);
     }
 
-    public AllServiceTypeListAdapter(Context context, List<AllServiceTypeBean> items) {
+    public PropertyOne2OneListAdapter(Context context, List<PropertyOen2OneBean> items) {
         this.context = context;
         this.list = new ArrayList<>();
         this.list.addAll(items);
         mLayoutInflater = LayoutInflater.from(context);
     }
 
-    public void addList(List<AllServiceTypeBean> items) {
+    public void addList(List<PropertyOen2OneBean> items) {
         this.list.addAll(items);
         notifyDataSetChanged();
     }
@@ -80,7 +80,7 @@ public class AllServiceTypeListAdapter extends RecyclerView.Adapter<RecyclerView
         notifyDataSetChanged();
     }
 
-    public static List<AllServiceTypeBean> getEntities() {
+    public static List<PropertyOen2OneBean> getEntities() {
         return list;
     }
 
@@ -93,14 +93,14 @@ public class AllServiceTypeListAdapter extends RecyclerView.Adapter<RecyclerView
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final int position) {
         if (list != null) {
-            if (selectedPosition != position) {
-                ((ImageViewHolder) viewHolder).tv_title.setTextColor(context.getResources().getColor(R.color.color_999999));
-                ((ImageViewHolder) viewHolder).vv_divider.setBackgroundColor(context.getResources().getColor(R.color.color_ffffff));
-            } else {
-                ((ImageViewHolder) viewHolder).tv_title.setTextColor(context.getResources().getColor(R.color.color_000000));
-                ((ImageViewHolder) viewHolder).vv_divider.setBackgroundColor(context.getResources().getColor(R.color.color_000000));
-            }
-            ((ImageViewHolder) viewHolder).tv_title.setText(list.get(position).getText() + "");
+//            if (selectedPosition != position) {
+//                ((ImageViewHolder) viewHolder).tv_title.setTextColor(context.getResources().getColor(R.color.color_999999));
+//                ((ImageViewHolder) viewHolder).vv_divider.setBackgroundColor(context.getResources().getColor(R.color.color_ffffff));
+//            } else {
+//                ((ImageViewHolder) viewHolder).tv_title.setTextColor(context.getResources().getColor(R.color.color_000000));
+//                ((ImageViewHolder) viewHolder).vv_divider.setBackgroundColor(context.getResources().getColor(R.color.color_000000));
+//            }
+//            ((ImageViewHolder) viewHolder).tv_title.setText(list.get(position).getText() + "");
         }
     }
 
