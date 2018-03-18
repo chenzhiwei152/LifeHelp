@@ -220,6 +220,12 @@
             android:name=".ui.activity.PaymentInfoActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.activity.OwnerLeaveMessageActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.OwnerLeaveMessageDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.activity.AboutActivity"
             android:screenOrientation="portrait" />
         <activity

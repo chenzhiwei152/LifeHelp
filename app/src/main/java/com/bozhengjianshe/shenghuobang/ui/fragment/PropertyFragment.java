@@ -12,6 +12,7 @@ import com.bozhengjianshe.shenghuobang.base.BaseFragment;
 import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
 import com.bozhengjianshe.shenghuobang.ui.activity.AllServiceActivity;
+import com.bozhengjianshe.shenghuobang.ui.activity.OwnerLeaveMessageActivity;
 import com.bozhengjianshe.shenghuobang.ui.activity.PropertyOne2OneActivity;
 import com.bozhengjianshe.shenghuobang.ui.activity.PropertyPaymentActivity;
 import com.bozhengjianshe.shenghuobang.ui.adapter.MainMenusAdapter;
@@ -87,7 +88,7 @@ public class PropertyFragment extends BaseFragment {
 
         Bundle bundle3 = new Bundle();
         bundle3.putString(Constants.homeTypeTag, "79");
-        MainMenuInfo Home3 = new MainMenuInfo("业主留言", R.mipmap.ic_home_33, AllServiceActivity.class, bundle3);
+        MainMenuInfo Home3 = new MainMenuInfo("业主留言", R.mipmap.ic_home_33, OwnerLeaveMessageActivity.class, bundle3);
         menus.add(Home3);
 
         Bundle bundle4 = new Bundle();

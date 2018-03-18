@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.bozhengjianshe.shenghuobang.view.TitleBar
+        android:id="@+id/title_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_ffffff"
+        android:orientation="horizontal"
+        android:padding="@dimen/dp_10">
+
+        <TextView
+            style="@style/Text808080_15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="留言标题" />
+
+        <TextView
+            style="@style/Text1a1a1a_15"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:background="@null"
+            android:hint="请输入留言标题"
+            android:textColorHint="#bfbfbf" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_10"
+        android:background="@color/color_ffffff"
+        android:orientation="vertical"
+        android:padding="@dimen/dp_10">
+
+        <TextView
+            style="@style/Text808080_15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="留言内容" />
+
+        <TextView
+            style="@style/Text1a1a1a_15"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:layout_marginTop="@dimen/dp_10"
+            android:background="@drawable/bg_dddddd_solid1"
+            android:gravity="top"
+            android:hint="您好，我们18号楼楼下的垃圾区多日无人清扫管
+理，味道很大，麻烦及时处理。" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_ffffff"
+        android:orientation="horizontal"
+        android:padding="@dimen/dp_10">
+
+        <TextView
+            style="@style/Text808080_15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="处理情况" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:background="@null"
+            android:hint="已处理"
+            android:textColor="#58d174"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_10"
+        android:background="@color/color_ffffff"
+        android:orientation="vertical"
+        android:padding="@dimen/dp_10">
+
+        <TextView
+            style="@style/Text808080_15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="留言反馈" />
+
+        <TextView
+            style="@style/Text1a1a1a_15"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:layout_marginTop="@dimen/dp_10"
+            android:background="@drawable/bg_dddddd_solid1"
+            android:gravity="top"
+            android:hint="您好，您所反映的问题已经解决，如果还有其他
+问题请及时联系物业公司。" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_ffffff"
+        android:orientation="horizontal"
+        android:padding="@dimen/dp_10">
+
+        <TextView
+            style="@style/Text808080_15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="物业电话" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:background="@null"
+            android:hint="15345656678"
+            android:textColor="#1a1a1a"
+            android:textSize="15sp" />
+    </LinearLayout>
+
+
+</LinearLayout>
