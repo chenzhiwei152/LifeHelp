@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.RelativeLayout;
 import android.widget.ViewFlipper;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
@@ -11,7 +12,7 @@ import com.bozhengjianshe.shenghuobang.R;
 import com.bozhengjianshe.shenghuobang.base.BaseFragment;
 import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
-import com.bozhengjianshe.shenghuobang.ui.activity.AllServiceActivity;
+import com.bozhengjianshe.shenghuobang.ui.activity.ClearingInspectionActivity;
 import com.bozhengjianshe.shenghuobang.ui.activity.OwnerLeaveMessageActivity;
 import com.bozhengjianshe.shenghuobang.ui.activity.PropertyOne2OneActivity;
 import com.bozhengjianshe.shenghuobang.ui.activity.PropertyPaymentActivity;
@@ -30,7 +31,7 @@ import butterknife.BindView;
  * Created by chen.zhiwei on 2018-1-29.
  */
 
-public class PropertyFragment extends BaseFragment {
+public class PropertyFragment extends BaseFragment implements View.OnClickListener {
     @BindView(R.id.convenientBanner)
     ConvenientBanner convenientBanner;
     @BindView(R.id.gv_menu)
@@ -39,6 +40,8 @@ public class PropertyFragment extends BaseFragment {
     ViewFlipper vf_ad;
     @BindView(R.id.title_view)
     TitleBar title_view;
+    @BindView(R.id.rl_owner_evaluation)
+    RelativeLayout rl_owner_evaluation;
     private ArrayList<MainMenuInfo> menus = new ArrayList<>();
     private MainMenusAdapter menusAdapter;
 
@@ -67,6 +70,7 @@ public class PropertyFragment extends BaseFragment {
                 }
             }
         });
+        rl_owner_evaluation.setOnClickListener(this);
         initMenus();
         initViewFlipper();
     }
@@ -93,16 +97,16 @@ public class PropertyFragment extends BaseFragment {
 
         Bundle bundle4 = new Bundle();
         bundle4.putString(Constants.homeTypeTag, "76");
-        MainMenuInfo Home4 = new MainMenuInfo("清洁巡检", R.mipmap.ic_home_34, AllServiceActivity.class, bundle4);
+        MainMenuInfo Home4 = new MainMenuInfo("清洁巡检", R.mipmap.ic_home_34, ClearingInspectionActivity.class, bundle4);
         menus.add(Home4);
         Bundle bundle5 = new Bundle();
         bundle5.putString(Constants.homeTypeTag, "81");
-        MainMenuInfo Home5 = new MainMenuInfo("设施巡检", R.mipmap.ic_home_35, AllServiceActivity.class, bundle5);
+        MainMenuInfo Home5 = new MainMenuInfo("设施巡检", R.mipmap.ic_home_35, ClearingInspectionActivity.class, bundle5);
         menus.add(Home5);
 
         Bundle bundle6 = new Bundle();
         bundle6.putString(Constants.homeTypeTag, "77");
-        MainMenuInfo Home6 = new MainMenuInfo("安保巡检", R.mipmap.ic_home_36, AllServiceActivity.class, bundle6);
+        MainMenuInfo Home6 = new MainMenuInfo("安保巡检", R.mipmap.ic_home_36, ClearingInspectionActivity.class, bundle6);
         menus.add(Home6);
 
         menusAdapter = new MainMenusAdapter(getContext(), menus);
@@ -137,7 +141,17 @@ public class PropertyFragment extends BaseFragment {
     public void onMsgEvent(EventBusCenter eventBusCenter) {
 
     }
+
     private void initTitle() {
         title_view.setTitle("物业");
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.rl_owner_evaluation:
+                startActivity(new Intent(getActivity(), OwnerLeaveMessageActivity.class));
+                break;
+        }
     }
 }

@@ -232,6 +232,12 @@
             android:name=".ui.activity.PropertyOne2OneActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.activity.ClearingInspectionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.InspectionDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".utils.photoTool.TakingPicturesActivity"
             android:screenOrientation="portrait" />
         <activity

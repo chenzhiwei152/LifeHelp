@@ -35,13 +35,13 @@
                 android:verticalSpacing="5dp" />
 
             <RelativeLayout
+                android:id="@+id/rl_owner_evaluation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp_10"
                 android:layout_marginRight="@dimen/dp_10">
 
                 <ImageView
-
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@mipmap/bt_bg_evaluation" />
