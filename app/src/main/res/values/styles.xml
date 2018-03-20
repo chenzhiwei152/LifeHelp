@@ -74,7 +74,7 @@
     <style name="Theme.AppStartLoadTranslucent" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowNoTitle">true</item>
-        <item name="android:windowBackground">@color/color_dcdcdc</item>
+        <item name="android:windowBackground">@color/color_eeeeee</item>
         <item name="android:windowAnimationStyle">@style/AnimationActivity</item>
     </style>
     <!--Activity的启动动画-->
