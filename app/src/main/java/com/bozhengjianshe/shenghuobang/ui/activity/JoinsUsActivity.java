@@ -1,6 +1,7 @@
 package com.bozhengjianshe.shenghuobang.ui.activity;
 
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 
 import com.alibaba.fastjson.JSONArray;
@@ -70,6 +71,8 @@ public class JoinsUsActivity extends BaseActivity implements View.OnClickListene
         mi_serviced.setOnClickListener(this);
         mi_service_content.setOnClickListener(this);
         mi_service_range.setOnClickListener(this);
+        mi_service_content.setRightTextGravity(Gravity.LEFT);
+        mi_service_range.setRightTextGravity(Gravity.LEFT);
     }
 
     @Override
@@ -97,9 +100,9 @@ public class JoinsUsActivity extends BaseActivity implements View.OnClickListene
      * 初始化标题
      */
     private void initTitle() {
-        title_view.setTitle("加入我们");
+        title_view.setTitle("加入生活帮");
         title_view.setShowDefaultRightValue();
-        title_view.addAction(new TitleBar.TextAction("提交审核") {
+        title_view.addAction(new TitleBar.TextAction("完成") {
             @Override
             public void performAction(View view) {
                 commitINfo();
@@ -223,6 +226,9 @@ public class JoinsUsActivity extends BaseActivity implements View.OnClickListene
      * 获取商家信息
      */
     private void getInfo() {
+        if (BaseContext.getInstance().getUserInfo() == null) {
+            return;
+        }
         Call<SuperBean<String>> getMerchantInfo = RestAdapterManager.getApi().getMerchantInfo(BaseContext.getInstance().getUserInfo().userId);
         getMerchantInfo.enqueue(new JyCallBack<SuperBean<String>>() {
             @Override

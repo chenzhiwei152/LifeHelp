@@ -45,6 +45,7 @@ public class MenuItem extends FrameLayout {
         setLeftTextSize(array.getDimension(R.styleable.MenuItem_leftTextSize, -1f));
         setRightText(array.getString(R.styleable.MenuItem_rightText));
         setRightTextColor(array.getResourceId(R.styleable.MenuItem_rightTextColor, -1));
+        setRightTextGravity(array.getResourceId(R.styleable.MenuItem_rightTextGravity, -1));
         setRightTextSize(array.getDimension(R.styleable.MenuItem_rightTextSize, -1f));
         setRightTextHint(array.getString(R.styleable.MenuItem_rightHintText));
         int rImage = array.getResourceId(R.styleable.MenuItem_rightImage, -1);
@@ -115,6 +116,11 @@ public class MenuItem extends FrameLayout {
     public void setRightTextColor(int color) {
         if (-1 != color) {
             rightText.setTextColor(color);
+        }
+    }
+    public void setRightTextGravity(int gravity) {
+        if (-1 != gravity) {
+            rightText.setGravity(gravity);
         }
     }
 

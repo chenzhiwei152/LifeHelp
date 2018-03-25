@@ -28,6 +28,7 @@
             android:id="@+id/edit"
             style="@style/clear_editText_userName"
             android:layout_width="match_parent"
+            android:textColorHint="@color/color_b3b3b3"
             android:layout_height="match_parent" />
     </LinearLayout>
 

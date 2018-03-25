@@ -224,6 +224,10 @@
         <item name="android:textColor">#666666</item>
         <item name="android:textSize">14sp</item>
     </style>
+    <style name="Text666_13">
+        <item name="android:textColor">#666666</item>
+        <item name="android:textSize">13sp</item>
+    </style>
 
     <style name="TextSix">
         <item name="android:textColor">#333333</item>
@@ -278,6 +282,10 @@
         <item name="android:textColor">#b3b3b3</item>
         <item name="android:textSize">13sp</item>
     </style>
+    <style name="Textb3b3b3_15">
+        <item name="android:textColor">#b3b3b3</item>
+        <item name="android:textSize">15sp</item>
+    </style>
 
 
     <style name="CustomerToolbarStyle" parent="Widget.AppCompat.Toolbar">
@@ -313,6 +321,7 @@
         <attr name="leftTextDrawableImage" format="reference" />
         <attr name="rightText" format="reference|string" />
         <attr name="rightTextColor" format="integer" />
+        <attr name="rightTextGravity" format="integer" />
         <attr name="rightTextSize" format="integer" />
         <attr name="rightHintText" format="reference|string" />
         <attr name="rightImage" format="reference" />

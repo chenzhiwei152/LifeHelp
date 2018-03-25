@@ -238,6 +238,9 @@
             android:name=".ui.activity.InspectionDetailActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.activity.SelectMerchantActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".utils.photoTool.TakingPicturesActivity"
             android:screenOrientation="portrait" />
         <activity

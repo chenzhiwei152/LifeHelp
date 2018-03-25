@@ -62,6 +62,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     //注册
     @BindView(R.id.regist)
     TextView regist;
+    @BindView(R.id.regist_service_provider)
+    TextView regist_service_provider;
     /**
      * 是否清除密码
      */
@@ -89,6 +91,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         forgetPassword.setOnClickListener(this);
         regist.setOnClickListener(this);
         ivCheckCode.setOnClickListener(this);
+        regist_service_provider.setOnClickListener(this);
 
     }
 
@@ -134,6 +137,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 //忘记密码
                 Intent forgetIntent = new Intent(this, FindPasswordActivity.class);
                 startActivity(forgetIntent);
+                break;
+            case R.id.regist_service_provider:
+                startActivity(new Intent(this, SelectMerchantActivity.class));
                 break;
 
 

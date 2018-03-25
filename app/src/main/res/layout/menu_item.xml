@@ -36,7 +36,7 @@
                 android:layout_width="@dimen/dp_40"
                 android:layout_height="@dimen/dp_40"
                 android:layout_gravity="center_vertical"
-                android:layout_marginRight="@dimen/dp_5" />
+                />
 
             <TextView
                 android:id="@+id/right_text"

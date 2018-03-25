@@ -41,7 +41,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="20dp"
+        android:layout_height="0.5dp"
         android:background="@color/color_eeeeee" />
 
     <RelativeLayout
@@ -58,7 +58,7 @@
             android:id="@+id/tv_sick_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="用户名" />
+            android:text="联系人" />
 
         <TextView
             android:id="@+id/tv_sick_name"
@@ -99,7 +99,7 @@
             android:layout_toRightOf="@+id/tv_sex_title"
             android:drawableRight="@mipmap/ic_arrow_right"
             android:gravity="right"
-            android:text="修改" />
+            android:text="" />
     </RelativeLayout>
 
     <View
@@ -159,6 +159,31 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_toRightOf="@+id/tv_address_title"
+            android:drawableRight="@mipmap/ic_arrow_right"
+            android:gravity="right"
+            android:text="" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_ffffff"
+        android:paddingBottom="10dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="10dp">
+
+        <TextView
+            android:id="@+id/tv_service_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="服务内容" />
+
+        <TextView
+            android:id="@+id/tv_service"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_toRightOf="@+id/tv_service_title"
             android:drawableRight="@mipmap/ic_arrow_right"
             android:gravity="right"
             android:text="" />
