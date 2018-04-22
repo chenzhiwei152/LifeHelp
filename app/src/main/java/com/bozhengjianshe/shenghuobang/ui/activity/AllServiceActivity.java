@@ -54,6 +54,7 @@ public class AllServiceActivity extends BaseActivity {
     private String keyWord;
 
 
+
     @Override
     public int getContentViewLayoutId() {
         return R.layout.activity_all_service;
