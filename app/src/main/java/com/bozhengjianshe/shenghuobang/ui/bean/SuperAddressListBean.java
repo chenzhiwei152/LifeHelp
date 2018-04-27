@@ -6,11 +6,11 @@ import java.io.Serializable;
  * Created by Administrator on 2017/7/1.
  */
 
-public class SuperBean<T> implements Serializable {
+public class SuperAddressListBean<T> implements Serializable {
     public int state;
     public String message;
 
-    public SuperBean() {
+    public SuperAddressListBean() {
     }
 
     public int getCode() {
@@ -30,12 +30,12 @@ public class SuperBean<T> implements Serializable {
     }
 
     public T getData() {
-        return data;
+        return alist;
     }
 
-    public void setData(T data) {
-        this.data = data;
+    public void setData(T clist) {
+        this.alist = clist;
     }
 
-    private T data;
+    public T alist;
 }

@@ -200,7 +200,7 @@ public class JoinsUsActivity extends BaseActivity implements View.OnClickListene
         map.put("contacts", mi_tel.getEditText().getText().toString());
         map.put("controller", mi_principal.getEditText().getText().toString());
         map.put("typeIds", JSONArray.toJSONString(childId));
-        map.put("userId", BaseContext.getInstance().getUserInfo().userId);
+        map.put("userId", BaseContext.getInstance().getUserInfo().id);
         Call<SuperBean<String>> addMerchantInfo = RestAdapterManager.getApi().addMerchantInfo(map);
         addMerchantInfo.enqueue(new JyCallBack<SuperBean<String>>() {
             @Override
@@ -229,12 +229,12 @@ public class JoinsUsActivity extends BaseActivity implements View.OnClickListene
         if (BaseContext.getInstance().getUserInfo() == null) {
             return;
         }
-        Call<SuperBean<String>> getMerchantInfo = RestAdapterManager.getApi().getMerchantInfo(BaseContext.getInstance().getUserInfo().userId);
+        Call<SuperBean<String>> getMerchantInfo = RestAdapterManager.getApi().getMerchantInfo(BaseContext.getInstance().getUserInfo().id);
         getMerchantInfo.enqueue(new JyCallBack<SuperBean<String>>() {
             @Override
             public void onSuccess(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
                 LogUtils.e(response.body().getData());
-                LogUtils.e("userId:" + BaseContext.getInstance().getUserInfo().userId);
+                LogUtils.e("userId:" + BaseContext.getInstance().getUserInfo().id);
             }
 
             @Override

@@ -7,15 +7,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bozhengjianshe.shenghuobang.R;
 import com.bozhengjianshe.shenghuobang.api.JyCallBack;
 import com.bozhengjianshe.shenghuobang.api.RestAdapterManager;
 import com.bozhengjianshe.shenghuobang.base.BaseActivity;
-import com.bozhengjianshe.shenghuobang.base.BaseContext;
 import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
-import com.bozhengjianshe.shenghuobang.bean.ErrorBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.SuperBean;
 import com.bozhengjianshe.shenghuobang.utils.ErrorMessageUtils;
 import com.bozhengjianshe.shenghuobang.utils.NetUtil;
@@ -33,43 +32,41 @@ import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Response;
 
-/**
- * 账号安全
- * Created by chen.zhiwei on 2017-6-22.
- */
+import static com.bozhengjianshe.shenghuobang.R.id.et_check_code;
 
-public class AccountSafetyActivity extends BaseActivity {
+/**
+ * 找回密码
+ */
+public class EditPhoneActivity extends BaseActivity {
+
     @BindView(R.id.title_view)
-    TitleBar title_view;
-    @BindView(R.id.et_check_code)
-    EditText et_check_code;
-    @BindView(R.id.user_password)
-    CleanableEditText user_password;
-    @BindView(R.id.user_phone)
-    CleanableEditText user_phone;
-    @BindView(R.id.user_new_password)
-    EditText user_new_password;
-    @BindView(R.id.bt_commit)
-    Button bt_commit;
+    TitleBar titleView;
+    CountDownTimer timer;
+    @BindView(R.id.user_name)
+    CleanableEditText etPhone;
+    @BindView(R.id.user_old_phone)
+    CleanableEditText user_old_phone;
+    @BindView(et_check_code)
+    EditText etCode;
     @BindView(R.id.tv_check_code)
     TextView tvGetCode;
-    private Call<ErrorBean> call;
-    private Call<SuperBean<String>> getCheckCodeCall;
-    CountDownTimer timer;
+    @BindView(R.id.user_new_pass)
+    CleanableEditText user_new_pass;
+    @BindView(R.id.tv_next)
+    Button tvNext;
+    private Call<SuperBean<String>> call;
+    boolean isCodeSended = false;
+    Call<SuperBean<String>> getCheckCodeCall;
 
     @Override
     public int getContentViewLayoutId() {
-        return R.layout.activity_account_safety;
+        return R.layout.mine_edittext_phone_activity_layout;
     }
 
     @Override
     public void initViewsAndEvents() {
         initTitle();
-    }
-
-    @Override
-    public void loadData() {
-        et_check_code.setFilters(new InputFilter[]{new InputFilter.LengthFilter(4)});
+        etCode.setFilters(new InputFilter[]{new InputFilter.LengthFilter(4)});
 
 
         timer = new CountDownTimer(60 * 1000, 1000) {
@@ -85,24 +82,36 @@ public class AccountSafetyActivity extends BaseActivity {
                 tvGetCode.setEnabled(true);
             }
         };
-        bt_commit.setOnClickListener(new View.OnClickListener() {
+    }
+
+    private void initTitle() {
+
+        titleView.setTitle("修改手机号码");
+        titleView.addAction(new TitleBar.TextAction("确定") {
             @Override
-            public void onClick(View view) {
-                if (checkData()) {
-                    commitData();
-                }
+            public void performAction(View view) {
+                onNextClick(view);
             }
         });
+        titleView.setImmersive(true);
+    }
+
+
+    @Override
+    public void loadData() {
+
     }
 
     @Override
     public boolean isRegistEventBus() {
-        return false;
+        return true;
     }
 
     @Override
     public void onMsgEvent(EventBusCenter eventBusCenter) {
+        if (null != eventBusCenter) {
 
+        }
     }
 
     @Override
@@ -110,16 +119,16 @@ public class AccountSafetyActivity extends BaseActivity {
         return null;
     }
 
-
     @OnClick(R.id.tv_check_code)
     public void onGetCodeClick(View view) {
 
-        String phoneNumber = BaseContext.getInstance().getUserInfo().phone;
-        if (TextUtils.isEmpty(phoneNumber)) {
-            phoneNumber = user_phone.getText().toString();
-        }
+        String phoneNumber = etPhone.getText().toString();
         if (TextUtils.isEmpty(phoneNumber)) {
             UIUtil.showToast("请输入手机号");
+            return;
+        }
+        if (phoneNumber.trim().length() != 11) {
+            Toast.makeText(this, "请输入11位账号", Toast.LENGTH_SHORT).show();
             return;
         }
         if (!TelephoneUtils.isMobile(phoneNumber)) {
@@ -140,7 +149,7 @@ public class AccountSafetyActivity extends BaseActivity {
         timer.start();
         Map<String,String> map=new HashMap<>();
         map.put("phone",phone);
-        getCheckCodeCall = RestAdapterManager.getApi().getCheckCodeForFPW(map);
+        getCheckCodeCall = RestAdapterManager.getApi().getCheckCodeForcPhone(map);
         getCheckCodeCall.enqueue(new JyCallBack<SuperBean<String>>() {
             @Override
             public void onSuccess(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
@@ -164,100 +173,80 @@ public class AccountSafetyActivity extends BaseActivity {
 
     }
 
+
+    @OnClick(R.id.tv_next)
+    public void onNextClick(View view) {
+        if (!NetUtil.isNetworkConnected(this)) {
+            UIUtil.showToast("网络连接失败，请检查您的网络");
+            return;
+        }
+        if (TextUtils.isEmpty(user_old_phone.getText())) {
+            UIUtil.showToast("旧手机号码不能为空");
+            return;
+        }
+        String phoneNumber = etPhone.getText().toString();
+        if (TextUtils.isEmpty(phoneNumber)) {
+            UIUtil.showToast("请输入手机号");
+            return;
+        }
+        if (phoneNumber.trim().length() != 11||user_old_phone.getText().toString().trim().length()!=11) {
+            Toast.makeText(this, "请输入11位账号", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (!TelephoneUtils.isMobile(phoneNumber)||!TelephoneUtils.isMobile(user_old_phone.getText().toString().trim())) {
+            UIUtil.showToast("手机号格式错误");
+            return;
+        }
+
+        if (TextUtils.isEmpty(etCode.getText())) {
+            UIUtil.showToast("验证码不能为空");
+            return;
+        }
+
+        commitData();
+    }
+
     private void commitData() {
         Map<String, String> map = new HashMap<>();
-        map.put("qrnpassword", user_password.getText().toString());
-        map.put("npassword", user_password.getText().toString());
-        map.put("password", user_phone.getText().toString());
-        map.put("phone", BaseContext.getInstance().getUserInfo().phone);
-        map.put("id",BaseContext.getInstance().getUserInfo().id);
-        call = RestAdapterManager.getApi().accountSafety(map);
-        call.enqueue(new JyCallBack<ErrorBean>() {
+        map.put("dxcode", etCode.getText().toString());
+        map.put("phone", user_old_phone.getText().toString());
+        map.put("nphone", etPhone.getText().toString());
+        call = RestAdapterManager.getApi().commitNewPhone(map);
+        call.enqueue(new JyCallBack<SuperBean<String>>() {
             @Override
-            public void onSuccess(Call<ErrorBean> call, Response<ErrorBean> response) {
+            public void onSuccess(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
                 if (response != null && response.body() != null) {
                     if (response.body().state == Constants.successCode) {
                         UIUtil.showToast(response.body().message);
                         finish();
                     } else {
-                        UIUtil.showToast("修改密码失败~请稍后重试");
+                        UIUtil.showToast("修改手机号码失败~请稍后重试");
                     }
                 } else {
-                    UIUtil.showToast("修改密码失败~请稍后重试");
+                    UIUtil.showToast("修改手机号码失败~请稍后重试");
                 }
             }
 
             @Override
-            public void onError(Call<ErrorBean> call, Throwable t) {
-                UIUtil.showToast("修改密码失败~请稍后重试");
+            public void onError(Call<SuperBean<String>> call, Throwable t) {
+                UIUtil.showToast("修改手机号码失败~请稍后重试");
             }
 
             @Override
-            public void onError(Call<ErrorBean> call, Response<ErrorBean> response) {
+            public void onError(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
                 try {
-                    ErrorMessageUtils.taostErrorMessage(AccountSafetyActivity.this, response.errorBody().string(), "");
+                    ErrorMessageUtils.taostErrorMessage(EditPhoneActivity.this, response.errorBody().string(), "");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         });
-    }
 
-    private boolean checkData() {
-//        String phoneNumber = BaseContext.getInstance().getUserInfo().phone;
-//        if (TextUtils.isEmpty(phoneNumber)) {
-//            phoneNumber = user_phone.getText().toString();
-//        }
-
-        if (TextUtils.isEmpty(user_phone.getText())) {
-            UIUtil.showToast("当前密码不能为空");
-            return false;
-        }
-//        if (phoneNumber.trim().length() != 11) {
-//            Toast.makeText(this, "请输入11位账号", Toast.LENGTH_SHORT).show();
-//            return false;
-//        }
-//        if (!TelephoneUtils.isMobile(phoneNumber)) {
-//            UIUtil.showToast("手机号格式错误");
-//            return false;
-//        }
-//        if (TextUtils.isEmpty(et_check_code.getText())) {
-//            UIUtil.showToast("验证码不能为空");
-//            return false;
-//        }
-        if (TextUtils.isEmpty(user_password.getText())) {
-            UIUtil.showToast("新密码不能为空");
-            return false;
-        }
-        if (TextUtils.isEmpty(user_new_password.getText())) {
-            UIUtil.showToast("新密码不能为空");
-            return false;
-        }
-        if (!user_new_password.getText().equals(user_password.getText())) {
-            UIUtil.showToast("密码不一致");
-        }
-        return true;
-    }
-
-
-    /**
-     * 初始化标题
-     */
-    private void initTitle() {
-        title_view.setTitle("修改密码");
-        title_view.setShowDefaultRightValue();
-        title_view.addAction(new TitleBar.TextAction("确定") {
-            @Override
-            public void performAction(View view) {
-                if (checkData()) {
-                    commitData();
-                }
-            }
-        });
     }
 
     @Override
     protected void onDestroy() {
+        timer.cancel();
         if (call != null) {
             call.cancel();
         }
@@ -266,4 +255,5 @@ public class AccountSafetyActivity extends BaseActivity {
         }
         super.onDestroy();
     }
+
 }

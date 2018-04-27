@@ -6,15 +6,15 @@ import com.bozhengjianshe.shenghuobang.ui.bean.AllServiceContentBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.AllServiceTypeBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.BuyOrderListItemBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.CardListItemBean;
-import com.bozhengjianshe.shenghuobang.ui.bean.CollectionItemBean;
+import com.bozhengjianshe.shenghuobang.ui.bean.CollectionBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.GoodsDetailBean;
-import com.bozhengjianshe.shenghuobang.ui.bean.GoodsFilterBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.GoodsListBean;
-import com.bozhengjianshe.shenghuobang.ui.bean.MemberRankBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.OrderDetailBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.ShoppingAddressListItemBean;
-import com.bozhengjianshe.shenghuobang.ui.bean.ShopsFilterBean;
+import com.bozhengjianshe.shenghuobang.ui.bean.SuperAddressListBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.SuperBean;
+import com.bozhengjianshe.shenghuobang.ui.bean.SuperGoodsListBean;
+import com.bozhengjianshe.shenghuobang.ui.bean.SuperOrderListBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.UserInfoBean;
 
 import java.util.List;
@@ -36,28 +36,40 @@ import retrofit2.http.Query;
  */
 
 public interface JyApi {
-
+    String api = "/life/api/";
+    String suffix = ".html";
 
     /**
      * 登陆
      */
-    @POST("/api/user/login")
+    @POST(api + "login" + suffix)
     Call<SuperBean<UserInfoBean>> login(@Body Map<String, String> map);
 
-    /**
-     * 第三方登录
-     */
-    @POST("/api/user/userAuthLogin")
-    Call<SuperBean<UserInfoBean>> authLogin(@Body Map<String, String> map);
 
     /**
-     * 发送短信验证码
+     * 注册用户发送短信验证码
      *
-     * @param phone
+     * @param
      * @return
      */
-    @GET("/resource/sms/getCheckCode")
-    Call<ErrorBean> getCheckCode(@Query("phone") String phone);
+    @POST(api +"sendzcdx"+ suffix)
+    Call<SuperBean<String>> getCheckCode(@Body Map<String, String> map);
+    /**
+     * 找回密码发送短信验证码
+     *
+     * @param
+     * @return
+     */
+    @POST(api +"sendDxFindPswd"+ suffix)
+    Call<SuperBean<String>> getCheckCodeForFPW(@Body Map<String, String> map);
+    /**
+     * 修改手机号码发送短信验证码
+     *
+     * @param
+     * @return
+     */
+    @POST(api +"sendDxFindPswd"+ suffix)
+    Call<SuperBean<String>> getCheckCodeForcPhone(@Body Map<String, String> map);
 
     /**
      * 注册
@@ -65,8 +77,8 @@ public interface JyApi {
      * @param map
      * @return
      */
-    @POST("/api/user/registerUser")
-    Call<String> reister(@Body Map<String, String> map);
+    @POST(api+"insertMember"+suffix)
+    Call<SuperBean<String>> reister(@Body Map<String, String> map);
 
     /**
      * 忘记密码
@@ -74,8 +86,16 @@ public interface JyApi {
      * @param map
      * @return
      */
-    @POST("/api/user/updateUserPhone")
-    Call<ErrorBean> commitNewPassword(@Body Map<String, String> map);
+    @POST(api+"findPassword"+suffix)
+    Call<SuperBean<String>> commitNewPassword(@Body Map<String, String> map);
+    /**
+     * 修改手机号码
+     *
+     * @param map
+     * @return
+     */
+    @POST(api+"updateMPhone"+suffix)
+    Call<SuperBean<String>> commitNewPhone(@Body Map<String, String> map);
 
     /**
      * 修改密码
@@ -83,7 +103,7 @@ public interface JyApi {
      * @param map
      * @return
      */
-    @POST("/api/user/updateUserPwd")
+    @POST(api+"updateMPassword"+suffix)
     Call<ErrorBean> accountSafety(@Body Map<String, String> map);
 
 
@@ -93,8 +113,8 @@ public interface JyApi {
      * @param map
      * @return
      */
-    @POST("/api/deliveryAddress/addAddress")
-    Call<String> addAddress(@Body Map<String, String> map);
+    @POST(api+"updateMAddress"+suffix)
+    Call<SuperBean<String>> addAddress(@Body Map<String, String> map);
 
     /**
      * 编辑收货地址
@@ -103,7 +123,7 @@ public interface JyApi {
      * @return
      */
     @POST("/api/deliveryAddress/updateDeliveryAddress")
-    Call<String> editAddress(@Body Map<String, String> map);
+    Call<SuperBean<String>> editAddress(@Body Map<String, String> map);
 
     /**
      * 删除收货地址
@@ -117,54 +137,24 @@ public interface JyApi {
     /**
      * 获取地址列表
      *
-     * @param userid
+     * @param
      * @return
      */
-    @GET("/api/deliveryAddress/getAllDeliveryAddress")
-    Call<SuperBean<List<ShoppingAddressListItemBean>>> getAddressList(@Query("userid") String userid);
+    @POST(api+"getMAddress"+suffix)
+    Call<SuperAddressListBean<List<ShoppingAddressListItemBean>>> getAddressList(@Body Map<String, String> map);
 
 
-    /**
-     * 获取商品类型筛选条件
-     *
-     * @return
-     */
-    @GET("/api/goodstype/appGetAllList")
-    Call<SuperBean<List<GoodsFilterBean>>> getAllFilterType();
-
-    /**
-     * 获取商品门店筛选条件
-     *
-     * @return
-     */
-    @POST("/api/shop/appGetAllList")
-    Call<SuperBean<List<ShopsFilterBean>>> getAllFilterShops();
 
     /**
      * 获取首页列表
      *
-     * @param type
+     * @param
      * @return
      */
-    @GET("/resource/appIndex/getAppIndexData")
-    Call<GoodsListBean> getGoodsList(@Query("type") String type);
+    @POST(api+"getComList"+suffix)
+    Call<SuperGoodsListBean<List<GoodsListBean>>> getGoodsList(@Body Map<String, String> map);
 
-    /**
-     * 实名认证
-     *
-     * @param map
-     * @return
-     */
-    @POST("/api/user/userAuth")
-    Call<String> commitRealName(@Body Map<String, String> map);
 
-    /**
-     * 获取会员登记信息
-     *
-     * @return
-     */
-    @GET("/api/viptype/appGetAllList")
-    Call<SuperBean<List<MemberRankBean>>> getMemberRank();
 
     /**
      * 广告位数据
@@ -197,7 +187,7 @@ public interface JyApi {
      * @param map
      * @return
      */
-    @POST("/api/user/updateUserName")
+    @POST(api+"updateMName"+suffix)
     Call<SuperBean<String>> updateName(@Body Map<String, String> map);
 
     /**
@@ -275,9 +265,11 @@ public interface JyApi {
      */
     @GET("/api/order/getOrderDetail")
     Call<SuperBean<OrderDetailBean>> getRentOrderDetails(@Query("orderId") String orderId);
+
     /**
      * 取消订单
      * *
+     *
      * @param orderId
      * @return
      */
@@ -285,14 +277,6 @@ public interface JyApi {
     Call<SuperBean<OrderDetailBean>> quitOrder(@Query("orderId") String orderId);
 
 
-    /**
-     * 押金支付获取订单号
-     *
-     * @param map
-     * @return
-     */
-    @POST("/api/vipDeposit/insert")
-    Call<SuperBean<String>> getDepositOrder(@Body Map<String, String> map);
 
 
     /**
@@ -308,11 +292,11 @@ public interface JyApi {
     /**
      * 获取订单列表
      *
-     * @param userId
+     * @param
      * @return
      */
-    @GET("/api/order/getOrderListByUserId")
-    Call<SuperBean<List<BuyOrderListItemBean>>> getRentOrderList(@Query("userId") String userId);
+    @POST(api+"getOrderList"+suffix)
+    Call<SuperOrderListBean<List<BuyOrderListItemBean>>> getRentOrderList(@Body Map<String, String> map);
 
     /**
      * 获取所有服务分类
@@ -333,10 +317,10 @@ public interface JyApi {
     Call<SuperBean<String>> addCollection(@Body Map<String, String> map);
 
     /**
-     * 获取收藏
+     * 获取收藏id
      */
-    @GET("/api/collection/getAllCollection")
-    Call<SuperBean<List<CollectionItemBean>>> getCollection(@Query("userId") String userId);
+    @POST(api+"updateMCollects"+suffix)
+    Call<CollectionBean> getCollection(@Body Map<String, String> map);
 
     /**
      * 删除收藏

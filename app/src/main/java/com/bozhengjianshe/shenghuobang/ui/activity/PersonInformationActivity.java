@@ -115,12 +115,12 @@ public class PersonInformationActivity extends BaseActivity implements View.OnCl
     public void loadData() {
         if (BaseContext.getInstance().getUserInfo() != null) {
 
-            tv_sick_name.setText(BaseContext.getInstance().getUserInfo().userName);
+            tv_sick_name.setText(BaseContext.getInstance().getUserInfo().name);
 //            if (!TextUtils.isEmpty(BaseContext.getInstance().getUserInfo().sex)) {
 //                tv_sex.setText(BaseContext.getInstance().getUserInfo().sex.equals("1") ? "男" : "女");
 //            }
 //            tv_birthday.setText(UIUtil.timeStamp2Date(BaseContext.getInstance().getUserInfo().birthday));
-            ImageLoadedrManager.getInstance().displayNoFilter(this, BaseContext.getInstance().getUserInfo().headImg, iv_head);
+            ImageLoadedrManager.getInstance().displayNoFilter(this, BaseContext.getInstance().getUserInfo().head, iv_head);
         }
     }
 
@@ -147,7 +147,7 @@ public class PersonInformationActivity extends BaseActivity implements View.OnCl
 //        }
         DialogUtils.showDialog(this, "上传中", false);
         Map<String, String> map = new HashMap<>();
-        map.put("userId", BaseContext.getInstance().getUserInfo().userId);
+        map.put("userId", BaseContext.getInstance().getUserInfo().id);
 //        map.put("nickname", nickname);
 //        map.put("sex", sex);
 //        map.put("birthday", birthday);
@@ -166,7 +166,7 @@ public class PersonInformationActivity extends BaseActivity implements View.OnCl
 //                                userInfo.sex = sex;
 //                            }
                             if (!TextUtils.isEmpty(headimg)) {
-                                userInfo.headImg = headimg;
+                                userInfo.head = headimg;
                             }
 //                            if (!TextUtils.isEmpty(nickname)) {
 //                                userInfo.nickname = nickname;
@@ -298,12 +298,12 @@ public class PersonInformationActivity extends BaseActivity implements View.OnCl
                 startActivity(new Intent(this, AccountSafetyActivity.class));
                 break;
             case R.id.rl_name:
-//xingming
+//修改用户名
                 startActivity(new Intent(this, EditNameActivity.class));
                 break;
             case R.id.tv_birthday:
                 //修改手机号码
-                startActivity(new Intent(this, FindPasswordActivity.class));
+                startActivity(new Intent(this, EditPhoneActivity.class));
                 break;
             case R.id.iv_head:
                 photodialog();

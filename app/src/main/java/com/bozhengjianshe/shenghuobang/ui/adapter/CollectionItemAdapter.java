@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bozhengjianshe.shenghuobang.R;
-import com.bozhengjianshe.shenghuobang.ui.bean.CollectionItemBean;
+import com.bozhengjianshe.shenghuobang.ui.bean.GoodsListBean;
 import com.bozhengjianshe.shenghuobang.ui.listerner.CommonOnClickListerner;
 import com.bozhengjianshe.shenghuobang.utils.ImageLoadedrManager;
 
@@ -25,7 +25,7 @@ import butterknife.ButterKnife;
  * Created by chenzhiwei 2016/6/14.
  */
 public class CollectionItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private static List<CollectionItemBean> list;
+    private static List<GoodsListBean> list;
     private static Context context;
     private boolean isEditMode = false;
     private final LayoutInflater mLayoutInflater;
@@ -54,19 +54,19 @@ public class CollectionItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         mLayoutInflater = LayoutInflater.from(context);
     }
 
-    public CollectionItemAdapter(Context context, List<CollectionItemBean> items) {
+    public CollectionItemAdapter(Context context, List<GoodsListBean> items) {
         this.context = context;
         this.list = new ArrayList<>();
         this.list.addAll(items);
         mLayoutInflater = LayoutInflater.from(context);
     }
 
-    public void remove(CollectionItemBean bean) {
+    public void remove(GoodsListBean bean) {
         this.list.remove(bean);
         notifyDataSetChanged();
     }
 
-    public void addList(List<CollectionItemBean> items) {
+    public void addList(List<GoodsListBean> items) {
         this.list.addAll(items);
         notifyDataSetChanged();
     }
@@ -76,7 +76,7 @@ public class CollectionItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         notifyDataSetChanged();
     }
 
-    public static List<CollectionItemBean> getEntities() {
+    public static List<GoodsListBean> getEntities() {
         return list;
     }
 
@@ -90,18 +90,18 @@ public class CollectionItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final int position) {
         if (list != null) {
             try {
-                ImageLoadedrManager.getInstance().display(context, list.get(position).getProductImg(), ((ImageViewHolder) viewHolder).iv_pic);
+                ImageLoadedrManager.getInstance().display(context, list.get(position).getThumbnail(), ((ImageViewHolder) viewHolder).iv_pic);
             } catch (Exception e) {
 
             }
-            if (!TextUtils.isEmpty(list.get(position).getProductName())) {
+            if (!TextUtils.isEmpty(list.get(position).getCname())) {
 
-                ((ImageViewHolder) viewHolder).tv_goods_name.setText(list.get(position).getProductName());
+                ((ImageViewHolder) viewHolder).tv_goods_name.setText(list.get(position).getCname());
                 ((ImageViewHolder) viewHolder).tv_goods_name.setVisibility(View.VISIBLE);
             } else {
                 ((ImageViewHolder) viewHolder).tv_goods_name.setVisibility(View.GONE);
             }
-            ((ImageViewHolder) viewHolder).tv_price.setTextColor(list.get(position).getProductPrice());
+            ((ImageViewHolder) viewHolder).tv_price.setTextColor(list.get(position).getFee());
             if (isEditMode) {
                 ((ImageViewHolder) viewHolder).iv_state.setImageResource(R.mipmap.ic_address_delect);
             } else {

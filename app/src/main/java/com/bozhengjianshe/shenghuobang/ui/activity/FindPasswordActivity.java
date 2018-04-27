@@ -13,10 +13,9 @@ import com.bozhengjianshe.shenghuobang.R;
 import com.bozhengjianshe.shenghuobang.api.JyCallBack;
 import com.bozhengjianshe.shenghuobang.api.RestAdapterManager;
 import com.bozhengjianshe.shenghuobang.base.BaseActivity;
-import com.bozhengjianshe.shenghuobang.base.BaseContext;
 import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
-import com.bozhengjianshe.shenghuobang.bean.ErrorBean;
+import com.bozhengjianshe.shenghuobang.ui.bean.SuperBean;
 import com.bozhengjianshe.shenghuobang.utils.ErrorMessageUtils;
 import com.bozhengjianshe.shenghuobang.utils.NetUtil;
 import com.bozhengjianshe.shenghuobang.utils.TelephoneUtils;
@@ -53,9 +52,9 @@ public class FindPasswordActivity extends BaseActivity {
     CleanableEditText user_new_pass;
     @BindView(R.id.tv_next)
     Button tvNext;
-    private Call<ErrorBean> call;
+    private Call<SuperBean<String>> call;
     boolean isCodeSended = false;
-    Call<ErrorBean> getCheckCodeCall;
+    Call<SuperBean<String>> getCheckCodeCall;
 
     @Override
     public int getContentViewLayoutId() {
@@ -146,24 +145,26 @@ public class FindPasswordActivity extends BaseActivity {
 
     private void getCode(String phone) {
         timer.start();
-        getCheckCodeCall = RestAdapterManager.getApi().getCheckCode(phone);
-        getCheckCodeCall.enqueue(new JyCallBack<ErrorBean>() {
+        Map<String,String> map=new HashMap<>();
+        map.put("phone",phone);
+        getCheckCodeCall = RestAdapterManager.getApi().getCheckCodeForFPW(map);
+        getCheckCodeCall.enqueue(new JyCallBack<SuperBean<String>>() {
             @Override
-            public void onSuccess(Call<ErrorBean> call, Response<ErrorBean> response) {
-                if (response != null && response.body().code == Constants.successCode) {
-                    UIUtil.showToast(response.body().msg);
+            public void onSuccess(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
+                if (response != null && response.body().state == Constants.successCode) {
+                    UIUtil.showToast(response.body().message);
                 } else {
                     UIUtil.showToast("发送验证码失败");
                 }
             }
 
             @Override
-            public void onError(Call<ErrorBean> call, Throwable t) {
+            public void onError(Call<SuperBean<String>> call, Throwable t) {
 
             }
 
             @Override
-            public void onError(Call<ErrorBean> call, Response<ErrorBean> response) {
+            public void onError(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
 
             }
         });
@@ -205,17 +206,17 @@ public class FindPasswordActivity extends BaseActivity {
 
     private void commitData() {
         Map<String, String> map = new HashMap<>();
-        map.put("checkCode", etCode.getText().toString());
-        map.put("pwd", user_new_pass.getText().toString());
+        map.put("dxcode", etCode.getText().toString());
+        map.put("password", user_new_pass.getText().toString());
+        map.put("qrpassword", user_new_pass.getText().toString());
         map.put("phone", etPhone.getText().toString());
-        map.put("userId", BaseContext.getInstance().getUserInfo().userId);
         call = RestAdapterManager.getApi().commitNewPassword(map);
-        call.enqueue(new JyCallBack<ErrorBean>() {
+        call.enqueue(new JyCallBack<SuperBean<String>>() {
             @Override
-            public void onSuccess(Call<ErrorBean> call, Response<ErrorBean> response) {
+            public void onSuccess(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
                 if (response != null && response.body() != null) {
-                    if (response.body().code == 1000) {
-                        UIUtil.showToast(response.body().msg);
+                    if (response.body().state == Constants.successCode) {
+                        UIUtil.showToast(response.body().message);
                         finish();
                     } else {
                         UIUtil.showToast("修改手机号码失败~请稍后重试");
@@ -226,12 +227,12 @@ public class FindPasswordActivity extends BaseActivity {
             }
 
             @Override
-            public void onError(Call<ErrorBean> call, Throwable t) {
+            public void onError(Call<SuperBean<String>> call, Throwable t) {
                 UIUtil.showToast("修改手机号码失败~请稍后重试");
             }
 
             @Override
-            public void onError(Call<ErrorBean> call, Response<ErrorBean> response) {
+            public void onError(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
                 try {
                     ErrorMessageUtils.taostErrorMessage(FindPasswordActivity.this, response.errorBody().string(), "");
                 } catch (IOException e) {

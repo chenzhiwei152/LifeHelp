@@ -12,7 +12,6 @@ import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
 import com.bozhengjianshe.shenghuobang.ui.bean.SuperBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.UserInfoBean;
 import com.bozhengjianshe.shenghuobang.ui.index.MainActivity;
-import com.bozhengjianshe.shenghuobang.ui.utils.login.UserInfo;
 import com.bozhengjianshe.shenghuobang.utils.DialogUtils;
 import com.bozhengjianshe.shenghuobang.utils.ErrorMessageUtils;
 import com.bozhengjianshe.shenghuobang.utils.SharePreManager;
@@ -41,7 +40,8 @@ public class LoginUtils {
         DialogUtils.showDialog(context, "登陆...", false);
         Map<String, String> map = new HashMap<>();
         map.put("phone", tel);
-        map.put("pwd", password);
+        map.put("password", password);
+        map.put("act", "ab472b2c55de6b8da");
         loginCall = RestAdapterManager.getApi().login(map);
         loginCall.enqueue(new JyCallBack<SuperBean<UserInfoBean>>() {
             @Override
@@ -59,8 +59,10 @@ public class LoginUtils {
                     context.startActivity(jmActivityIntent);
                     ((Activity) context).finish();
                 } else {
-                    try{
-                        UIUtil.showToast(response.body().getMsg());}catch (Exception e){}
+                    try {
+                        UIUtil.showToast(response.body().getMsg());
+                    } catch (Exception e) {
+                    }
 
                 }
             }
@@ -81,57 +83,5 @@ public class LoginUtils {
                 }
             }
         });
-    }
-
-    /**
-     * 第三方登录
-     *
-     * @param context
-     * @param userInfo
-     * @return
-     */
-    public static boolean thirdLogin(final Context context, final UserInfo userInfo) {
-        DialogUtils.showDialog(context, "登陆...", false);
-        Map<String, String> map = new HashMap<>();
-        map.put("nickname", userInfo.getUserName());
-        map.put("authUID", userInfo.getUserNote());
-        map.put("sex", userInfo.getUserGender().name().equals("男") ? "1" : "0");
-        map.put("headimg", userInfo.getUserIcon());
-        thirdLoginCall = RestAdapterManager.getApi().authLogin(map);
-        thirdLoginCall.enqueue(new JyCallBack<SuperBean<UserInfoBean>>() {
-            @Override
-            public void onSuccess(Call<SuperBean<UserInfoBean>> call, Response<SuperBean<UserInfoBean>> response) {
-                DialogUtils.closeDialog();
-                if (response != null && response.body() != null && response.body().getCode() == Constants.successCode) {
-                    BaseContext.getInstance().setUserInfo(response.body().getData());
-                    Timestamp now = new Timestamp(System.currentTimeMillis());
-                    SharePreManager.instance(context).setLoginTime(now.getTime());
-                    SharePreManager.instance(context).setUserInfo(response.body().getData());
-                    EventBus.getDefault().post(new EventBusCenter<Integer>(Constants.LOGIN_SUCCESS));
-                    Intent jmActivityIntent = new Intent(context, MainActivity.class);
-                    context.startActivity(jmActivityIntent);
-                    ((Activity) context).finish();
-                } else {
-                    UIUtil.showToast(response.body().getMsg());
-                }
-            }
-
-            @Override
-            public void onError(Call<SuperBean<UserInfoBean>> call, Throwable t) {
-                UIUtil.showToast("登陆失败~请稍后重试");
-                DialogUtils.closeDialog();
-            }
-
-            @Override
-            public void onError(Call<SuperBean<UserInfoBean>> call, Response<SuperBean<UserInfoBean>> response) {
-                try {
-                    DialogUtils.closeDialog();
-                    ErrorMessageUtils.taostErrorMessage(context, response.errorBody().string(), "");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        return true;
     }
 }

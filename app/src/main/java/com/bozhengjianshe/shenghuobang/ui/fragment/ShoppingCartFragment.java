@@ -123,7 +123,7 @@ public class ShoppingCartFragment extends BaseFragment {
      * 获取列表
      */
     private void getCardList() {
-        Call<SuperBean<List<CardListItemBean>>> getCardList = RestAdapterManager.getApi().getCardList(BaseContext.getInstance().getUserInfo().userId);
+        Call<SuperBean<List<CardListItemBean>>> getCardList = RestAdapterManager.getApi().getCardList(BaseContext.getInstance().getUserInfo().id);
         getCardList.enqueue(new JyCallBack<SuperBean<List<CardListItemBean>>>() {
             @Override
             public void onSuccess(Call<SuperBean<List<CardListItemBean>>> call, Response<SuperBean<List<CardListItemBean>>> response) {

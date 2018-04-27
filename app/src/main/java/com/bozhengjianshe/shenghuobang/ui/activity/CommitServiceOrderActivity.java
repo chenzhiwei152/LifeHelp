@@ -247,7 +247,7 @@ public class CommitServiceOrderActivity extends BaseActivity implements View.OnC
 //        map.put("transportType", deliverytype + "");
         map.put("productId", goodsBean.getId() + "");
         map.put("productType", goodsBean.getType() + "");
-        map.put("userid", BaseContext.getInstance().getUserInfo().userId);
+        map.put("userid", BaseContext.getInstance().getUserInfo().id);
         LogUtils.e(JSON.toJSONString(map));
         return map;
     }

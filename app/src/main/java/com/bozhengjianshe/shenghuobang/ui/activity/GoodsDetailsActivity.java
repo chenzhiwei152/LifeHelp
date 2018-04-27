@@ -322,7 +322,7 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
         map.put("productCount", "1");
         map.put("productId", goodsBean.getId());
         map.put("productType", type);
-        map.put("userId", BaseContext.getInstance().getUserInfo().userId);
+        map.put("userId", BaseContext.getInstance().getUserInfo().id);
         Call<SuperBean<String>> addTocard = RestAdapterManager.getApi().addTocard(map);
         addTocard.enqueue(new JyCallBack<SuperBean<String>>() {
             @Override
@@ -353,7 +353,7 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
         Map<String, String> map = new HashMap<>();
         map.put("productId", goodsBean.getId() + "");
         map.put("productType", type);
-        map.put("userId", BaseContext.getInstance().getUserInfo().userId);
+        map.put("userId", BaseContext.getInstance().getUserInfo().id);
         Call<SuperBean<String>> addCollection = RestAdapterManager.getApi().addCollection(map);
         addCollection.enqueue(new JyCallBack<SuperBean<String>>() {
             @Override

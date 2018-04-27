@@ -34,7 +34,7 @@ public class ErrorMessageUtils {
         if (!TextUtils.isEmpty(errorMessage)) {
             try {
                 ErrorBean res =  JSON.parseObject(errorMessage, ErrorBean.class);
-                Toast.makeText(context, res.msg, Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, res.message, Toast.LENGTH_SHORT).show();
                 return;
             } catch (Exception e) {
 

@@ -449,7 +449,7 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
     private void getRSAOrderInfo() {
         Map<String, String> map = new HashMap<>();
         map.put("orderId", orderId);
-        map.put("userId", BaseContext.getInstance().getUserInfo().userId);
+        map.put("userId", BaseContext.getInstance().getUserInfo().id);
         map.put("payChannel", payChannel + "");
         map.put("totalMoney", price + "");
         map.put("orderType", orderType + "");
@@ -499,7 +499,7 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
         map.put("deliverytype", deliverytype + "");
         map.put("payType", orderType + "");
         map.put("totalmoney", price + "");
-        map.put("userid", BaseContext.getInstance().getUserInfo().userId);
+        map.put("userid", BaseContext.getInstance().getUserInfo().id);
         LogUtils.e(JSON.toJSONString(map));
         Call<SuperBean<String>> commitOrderCall;
         DialogUtils.showDialog(CommitOrderActivity.this, "获取订单...", false);
@@ -551,7 +551,7 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
         map.put("transportType", deliverytype + "");
         map.put("productId", goodsBean.getId() + "");
         map.put("productType", goodsBean.getType() + "");
-        map.put("userid", BaseContext.getInstance().getUserInfo().userId);
+        map.put("userid", BaseContext.getInstance().getUserInfo().id);
         LogUtils.e(JSON.toJSONString(map));
         DialogUtils.showDialog(CommitOrderActivity.this, "获取订单...", false);
         commitRentCall = RestAdapterManager.getApi().getRentOrder(map);

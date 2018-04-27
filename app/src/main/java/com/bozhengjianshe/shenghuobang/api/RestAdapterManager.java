@@ -30,8 +30,8 @@ public class RestAdapterManager {
     /**
      * 获取基础地址服务
      */
-    public static String BASEURL ="http://47.92.24.138:8080";  // BASE URL
-//    public static String BASEURL ="http://192.168.51.85:8080";  // BASE URL
+//    public static String BASEURL ="http://47.92.24.138:8080";  // BASE URL
+    public static String BASEURL ="http://www.laosijigzs.com";  // BASE URL
 
 
     public static Retrofit getRestAdapter() {
@@ -75,8 +75,6 @@ public class RestAdapterManager {
      */
     private static Request.Builder addHeaders(Request.Builder builder) {
 
-        builder.addHeader("Content-Type", "application/json; charset=UTF-8")
-                .addHeader("Accept-Encoding", "gzip, deflate");
 
         return builder;
 

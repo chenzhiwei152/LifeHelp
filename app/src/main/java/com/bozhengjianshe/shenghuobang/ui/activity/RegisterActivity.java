@@ -17,8 +17,7 @@ import com.bozhengjianshe.shenghuobang.api.RestAdapterManager;
 import com.bozhengjianshe.shenghuobang.base.BaseActivity;
 import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
-import com.bozhengjianshe.shenghuobang.bean.ErrorBean;
-import com.bozhengjianshe.shenghuobang.ui.utils.LoginUtils;
+import com.bozhengjianshe.shenghuobang.ui.bean.SuperBean;
 import com.bozhengjianshe.shenghuobang.ui.utils.login.LoginApi;
 import com.bozhengjianshe.shenghuobang.ui.utils.login.OnLoginListener;
 import com.bozhengjianshe.shenghuobang.ui.utils.login.UserInfo;
@@ -31,6 +30,7 @@ import com.bozhengjianshe.shenghuobang.view.TitleBar;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindString;
 import butterknife.BindView;
@@ -85,8 +85,8 @@ public class RegisterActivity extends BaseActivity implements
     CountDownTimer timer;
 
     boolean isCodeSended = false;
-    Call<String> call;//注册
-    Call<ErrorBean> getCheckCodeCall;
+    Call<SuperBean<String>> call;//注册
+    Call<SuperBean<String>> getCheckCodeCall;
 
     @Override
     public int getContentViewLayoutId() {
@@ -159,24 +159,26 @@ public class RegisterActivity extends BaseActivity implements
         }
 
         timer.start();
-        getCheckCodeCall = RestAdapterManager.getApi().getCheckCode(phoneNumber);
-        getCheckCodeCall.enqueue(new JyCallBack<ErrorBean>() {
+        Map<String, String> map = new HashMap<>();
+        map.put("phone", phoneNumber);
+        getCheckCodeCall = RestAdapterManager.getApi().getCheckCode(map);
+        getCheckCodeCall.enqueue(new JyCallBack<SuperBean<String>>() {
             @Override
-            public void onSuccess(Call<ErrorBean> call, Response<ErrorBean> response) {
-                if (response != null && response.body().code == Constants.successCode) {
-                    UIUtil.showToast(response.body().msg);
+            public void onSuccess(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
+                if (response != null && response.body().state == Constants.successCode) {
+                    UIUtil.showToast(response.body().message);
                 } else {
                     UIUtil.showToast("发送验证码失败");
                 }
             }
 
             @Override
-            public void onError(Call<ErrorBean> call, Throwable t) {
+            public void onError(Call<SuperBean<String>> call, Throwable t) {
 
             }
 
             @Override
-            public void onError(Call<ErrorBean> call, Response<ErrorBean> response) {
+            public void onError(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
 
             }
         });
@@ -274,34 +276,28 @@ public class RegisterActivity extends BaseActivity implements
             return;
         }
 
-//        final String tel = etPhone.getText().toString();
-//        final String code = etCode.getText().toString();
         HashMap<String, String> map = new HashMap<>();
-//        "phone": "13691525924",
-//                "checkCode": "5924",
-//                "nickName": "老李",
-//                "pwd": "123456"
         map.put("phone", etPhone.getText().toString());
-        map.put("checkCode", etCode.getText().toString());
-//        map.put("nickName", user_nick_name.getText().toString());
-        map.put("pwd", user_password.getText().toString());
+        map.put("dxcode", etCode.getText().toString());
+        map.put("password", user_password.getText().toString());
+        map.put("qrpassword", user_password.getText().toString());
 
         call = RestAdapterManager.getApi().reister(map);
 
-        call.enqueue(new JyCallBack<String>() {
+        call.enqueue(new JyCallBack<SuperBean<String>>() {
             @Override
-            public void onSuccess(Call<String> call, Response<String> response) {
+            public void onSuccess(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
                 try {
 
-                    if (response != null && response.body() != null && !TextUtils.isEmpty(response.body())) {
-                        if (response.body().contains("注册成功")) {
+                    if (response != null && response.body() != null) {
+                        if (response.body().state == Constants.successCode) {
                             Intent findPsIntent = new Intent(RegisterActivity.this, LoginActivity.class);
                             timer.cancel();
                             findPsIntent.putExtra("phone", etPhone.getText().toString());
                             findPsIntent.putExtra("pwd", user_password.getText().toString());
                             startActivity(findPsIntent);
                         }
-                        ErrorMessageUtils.taostErrorMessage(RegisterActivity.this, response.body(), "");
+                        UIUtil.showToast( response.body().message);
                     } else {
                         UIUtil.showToast("注册失败");
                     }
@@ -311,12 +307,12 @@ public class RegisterActivity extends BaseActivity implements
             }
 
             @Override
-            public void onError(Call<String> call, Throwable t) {
+            public void onError(Call<SuperBean<String>> call, Throwable t) {
                 UIUtil.showToast("注册失败");
             }
 
             @Override
-            public void onError(Call<String> call, Response<String> response) {
+            public void onError(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
                 try {
                     ErrorMessageUtils.taostErrorMessage(RegisterActivity.this, response.errorBody().string(), "");
                 } catch (IOException e) {
@@ -394,7 +390,7 @@ public class RegisterActivity extends BaseActivity implements
             }
 
             public boolean onRegister(UserInfo info) {
-                LoginUtils.thirdLogin(RegisterActivity.this, info);
+//                LoginUtils.thirdLogin(RegisterActivity.this, info);
                 // 填写处理注册信息的代码，返回true表示数据合法，注册页面可以关闭
                 return true;
             }

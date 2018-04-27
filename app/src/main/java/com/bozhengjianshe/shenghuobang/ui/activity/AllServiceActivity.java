@@ -14,9 +14,10 @@ import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
 import com.bozhengjianshe.shenghuobang.ui.adapter.AllServiceTypeListAdapter;
 import com.bozhengjianshe.shenghuobang.ui.adapter.MainListItemAdapter;
-import com.bozhengjianshe.shenghuobang.ui.bean.AllServiceContentBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.AllServiceTypeBean;
+import com.bozhengjianshe.shenghuobang.ui.bean.GoodsListBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.SuperBean;
+import com.bozhengjianshe.shenghuobang.ui.bean.SuperGoodsListBean;
 import com.bozhengjianshe.shenghuobang.ui.listerner.CommonOnClickListerner;
 import com.bozhengjianshe.shenghuobang.utils.ErrorMessageUtils;
 import com.bozhengjianshe.shenghuobang.view.TitleBar;
@@ -52,7 +53,8 @@ public class AllServiceActivity extends BaseActivity {
     private int pageSize = 10;
     private String classify;
     private String keyWord;
-
+    private Call<SuperBean<List<AllServiceTypeBean>>> getAllServiceTypeList;
+    private Call<SuperGoodsListBean<List<GoodsListBean>>> goodsListCall;
 
 
     @Override
@@ -123,7 +125,7 @@ public class AllServiceActivity extends BaseActivity {
     }
 
     private void getTyleList() {
-        Call<SuperBean<List<AllServiceTypeBean>>> getAllServiceTypeList = RestAdapterManager.getApi().getAllServiceTypeList("0", "2");
+        getAllServiceTypeList = RestAdapterManager.getApi().getAllServiceTypeList("0", "2");
         getAllServiceTypeList.enqueue(new JyCallBack<SuperBean<List<AllServiceTypeBean>>>() {
             @Override
             public void onSuccess(Call<SuperBean<List<AllServiceTypeBean>>> call, Response<SuperBean<List<AllServiceTypeBean>>> response) {
@@ -154,39 +156,36 @@ public class AllServiceActivity extends BaseActivity {
     }
 
     private void getContentList() {
+
         Map<String, String> map = new HashMap<>();
-        map.put("pageSize", pageSize + "");
-        map.put("pageNum", pageNumber + "");
-        map.put("keyWord", keyWord);
-        map.put("classify", classify);
-        map.put("type", Constants.typeService);
-        Call<SuperBean<AllServiceContentBean>> getAllServiceContentList = RestAdapterManager.getApi().getAllServiceContentList(map);
-        getAllServiceContentList.enqueue(new JyCallBack<SuperBean<AllServiceContentBean>>() {
+        map.put("lb", "1");//1 查询服务类商品 为 2 查询建材类商品 不传值则全部查询
+        map.put("yjfl", classify);//根据一级分类的id获取其目录下产品 不传值则全部查询
+        goodsListCall = RestAdapterManager.getApi().getGoodsList(map);
+        goodsListCall.enqueue(new JyCallBack<SuperGoodsListBean<List<GoodsListBean>>>() {
             @Override
-            public void onSuccess(Call<SuperBean<AllServiceContentBean>> call, Response<SuperBean<AllServiceContentBean>> response) {
+            public void onSuccess(Call<SuperGoodsListBean<List<GoodsListBean>>> call, Response<SuperGoodsListBean<List<GoodsListBean>>> response) {
                 swiperefreshlayout.finishLoadmore();
                 swiperefreshlayout.finishRefresh();
                 if (pageNumber == 1) {
                     contentListAdapter.ClearData();
                 }
-                if (response != null && response.body() != null && response.body().getData().getData().size() > 0) {
-                    contentListAdapter.addList(response.body().getData().getData());
+                if (response != null && response.body()!=null&&response.body().getData() != null && response.body().getData().size() > 0) {
+                    contentListAdapter.addList(response.body().getData());
                     pageNumber++;
                     swiperefreshlayout.setEnableLoadmore(true);
                 } else {
                     swiperefreshlayout.setEnableLoadmore(false);
                 }
-
             }
 
             @Override
-            public void onError(Call<SuperBean<AllServiceContentBean>> call, Throwable t) {
+            public void onError(Call<SuperGoodsListBean<List<GoodsListBean>>> call, Throwable t) {
                 swiperefreshlayout.finishLoadmore();
                 swiperefreshlayout.finishRefresh();
             }
 
             @Override
-            public void onError(Call<SuperBean<AllServiceContentBean>> call, Response<SuperBean<AllServiceContentBean>> response) {
+            public void onError(Call<SuperGoodsListBean<List<GoodsListBean>>> call, Response<SuperGoodsListBean<List<GoodsListBean>>> response) {
                 swiperefreshlayout.finishLoadmore();
                 swiperefreshlayout.finishRefresh();
                 try {
@@ -196,6 +195,7 @@ public class AllServiceActivity extends BaseActivity {
                 }
             }
         });
+
     }
 
     /**
@@ -204,5 +204,17 @@ public class AllServiceActivity extends BaseActivity {
     private void initTitle() {
         title_view.setTitle("分类详情");
         title_view.setShowDefaultRightValue();
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (getAllServiceTypeList != null) {
+            getAllServiceTypeList.cancel();
+        }
+        if (goodsListCall != null) {
+            goodsListCall.cancel();
+        }
+        super.onDestroy();
+
     }
 }

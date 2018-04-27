@@ -19,7 +19,7 @@ import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
 import com.bozhengjianshe.shenghuobang.bean.ErrorBean;
 import com.bozhengjianshe.shenghuobang.ui.adapter.ShoppingAddressListAdapter;
 import com.bozhengjianshe.shenghuobang.ui.bean.ShoppingAddressListItemBean;
-import com.bozhengjianshe.shenghuobang.ui.bean.SuperBean;
+import com.bozhengjianshe.shenghuobang.ui.bean.SuperAddressListBean;
 import com.bozhengjianshe.shenghuobang.ui.listerner.ShoppingAddressItemOnClickListerner;
 import com.bozhengjianshe.shenghuobang.utils.DialogUtils;
 import com.bozhengjianshe.shenghuobang.utils.ErrorMessageUtils;
@@ -30,7 +30,9 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import retrofit2.Call;
@@ -49,7 +51,7 @@ public class ShoppingAddressActivity extends BaseActivity {
     TitleBar title_view;
     private ShoppingAddressListAdapter shoppingAddressListAdapter;
     private ImageView mCollectView;
-    private Call<SuperBean<List<ShoppingAddressListItemBean>>> call;
+    private Call<SuperAddressListBean<List<ShoppingAddressListItemBean>>> call;
 
     private Call<ErrorBean> deleteCall;
     private String type;
@@ -148,10 +150,12 @@ public class ShoppingAddressActivity extends BaseActivity {
      */
     private void loadAddressData() {
         DialogUtils.showDialog(ShoppingAddressActivity.this, "加载中", false);
-        call = RestAdapterManager.getApi().getAddressList(BaseContext.getInstance().getUserInfo().userId);
-        call.enqueue(new JyCallBack<SuperBean<List<ShoppingAddressListItemBean>>>() {
+        Map<String,String> map=new HashMap<>();
+        map.put("memberid",BaseContext.getInstance().getUserInfo().id);
+        call = RestAdapterManager.getApi().getAddressList(map);
+        call.enqueue(new JyCallBack<SuperAddressListBean<List<ShoppingAddressListItemBean>>>() {
             @Override
-            public void onSuccess(Call<SuperBean<List<ShoppingAddressListItemBean>>> call, Response<SuperBean<List<ShoppingAddressListItemBean>>> response) {
+            public void onSuccess(Call<SuperAddressListBean<List<ShoppingAddressListItemBean>>> call, Response<SuperAddressListBean<List<ShoppingAddressListItemBean>>> response) {
                 DialogUtils.closeDialog();
                 swiperefreshlayout.finishRefresh();
                 if (response != null && response.body() != null && response.body().getCode() == Constants.successCode) {
@@ -171,7 +175,7 @@ public class ShoppingAddressActivity extends BaseActivity {
             }
 
             @Override
-            public void onError(Call<SuperBean<List<ShoppingAddressListItemBean>>> call, Throwable t) {
+            public void onError(Call<SuperAddressListBean<List<ShoppingAddressListItemBean>>> call, Throwable t) {
                 DialogUtils.closeDialog();
                 if (swiperefreshlayout != null) {
                     swiperefreshlayout.finishRefresh();
@@ -179,7 +183,7 @@ public class ShoppingAddressActivity extends BaseActivity {
             }
 
             @Override
-            public void onError(Call<SuperBean<List<ShoppingAddressListItemBean>>> call, Response<SuperBean<List<ShoppingAddressListItemBean>>> response) {
+            public void onError(Call<SuperAddressListBean<List<ShoppingAddressListItemBean>>> call, Response<SuperAddressListBean<List<ShoppingAddressListItemBean>>> response) {
                 DialogUtils.closeDialog();
                 if (swiperefreshlayout != null) {
                     swiperefreshlayout.finishRefresh();
@@ -200,8 +204,8 @@ public class ShoppingAddressActivity extends BaseActivity {
             public void onSuccess(Call<ErrorBean> call, Response<ErrorBean> response) {
 
                 if (response != null && response.body() != null) {
-                    UIUtil.showToast(response.body().msg);
-                    if (response.body().code == 1000) {
+                    UIUtil.showToast(response.body().message);
+                    if (response.body().state == Constants.successCode) {
                         loadAddressData();
                     }
                 }

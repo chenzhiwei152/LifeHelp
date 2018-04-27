@@ -29,10 +29,10 @@ import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
 import com.bozhengjianshe.shenghuobang.ui.activity.AllServiceActivity;
 import com.bozhengjianshe.shenghuobang.ui.activity.GoodsDetailsActivity;
 import com.bozhengjianshe.shenghuobang.ui.adapter.MainListItemAdapter;
-import com.bozhengjianshe.shenghuobang.ui.adapter.MainListItemAdapter1;
 import com.bozhengjianshe.shenghuobang.ui.adapter.MainMenusAdapter;
 import com.bozhengjianshe.shenghuobang.ui.bean.GoodsListBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.MainMenuInfo;
+import com.bozhengjianshe.shenghuobang.ui.bean.SuperGoodsListBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.bannerBean;
 import com.bozhengjianshe.shenghuobang.utils.ImageLoadedrManager;
 import com.bozhengjianshe.shenghuobang.utils.UIUtil;
@@ -80,9 +80,9 @@ public class IndexFragment extends BaseFragment {
     List<bannerBean> list = new ArrayList<>();
     List<GoodsListBean> adList = new ArrayList<>();
     private MainListItemAdapter listAdapter;
-    private MainListItemAdapter1 listAdapter1;
+    private MainListItemAdapter listAdapter1;
 
-    private Call<GoodsListBean> goodsListCall;
+    private Call<SuperGoodsListBean<List<GoodsListBean>>> goodsListCall;
     private ArrayList<MainMenuInfo> menus = new ArrayList<>();
     private MainMenusAdapter menusAdapter;
 
@@ -113,7 +113,8 @@ public class IndexFragment extends BaseFragment {
         swiperefreshlayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                getList();
+                getList(1);
+                getList(2);
             }
         });
 //        swiperefreshlayout.setOnLoadmoreListener(new OnLoadmoreListener() {
@@ -123,7 +124,7 @@ public class IndexFragment extends BaseFragment {
 //            }
 //        });
         listAdapter = new MainListItemAdapter(getActivity());
-        listAdapter1 = new MainListItemAdapter1(getActivity());
+        listAdapter1 = new MainListItemAdapter(getActivity());
         sf_listview.setAdapter(listAdapter);
         sf_recomment_listview.setAdapter(listAdapter1);
         edit_search.clearFocus();
@@ -179,7 +180,8 @@ public class IndexFragment extends BaseFragment {
     protected void loadData() {
 //        getAdList();
 //        getFilterList();
-        getList();
+        getList(1);
+        getList(2);
         initMenus();
     }
 
@@ -250,22 +252,27 @@ public class IndexFragment extends BaseFragment {
     }
 
 
-    private void getList() {
+    private void getList(final int tag) {
         Map<String, String> map = new HashMap<>();
-        goodsListCall = RestAdapterManager.getApi().getGoodsList("1");
-        goodsListCall.enqueue(new JyCallBack<GoodsListBean>() {
+        map.put("sftj",tag+"");//1 时查询推荐产品 2时为非推荐商品 不传值则全部查询
+        map.put("lb","1");//1 查询服务类商品 为 2 查询建材类商品 不传值则全部查询
+        goodsListCall = RestAdapterManager.getApi().getGoodsList(map);
+        goodsListCall.enqueue(new JyCallBack<SuperGoodsListBean<List<GoodsListBean>>>() {
             @Override
-            public void onSuccess(Call<GoodsListBean> call, Response<GoodsListBean> response) {
+            public void onSuccess(Call<SuperGoodsListBean<List<GoodsListBean>>> call, Response<SuperGoodsListBean<List<GoodsListBean>>> response) {
                 swiperefreshlayout.finishRefresh();
                 swiperefreshlayout.finishLoadmore();
-                if (response != null && response.body() != null && response.body().code == Constants.successCode) {
-                    if (response.body().getData().getRecService().size() > 0) {
+                if (response != null && response.body() != null && response.body().state == Constants.successCode) {
+                    if (response.body().getData()!=null&&response.body().getData().size() > 0) {
                         ll_empty.setVisibility(View.GONE);
                         sf_listview.setVisibility(View.VISIBLE);
-                        listAdapter.ClearData();
-                        listAdapter.addList(response.body().getData().getNewDiscount());
-                        listAdapter1.ClearData();
-                        listAdapter1.addList(response.body().getData().getRecService());
+                        if (tag==1){
+                            listAdapter.ClearData();
+                            listAdapter.addList(response.body().getData());
+                        }else {
+                            listAdapter1.ClearData();
+                            listAdapter1.addList(response.body().getData());
+                        }
                         pageNum++;
                     } else {
                         if (!TextUtils.isEmpty(keyWord)) {
@@ -289,28 +296,28 @@ public class IndexFragment extends BaseFragment {
 //                            }
                         }
                     }
-                    if (response.body().getData().getBanners().size() > 0) {
-                        list.clear();
-                        for (int i = 0; i < response.body().getData().getBanners().size(); i++) {
-                            bannerBean bannerBean = new bannerBean();
-                            bannerBean.setImage(response.body().getData().getBanners().get(i).getImg());
-                            bannerBean.setId(response.body().getData().getBanners().get(i).getId());
-                            bannerBean.setType(response.body().getData().getBanners().get(i).getType());
-                            list.add(bannerBean);
-                        }
-                        initAD(list);
-                    }
+//                    if (response.body().getData().getBanners().size() > 0) {
+//                        list.clear();
+//                        for (int i = 0; i < response.body().getData().getBanners().size(); i++) {
+//                            bannerBean bannerBean = new bannerBean();
+//                            bannerBean.setImage(response.body().getData().getBanners().get(i).getImg());
+//                            bannerBean.setId(response.body().getData().getBanners().get(i).getId());
+//                            bannerBean.setType(response.body().getData().getBanners().get(i).getType());
+//                            list.add(bannerBean);
+//                        }
+//                        initAD(list);
+//                    }
 
                 } else {
                     try {
-                        UIUtil.showToast(response.body().msg);
+                        UIUtil.showToast(response.body().message);
                     } catch (Exception e) {
                     }
                 }
             }
 
             @Override
-            public void onError(Call<GoodsListBean> call, Throwable t) {
+            public void onError(Call<SuperGoodsListBean<List<GoodsListBean>>> call, Throwable t) {
                 if (swiperefreshlayout != null) {
                     swiperefreshlayout.finishRefresh();
                     swiperefreshlayout.finishLoadmore();
@@ -319,7 +326,7 @@ public class IndexFragment extends BaseFragment {
             }
 
             @Override
-            public void onError(Call<GoodsListBean> call, Response<GoodsListBean> response) {
+            public void onError(Call<SuperGoodsListBean<List<GoodsListBean>>> call, Response<SuperGoodsListBean<List<GoodsListBean>>> response) {
                 if (swiperefreshlayout != null) {
                     swiperefreshlayout.finishRefresh();
                     swiperefreshlayout.finishLoadmore();

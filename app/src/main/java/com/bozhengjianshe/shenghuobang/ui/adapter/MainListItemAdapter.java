@@ -28,8 +28,8 @@ import butterknife.ButterKnife;
  * Created by chenzhiwei 2016/6/14.
  */
 public class MainListItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private static List<GoodsListBean.DataBean.RecServiceBean> list;
-    private static Context context;
+    private  List<GoodsListBean> list;
+    private  Context context;
     private boolean isLight;
     private final LayoutInflater mLayoutInflater;
 
@@ -39,14 +39,14 @@ public class MainListItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         mLayoutInflater = LayoutInflater.from(context);
     }
 
-    public MainListItemAdapter(Context context, List<GoodsListBean.DataBean.RecServiceBean> items) {
+    public MainListItemAdapter(Context context, List<GoodsListBean> items) {
         this.context = context;
         this.list = new ArrayList<>();
         this.list.addAll(items);
         mLayoutInflater = LayoutInflater.from(context);
     }
 
-    public void addList(List<GoodsListBean.DataBean.RecServiceBean> items) {
+    public void addList(List<GoodsListBean> items) {
         this.list.addAll(items);
         notifyDataSetChanged();
     }
@@ -56,7 +56,7 @@ public class MainListItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         notifyDataSetChanged();
     }
 
-    public static List<GoodsListBean.DataBean.RecServiceBean> getEntities() {
+    public  List<GoodsListBean> getEntities() {
         return list;
     }
 
@@ -70,13 +70,13 @@ public class MainListItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final int position) {
         if (list != null) {
             try {
-                ImageLoadedrManager.getInstance().display(context, list.get(position).getServiceImg(), ((ImageViewHolder) viewHolder).iv_image);
+                ImageLoadedrManager.getInstance().display(context, list.get(position).getThumbnail(), ((ImageViewHolder) viewHolder).iv_image);
             } catch (Exception e) {
 
             }
-            if (!TextUtils.isEmpty(list.get(position).getServiceName())) {
+            if (!TextUtils.isEmpty(list.get(position).getCname())) {
 
-                ((ImageViewHolder) viewHolder).tv_title.setText(list.get(position).getServiceName());
+                ((ImageViewHolder) viewHolder).tv_title.setText(list.get(position).getCname());
                 ((ImageViewHolder) viewHolder).tv_title.setVisibility(View.VISIBLE);
             } else {
                 ((ImageViewHolder) viewHolder).tv_title.setVisibility(View.GONE);

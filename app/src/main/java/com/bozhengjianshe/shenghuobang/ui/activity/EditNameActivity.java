@@ -98,8 +98,8 @@ public class EditNameActivity extends BaseActivity {
 
         DialogUtils.showDialog(this, "上传中", false);
         Map<String, String> map = new HashMap<>();
-        map.put("userId", BaseContext.getInstance().getUserInfo().userId);
-        map.put("userName", et_name.getText().toString());
+        map.put("id", BaseContext.getInstance().getUserInfo().id);
+        map.put("name", et_name.getText().toString());
         upLoadInfoCall = RestAdapterManager.getApi().updateName(map);
         upLoadInfoCall.enqueue(new JyCallBack<SuperBean<String>>() {
             @Override

@@ -14,6 +14,7 @@ import com.bozhengjianshe.shenghuobang.base.BaseActivity;
 import com.bozhengjianshe.shenghuobang.base.BaseContext;
 import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
+import com.bozhengjianshe.shenghuobang.ui.bean.SuperBean;
 import com.bozhengjianshe.shenghuobang.utils.DialogUtils;
 import com.bozhengjianshe.shenghuobang.utils.UIUtil;
 import com.bozhengjianshe.shenghuobang.view.TitleBar;
@@ -43,7 +44,7 @@ public class ShoppingAddressEditActivity extends BaseActivity {
     EditText etAddressDetail;
     private String tag = "0";//0新增，1编辑
     private String id = "";
-    Call<String> call;
+    Call<SuperBean<String>> call;
     @BindView(R.id.tv_commit)
     Button tv_commit;
 
@@ -101,7 +102,7 @@ public class ShoppingAddressEditActivity extends BaseActivity {
         map.put("phone", etAddressPhone.getText().toString());
         map.put("name", etAddressName.getText().toString());
         map.put("detail", etAddressDetail.getText().toString());
-        map.put("userId", BaseContext.getInstance().getUserInfo().userId);
+        map.put("userId", BaseContext.getInstance().getUserInfo().id);
         if (tag.equals("1")) {
 
             map.put("id", id);//如果是编辑的话是之前的地址id
@@ -109,12 +110,12 @@ public class ShoppingAddressEditActivity extends BaseActivity {
         } else {
             call = RestAdapterManager.getApi().addAddress(map);
         }
-        call.enqueue(new JyCallBack<String>() {
+        call.enqueue(new JyCallBack<SuperBean<String>>() {
             @Override
-            public void onSuccess(Call<String> call, Response<String> response) {
+            public void onSuccess(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
                 DialogUtils.closeDialog();
                 if (response != null && response.body() != null) {
-                    if (response.body().contains("1000")) {
+                    if (response.body().state==Constants.successCode) {
                         if (tag.equals("1")) {
                             //编辑
                             UIUtil.showToast("编辑成功");
@@ -133,13 +134,13 @@ public class ShoppingAddressEditActivity extends BaseActivity {
             }
 
             @Override
-            public void onError(Call<String> call, Throwable t) {
+            public void onError(Call<SuperBean<String>> call, Throwable t) {
                 DialogUtils.closeDialog();
                 UIUtil.showToast("修改失败，请稍后重试");
             }
 
             @Override
-            public void onError(Call<String> call, Response<String> response) {
+            public void onError(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
                 DialogUtils.closeDialog();
                 UIUtil.showToast("修改失败，请稍后重试");
             }

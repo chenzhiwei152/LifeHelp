@@ -20,7 +20,7 @@ public class AllServiceContentBean {
     private int totalCount;
     private int pageCount;
     private int pageSize;
-    private List<GoodsListBean.DataBean.RecServiceBean> data;
+    private List<GoodsListBean> data;
 
     public int getPageNo() {
         return pageNo;
@@ -54,12 +54,5 @@ public class AllServiceContentBean {
         this.pageSize = pageSize;
     }
 
-    public List<GoodsListBean.DataBean.RecServiceBean> getData() {
-        return data;
-    }
-
-    public void setData(List<GoodsListBean.DataBean.RecServiceBean> data) {
-        this.data = data;
-    }
 
 }

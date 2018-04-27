@@ -312,7 +312,7 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
     private void getRSAOrderInfo() {
         Map<String, String> map = new HashMap<>();
         map.put("orderId", orderId);
-        map.put("userId", BaseContext.getInstance().getUserInfo().userId);
+        map.put("userId", BaseContext.getInstance().getUserInfo().id);
         map.put("payType", payChannel + "");
         DialogUtils.showDialog(OrderDetailsActivity.this, "加载...", false);
         getRsaOrderCall = RestAdapterManager.getApi().getRsaOrderInfo(map);

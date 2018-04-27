@@ -12,19 +12,21 @@ import com.bozhengjianshe.shenghuobang.base.BaseFragment;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
 import com.bozhengjianshe.shenghuobang.ui.adapter.RentOrderListAdapter;
 import com.bozhengjianshe.shenghuobang.ui.bean.BuyOrderListItemBean;
-import com.bozhengjianshe.shenghuobang.ui.bean.SuperBean;
+import com.bozhengjianshe.shenghuobang.ui.bean.SuperOrderListBean;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import retrofit2.Call;
 import retrofit2.Response;
 
 /**
- * 租赁订单
+ * 订单
  * Created by chen.zhiwei on 2017-6-21.
  */
 
@@ -34,7 +36,7 @@ public class RentGoodsOrderListFragment extends BaseFragment {
     @BindView(R.id.swiperefreshlayout)
     SmartRefreshLayout swiperefreshlayout;
     private RentOrderListAdapter rentOrderListAdapter;
-    private Call<SuperBean<List<BuyOrderListItemBean>>> orderListCall;
+    private Call<SuperOrderListBean<List<BuyOrderListItemBean>>> orderListCall;
     private int pageNum = 1;
     private int pageSize = 10;
 
@@ -86,14 +88,12 @@ public class RentGoodsOrderListFragment extends BaseFragment {
     }
 
     private void getOrderList() {
-//        Map<String, String> map = new HashMap<>();
-//        map.put("pageNum", pageNum + "");
-//        map.put("pageSize", pageSize + "");
-//        map.put("userid", BaseContext.getInstance().getUserInfo().userId);
-        orderListCall = RestAdapterManager.getApi().getRentOrderList(BaseContext.getInstance().getUserInfo().userId);
-        orderListCall.enqueue(new JyCallBack<SuperBean<List<BuyOrderListItemBean>>>() {
+        Map<String,String> map=new HashMap<>();
+        map.put("memberid",BaseContext.getInstance().getUserInfo().id);
+        orderListCall = RestAdapterManager.getApi().getRentOrderList(map);
+        orderListCall.enqueue(new JyCallBack<SuperOrderListBean<List<BuyOrderListItemBean>>>() {
             @Override
-            public void onSuccess(Call<SuperBean<List<BuyOrderListItemBean>>> call, Response<SuperBean<List<BuyOrderListItemBean>>> response) {
+            public void onSuccess(Call<SuperOrderListBean<List<BuyOrderListItemBean>>> call, Response<SuperOrderListBean<List<BuyOrderListItemBean>>> response) {
                 if (swiperefreshlayout != null) {
                     swiperefreshlayout.finishRefresh();
                     swiperefreshlayout.finishLoadmore();
@@ -118,7 +118,7 @@ public class RentGoodsOrderListFragment extends BaseFragment {
             }
 
             @Override
-            public void onError(Call<SuperBean<List<BuyOrderListItemBean>>> call, Throwable t) {
+            public void onError(Call<SuperOrderListBean<List<BuyOrderListItemBean>>> call, Throwable t) {
                 if (swiperefreshlayout != null) {
                     swiperefreshlayout.finishRefresh();
                     swiperefreshlayout.finishLoadmore();
@@ -126,7 +126,7 @@ public class RentGoodsOrderListFragment extends BaseFragment {
             }
 
             @Override
-            public void onError(Call<SuperBean<List<BuyOrderListItemBean>>> call, Response<SuperBean<List<BuyOrderListItemBean>>> response) {
+            public void onError(Call<SuperOrderListBean<List<BuyOrderListItemBean>>> call, Response<SuperOrderListBean<List<BuyOrderListItemBean>>> response) {
                 if (swiperefreshlayout != null) {
                     swiperefreshlayout.finishRefresh();
                     swiperefreshlayout.finishLoadmore();

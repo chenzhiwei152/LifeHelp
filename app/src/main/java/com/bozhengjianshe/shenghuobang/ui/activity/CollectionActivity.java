@@ -12,10 +12,14 @@ import com.bozhengjianshe.shenghuobang.api.JyCallBack;
 import com.bozhengjianshe.shenghuobang.api.RestAdapterManager;
 import com.bozhengjianshe.shenghuobang.base.BaseActivity;
 import com.bozhengjianshe.shenghuobang.base.BaseContext;
+import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
 import com.bozhengjianshe.shenghuobang.ui.adapter.CollectionItemAdapter;
+import com.bozhengjianshe.shenghuobang.ui.bean.CollectionBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.CollectionItemBean;
+import com.bozhengjianshe.shenghuobang.ui.bean.GoodsListBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.SuperBean;
+import com.bozhengjianshe.shenghuobang.ui.bean.SuperGoodsListBean;
 import com.bozhengjianshe.shenghuobang.ui.listerner.CommonOnClickListerner;
 import com.bozhengjianshe.shenghuobang.utils.DialogUtils;
 import com.bozhengjianshe.shenghuobang.utils.ErrorMessageUtils;
@@ -26,7 +30,9 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import retrofit2.Call;
@@ -47,6 +53,7 @@ public class CollectionActivity extends BaseActivity {
     CollectionItemAdapter contentListAdapter;
     private TextView action;
     private CollectionItemBean bean;
+    private Call<SuperGoodsListBean<List<GoodsListBean>>> goodsListCall;
 
     @Override
     public int getContentViewLayoutId() {
@@ -116,30 +123,73 @@ public class CollectionActivity extends BaseActivity {
      * 获取收藏
      */
     private void getColloction() {
-        Call<SuperBean<List<CollectionItemBean>>> getCollection = RestAdapterManager.getApi().getCollection(BaseContext.getInstance().getUserInfo().userId);
-        getCollection.enqueue(new JyCallBack<SuperBean<List<CollectionItemBean>>>() {
+        Map<String, String> map = new HashMap<>();
+        map.put("collects", "");
+        map.put("id", BaseContext.getInstance().getUserInfo().id);
+        Call<CollectionBean> getCollection = RestAdapterManager.getApi().getCollection(map);
+        getCollection.enqueue(new JyCallBack<CollectionBean>() {
             @Override
-            public void onSuccess(Call<SuperBean<List<CollectionItemBean>>> call, Response<SuperBean<List<CollectionItemBean>>> response) {
-                swiperefreshlayout.finishRefresh();
-                if (response != null && response.body() != null && response.body().getData() != null) {
-                    contentListAdapter.ClearData();
-                    contentListAdapter.addList(response.body().getData());
+            public void onSuccess(Call<CollectionBean> call, Response<CollectionBean> response) {
+                if (response.body().state == Constants.successCode) {
+
+                    getList(response.body().collects);
+                } else {
+                    swiperefreshlayout.finishRefresh();
+                    UIUtil.showToast(response.body().message);
                 }
-
             }
 
             @Override
-            public void onError(Call<SuperBean<List<CollectionItemBean>>> call, Throwable t) {
+            public void onError(Call<CollectionBean> call, Throwable t) {
                 swiperefreshlayout.finishRefresh();
             }
 
             @Override
-            public void onError(Call<SuperBean<List<CollectionItemBean>>> call, Response<SuperBean<List<CollectionItemBean>>> response) {
+            public void onError(Call<CollectionBean> call, Response<CollectionBean> response) {
                 swiperefreshlayout.finishRefresh();
                 try {
                     ErrorMessageUtils.taostErrorMessage(CollectionActivity.this, response.errorBody().string());
                 } catch (IOException e) {
                     e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void getList(String ids) {
+        Map<String, String> map = new HashMap<>();
+        map.put("ids", ids + "");
+        goodsListCall = RestAdapterManager.getApi().getGoodsList(map);
+        goodsListCall.enqueue(new JyCallBack<SuperGoodsListBean<List<GoodsListBean>>>() {
+            @Override
+            public void onSuccess(Call<SuperGoodsListBean<List<GoodsListBean>>> call, Response<SuperGoodsListBean<List<GoodsListBean>>> response) {
+                swiperefreshlayout.finishRefresh();
+                if (response != null && response.body() != null && response.body().state == Constants.successCode) {
+                    if (response.body().getData() != null && response.body().getData().size() > 0) {
+                        contentListAdapter.ClearData();
+                        contentListAdapter.addList(response.body().getData());
+                    }
+
+                } else {
+                    try {
+                        UIUtil.showToast(response.body().message);
+                    } catch (Exception e) {
+                    }
+                }
+            }
+
+            @Override
+            public void onError(Call<SuperGoodsListBean<List<GoodsListBean>>> call, Throwable t) {
+                if (swiperefreshlayout != null) {
+                    swiperefreshlayout.finishRefresh();
+                }
+
+            }
+
+            @Override
+            public void onError(Call<SuperGoodsListBean<List<GoodsListBean>>> call, Response<SuperGoodsListBean<List<GoodsListBean>>> response) {
+                if (swiperefreshlayout != null) {
+                    swiperefreshlayout.finishRefresh();
                 }
             }
         });
@@ -154,7 +204,7 @@ public class CollectionActivity extends BaseActivity {
             @Override
             public void onSuccess(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
                 UIUtil.showToast(response.body().getMsg());
-                contentListAdapter.remove(bean);
+//                contentListAdapter.remove(bean);
             }
 
             @Override
