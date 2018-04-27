@@ -37,7 +37,15 @@ public class GoodsListBean  implements Serializable {
     private int yjfl;
     private int cost;
     private String cname;
+    private boolean checked;
 
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+    }
     public int getId() {
         return id;
     }

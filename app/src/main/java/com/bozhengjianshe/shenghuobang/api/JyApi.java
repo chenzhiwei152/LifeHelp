@@ -5,7 +5,7 @@ import com.bozhengjianshe.shenghuobang.bean.ErrorBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.AllServiceContentBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.AllServiceTypeBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.BuyOrderListItemBean;
-import com.bozhengjianshe.shenghuobang.ui.bean.CardListItemBean;
+import com.bozhengjianshe.shenghuobang.ui.bean.CardListBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.CollectionBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.GoodsDetailBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.GoodsListBean;
@@ -207,12 +207,13 @@ public interface JyApi {
     @POST("/api/cart/addCart")
     Call<SuperBean<String>> addTocard(@Body Map<String, String> map);
 
-    /*** 获取购物车列表
+    /*** 获取购物车列表id
+     *
      *
      * @return
      */
-    @GET("/api/cart/getCartList")
-    Call<SuperBean<List<CardListItemBean>>> getCardList(@Query("userId") String userId);
+    @POST(api+"updateMCommodities"+suffix)
+    Call<CardListBean> getCardList(@Body Map<String, String> map);
 
     /*** 删除购物车数据
      *

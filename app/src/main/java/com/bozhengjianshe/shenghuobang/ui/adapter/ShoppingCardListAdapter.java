@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.bozhengjianshe.shenghuobang.R;
 import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
-import com.bozhengjianshe.shenghuobang.ui.bean.CardListItemBean;
+import com.bozhengjianshe.shenghuobang.ui.bean.GoodsListBean;
 import com.bozhengjianshe.shenghuobang.ui.listerner.CommonOnClickListerner;
 import com.bozhengjianshe.shenghuobang.utils.ImageLoadedrManager;
 
@@ -30,7 +30,7 @@ import butterknife.ButterKnife;
  * Created by chenzhiwei 2016/6/14.
  */
 public class ShoppingCardListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private static List<CardListItemBean> list;
+    private static List<GoodsListBean> list;
     private static Context context;
     private String type;
     private boolean isAllChecked;
@@ -56,7 +56,7 @@ public class ShoppingCardListAdapter extends RecyclerView.Adapter<RecyclerView.V
         isEditMode = editMode;
     }
 
-    public void removeItem(CardListItemBean bean) {
+    public void removeItem(GoodsListBean bean) {
         this.list.remove(bean);
         notifyDataSetChanged();
     }
@@ -91,19 +91,19 @@ public class ShoppingCardListAdapter extends RecyclerView.Adapter<RecyclerView.V
         mLayoutInflater = LayoutInflater.from(context);
     }
 
-    public ShoppingCardListAdapter(Context context, List<CardListItemBean> items) {
+    public ShoppingCardListAdapter(Context context, List<GoodsListBean> items) {
         this.context = context;
         this.list = new ArrayList<>();
         this.list.addAll(items);
         mLayoutInflater = LayoutInflater.from(context);
     }
 
-    public void addList(List<CardListItemBean> items) {
+    public void addList(List<GoodsListBean> items) {
         this.list.addAll(items);
         notifyDataSetChanged();
     }
 
-    public List<CardListItemBean> getList() {
+    public List<GoodsListBean> getList() {
         return list;
     }
 
@@ -112,7 +112,7 @@ public class ShoppingCardListAdapter extends RecyclerView.Adapter<RecyclerView.V
         notifyDataSetChanged();
     }
 
-    public static List<CardListItemBean> getEntities() {
+    public static List<GoodsListBean> getEntities() {
         return list;
     }
 
@@ -126,9 +126,9 @@ public class ShoppingCardListAdapter extends RecyclerView.Adapter<RecyclerView.V
     public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, final int position) {
         if (list != null) {
 
-            ((ImageViewHolder) viewHolder).tv_number.setText(list.get(position).getProductCount() + "");
-            ((ImageViewHolder) viewHolder).tv_price.setText(list.get(position).getProductPrice() + "");
-            ((ImageViewHolder) viewHolder).tv_goods_name.setText(list.get(position).getProductName());
+//            ((ImageViewHolder) viewHolder).tv_number.setText(list.get(position).getProductCount() + "");
+            ((ImageViewHolder) viewHolder).tv_price.setText(list.get(position).getFee() + "");
+            ((ImageViewHolder) viewHolder).tv_goods_name.setText(list.get(position).getCname());
             if (isEditMode) {
                 ((ImageViewHolder) viewHolder).rb_check.setVisibility(View.GONE);
                 ((ImageViewHolder) viewHolder).iv_delete.setVisibility(View.VISIBLE);
@@ -192,7 +192,7 @@ public class ShoppingCardListAdapter extends RecyclerView.Adapter<RecyclerView.V
 
                 }
             });
-            ImageLoadedrManager.getInstance().display(context, list.get(position).getProductImg(), ((ImageViewHolder) viewHolder).iv_pic);
+            ImageLoadedrManager.getInstance().display(context, list.get(position).getThumbnail(), ((ImageViewHolder) viewHolder).iv_pic);
         }
     }
 
