@@ -206,7 +206,7 @@ public class PersonInformationActivity extends BaseActivity implements View.OnCl
     private void upLoadImage() {
         DialogUtils.showDialog(this, "上传中", false);
         List<MultipartBody.Part> parts = UploadFile.filesToMultipartBody(list);
-        upLoadImageCall = RestAdapterManager.getApi().uploadFile(parts.get(0));
+        upLoadImageCall = RestAdapterManager.getApi().uploadFile(parts);
         upLoadImageCall.enqueue(new JyCallBack<SuperBean<String>>() {
             @Override
             public void onSuccess(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {

@@ -32,7 +32,7 @@ public class UploadFile {
             String fileType = file.getName().substring(file.getName().lastIndexOf(".")+1,file.getName().length());
             RequestBody requestBody = RequestBody.create(MediaType.parse("image/"+fileType), file);
             MultipartBody.Part body =
-                    MultipartBody.Part.createFormData("file", file.getName(), requestBody);
+                    MultipartBody.Part.createFormData("1", file.getName(), requestBody);
 
             bodys.add(body);
         }

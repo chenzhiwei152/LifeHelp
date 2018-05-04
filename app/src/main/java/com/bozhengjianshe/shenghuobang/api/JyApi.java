@@ -169,8 +169,8 @@ public interface JyApi {
      * @return
      */
     @Multipart
-    @POST("/sys/uploadUserImg")
-    Call<SuperBean<String>> uploadFile(@Part MultipartBody.Part file);
+    @POST(api+"updateMPhone"+suffix)
+    Call<SuperBean<String>> uploadFile(@Part List<MultipartBody.Part> file);
 
     /**
      * 上传个人信息
