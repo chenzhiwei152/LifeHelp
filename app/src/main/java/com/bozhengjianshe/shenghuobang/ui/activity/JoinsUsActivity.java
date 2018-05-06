@@ -23,11 +23,11 @@ import com.bozhengjianshe.shenghuobang.view.SelectDialog;
 import com.bozhengjianshe.shenghuobang.view.TitleBar;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
+import okhttp3.FormBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -196,13 +196,15 @@ public class JoinsUsActivity extends BaseActivity implements View.OnClickListene
      * 提交商家信息
      */
     private void commitINfo() {
-        Map<String, String> map = new HashMap<>();
-        map.put("companyAddress", mi_address.getEditText().getText().toString());
-        map.put("contacts", mi_tel.getEditText().getText().toString());
-        map.put("controller", mi_principal.getEditText().getText().toString());
-        map.put("typeIds", JSONArray.toJSONString(childId));
-        map.put("userId", BaseContext.getInstance().getUserInfo().id);
-        Call<SuperBean<String>> addMerchantInfo = RestAdapterManager.getApi().addMerchantInfo(map);
+
+        RequestBody formBody = new FormBody.Builder()
+                .add("companyAddress", mi_address.getEditText().getText().toString())
+                .add("contacts",  mi_tel.getEditText().getText().toString())
+                .add("controller", mi_principal.getEditText().getText().toString())
+                .add("typeIds",  JSONArray.toJSONString(childId))
+                .add("userId",  BaseContext.getInstance().getUserInfo().id)
+                .build();
+        Call<SuperBean<String>> addMerchantInfo = RestAdapterManager.getApi().addMerchantInfo(formBody);
         addMerchantInfo.enqueue(new JyCallBack<SuperBean<String>>() {
             @Override
             public void onSuccess(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {

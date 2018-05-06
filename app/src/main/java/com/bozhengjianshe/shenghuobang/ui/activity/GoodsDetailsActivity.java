@@ -48,6 +48,8 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
+import okhttp3.FormBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -302,7 +304,7 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
         switch (view.getId()) {
             case R.id.iv_add_card:
                 //加入购物车
-                ShoppingCardsUtils.updateShoppingCards(goodsBeanList,"add");
+                ShoppingCardsUtils.updateShoppingCards(goodsBeanList, "add");
                 break;
             case R.id.iv_add_star:
                 addCollection();
@@ -362,11 +364,13 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
      * 添加到搜藏夹
      */
     private void addCollection() {
-        Map<String, String> map = new HashMap<>();
-        map.put("productId", goodsBean.getId() + "");
-        map.put("productType", type);
-        map.put("userId", BaseContext.getInstance().getUserInfo().id);
-        Call<SuperBean<String>> addCollection = RestAdapterManager.getApi().addCollection(map);
+
+        RequestBody formBody = new FormBody.Builder()
+                .add("productId", goodsBean.getId() + "")
+                .add("productType", type).add("userId", BaseContext.getInstance().getUserInfo().id)
+                .build();
+
+        Call<SuperBean<String>> addCollection = RestAdapterManager.getApi().addCollection(formBody);
         addCollection.enqueue(new JyCallBack<SuperBean<String>>() {
             @Override
             public void onSuccess(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {

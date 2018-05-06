@@ -25,11 +25,11 @@ import com.bozhengjianshe.shenghuobang.view.CleanableEditText;
 import com.bozhengjianshe.shenghuobang.view.TitleBar;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import okhttp3.FormBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -138,9 +138,10 @@ public class AccountSafetyActivity extends BaseActivity {
 
     private void getCode(String phone) {
         timer.start();
-        Map<String,String> map=new HashMap<>();
-        map.put("phone",phone);
-        getCheckCodeCall = RestAdapterManager.getApi().getCheckCodeForFPW(map);
+        RequestBody formBody = new FormBody.Builder()
+                .add("phone", phone)
+                .build();
+        getCheckCodeCall = RestAdapterManager.getApi().getCheckCodeForFPW(formBody);
         getCheckCodeCall.enqueue(new JyCallBack<SuperBean<String>>() {
             @Override
             public void onSuccess(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
@@ -165,13 +166,16 @@ public class AccountSafetyActivity extends BaseActivity {
     }
 
     private void commitData() {
-        Map<String, String> map = new HashMap<>();
-        map.put("qrnpassword", user_password.getText().toString());
-        map.put("npassword", user_password.getText().toString());
-        map.put("password", user_phone.getText().toString());
-        map.put("phone", BaseContext.getInstance().getUserInfo().phone);
-        map.put("id",BaseContext.getInstance().getUserInfo().id);
-        call = RestAdapterManager.getApi().accountSafety(map);
+
+        RequestBody formBody = new FormBody.Builder()
+                .add("phone", BaseContext.getInstance().getUserInfo().phone)
+                .add("password", user_password.getText().toString())
+                .add("qrnpassword", user_password.getText().toString())
+                .add("npassword", user_password.getText().toString())
+                .add("id", BaseContext.getInstance().getUserInfo().id)
+                .build();
+
+        call = RestAdapterManager.getApi().accountSafety(formBody);
         call.enqueue(new JyCallBack<ErrorBean>() {
             @Override
             public void onSuccess(Call<ErrorBean> call, Response<ErrorBean> response) {

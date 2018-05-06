@@ -31,7 +31,6 @@ import com.bozhengjianshe.shenghuobang.view.TitleBar;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.BindString;
 import butterknife.BindView;
@@ -41,6 +40,8 @@ import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.sina.weibo.SinaWeibo;
 import cn.sharesdk.tencent.qq.QQ;
 import cn.sharesdk.wechat.friends.Wechat;
+import okhttp3.FormBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -81,6 +82,8 @@ public class RegisterActivity extends BaseActivity implements
     ImageView iv_qq;
     @BindView(R.id.iv_sina)
     ImageView iv_sina;
+    @BindView(R.id.tv_to_login)
+    TextView tv_to_login;
 
 
     CountDownTimer timer;
@@ -115,6 +118,7 @@ public class RegisterActivity extends BaseActivity implements
         iv_sina.setOnClickListener(this);
         iv_weixin.setOnClickListener(this);
         iv_qq.setOnClickListener(this);
+        tv_to_login.setOnClickListener(this);
     }
 
     @Override
@@ -160,14 +164,15 @@ public class RegisterActivity extends BaseActivity implements
         }
 
         timer.start();
-        Map<String, String> map = new HashMap<>();
-        map.put("phone", phoneNumber);
-        getCheckCodeCall = RestAdapterManager.getApi().getCheckCode(map);
+        RequestBody formBody = new FormBody.Builder()
+                .add("phone", phoneNumber)
+                .build();
+        getCheckCodeCall = RestAdapterManager.getApi().getCheckCode(formBody);
         getCheckCodeCall.enqueue(new JyCallBack<RegistCodeBean>() {
             @Override
             public void onSuccess(Call<RegistCodeBean> call, Response<RegistCodeBean> response) {
 //                if (response != null && response.body().getState() == Constants.successCode) {
-                    UIUtil.showToast(response.body().getMessage());
+                UIUtil.showToast(response.body().getMessage());
 //                } else {
 //                    UIUtil.showToast("发送验证码失败");
 //                }
@@ -277,13 +282,13 @@ public class RegisterActivity extends BaseActivity implements
             return;
         }
 
-        HashMap<String, String> map = new HashMap<>();
-        map.put("phone", etPhone.getText().toString());
-        map.put("dxcode", etCode.getText().toString());
-        map.put("password", user_password.getText().toString());
-        map.put("qrpassword", user_password.getText().toString());
-
-        call = RestAdapterManager.getApi().reister(map);
+        RequestBody formBody = new FormBody.Builder()
+                .add("phone", etPhone.getText().toString())
+                .add("password", user_password.getText().toString())
+                .add("dxcode", etCode.getText().toString())
+                .add("qrpassword", user_password.getText().toString())
+                .build();
+        call = RestAdapterManager.getApi().reister(formBody);
 
         call.enqueue(new JyCallBack<SuperBean<String>>() {
             @Override
@@ -298,7 +303,7 @@ public class RegisterActivity extends BaseActivity implements
                             findPsIntent.putExtra("pwd", user_password.getText().toString());
                             startActivity(findPsIntent);
                         }
-                        UIUtil.showToast( response.body().message);
+                        UIUtil.showToast(response.body().message);
                     } else {
                         UIUtil.showToast("注册失败");
                     }
@@ -374,6 +379,9 @@ public class RegisterActivity extends BaseActivity implements
                 //新浪微博
                 Platform sina = ShareSDK.getPlatform(SinaWeibo.NAME);
                 login(sina.getName());
+                break;
+            case R.id.tv_to_login:
+                finish();
                 break;
 
         }

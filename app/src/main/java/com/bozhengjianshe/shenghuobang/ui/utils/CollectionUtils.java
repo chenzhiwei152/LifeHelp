@@ -16,9 +16,9 @@ import com.bozhengjianshe.shenghuobang.utils.UIUtil;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
+import okhttp3.FormBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -37,10 +37,13 @@ public class CollectionUtils {
             return;
         }
         final String ids = handleID(id, type);
-        Map<String, String> map = new HashMap<>();
-        map.put("collects", ids);
-        map.put("id", BaseContext.getInstance().getUserInfo().id);
-        Call<CollectionBean> getCollection = RestAdapterManager.getApi().getCollection(map);
+        RequestBody formBody = new FormBody.Builder()
+                .add("collects", ids)
+                .add("id", BaseContext.getInstance().getUserInfo().id)
+                .build();
+
+
+        Call<CollectionBean> getCollection = RestAdapterManager.getApi().getCollection(formBody);
         getCollection.enqueue(new JyCallBack<CollectionBean>() {
             @Override
             public void onSuccess(Call<CollectionBean> call, Response<CollectionBean> response) {

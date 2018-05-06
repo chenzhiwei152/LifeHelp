@@ -34,6 +34,8 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
+import okhttp3.FormBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -200,9 +202,10 @@ public class ShoppingAddressActivity extends BaseActivity {
     }
 
     private void deleteAddress(String id) {
-        Map<String,String> map=new HashMap<>();
-        map.put("id",id+"");
-        deleteCall = RestAdapterManager.getApi().deleteAddress(map);
+        RequestBody formBody = new FormBody.Builder()
+                .add("id", id+"")
+                .build();
+        deleteCall = RestAdapterManager.getApi().deleteAddress(formBody);
         deleteCall.enqueue(new JyCallBack<ErrorBean>() {
             @Override
             public void onSuccess(Call<ErrorBean> call, Response<ErrorBean> response) {

@@ -24,11 +24,11 @@ import com.bozhengjianshe.shenghuobang.view.CleanableEditText;
 import com.bozhengjianshe.shenghuobang.view.TitleBar;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import okhttp3.FormBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -147,9 +147,10 @@ public class EditPhoneActivity extends BaseActivity {
 
     private void getCode(String phone) {
         timer.start();
-        Map<String,String> map=new HashMap<>();
-        map.put("phone",phone);
-        getCheckCodeCall = RestAdapterManager.getApi().getCheckCodeForcPhone(map);
+        RequestBody formBody = new FormBody.Builder()
+                .add("phone", phone)
+                .build();
+        getCheckCodeCall = RestAdapterManager.getApi().getCheckCodeForcPhone(formBody);
         getCheckCodeCall.enqueue(new JyCallBack<SuperBean<String>>() {
             @Override
             public void onSuccess(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
@@ -207,11 +208,14 @@ public class EditPhoneActivity extends BaseActivity {
     }
 
     private void commitData() {
-        Map<String, String> map = new HashMap<>();
-        map.put("dxcode", etCode.getText().toString());
-        map.put("phone", user_old_phone.getText().toString());
-        map.put("nphone", etPhone.getText().toString());
-        call = RestAdapterManager.getApi().commitNewPhone(map);
+
+        RequestBody formBody = new FormBody.Builder()
+                .add("phone", user_old_phone.getText().toString())
+                .add("nphone", etPhone.getText().toString())
+                .add("dxcode", etCode.getText().toString())
+                .build();
+
+        call = RestAdapterManager.getApi().commitNewPhone(formBody);
         call.enqueue(new JyCallBack<SuperBean<String>>() {
             @Override
             public void onSuccess(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {

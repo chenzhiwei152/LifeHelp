@@ -1,12 +1,15 @@
 package com.bozhengjianshe.shenghuobang.ui.activity;
 
 import android.content.Intent;
+import android.support.annotation.IdRes;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -76,6 +79,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     String logins;
 
     Call<SuperBean<UserInfoBean>> loginCall;
+    @BindView(R.id.rg_group)
+    RadioGroup rg_group;
+    @BindView(R.id.rb_user)
+    RadioButton rb_user;
+    private String type = "1";
 
     @Override
     public int getContentViewLayoutId() {
@@ -92,7 +100,23 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         regist.setOnClickListener(this);
         ivCheckCode.setOnClickListener(this);
         regist_service_provider.setOnClickListener(this);
-
+        rb_user.setChecked(true);
+        rg_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
+                switch (i) {
+                    case R.id.rb_user:
+                        type = "1";
+                        break;
+                    case R.id.rb_proper:
+                        type = "2";
+                        break;
+                    case R.id.rb_service:
+                        type = "3";
+                        break;
+                }
+            }
+        });
     }
 
     @Override
@@ -176,7 +200,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             Toast.makeText(this, "密码至少为6位", Toast.LENGTH_SHORT).show();
             return;
         }
-        LoginUtils.commitlogin(this, userName.getText().toString().trim(), passWord.getText().toString().trim());
+        LoginUtils.commitlogin(this, userName.getText().toString().trim(), passWord.getText().toString().trim(),type);
 //        commitlogin();
 
     }

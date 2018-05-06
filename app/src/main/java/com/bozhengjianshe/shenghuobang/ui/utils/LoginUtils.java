@@ -37,11 +37,11 @@ public class LoginUtils {
     static Call<SuperBean<UserInfoBean>> thirdLoginCall;
     static boolean isSuccess;
 
-    public static void commitlogin(final Context context, final String tel, String password) {
+    public static void commitlogin(final Context context, final String tel, String password,String type) {
         DialogUtils.showDialog(context, "登陆...", false);
         RequestBody formBody = new FormBody.Builder()
                 .add("phone", tel)
-                .add("password", password).add("act", "1").add("status", "1")
+                .add("password", password).add("act", "1").add("status", type)
                 .build();
 
         loginCall = RestAdapterManager.getApi().login(formBody);

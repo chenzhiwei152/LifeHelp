@@ -18,10 +18,10 @@ import com.bozhengjianshe.shenghuobang.utils.UIUtil;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import okhttp3.FormBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -31,10 +31,12 @@ import retrofit2.Response;
 
 public class ShoppingCardsUtils {
     public static void updateShoppingCards(final List<GoodsListBean> ids, final String type) {
-        Map<String, String> map = new HashMap<>();
-        map.put("id", BaseContext.getInstance().getUserInfo().id + "");
-        map.put("commodities", handleId(changeBean(ids), type));
-        Call<SuperShoppingCardsBean<String>> updateShoppingCards = RestAdapterManager.getApi().updateShoppingCards(map);
+
+        RequestBody formBody = new FormBody.Builder()
+                .add("id", BaseContext.getInstance().getUserInfo().id + "")
+                .add("commodities", handleId(changeBean(ids), type))
+                .build();
+        Call<SuperShoppingCardsBean<String>> updateShoppingCards = RestAdapterManager.getApi().updateShoppingCards(formBody);
         updateShoppingCards.enqueue(new JyCallBack<SuperShoppingCardsBean<String>>() {
             @Override
             public void onSuccess(Call<SuperShoppingCardsBean<String>> call, Response<SuperShoppingCardsBean<String>> response) {

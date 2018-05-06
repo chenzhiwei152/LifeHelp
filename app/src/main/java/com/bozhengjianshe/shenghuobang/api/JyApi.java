@@ -62,7 +62,7 @@ public interface JyApi {
      * @return
      */
     @POST(api + "sendzcdx" + suffix)
-    Call<RegistCodeBean> getCheckCode(@Body Map<String, String> map);
+    Call<RegistCodeBean> getCheckCode(@Body RequestBody map);
 
     /**
      * 找回密码发送短信验证码
@@ -71,7 +71,7 @@ public interface JyApi {
      * @return
      */
     @POST(api + "sendDxFindPswd" + suffix)
-    Call<SuperBean<String>> getCheckCodeForFPW(@Body Map<String, String> map);
+    Call<SuperBean<String>> getCheckCodeForFPW(@Body RequestBody map);
 
     /**
      * 修改手机号码发送短信验证码
@@ -80,7 +80,7 @@ public interface JyApi {
      * @return
      */
     @POST(api + "sendDxFindPswd" + suffix)
-    Call<SuperBean<String>> getCheckCodeForcPhone(@Body Map<String, String> map);
+    Call<SuperBean<String>> getCheckCodeForcPhone(@Body RequestBody map);
 
     /**
      * 注册
@@ -89,7 +89,7 @@ public interface JyApi {
      * @return
      */
     @POST(api + "insertMember" + suffix)
-    Call<SuperBean<String>> reister(@Body Map<String, String> map);
+    Call<SuperBean<String>> reister(@Body RequestBody map);
 
     /**
      * 忘记密码
@@ -98,7 +98,7 @@ public interface JyApi {
      * @return
      */
     @POST(api + "findPassword" + suffix)
-    Call<SuperBean<String>> commitNewPassword(@Body Map<String, String> map);
+    Call<SuperBean<String>> commitNewPassword(@Body RequestBody map);
 
     /**
      * 修改手机号码
@@ -107,7 +107,7 @@ public interface JyApi {
      * @return
      */
     @POST(api + "updateMPhone" + suffix)
-    Call<SuperBean<String>> commitNewPhone(@Body Map<String, String> map);
+    Call<SuperBean<String>> commitNewPhone(@Body RequestBody map);
 
     /**
      * 修改密码
@@ -116,7 +116,7 @@ public interface JyApi {
      * @return
      */
     @POST(api + "updateMPassword" + suffix)
-    Call<ErrorBean> accountSafety(@Body Map<String, String> map);
+    Call<ErrorBean> accountSafety(@Body RequestBody map);
 
 
     /**
@@ -144,7 +144,7 @@ public interface JyApi {
      * @return
      */
     @POST(api + "deleteMAddress" + suffix)
-    Call<ErrorBean> deleteAddress(@Body Map<String, String> map);
+    Call<ErrorBean> deleteAddress(@Body RequestBody map);
 
     /**
      * 获取地址列表
@@ -214,32 +214,10 @@ public interface JyApi {
      * @return
      */
     @POST(api + "updateMCommodities" + suffix)
-    Call<CardListBean> getCardList(@Body Map<String, String> map);
+    Call<CardListBean> getCardList(@Body RequestBody map);
 
-    /*** 删除购物车数据
-     *
-     * @return
-     */
-    @GET("/api/cart/deleteCart")
-    Call<SuperBean<String>> deleteCardList(@Query("id") String id);
 
-    /**
-     * 提交购买订单
-     *
-     * @param map
-     * @return
-     */
-    @POST("/api/buyorder/insert")
-    Call<SuperBean<String>> getCommitOrder(@Body Map<String, String> map);
 
-    /**
-     * 获取购买订单列表
-     *
-     * @param map
-     * @return
-     */
-    @POST("/api/buyorder/appGetAllList")
-    Call<SuperBean<BuyOrderListItemBean>> getBuyOrderList(@Body Map<String, String> map);
 
     /**
      * 获取支付加密后的信息
@@ -250,14 +228,6 @@ public interface JyApi {
     @POST("/api/pay/payConfirm")
     Call<SuperBean<String>> getRsaOrderInfo(@Body Map<String, String> map);
 
-    /**
-     * 获取买卖订单详情
-     *
-     * @param id
-     * @return
-     */
-    @GET("/api/buyorder/appGetBuyOrderDetail")
-    Call<SuperBean<OrderDetailBean>> getOrderDetails(@Query("id") String id);
 
     /**
      * 获取订单详情
@@ -314,13 +284,13 @@ public interface JyApi {
      * 添加收藏
      */
     @POST("/api/collection/addCollection")
-    Call<SuperBean<String>> addCollection(@Body Map<String, String> map);
+    Call<SuperBean<String>> addCollection(@Body RequestBody map);
 
     /**
      * 获取收藏id
      */
     @GET(api + "updateMCollects" + suffix)
-    Call<CollectionBean> getCollection(@QueryMap Map<String, String> map);
+    Call<CollectionBean> getCollection(@QueryMap RequestBody map);
 
     /**
      * 删除收藏
@@ -339,7 +309,7 @@ public interface JyApi {
      * 提交商户信息
      */
     @POST("/api/provider/add")
-    Call<SuperBean<String>> addMerchantInfo(@Body Map<String, String> map);
+    Call<SuperBean<String>> addMerchantInfo(@Body RequestBody map);
 
 
     /**
@@ -361,6 +331,6 @@ public interface JyApi {
     /**
      * 更新购物车
      */
-    @GET(api + "updateMCommodities" + suffix)
-    Call<SuperShoppingCardsBean<String>> updateShoppingCards(@QueryMap Map<String, String> map);
+    @POST(api + "updateMCommodities" + suffix)
+    Call<SuperShoppingCardsBean<String>> updateShoppingCards(@Body RequestBody map);
 }
