@@ -2,6 +2,9 @@ package com.bozhengjianshe.shenghuobang.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -20,25 +23,27 @@ import com.bozhengjianshe.shenghuobang.base.BaseActivity;
 import com.bozhengjianshe.shenghuobang.base.BaseContext;
 import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
-import com.bozhengjianshe.shenghuobang.ui.bean.GoodsDetailBean;
+import com.bozhengjianshe.shenghuobang.ui.adapter.CommitOrderItemAdapter;
+import com.bozhengjianshe.shenghuobang.ui.bean.GoodsListBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.ShoppingAddressListItemBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.SuperBean;
+import com.bozhengjianshe.shenghuobang.ui.bean.SuperOrderBean;
 import com.bozhengjianshe.shenghuobang.utils.DialogUtils;
-import com.bozhengjianshe.shenghuobang.utils.ImageLoadedrManager;
 import com.bozhengjianshe.shenghuobang.utils.LogUtils;
 import com.bozhengjianshe.shenghuobang.utils.NetUtil;
 import com.bozhengjianshe.shenghuobang.utils.UIUtil;
-import com.bozhengjianshe.shenghuobang.view.MenuItem;
 import com.bozhengjianshe.shenghuobang.view.MyDialog;
 import com.bozhengjianshe.shenghuobang.view.TitleBar;
 import com.jpay.JPay;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
+import okhttp3.FormBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -64,47 +69,48 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
     ImageView iv_goods;
     @BindView(R.id.tv_title)
     TextView tv_title;
-    @BindView(R.id.tv_price_all)
-    TextView tv_price_all;
     @BindView(R.id.tv_price)
     TextView tv_price;
     @BindView(R.id.mi_name)
-    MenuItem mi_name;
+    TextView mi_name;
     @BindView(R.id.mi_phone)
-    MenuItem mi_phone;
+    TextView mi_phone;
     @BindView(R.id.mi_addresss)
-    MenuItem mi_addresss;
+    TextView mi_addresss;
 
     @BindView(R.id.bt_commit)
     Button bt_commit;
     @BindView(R.id.rl_number)
     RelativeLayout rl_number;
-    @BindView(R.id.tv_num_price)
-    TextView tv_num_price;
     @BindView(R.id.tv_delivery_type)
     TextView tv_delivery_type;
     @BindView(R.id.rl_delivery_type)
     RelativeLayout rl_delivery_type;
+    @BindView(R.id.rvList)
+    RecyclerView rvList;
+    @BindView(R.id.address)
+    CardView address;
+    @BindView(R.id.tv_all_price)
+    TextView tv_all_price;
 
+    private CommitOrderItemAdapter commitOrderItemAdapter;
+
+    private String ids;
 
     //    private String tag;//rent,sale
     private String id;
-    private int price;
+    private float price;
     private int count = 1;
-    private int days;
-    private int hour;
     private int mxCount = 200;
-    private GoodsDetailBean goodsBean;
-    private Date beginDate;
-    private Date endDate;
+    private List<GoodsListBean> goodsBean;
     private int payChannel = 0;//支付通道0为支付宝1为微信
     private int totalMoney;//订单总额单位是分
     private int orderType;//订单类型0为购买1租
     private int deliverytype = 1;//0为快递配送，1为店铺自取
     private Call<SuperBean<String>> getRsaOrderCall;
     private String orderId;
-    Call<SuperBean<String>> commitOrderCall;
-    Call<SuperBean<String>> commitRentCall;
+    Call<SuperOrderBean<String>> commitRentCall;
+    ShoppingAddressListItemBean bean;
 
     @Override
     public int getContentViewLayoutId() {
@@ -117,17 +123,17 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            goodsBean = (GoodsDetailBean) bundle.getSerializable("detail");
+            goodsBean = (List<GoodsListBean>) bundle.getSerializable("detail");
         }
 
-        setDeliveryType();
+        commitOrderItemAdapter = new CommitOrderItemAdapter(this);
+        rvList.setLayoutManager(new LinearLayoutManager(this));
+        rvList.setAdapter(commitOrderItemAdapter);
+        rvList.setNestedScrollingEnabled(false);
+        commitOrderItemAdapter.addList(goodsBean);
+
         bt_commit.setOnClickListener(this);
-//        ll_begin_time.setOnClickListener(this);
-//        ll_end_time.setOnClickListener(this);
-        rl_delivery_type.setOnClickListener(this);
-        mi_name.setOnClickListener(this);
-        mi_phone.setOnClickListener(this);
-        mi_addresss.setOnClickListener(this);
+        address.setOnClickListener(this);
 
         tvDes.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -171,42 +177,28 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
         });
     }
 
-    private void setRentPrice() {
-//        if (goodsBean.getBillingmode() == 1) {
-//            //按照天算
-//            if (BaseContext.getInstance().getUserInfo().vipgrade > 0) {
-//                price = goodsBean.getVipprice() * days + goodsBean.getDeposit();
-//            } else {
-//                price = goodsBean.getPrice() * days + goodsBean.getDeposit();
-//            }
-//        } else {
-//            //按照小时算
-//            if (BaseContext.getInstance().getUserInfo().vipgrade > 0) {
-//                price = goodsBean.getVipprice() * hour + goodsBean.getDeposit();
-//            } else {
-//                price = goodsBean.getPrice() * hour + goodsBean.getDeposit();
-//            }
-//        }
-        tv_num_price.setText("共计1件商品，合计￥" + price / 100.00);
-        tv_price_all.setText("￥" + price / 100.00);
-    }
 
     private void setSalePrice() {
-//        price = goodsBean.getPurchase() * count;
-        tv_num_price.setText("共计" + count + "件商品，合计￥" + price / 100.00);
-        tv_price_all.setText("￥" + price / 100.00);
+        ids="";
+        for (int i = 0; i < goodsBean.size(); i++) {
+            ids+=goodsBean.get(i).getId();
+            ids+=",";
+            if (goodsBean.get(i).getLb() == 1) {
+                //1 商品 2 服务
+                price += goodsBean.get(i).getProfit();
+            } else {
+                price += goodsBean.get(i).getFee();
+            }
+
+        }
+        tv_all_price.setText("￥" + price);
     }
 
     @Override
     public void loadData() {
-        setValueDefault();
+        setSalePrice();
     }
 
-    private void setValueDefault() {
-        ImageLoadedrManager.getInstance().display(this, goodsBean.getImg(), iv_goods);
-        tv_title.setText(goodsBean.getName());
-        tv_price.setText("￥" + goodsBean.getPrice());
-    }
 
     @Override
     public boolean isRegistEventBus() {
@@ -223,7 +215,8 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
         if (data != null) {
             if (resultCode == ADD_REQUEST_CODE) {
 //获取收货地址
-                setAddress((ShoppingAddressListItemBean) data.getExtras().getSerializable("addressBean"));
+                bean = (ShoppingAddressListItemBean) data.getExtras().getSerializable("addressBean");
+                setAddress(bean);
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -236,10 +229,10 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
 
 
     private void setAddress(ShoppingAddressListItemBean bean) {
-        if (bean != null && !TextUtils.isEmpty(bean.getName()) && !TextUtils.isEmpty(bean.getPhone()) && !TextUtils.isEmpty(bean.getDetail())) {
-            mi_name.getRightText().setText(bean.getName());
-            mi_phone.getRightText().setText(bean.getPhone());
-            mi_addresss.getRightText().setText(bean.getDetail());
+        if (bean != null && !TextUtils.isEmpty(bean.getLxr()) && !TextUtils.isEmpty(bean.getLxdh()) && !TextUtils.isEmpty(bean.getLxxq())) {
+            mi_name.setText("收货人：" + bean.getLxr());
+            mi_phone.setText(bean.getLxdh());
+            mi_addresss.setText("收货地址：" + bean.getLxdz() + bean.getLxxq());
         } else {
             //
 //            ll_address.setVisibility(View.GONE);
@@ -404,20 +397,14 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
             case R.id.bt_commit:
                 if (checkData())
                     if (!UIUtil.isFastDoubleClick()) {
-//                        if (tag.equals("rent")) {
                         commitRentOrder();
-//                        } else {
-//                            commitOrder();
-//                        }
                     }
                 break;
             case R.id.rl_delivery_type:
                 //
                 sendDialog();
                 break;
-            case R.id.mi_name:
-            case R.id.mi_phone:
-            case R.id.mi_addresss:
+            case R.id.address:
                 //地址
                 Intent intent1 = new Intent(this, ShoppingAddressActivity.class);
                 intent1.putExtra("type", "getAddress");
@@ -429,16 +416,10 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
 
 
     private boolean checkData() {
-        if (TextUtils.isEmpty(mi_addresss.getRightText().getText().toString())) {
+        if (bean == null) {
             UIUtil.showToast("请选择收货地址");
             return false;
         }
-//        if (tag.equals("rent")) {
-//            if (hour == 0) {
-//                UIUtil.showToast("请选择正确的时间");
-//                return false;
-//            }
-//        }
 
         return true;
     }
@@ -481,58 +462,6 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
         });
     }
 
-    /**
-     * 提交购买订单
-     */
-    private void commitOrder() {
-        if (!NetUtil.isNetworkConnected(this)) {
-            UIUtil.showToast(R.string.net_state_error);
-            return;
-        }
-        Map<String, String> map = new HashMap<>();
-        map.put("ordername", mi_name.getRightText().getText().toString());
-        map.put("orderphone", mi_phone.getRightText().getText().toString());
-        map.put("orderaddress", mi_addresss.getRightText().getText().toString());
-//        map.put("goodsid", goodsBean.getId() + "");
-//        map.put("goodsprice", goodsBean.getPrice() + "");
-        map.put("count", tvNum.getText().toString());
-        map.put("deliverytype", deliverytype + "");
-        map.put("payType", orderType + "");
-        map.put("totalmoney", price + "");
-        map.put("userid", BaseContext.getInstance().getUserInfo().id);
-        LogUtils.e(JSON.toJSONString(map));
-        Call<SuperBean<String>> commitOrderCall;
-        DialogUtils.showDialog(CommitOrderActivity.this, "获取订单...", false);
-        commitOrderCall = RestAdapterManager.getApi().getCommitOrder(map);
-        commitOrderCall.enqueue(new JyCallBack<SuperBean<String>>() {
-            @Override
-            public void onSuccess(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
-                if (response != null && response.body() != null && response.body().getCode() == Constants.successCode) {
-                    LogUtils.e(response.body().getMsg());
-                    DialogUtils.closeDialog();
-                    orderId = response.body().getData();
-                    payStyleDialog();
-
-                }
-            }
-
-            @Override
-            public void onError(Call<SuperBean<String>> call, Throwable t) {
-                DialogUtils.closeDialog();
-                UIUtil.showToast(t.getMessage());
-            }
-
-            @Override
-            public void onError(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
-                DialogUtils.closeDialog();
-                try {
-                    UIUtil.showToast(response.errorBody().string());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
 
     /**
      * 提交订单
@@ -542,25 +471,25 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
             UIUtil.showToast(R.string.net_state_error);
             return;
         }
-        Map<String, String> map = new HashMap<>();
-        map.put("receiveName", mi_name.getRightText().getText().toString());
-        map.put("receivePhone", mi_phone.getRightText().getText().toString());
-        map.put("receiveAddress", mi_addresss.getRightText().getText().toString());
-        map.put("productCount", "1");
-//        map.put("serviceTime", UIUtil.getTime(beginDate, "yyyy-MM-dd HH:mm:ss"));
-        map.put("transportType", deliverytype + "");
-        map.put("productId", goodsBean.getId() + "");
-        map.put("productType", goodsBean.getType() + "");
-        map.put("userid", BaseContext.getInstance().getUserInfo().id);
-        LogUtils.e(JSON.toJSONString(map));
+
+        RequestBody formBody = new FormBody.Builder()
+                .add("lxrxm", bean.getLxr())
+                .add("lxrdh", bean.getLxdh())
+                .add("lxradress", bean.getLxdz())
+                .add("extrafee", bean.getLxxq())
+                .add("commodity", ids)
+                .add("detail",  "1")
+                .add("memberid",   BaseContext.getInstance().getUserInfo().id)
+                .build();
+        LogUtils.e(JSON.toJSONString(formBody));
         DialogUtils.showDialog(CommitOrderActivity.this, "获取订单...", false);
-        commitRentCall = RestAdapterManager.getApi().getRentOrder(map);
-        commitRentCall.enqueue(new JyCallBack<SuperBean<String>>() {
+        commitRentCall = RestAdapterManager.getApi().getRentOrder(formBody);
+        commitRentCall.enqueue(new JyCallBack<SuperOrderBean<String>>() {
             @Override
-            public void onSuccess(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
+            public void onSuccess(Call<SuperOrderBean<String>> call, Response<SuperOrderBean<String>> response) {
+                DialogUtils.closeDialog();
+                UIUtil.showToast(response.body().getMsg());
                 if (response != null && response.body() != null && response.body().getCode() == Constants.successCode) {
-                    LogUtils.e(response.body().getMsg());
-                    DialogUtils.closeDialog();
                     orderId = response.body().getData();
                     Intent intent = new Intent(CommitOrderActivity.this, OrderDetailsActivity.class);
                     intent.putExtra("orderId", orderId);
@@ -571,13 +500,13 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
             }
 
             @Override
-            public void onError(Call<SuperBean<String>> call, Throwable t) {
+            public void onError(Call<SuperOrderBean<String>> call, Throwable t) {
                 DialogUtils.closeDialog();
                 UIUtil.showToast(t.getMessage());
             }
 
             @Override
-            public void onError(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
+            public void onError(Call<SuperOrderBean<String>> call, Response<SuperOrderBean<String>> response) {
                 DialogUtils.closeDialog();
                 try {
                     UIUtil.showToast(response.errorBody().string());
@@ -644,9 +573,6 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
     protected void onDestroy() {
         if (commitRentCall != null) {
             commitRentCall.cancel();
-        }
-        if (commitOrderCall != null) {
-            commitOrderCall.cancel();
         }
         super.onDestroy();
     }

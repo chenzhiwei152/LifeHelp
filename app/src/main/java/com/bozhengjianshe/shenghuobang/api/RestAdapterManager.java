@@ -2,8 +2,6 @@ package com.bozhengjianshe.shenghuobang.api;
 
 
 import com.bozhengjianshe.shenghuobang.api.FastJsonConvert.FastJsonConverterFactory;
-import com.bozhengjianshe.shenghuobang.base.BaseContext;
-import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.utils.LogUtils;
 
 import java.io.IOException;
@@ -54,8 +52,6 @@ public class RestAdapterManager {
                         @Override
                         public Response intercept(Chain chain) throws IOException {
                             Request.Builder builder = chain.request().newBuilder();
-
-
                             LogUtils.e("url:" + chain.request().method() + ":" + chain.request().url());
                             builder = addHeaders(builder);
                             Request request = builder.build();
@@ -75,7 +71,7 @@ public class RestAdapterManager {
      */
     private static Request.Builder addHeaders(Request.Builder builder) {
 
-
+//        builder.addHeader("content-type", "text/html;charset=UTF-8");
         return builder;
 
     }
@@ -83,20 +79,20 @@ public class RestAdapterManager {
     public static Map<String, String> getHeaderMap() {
         HashMap<String, String> hashMap = new HashMap<>();
 //        hashMap.put("deviceid", MyDeviceInfo.getDeviceId());//设备id
-        hashMap.put("timestamp", System.currentTimeMillis() + "");//当前时间
+//        hashMap.put("timestamp", System.currentTimeMillis() + "");//当前时间
 //        hashMap.put("devicebrand", MyDeviceInfo.getDeviceName());//设备型号
 //        hashMap.put("systembrand", MyDeviceInfo.getOsVersion());//操作系统版本
 //        hashMap.put("version", SysUtils.getVersionName(BaseContext.getInstance()));//应用版本
-        hashMap.put("APPkey", Constants.APP_KEY);//应用名称
+//        hashMap.put("APPkey", Constants.APP_KEY);//应用名称
 //        hashMap.put("lon", BaseContext.getInstance().getLocationInfo().getLongitude() + "");
 //        hashMap.put("lat", BaseContext.getInstance().getLocationInfo().getLatitude() + "");
 //        hashMap.put("cityId", BaseContext.getInstance().getLocationInfo().getCityId() + "");
 //        hashMap.put("deviceresolution", SysUtils.getScreenWidth(BaseContext.getInstance().getInstance()) + "x" + SysUtils.getScreenHeight(BaseContext.getInstance()));//分辨率
 //        String sign = Utils.getSign(hashMap);
 //        hashMap.put("sign", sign);//加密串
-        if (null != BaseContext.getInstance().getUserInfo()) {
+//        if (null != BaseContext.getInstance().getUserInfo()) {
 //            hashMap.put("token", BaseContext.getInstance().getUserInfo().token);
-        }
+//        }
         return hashMap;
     }
 

@@ -2,33 +2,41 @@ package com.bozhengjianshe.shenghuobang.api;
 
 
 import com.bozhengjianshe.shenghuobang.bean.ErrorBean;
-import com.bozhengjianshe.shenghuobang.ui.bean.AllServiceContentBean;
+import com.bozhengjianshe.shenghuobang.ui.bean.ADListItemBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.AllServiceTypeBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.BuyOrderListItemBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.CardListBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.CollectionBean;
+import com.bozhengjianshe.shenghuobang.ui.bean.GoodsCommentsItemBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.GoodsDetailBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.GoodsListBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.OrderDetailBean;
+import com.bozhengjianshe.shenghuobang.ui.bean.QuestionBean;
+import com.bozhengjianshe.shenghuobang.ui.bean.RegistCodeBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.ShoppingAddressListItemBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.SuperAddressListBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.SuperBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.SuperGoodsListBean;
+import com.bozhengjianshe.shenghuobang.ui.bean.SuperListBean;
+import com.bozhengjianshe.shenghuobang.ui.bean.SuperOrderBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.SuperOrderListBean;
+import com.bozhengjianshe.shenghuobang.ui.bean.SuperShoppingCardsBean;
+import com.bozhengjianshe.shenghuobang.ui.bean.SuperUserBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.UserInfoBean;
 
 import java.util.List;
 import java.util.Map;
 
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
 
 
 /**
@@ -43,7 +51,8 @@ public interface JyApi {
      * 登陆
      */
     @POST(api + "login" + suffix)
-    Call<SuperBean<UserInfoBean>> login(@Body Map<String, String> map);
+//    Call<SuperBean<UserInfoBean>> login(@Body Map<String, String> map);
+    Call<SuperUserBean<UserInfoBean>> login(@Body()RequestBody map);
 
 
     /**
@@ -52,23 +61,25 @@ public interface JyApi {
      * @param
      * @return
      */
-    @POST(api +"sendzcdx"+ suffix)
-    Call<SuperBean<String>> getCheckCode(@Body Map<String, String> map);
+    @POST(api + "sendzcdx" + suffix)
+    Call<RegistCodeBean> getCheckCode(@Body Map<String, String> map);
+
     /**
      * 找回密码发送短信验证码
      *
      * @param
      * @return
      */
-    @POST(api +"sendDxFindPswd"+ suffix)
+    @POST(api + "sendDxFindPswd" + suffix)
     Call<SuperBean<String>> getCheckCodeForFPW(@Body Map<String, String> map);
+
     /**
      * 修改手机号码发送短信验证码
      *
      * @param
      * @return
      */
-    @POST(api +"sendDxFindPswd"+ suffix)
+    @POST(api + "sendDxFindPswd" + suffix)
     Call<SuperBean<String>> getCheckCodeForcPhone(@Body Map<String, String> map);
 
     /**
@@ -77,7 +88,7 @@ public interface JyApi {
      * @param map
      * @return
      */
-    @POST(api+"insertMember"+suffix)
+    @POST(api + "insertMember" + suffix)
     Call<SuperBean<String>> reister(@Body Map<String, String> map);
 
     /**
@@ -86,15 +97,16 @@ public interface JyApi {
      * @param map
      * @return
      */
-    @POST(api+"findPassword"+suffix)
+    @POST(api + "findPassword" + suffix)
     Call<SuperBean<String>> commitNewPassword(@Body Map<String, String> map);
+
     /**
      * 修改手机号码
      *
      * @param map
      * @return
      */
-    @POST(api+"updateMPhone"+suffix)
+    @POST(api + "updateMPhone" + suffix)
     Call<SuperBean<String>> commitNewPhone(@Body Map<String, String> map);
 
     /**
@@ -103,7 +115,7 @@ public interface JyApi {
      * @param map
      * @return
      */
-    @POST(api+"updateMPassword"+suffix)
+    @POST(api + "updateMPassword" + suffix)
     Call<ErrorBean> accountSafety(@Body Map<String, String> map);
 
 
@@ -113,8 +125,8 @@ public interface JyApi {
      * @param map
      * @return
      */
-    @POST(api+"updateMAddress"+suffix)
-    Call<SuperBean<String>> addAddress(@Body Map<String, String> map);
+    @GET(api + "updateMAddress" + suffix)
+    Call<SuperBean<String>> addAddress(@QueryMap Map<String, String> map);
 
     /**
      * 编辑收货地址
@@ -122,8 +134,8 @@ public interface JyApi {
      * @param map
      * @return
      */
-    @POST("/api/deliveryAddress/updateDeliveryAddress")
-    Call<SuperBean<String>> editAddress(@Body Map<String, String> map);
+    @GET(api + "updateMUAddress" + suffix)
+    Call<SuperBean<String>> editAddress(@QueryMap Map<String, String> map);
 
     /**
      * 删除收货地址
@@ -131,8 +143,8 @@ public interface JyApi {
      * @param id
      * @return
      */
-    @GET("/api/deliveryAddress/deleteById")
-    Call<ErrorBean> deleteAddress(@Query("id") String id);
+    @POST(api + "deleteMAddress" + suffix)
+    Call<ErrorBean> deleteAddress(@Body Map<String, String> map);
 
     /**
      * 获取地址列表
@@ -140,9 +152,8 @@ public interface JyApi {
      * @param
      * @return
      */
-    @POST(api+"getMAddress"+suffix)
-    Call<SuperAddressListBean<List<ShoppingAddressListItemBean>>> getAddressList(@Body Map<String, String> map);
-
+    @GET(api + "getMAddress" + suffix)
+    Call<SuperAddressListBean<List<ShoppingAddressListItemBean>>> getAddressList(@QueryMap Map<String, String> map);
 
 
     /**
@@ -151,16 +162,21 @@ public interface JyApi {
      * @param
      * @return
      */
-    @POST(api+"getComList"+suffix)
-    Call<SuperGoodsListBean<List<GoodsListBean>>> getGoodsList(@Body Map<String, String> map);
-
+    @GET(api + "getComList" + suffix)
+    Call<SuperGoodsListBean<List<GoodsListBean>>> getGoodsList(@QueryMap Map<String, String> map);
 
 
     /**
-     * 广告位数据
+     * 首页服务广告信息
      */
-    @GET("/api/goods/adList")
-    Call<SuperBean<List<GoodsListBean>>> getAdList(@Query("userId") String userId);
+    @GET(api + "getFwgg" + suffix)
+    Call<SuperListBean<List<ADListItemBean>>> getServiceAdList();
+
+    /**
+     * 首页建材广告信息
+     */
+    @GET(api + "getJcgg" + suffix)
+    Call<SuperListBean<List<ADListItemBean>>> getBuilAdList();
 
     /**
      * 上传图片
@@ -169,7 +185,7 @@ public interface JyApi {
      * @return
      */
     @Multipart
-    @POST(api+"updateMPhone"+suffix)
+    @POST(api + "updateMPhone" + suffix)
     Call<SuperBean<String>> uploadFile(@Part List<MultipartBody.Part> file);
 
     /**
@@ -187,32 +203,17 @@ public interface JyApi {
      * @param map
      * @return
      */
-    @POST(api+"updateMName"+suffix)
+    @POST(api + "updateMName" + suffix)
     Call<SuperBean<String>> updateName(@Body Map<String, String> map);
 
-    /**
-     * 获取商品详细信息
-     *
-     * @param id
-     * @param type
-     * @return
-     */
-    @GET("/api/data/appGetProductDetailById")
-    Call<SuperBean<GoodsDetailBean>> getGoodsDetail(@Query("id") String id, @Query("type") String type);
 
-    /*** 添加到购物车
-     *
-     * @return
-     */
-    @POST("/api/cart/addCart")
-    Call<SuperBean<String>> addTocard(@Body Map<String, String> map);
 
     /*** 获取购物车列表id
      *
      *
      * @return
      */
-    @POST(api+"updateMCommodities"+suffix)
+    @POST(api + "updateMCommodities" + suffix)
     Call<CardListBean> getCardList(@Body Map<String, String> map);
 
     /*** 删除购物车数据
@@ -278,16 +279,14 @@ public interface JyApi {
     Call<SuperBean<OrderDetailBean>> quitOrder(@Query("orderId") String orderId);
 
 
-
-
     /**
      * 提交订单
      *
      * @param map
      * @return
      */
-    @POST("/api/order/submitOrder")
-    Call<SuperBean<String>> getRentOrder(@Body Map<String, String> map);
+    @POST(api + "insertOrder" + suffix)
+    Call<SuperOrderBean<String>> getRentOrder(@Body RequestBody map);
 
 
     /**
@@ -296,20 +295,20 @@ public interface JyApi {
      * @param
      * @return
      */
-    @POST(api+"getOrderList"+suffix)
-    Call<SuperOrderListBean<List<BuyOrderListItemBean>>> getRentOrderList(@Body Map<String, String> map);
+    @GET(api + "getOrderList" + suffix)
+    Call<SuperOrderListBean<List<BuyOrderListItemBean>>> getRentOrderList(@QueryMap Map<String, String> map);
 
     /**
      * 获取所有服务分类
      */
-    @GET("/api/productType/getProductClassify/{parentId}/{type}")
-    Call<SuperBean<List<AllServiceTypeBean>>> getAllServiceTypeList(@Path("parentId") String parentId, @Path("type") String type);
+    @GET(api + "getClistByPid" + suffix)
+    Call<SuperGoodsListBean<List<AllServiceTypeBean>>> getAllServiceTypeList(@Query("pid") String pid);
 
-    /**
-     * 服务类列表获取
-     */
-    @POST("/api/data/appGetProductList")
-    Call<SuperBean<AllServiceContentBean>> getAllServiceContentList(@Body Map<String, String> map);
+//    /**
+//     * 服务类列表获取
+//     */
+//    @POST("/api/data/appGetProductList")
+//    Call<SuperBean<AllServiceContentBean>> getAllServiceContentList(@Body Map<String, String> map);
 
     /**
      * 添加收藏
@@ -320,8 +319,8 @@ public interface JyApi {
     /**
      * 获取收藏id
      */
-    @POST(api+"updateMCollects"+suffix)
-    Call<CollectionBean> getCollection(@Body Map<String, String> map);
+    @GET(api + "updateMCollects" + suffix)
+    Call<CollectionBean> getCollection(@QueryMap Map<String, String> map);
 
     /**
      * 删除收藏
@@ -341,4 +340,27 @@ public interface JyApi {
      */
     @POST("/api/provider/add")
     Call<SuperBean<String>> addMerchantInfo(@Body Map<String, String> map);
+
+
+    /**
+     * 获取常见问题
+     */
+    @GET(api + "getCjwtList" + suffix)
+    Call<SuperGoodsListBean<List<QuestionBean>>> getQuestion();
+
+    /**
+     * 获取评论
+     *
+     * @param map
+     * @return
+     */
+    @GET(api + "getCommentList" + suffix)
+    Call<SuperGoodsListBean<List<GoodsCommentsItemBean>>> getComments(@QueryMap Map<String, String> map);
+
+
+    /**
+     * 更新购物车
+     */
+    @GET(api + "updateMCommodities" + suffix)
+    Call<SuperShoppingCardsBean<String>> updateShoppingCards(@QueryMap Map<String, String> map);
 }

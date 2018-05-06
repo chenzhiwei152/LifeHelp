@@ -17,6 +17,7 @@ import com.bozhengjianshe.shenghuobang.api.RestAdapterManager;
 import com.bozhengjianshe.shenghuobang.base.BaseActivity;
 import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
+import com.bozhengjianshe.shenghuobang.ui.bean.RegistCodeBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.SuperBean;
 import com.bozhengjianshe.shenghuobang.ui.utils.login.LoginApi;
 import com.bozhengjianshe.shenghuobang.ui.utils.login.OnLoginListener;
@@ -86,7 +87,7 @@ public class RegisterActivity extends BaseActivity implements
 
     boolean isCodeSended = false;
     Call<SuperBean<String>> call;//注册
-    Call<SuperBean<String>> getCheckCodeCall;
+    Call<RegistCodeBean> getCheckCodeCall;
 
     @Override
     public int getContentViewLayoutId() {
@@ -162,23 +163,23 @@ public class RegisterActivity extends BaseActivity implements
         Map<String, String> map = new HashMap<>();
         map.put("phone", phoneNumber);
         getCheckCodeCall = RestAdapterManager.getApi().getCheckCode(map);
-        getCheckCodeCall.enqueue(new JyCallBack<SuperBean<String>>() {
+        getCheckCodeCall.enqueue(new JyCallBack<RegistCodeBean>() {
             @Override
-            public void onSuccess(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
-                if (response != null && response.body().state == Constants.successCode) {
-                    UIUtil.showToast(response.body().message);
-                } else {
-                    UIUtil.showToast("发送验证码失败");
-                }
+            public void onSuccess(Call<RegistCodeBean> call, Response<RegistCodeBean> response) {
+//                if (response != null && response.body().getState() == Constants.successCode) {
+                    UIUtil.showToast(response.body().getMessage());
+//                } else {
+//                    UIUtil.showToast("发送验证码失败");
+//                }
             }
 
             @Override
-            public void onError(Call<SuperBean<String>> call, Throwable t) {
+            public void onError(Call<RegistCodeBean> call, Throwable t) {
 
             }
 
             @Override
-            public void onError(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
+            public void onError(Call<RegistCodeBean> call, Response<RegistCodeBean> response) {
 
             }
         });

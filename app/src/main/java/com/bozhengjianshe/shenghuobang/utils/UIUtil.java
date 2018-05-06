@@ -2,7 +2,9 @@ package com.bozhengjianshe.shenghuobang.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -480,5 +482,13 @@ public class UIUtil {
         }
         toast.show();
     }
-
+    /**
+     * 调用拨号界面
+     * @param phone 电话号码
+     */
+    public static void call(Context context,String phone) {
+        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+phone));
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+    }
 }

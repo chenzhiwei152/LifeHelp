@@ -1,6 +1,7 @@
 package com.bozhengjianshe.shenghuobang.ui.bean;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by chen.zhiwei on 2017-7-4.
@@ -10,36 +11,98 @@ public class BuyOrderListItemBean implements Serializable {
 
 
     /**
-     * id : 11
-     * userId : 2
-     * createTime : 1513149137000
-     * receiveName : 测试
-     * receivePhone : 132151515
-     * receiveAddress : 详细地址详细地址
-     * transportType : 0
-     * serviceTime : null
-     * orderState : 1
-     * orderStateCn : 待支付
-     * outTradeNo : TNO2017121315121714700000001
-     * serviceProviderId : 0
-     * orderType : 1
-     * orderAmount : 233
+     * lxrdh : 18888888888
+     * count : 120
+     * del : 1
+     * lxrxm : 赵震
+     * lxradress : 北京芍药居北里7号楼
+     * addtime : 2018-04-14 09:04:53
+     * name : null
+     * odnum : 2018041414098765
+     * id : 1
+     * state : 2
+     * detail : [{"zj":"15","dj":"5","num":"3","name":"金牌拖地"},{"zj":"15","dj":"5","num":"3","name":"金牌拖地"},{"zj":"15","dj":"5","num":"3","name":"金牌拖地"}]
+     * ncount : 100
+     * extrafee : 15
      */
 
+    private String lxrdh;
+    private int count;
+    private int del;
+    private String lxrxm;
+    private String lxradress;
+    private String addtime;
+    private String name;
+    private String odnum;
     private int id;
-    private int userId;
-    private long createTime;
-    private String receiveName;
-    private String receivePhone;
-    private String receiveAddress;
-    private int transportType;
-    private Object serviceTime;
-    private int orderState;
-    private String orderStateCn;
-    private String outTradeNo;
-    private int serviceProviderId;
-    private int orderType;
-    private int orderAmount;
+    private int state;
+    private int ncount;
+    private int extrafee;
+    private List<DetailBean> detail;
+
+    public String getLxrdh() {
+        return lxrdh;
+    }
+
+    public void setLxrdh(String lxrdh) {
+        this.lxrdh = lxrdh;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public int getDel() {
+        return del;
+    }
+
+    public void setDel(int del) {
+        this.del = del;
+    }
+
+    public String getLxrxm() {
+        return lxrxm;
+    }
+
+    public void setLxrxm(String lxrxm) {
+        this.lxrxm = lxrxm;
+    }
+
+    public String getLxradress() {
+        return lxradress;
+    }
+
+    public void setLxradress(String lxradress) {
+        this.lxradress = lxradress;
+    }
+
+    public String getAddtime() {
+        return addtime;
+    }
+
+    public void setAddtime(String addtime) {
+        this.addtime = addtime;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getOdnum() {
+        return odnum;
+    }
+
+    public void setOdnum(String odnum) {
+        this.odnum = odnum;
+    }
 
     public int getId() {
         return id;
@@ -49,107 +112,81 @@ public class BuyOrderListItemBean implements Serializable {
         this.id = id;
     }
 
-    public int getUserId() {
-        return userId;
+    public int getState() {
+        return state;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setState(int state) {
+        this.state = state;
     }
 
-    public long getCreateTime() {
-        return createTime;
+    public int getNcount() {
+        return ncount;
     }
 
-    public void setCreateTime(long createTime) {
-        this.createTime = createTime;
+    public void setNcount(int ncount) {
+        this.ncount = ncount;
     }
 
-    public String getReceiveName() {
-        return receiveName;
+    public int getExtrafee() {
+        return extrafee;
     }
 
-    public void setReceiveName(String receiveName) {
-        this.receiveName = receiveName;
+    public void setExtrafee(int extrafee) {
+        this.extrafee = extrafee;
     }
 
-    public String getReceivePhone() {
-        return receivePhone;
+    public List<DetailBean> getDetail() {
+        return detail;
     }
 
-    public void setReceivePhone(String receivePhone) {
-        this.receivePhone = receivePhone;
+    public void setDetail(List<DetailBean> detail) {
+        this.detail = detail;
     }
 
-    public String getReceiveAddress() {
-        return receiveAddress;
-    }
+    public static class DetailBean {
+        /**
+         * zj : 15
+         * dj : 5
+         * num : 3
+         * name : 金牌拖地
+         */
 
-    public void setReceiveAddress(String receiveAddress) {
-        this.receiveAddress = receiveAddress;
-    }
+        private String zj;
+        private String dj;
+        private String num;
+        private String name;
 
-    public int getTransportType() {
-        return transportType;
-    }
+        public String getZj() {
+            return zj;
+        }
 
-    public void setTransportType(int transportType) {
-        this.transportType = transportType;
-    }
+        public void setZj(String zj) {
+            this.zj = zj;
+        }
 
-    public Object getServiceTime() {
-        return serviceTime;
-    }
+        public String getDj() {
+            return dj;
+        }
 
-    public void setServiceTime(Object serviceTime) {
-        this.serviceTime = serviceTime;
-    }
+        public void setDj(String dj) {
+            this.dj = dj;
+        }
 
-    public int getOrderState() {
-        return orderState;
-    }
+        public String getNum() {
+            return num;
+        }
 
-    public void setOrderState(int orderState) {
-        this.orderState = orderState;
-    }
+        public void setNum(String num) {
+            this.num = num;
+        }
 
-    public String getOrderStateCn() {
-        return orderStateCn;
-    }
+        public String getName() {
+            return name;
+        }
 
-    public void setOrderStateCn(String orderStateCn) {
-        this.orderStateCn = orderStateCn;
-    }
-
-    public String getOutTradeNo() {
-        return outTradeNo;
-    }
-
-    public void setOutTradeNo(String outTradeNo) {
-        this.outTradeNo = outTradeNo;
-    }
-
-    public int getServiceProviderId() {
-        return serviceProviderId;
-    }
-
-    public void setServiceProviderId(int serviceProviderId) {
-        this.serviceProviderId = serviceProviderId;
-    }
-
-    public int getOrderType() {
-        return orderType;
-    }
-
-    public void setOrderType(int orderType) {
-        this.orderType = orderType;
-    }
-
-    public int getOrderAmount() {
-        return orderAmount;
-    }
-
-    public void setOrderAmount(int orderAmount) {
-        this.orderAmount = orderAmount;
+        public void setName(String name) {
+            this.name = name;
+        }
     }
 }

@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -26,11 +24,14 @@ import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
 import com.bozhengjianshe.shenghuobang.ui.adapter.GoodsDetailItemAdapter;
 import com.bozhengjianshe.shenghuobang.ui.adapter.IndexFragmentPagerAdapter;
-import com.bozhengjianshe.shenghuobang.ui.bean.GoodsDetailBean;
+import com.bozhengjianshe.shenghuobang.ui.bean.GoodsListBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.SuperBean;
+import com.bozhengjianshe.shenghuobang.ui.bean.SuperGoodsListBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.bannerBean;
 import com.bozhengjianshe.shenghuobang.ui.fragment.GoodsDetailLeftFragment;
 import com.bozhengjianshe.shenghuobang.ui.fragment.GoodsDetailRightFragment;
+import com.bozhengjianshe.shenghuobang.ui.utils.CollectionUtils;
+import com.bozhengjianshe.shenghuobang.ui.utils.ShoppingCardsUtils;
 import com.bozhengjianshe.shenghuobang.utils.DialogUtils;
 import com.bozhengjianshe.shenghuobang.utils.ErrorMessageUtils;
 import com.bozhengjianshe.shenghuobang.utils.ImageLoadedrManager;
@@ -40,6 +41,7 @@ import com.bozhengjianshe.shenghuobang.view.TitleBar;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -55,8 +57,8 @@ import retrofit2.Response;
 
 public class GoodsDetailsActivity extends BaseActivity implements View.OnClickListener {
 
-    @BindView(R.id.sf_listview)
-    RecyclerView sf_listview;
+    //    @BindView(R.id.sf_listview)
+//    RecyclerView sf_listview;
     @BindView(R.id.title_view)
     TitleBar title_view;
     @BindView(R.id.tv_goods_detail_describe)
@@ -69,18 +71,20 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
     ImageView iv_add_star;
     @BindView(R.id.tv_commit)
     TextView tv_commit;
+    @BindView(R.id.tv_all_price)
+    TextView tv_all_price;
     private ConvenientBanner kanner;
     List<bannerBean> list = new ArrayList<>();
     private GoodsDetailItemAdapter listAdapter;
     private Button bt_buy;
     private Button bt_exchange_state;
-    private GoodsDetailBean goodsBean;
+    private GoodsListBean goodsBean;
+    private List<GoodsListBean> goodsBeanList;
     private TextView tv_goods_name;
     private TextView tv_price_title;
     private TextView tv_member_price;
     private TextView tv_member_price_title;
-    private TextView tv_price;
-    private Call<SuperBean<GoodsDetailBean>> call;
+    private Call<SuperGoodsListBean<List<GoodsListBean>>> call;
     private boolean isNewData = true;
     private IndexFragmentPagerAdapter adapter;
     @BindView(R.id.ll_content)
@@ -114,7 +118,6 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
         tv_price_title = (TextView) findViewById(R.id.tv_price_title);
         tv_member_price = (TextView) findViewById(R.id.tv_member_price);
         tv_member_price_title = (TextView) findViewById(R.id.tv_member_price_title);
-        tv_price = (TextView) findViewById(R.id.tv_price);
         iv_add_card.setOnClickListener(this);
         iv_add_star.setOnClickListener(this);
         tv_commit.setOnClickListener(this);
@@ -122,12 +125,6 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
         type = getIntent().getStringExtra("type");
         id = getIntent().getStringExtra("id");
 
-        sf_listview.setLayoutManager(new LinearLayoutManager(this));
-        sf_listview.setNestedScrollingEnabled(false);
-
-        listAdapter = new GoodsDetailItemAdapter(this);
-
-        sf_listview.setAdapter(listAdapter);
         List<BaseFragment> fragmentList = new ArrayList<>();
         fragmentList.add(new GoodsDetailLeftFragment());
         fragmentList.add(new GoodsDetailRightFragment());
@@ -194,12 +191,11 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
             if (eventBusCenter.getEvenCode() == Constants.LOGIN_SUCCESS) {
                 isNewData = false;
                 getGoodsDetail();
-            }
-            else if (eventBusCenter.getEvenCode() == Constants.UPDA_DETAIL_WEBVIEW_HEIGHT) {
+            } else if (eventBusCenter.getEvenCode() == Constants.UPDA_DETAIL_WEBVIEW_HEIGHT) {
 //                UIUtil.showToast((String)eventBusCenter.getData());
                 setViewPagerWrapContentHeight((Integer) eventBusCenter.getData());
-            }else if (eventBusCenter.getEvenCode() == Constants.ADD_TO_CARD){
-                addToCard((Map<String, String>) eventBusCenter.getData());
+            } else if (eventBusCenter.getEvenCode() == Constants.UPDATE_COLLECTION_SUCCESS) {
+                setStar();
             }
         }
     }
@@ -221,13 +217,21 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
 
     private void getGoodsDetail() {
         DialogUtils.showDialog(this, "加载中", false);
-        call = RestAdapterManager.getApi().getGoodsDetail(id, type);
-        call.enqueue(new JyCallBack<SuperBean<GoodsDetailBean>>() {
+        Map<String, String> map = new HashMap<>();
+        map.put("ids", id + "");
+        if (type.equals(Constants.typeService)) {
+            map.put("lb", "1");
+        } else {
+            map.put("lb", "2");
+        }
+        call = RestAdapterManager.getApi().getGoodsList(map);
+        call.enqueue(new JyCallBack<SuperGoodsListBean<List<GoodsListBean>>>() {
             @Override
-            public void onSuccess(Call<SuperBean<GoodsDetailBean>> call, Response<SuperBean<GoodsDetailBean>> response) {
+            public void onSuccess(Call<SuperGoodsListBean<List<GoodsListBean>>> call, Response<SuperGoodsListBean<List<GoodsListBean>>> response) {
                 DialogUtils.closeDialog();
-                if (response != null && response.body() != null && response.body().getCode() == Constants.successCode) {
-                    goodsBean = response.body().getData();
+                if (response != null && response.body() != null && response.body().getCode() == Constants.successCode && response.body().getData().size() > 0) {
+                    goodsBeanList = response.body().getData();
+                    goodsBean = response.body().getData().get(0);
                     setData();
                     isNewData = true;
 
@@ -240,12 +244,12 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
             }
 
             @Override
-            public void onError(Call<SuperBean<GoodsDetailBean>> call, Throwable t) {
+            public void onError(Call<SuperGoodsListBean<List<GoodsListBean>>> call, Throwable t) {
                 DialogUtils.closeDialog();
             }
 
             @Override
-            public void onError(Call<SuperBean<GoodsDetailBean>> call, Response<SuperBean<GoodsDetailBean>> response) {
+            public void onError(Call<SuperGoodsListBean<List<GoodsListBean>>> call, Response<SuperGoodsListBean<List<GoodsListBean>>> response) {
                 DialogUtils.closeDialog();
                 try {
                     ErrorMessageUtils.taostErrorMessage(GoodsDetailsActivity.this, response.errorBody().string());
@@ -258,16 +262,28 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
 
     private void setData() {
         if (goodsBean != null) {
-            EventBus.getDefault().post(new EventBusCenter<>(Constants.UPDA_GOODS_DETAIL_H5, goodsBean.getDetailUrl()));
-            if (goodsBean.getImages() != null) {
+            if (goodsBean.getLb() == 1) {
+                tv_all_price.setText("￥" + goodsBean.getProfit());
+
+            } else {
+                tv_all_price.setText("￥" + goodsBean.getFee());
+            }
+            List<String> pics = new ArrayList<>();
+            for (int i = 0; i < goodsBean.getPicture().size(); i++) {
+                pics.add(goodsBean.getPicture().get(i).getImg());
+            }
+            EventBus.getDefault().post(new EventBusCenter<>(Constants.UPDA_GOODS_DETAIL_H5, pics));
+            if (goodsBean.getPicture() != null) {
                 //广告位
-                for (int i = 0; i < goodsBean.getImages().size(); i++) {
+                for (int i = 0; i < goodsBean.getPicture().size(); i++) {
                     bannerBean bannerBean = new bannerBean();
-                    bannerBean.setImage(goodsBean.getImages().get(i).getUrl());
+                    bannerBean.setImage(goodsBean.getPicture().get(i).getImg());
                     list.add(bannerBean);
                 }
                 //初始化广告栏
                 initAD(list);
+
+                setStar();
             }
 
         }
@@ -285,12 +301,8 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_add_card:
-                Bundle bundle1 = new Bundle();
-                bundle1.putSerializable("detail", goodsBean);
-                bundle1.putSerializable("type", "ToCard");
-                Intent intent1 = new Intent(this, CommitServiceOrderActivity.class);
-                intent1.putExtras(bundle1);
-                startActivity(intent1);
+                //加入购物车
+                ShoppingCardsUtils.updateShoppingCards(goodsBeanList,"add");
                 break;
             case R.id.iv_add_star:
                 addCollection();
@@ -298,53 +310,53 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
             case R.id.tv_commit:
                 if (goodsBean != null) {
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable("detail", goodsBean);
-                    if (type.equals(Constants.typeService)) {
-                        Intent intent = new Intent(this, CommitServiceOrderActivity.class);
-                        intent.putExtras(bundle);
-                        startActivity(intent);
-                    } else {
-                        Intent intent = new Intent(this, CommitOrderActivity.class);
-                        intent.putExtras(bundle);
-                        startActivity(intent);
-                    }
+                    bundle.putSerializable("detail", (Serializable) goodsBeanList);
+//                    if (type.equals(Constants.typeService)) {
+                    Intent intent = new Intent(this, CommitOrderActivity.class);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+//                    } else {
+//                        Intent intent = new Intent(this, CommitOrderActivity.class);
+//                        intent.putExtras(bundle);
+//                        startActivity(intent);
+//                    }
                 }
 
                 break;
         }
     }
 
-    /**
-     * 添加到购物车
-     */
-    private void addToCard(Map<String,String> maps) {
-        Map map = new HashMap();
-        map.put("productCount", "1");
-        map.put("productId", goodsBean.getId());
-        map.put("productType", type);
-        map.put("userId", BaseContext.getInstance().getUserInfo().id);
-        Call<SuperBean<String>> addTocard = RestAdapterManager.getApi().addTocard(map);
-        addTocard.enqueue(new JyCallBack<SuperBean<String>>() {
-            @Override
-            public void onSuccess(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
-                UIUtil.showToast(response.body().getMsg());
-            }
-
-            @Override
-            public void onError(Call<SuperBean<String>> call, Throwable t) {
-
-            }
-
-            @Override
-            public void onError(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
-                try {
-                    ErrorMessageUtils.taostErrorMessage(GoodsDetailsActivity.this, response.errorBody().string());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
+//    /**
+//     * 添加到购物车
+//     */
+//    private void addToCard(Map<String, String> maps) {
+//        Map map = new HashMap();
+//        map.put("productCount", "1");
+//        map.put("productId", goodsBean.getId());
+//        map.put("productType", type);
+//        map.put("userId", BaseContext.getInstance().getUserInfo().id);
+//        Call<SuperBean<String>> addTocard = RestAdapterManager.getApi().addTocard(map);
+//        addTocard.enqueue(new JyCallBack<SuperBean<String>>() {
+//            @Override
+//            public void onSuccess(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
+//                UIUtil.showToast(response.body().getMsg());
+//            }
+//
+//            @Override
+//            public void onError(Call<SuperBean<String>> call, Throwable t) {
+//
+//            }
+//
+//            @Override
+//            public void onError(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
+//                try {
+//                    ErrorMessageUtils.taostErrorMessage(GoodsDetailsActivity.this, response.errorBody().string());
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+//    }
 
     /**
      * 添加到搜藏夹
@@ -371,6 +383,19 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
 
             }
         });
+        if (CollectionUtils.getIsInCollection(goodsBean.getId() + "")) {
+            CollectionUtils.updateColloction(this, goodsBean.getId() + "", "delete");
+        } else {
+            CollectionUtils.updateColloction(this, goodsBean.getId() + "", "add");
+        }
+    }
+
+    private void setStar() {
+        if (CollectionUtils.getIsInCollection(goodsBean.getId() + "")) {
+            iv_add_star.setBackground(getResources().getDrawable(R.mipmap.ic_stars));
+        } else {
+            iv_add_star.setBackground(getResources().getDrawable(R.mipmap.ic_stars));
+        }
     }
 
     /**
@@ -417,15 +442,15 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
 
 
     private void setPriceValue() {
-        tv_goods_name.setText(goodsBean.getName());//标题
-        if (goodsBean.getPrice() > 0) {
-            tv_member_price.setText("111" + "件");
-            tv_member_price_title.setVisibility(View.VISIBLE);
-        } else {
-            tv_member_price.setText("");
-            tv_member_price_title.setVisibility(View.GONE);
-        }
-        tv_goods_price.setText(goodsBean.getPrice() + "");
+        tv_goods_name.setText(goodsBean.getCname());//标题
+//        if (goodsBean.getPrice() > 0) {
+//            tv_member_price.setText("111" + "件");
+//            tv_member_price_title.setVisibility(View.VISIBLE);
+//        } else {
+//            tv_member_price.setText("");
+//            tv_member_price_title.setVisibility(View.GONE);
+//        }
+        tv_goods_price.setText(goodsBean.getProfit() + "");
     }
 
     @Override

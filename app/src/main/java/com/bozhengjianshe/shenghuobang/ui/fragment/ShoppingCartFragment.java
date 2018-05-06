@@ -2,7 +2,6 @@ package com.bozhengjianshe.shenghuobang.ui.fragment;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -11,26 +10,20 @@ import android.widget.TextView;
 import com.bozhengjianshe.shenghuobang.R;
 import com.bozhengjianshe.shenghuobang.api.JyCallBack;
 import com.bozhengjianshe.shenghuobang.api.RestAdapterManager;
-import com.bozhengjianshe.shenghuobang.base.BaseContext;
 import com.bozhengjianshe.shenghuobang.base.BaseFragment;
 import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
 import com.bozhengjianshe.shenghuobang.ui.adapter.ShoppingCardListAdapter;
-import com.bozhengjianshe.shenghuobang.ui.bean.CardListBean;
-import com.bozhengjianshe.shenghuobang.ui.bean.CardListItemBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.GoodsListBean;
-import com.bozhengjianshe.shenghuobang.ui.bean.SuperBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.SuperGoodsListBean;
 import com.bozhengjianshe.shenghuobang.ui.listerner.CommonOnClickListerner;
-import com.bozhengjianshe.shenghuobang.utils.ErrorMessageUtils;
-import com.bozhengjianshe.shenghuobang.utils.LogUtils;
+import com.bozhengjianshe.shenghuobang.ui.utils.ShoppingCardsUtils;
 import com.bozhengjianshe.shenghuobang.utils.UIUtil;
 import com.bozhengjianshe.shenghuobang.view.TitleBar;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -74,7 +67,7 @@ public class ShoppingCartFragment extends BaseFragment {
         swiperefreshlayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                getCardList();
+                getList();
             }
         });
 
@@ -90,7 +83,7 @@ public class ShoppingCartFragment extends BaseFragment {
         listAdapter.setOnDeleteListerner(new CommonOnClickListerner() {
             @Override
             public void myOnClick(Object data) {
-                deleteItem((CardListItemBean) data);
+                deleteItem((GoodsListBean) data);
             }
         });
     }
@@ -122,49 +115,52 @@ public class ShoppingCartFragment extends BaseFragment {
             } else if (eventBusCenter.getEvenCode() == Constants.UPDATE_CARD_PRICE) {
                 //更新价格
                 CalculatePrice();
+            }else if (eventBusCenter.getEvenCode() == Constants.ADD_TO_CARD){
+                getList();
             }
         }
     }
 
-    /**
-     * 获取列表
-     */
-    private void getCardList() {
+//    /**
+//     * 获取列表
+//     */
+//    private void getCardList() {
+//        Map<String, String> map = new HashMap<>();
+//        map.put("commodities", "");
+//        map.put("id", BaseContext.getInstance().getUserInfo().id);
+//        Call<CardListBean> getCardList = RestAdapterManager.getApi().getCardList(map);
+//        getCardList.enqueue(new JyCallBack<CardListBean>() {
+//            @Override
+//            public void onSuccess(Call<CardListBean> call, Response<CardListBean> response) {
+//                swiperefreshlayout.finishRefresh();
+//                if (response.body() != null && !TextUtils.isEmpty(response.body().commodities)) {
+//                    getList(response.body().commodities);
+//                }
+//
+//
+//            }
+//
+//            @Override
+//            public void onError(Call<CardListBean> call, Throwable t) {
+//                swiperefreshlayout.finishRefresh();
+//                LogUtils.e(t.getMessage());
+//            }
+//
+//            @Override
+//            public void onError(Call<CardListBean> call, Response<CardListBean> response) {
+//                swiperefreshlayout.finishRefresh();
+//                try {
+//                    ErrorMessageUtils.taostErrorMessage(getActivity(), response.errorBody().string());
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
+//    }
+
+    private void getList() {
         Map<String, String> map = new HashMap<>();
-        map.put("commodities", "");
-        map.put("id", BaseContext.getInstance().getUserInfo().id);
-        Call<CardListBean> getCardList = RestAdapterManager.getApi().getCardList(map);
-        getCardList.enqueue(new JyCallBack<CardListBean>() {
-            @Override
-            public void onSuccess(Call<CardListBean> call, Response<CardListBean> response) {
-                swiperefreshlayout.finishRefresh();
-                if (response.body() != null && !TextUtils.isEmpty(response.body().commodities)) {
-                    getList(response.body().commodities);
-                }
-
-
-            }
-
-            @Override
-            public void onError(Call<CardListBean> call, Throwable t) {
-                swiperefreshlayout.finishRefresh();
-                LogUtils.e(t.getMessage());
-            }
-
-            @Override
-            public void onError(Call<CardListBean> call, Response<CardListBean> response) {
-                swiperefreshlayout.finishRefresh();
-                try {
-                    ErrorMessageUtils.taostErrorMessage(getActivity(), response.errorBody().string());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
-    private void getList(String ids) {
-        Map<String, String> map = new HashMap<>();
-        map.put("ids", ids + "");
+        map.put("ids", ShoppingCardsUtils.getIds());
 
         goodsListCall = RestAdapterManager.getApi().getGoodsList(map);
         goodsListCall.enqueue(new JyCallBack<SuperGoodsListBean<List<GoodsListBean>>>() {
@@ -201,30 +197,14 @@ public class ShoppingCartFragment extends BaseFragment {
             }
         });
     }
+
     /**
      * 删除数据
      */
-    private void deleteItem(final CardListItemBean bean) {
-        Call<SuperBean<String>> deleteCardList = RestAdapterManager.getApi().deleteCardList(bean.getId() + "");
-        deleteCardList.enqueue(new JyCallBack<SuperBean<String>>() {
-            @Override
-            public void onSuccess(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
-                UIUtil.showToast(response.body().getMsg());
-                if (response.body().getCode() == Constants.successCode) {
-//                    listAdapter.removeItem(bean);
-                }
-            }
-
-            @Override
-            public void onError(Call<SuperBean<String>> call, Throwable t) {
-
-            }
-
-            @Override
-            public void onError(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
-
-            }
-        });
+    private void deleteItem(final GoodsListBean bean) {
+        List<GoodsListBean> ids = new ArrayList<>();
+        ids.add(bean);
+        ShoppingCardsUtils.updateShoppingCards(ids, "delete");
     }
 
     private void CalculatePrice() {

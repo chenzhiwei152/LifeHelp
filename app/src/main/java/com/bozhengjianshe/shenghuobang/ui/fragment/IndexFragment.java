@@ -23,6 +23,7 @@ import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.bozhengjianshe.shenghuobang.R;
 import com.bozhengjianshe.shenghuobang.api.JyCallBack;
 import com.bozhengjianshe.shenghuobang.api.RestAdapterManager;
+import com.bozhengjianshe.shenghuobang.base.BaseContext;
 import com.bozhengjianshe.shenghuobang.base.BaseFragment;
 import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
@@ -30,9 +31,11 @@ import com.bozhengjianshe.shenghuobang.ui.activity.AllServiceActivity;
 import com.bozhengjianshe.shenghuobang.ui.activity.GoodsDetailsActivity;
 import com.bozhengjianshe.shenghuobang.ui.adapter.MainListItemAdapter;
 import com.bozhengjianshe.shenghuobang.ui.adapter.MainMenusAdapter;
+import com.bozhengjianshe.shenghuobang.ui.bean.ADListItemBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.GoodsListBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.MainMenuInfo;
 import com.bozhengjianshe.shenghuobang.ui.bean.SuperGoodsListBean;
+import com.bozhengjianshe.shenghuobang.ui.bean.SuperListBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.bannerBean;
 import com.bozhengjianshe.shenghuobang.utils.ImageLoadedrManager;
 import com.bozhengjianshe.shenghuobang.utils.UIUtil;
@@ -77,6 +80,8 @@ public class IndexFragment extends BaseFragment {
     AutoGridView gv_menu;
     @BindView(R.id.rl_search_view)
     RelativeLayout rl_search_view;
+    @BindView(R.id.tv_location)
+    TextView tv_location;
     List<bannerBean> list = new ArrayList<>();
     List<GoodsListBean> adList = new ArrayList<>();
     private MainListItemAdapter listAdapter;
@@ -104,9 +109,9 @@ public class IndexFragment extends BaseFragment {
 //        initTitle();
 
 
-        sf_listview.setLayoutManager(new GridLayoutManager(getActivity(),2));
+        sf_listview.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         sf_listview.setNestedScrollingEnabled(false);
-        sf_recomment_listview.setLayoutManager(new GridLayoutManager(getActivity(),2));
+        sf_recomment_listview.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         sf_recomment_listview.setNestedScrollingEnabled(false);
         swiperefreshlayout.setEnableHeaderTranslationContent(false);
         swiperefreshlayout.setEnableLoadmore(false);
@@ -168,8 +173,8 @@ public class IndexFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 Bundle bundle1 = new Bundle();
-                bundle1.putString(Constants.homeTypeTag,"82");
-                Intent intent=new Intent(getActivity(),AllServiceActivity.class);
+                bundle1.putString(Constants.homeTypeTag, "82");
+                Intent intent = new Intent(getActivity(), AllServiceActivity.class);
                 intent.putExtras(bundle1);
                 startActivity(intent);
             }
@@ -182,6 +187,7 @@ public class IndexFragment extends BaseFragment {
 //        getFilterList();
         getList(1);
         getList(2);
+        getADList();
         initMenus();
     }
 
@@ -200,6 +206,8 @@ public class IndexFragment extends BaseFragment {
         if (eventBusCenter != null) {
             if (eventBusCenter.getEvenCode() == Constants.LOGIN_FAILURE || eventBusCenter.getEvenCode() == Constants.LOGIN_SUCCESS) {
                 loadData();
+            } else if (eventBusCenter.getEvenCode() == Constants.LOCATION_CITY_SUCCESS) {
+                tv_location.setText(BaseContext.getInstance().city);
             }
         }
 
@@ -211,39 +219,39 @@ public class IndexFragment extends BaseFragment {
     private void initMenus() {
         //
         Bundle bundle1 = new Bundle();
-        bundle1.putString(Constants.homeTypeTag,"82");
+        bundle1.putString(Constants.homeTypeTag, "82");
         MainMenuInfo Home1 = new MainMenuInfo("补漏疏通", R.mipmap.ic_home_1, AllServiceActivity.class, bundle1);
         menus.add(Home1);
 
         Bundle bundle2 = new Bundle();
-        bundle2.putString(Constants.homeTypeTag,"78");
+        bundle2.putString(Constants.homeTypeTag, "78");
         MainMenuInfo Home2 = new MainMenuInfo("门窗锁具", R.mipmap.ic_home_2, AllServiceActivity.class, bundle2);
         menus.add(Home2);
 
         Bundle bundle3 = new Bundle();
-        bundle3.putString(Constants.homeTypeTag,"79");
+        bundle3.putString(Constants.homeTypeTag, "79");
         MainMenuInfo Home3 = new MainMenuInfo("水路电路", R.mipmap.ic_home_3, AllServiceActivity.class, bundle3);
         menus.add(Home3);
 
         Bundle bundle4 = new Bundle();
-        bundle4.putString(Constants.homeTypeTag,"76");
+        bundle4.putString(Constants.homeTypeTag, "76");
         MainMenuInfo Home4 = new MainMenuInfo("居家安装", R.mipmap.ic_home_4, AllServiceActivity.class, bundle4);
         menus.add(Home4);
         Bundle bundle5 = new Bundle();
-        bundle5.putString(Constants.homeTypeTag,"81");
+        bundle5.putString(Constants.homeTypeTag, "81");
         MainMenuInfo Home5 = new MainMenuInfo("保洁清洗", R.mipmap.ic_home_5, AllServiceActivity.class, bundle5);
         menus.add(Home5);
 
         Bundle bundle6 = new Bundle();
-        bundle6.putString(Constants.homeTypeTag,"77");
+        bundle6.putString(Constants.homeTypeTag, "77");
         MainMenuInfo Home6 = new MainMenuInfo("搬家搬运", R.mipmap.ic_home_6, AllServiceActivity.class, bundle6);
         menus.add(Home6);
         Bundle bundle7 = new Bundle();
-        bundle7.putString(Constants.homeTypeTag,"75");
+        bundle7.putString(Constants.homeTypeTag, "75");
         MainMenuInfo Home7 = new MainMenuInfo("家庭维修", R.mipmap.ic_home_7, AllServiceActivity.class, bundle7);
         menus.add(Home7);
         Bundle bundle8 = new Bundle();
-        bundle8.putString(Constants.homeTypeTag,"80");
+        bundle8.putString(Constants.homeTypeTag, "80");
         MainMenuInfo Home8 = new MainMenuInfo("局部改造", R.mipmap.ic_home_8, AllServiceActivity.class, bundle8);
         menus.add(Home8);
 
@@ -254,8 +262,8 @@ public class IndexFragment extends BaseFragment {
 
     private void getList(final int tag) {
         Map<String, String> map = new HashMap<>();
-        map.put("sftj",tag+"");//1 时查询推荐产品 2时为非推荐商品 不传值则全部查询
-        map.put("lb","1");//1 查询服务类商品 为 2 查询建材类商品 不传值则全部查询
+        map.put("sftj", tag + "");//1 时查询推荐产品 2时为非推荐商品 不传值则全部查询
+        map.put("lb", "1");//1 查询服务类商品 为 2 查询建材类商品 不传值则全部查询
         goodsListCall = RestAdapterManager.getApi().getGoodsList(map);
         goodsListCall.enqueue(new JyCallBack<SuperGoodsListBean<List<GoodsListBean>>>() {
             @Override
@@ -263,13 +271,13 @@ public class IndexFragment extends BaseFragment {
                 swiperefreshlayout.finishRefresh();
                 swiperefreshlayout.finishLoadmore();
                 if (response != null && response.body() != null && response.body().state == Constants.successCode) {
-                    if (response.body().getData()!=null&&response.body().getData().size() > 0) {
+                    if (response.body().getData() != null && response.body().getData().size() > 0) {
                         ll_empty.setVisibility(View.GONE);
                         sf_listview.setVisibility(View.VISIBLE);
-                        if (tag==1){
+                        if (tag == 1) {
                             listAdapter.ClearData();
                             listAdapter.addList(response.body().getData());
-                        }else {
+                        } else {
                             listAdapter1.ClearData();
                             listAdapter1.addList(response.body().getData());
                         }
@@ -296,17 +304,7 @@ public class IndexFragment extends BaseFragment {
 //                            }
                         }
                     }
-//                    if (response.body().getData().getBanners().size() > 0) {
-//                        list.clear();
-//                        for (int i = 0; i < response.body().getData().getBanners().size(); i++) {
-//                            bannerBean bannerBean = new bannerBean();
-//                            bannerBean.setImage(response.body().getData().getBanners().get(i).getImg());
-//                            bannerBean.setId(response.body().getData().getBanners().get(i).getId());
-//                            bannerBean.setType(response.body().getData().getBanners().get(i).getType());
-//                            list.add(bannerBean);
-//                        }
-//                        initAD(list);
-//                    }
+//
 
                 } else {
                     try {
@@ -335,7 +333,33 @@ public class IndexFragment extends BaseFragment {
         });
     }
 
+    private void getADList() {
+        Call<SuperListBean<List<ADListItemBean>>> getServiceAdList = RestAdapterManager.getApi().getServiceAdList();
+        getServiceAdList.enqueue(new JyCallBack<SuperListBean<List<ADListItemBean>>>() {
+            @Override
+            public void onSuccess(Call<SuperListBean<List<ADListItemBean>>> call, Response<SuperListBean<List<ADListItemBean>>> response) {
+                if (response.body().getData() != null && response.body().getData().size() > 0) {
+                    list.clear();
+                    for (int i = 0; i < response.body().getData().size(); i++) {
+                        bannerBean bannerBean = new bannerBean();
+                        bannerBean.setImage(response.body().getData().get(i).img);
+                        list.add(bannerBean);
+                    }
+                    initAD(list);
+                }
+            }
 
+            @Override
+            public void onError(Call<SuperListBean<List<ADListItemBean>>> call, Throwable t) {
+
+            }
+
+            @Override
+            public void onError(Call<SuperListBean<List<ADListItemBean>>> call, Response<SuperListBean<List<ADListItemBean>>> response) {
+
+            }
+        });
+    }
 
 
     /**
@@ -382,8 +406,8 @@ public class IndexFragment extends BaseFragment {
             public void onItemClick(int position) {
                 Intent intent = new Intent(getActivity(), GoodsDetailsActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putString("id", list.get(position).getId()+"");
-                bundle.putString("type", list.get(position).getType()+"");
+                bundle.putString("id", list.get(position).getId() + "");
+                bundle.putString("type", list.get(position).getType() + "");
                 intent.putExtras(bundle);
                 startActivity(intent);
             }

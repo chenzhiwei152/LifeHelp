@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -15,7 +16,6 @@ import com.bozhengjianshe.shenghuobang.base.BaseContext;
 import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
 import com.bozhengjianshe.shenghuobang.ui.adapter.CollectionItemAdapter;
-import com.bozhengjianshe.shenghuobang.ui.bean.CollectionBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.CollectionItemBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.GoodsListBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.SuperBean;
@@ -69,7 +69,7 @@ public class CollectionActivity extends BaseActivity {
         swiperefreshlayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                getColloction();
+                getList(BaseContext.getInstance().getUserInfo().collects);
             }
         });
         rv_list.setAdapter(contentListAdapter);
@@ -119,44 +119,13 @@ public class CollectionActivity extends BaseActivity {
         return null;
     }
 
-    /**
-     * 获取收藏
-     */
-    private void getColloction() {
-        Map<String, String> map = new HashMap<>();
-        map.put("collects", "");
-        map.put("id", BaseContext.getInstance().getUserInfo().id);
-        Call<CollectionBean> getCollection = RestAdapterManager.getApi().getCollection(map);
-        getCollection.enqueue(new JyCallBack<CollectionBean>() {
-            @Override
-            public void onSuccess(Call<CollectionBean> call, Response<CollectionBean> response) {
-                if (response.body().state == Constants.successCode) {
 
-                    getList(response.body().collects);
-                } else {
-                    swiperefreshlayout.finishRefresh();
-                    UIUtil.showToast(response.body().message);
-                }
-            }
-
-            @Override
-            public void onError(Call<CollectionBean> call, Throwable t) {
-                swiperefreshlayout.finishRefresh();
-            }
-
-            @Override
-            public void onError(Call<CollectionBean> call, Response<CollectionBean> response) {
-                swiperefreshlayout.finishRefresh();
-                try {
-                    ErrorMessageUtils.taostErrorMessage(CollectionActivity.this, response.errorBody().string());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
 
     private void getList(String ids) {
+        if (TextUtils.isEmpty(ids)){
+            swiperefreshlayout.finishRefresh();
+            return;
+        }
         Map<String, String> map = new HashMap<>();
         map.put("ids", ids + "");
         goodsListCall = RestAdapterManager.getApi().getGoodsList(map);

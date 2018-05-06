@@ -23,17 +23,19 @@ import com.bigkoo.convenientbanner.listener.OnItemClickListener;
 import com.bozhengjianshe.shenghuobang.R;
 import com.bozhengjianshe.shenghuobang.api.JyCallBack;
 import com.bozhengjianshe.shenghuobang.api.RestAdapterManager;
+import com.bozhengjianshe.shenghuobang.base.BaseContext;
 import com.bozhengjianshe.shenghuobang.base.BaseFragment;
 import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
 import com.bozhengjianshe.shenghuobang.ui.activity.AllBuildingActivity;
-import com.bozhengjianshe.shenghuobang.ui.activity.AllServiceActivity;
 import com.bozhengjianshe.shenghuobang.ui.activity.GoodsDetailsActivity;
 import com.bozhengjianshe.shenghuobang.ui.adapter.BuildingListItemAdapter;
 import com.bozhengjianshe.shenghuobang.ui.adapter.MainMenusAdapter;
+import com.bozhengjianshe.shenghuobang.ui.bean.ADListItemBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.GoodsListBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.MainMenuInfo;
 import com.bozhengjianshe.shenghuobang.ui.bean.SuperGoodsListBean;
+import com.bozhengjianshe.shenghuobang.ui.bean.SuperListBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.bannerBean;
 import com.bozhengjianshe.shenghuobang.utils.ImageLoadedrManager;
 import com.bozhengjianshe.shenghuobang.utils.UIUtil;
@@ -76,6 +78,8 @@ public class BuildingMaterialsFragment extends BaseFragment {
     AutoGridView gv_menu;
     @BindView(R.id.rl_search_view)
     RelativeLayout rl_search_view;
+    @BindView(R.id.tv_location)
+    TextView tv_location;
     List<bannerBean> list = new ArrayList<>();
     List<GoodsListBean> adList = new ArrayList<>();
     private BuildingListItemAdapter listAdapter;
@@ -162,7 +166,7 @@ public class BuildingMaterialsFragment extends BaseFragment {
             public void onClick(View v) {
                 Bundle bundle1 = new Bundle();
                 bundle1.putString(Constants.homeTypeTag,"1");
-                Intent intent=new Intent(getActivity(),AllServiceActivity.class);
+                Intent intent=new Intent(getActivity(),AllBuildingActivity.class);
                 intent.putExtras(bundle1);
                 startActivity(intent);
             }
@@ -174,6 +178,7 @@ public class BuildingMaterialsFragment extends BaseFragment {
 //        getAdList();
 //        getFilterList();
         getList();
+        getADList();
         initMenus();
     }
 
@@ -192,6 +197,8 @@ public class BuildingMaterialsFragment extends BaseFragment {
         if (eventBusCenter != null) {
             if (eventBusCenter.getEvenCode() == Constants.LOGIN_FAILURE || eventBusCenter.getEvenCode() == Constants.LOGIN_SUCCESS) {
                 loadData();
+            }else if (eventBusCenter.getEvenCode() == Constants.LOCATION_CITY_SUCCESS) {
+                tv_location.setText(BaseContext.getInstance().city);
             }
         }
 
@@ -325,7 +332,33 @@ public class BuildingMaterialsFragment extends BaseFragment {
             }
         });
     }
+    private void  getADList(){
+        Call<SuperListBean<List<ADListItemBean>>> getServiceAdList = RestAdapterManager.getApi().getBuilAdList();
+        getServiceAdList.enqueue(new JyCallBack<SuperListBean<List<ADListItemBean>>>() {
+            @Override
+            public void onSuccess(Call<SuperListBean<List<ADListItemBean>>> call, Response<SuperListBean<List<ADListItemBean>>> response) {
+                if (response.body().getData()!=null&&response.body().getData().size() > 0) {
+                    list.clear();
+                    for (int i = 0; i < response.body().getData().size(); i++) {
+                        bannerBean bannerBean = new bannerBean();
+                        bannerBean.setImage(response.body().getData().get(i).img);
+                        list.add(bannerBean);
+                    }
+                    initAD(list);
+                }
+            }
 
+            @Override
+            public void onError(Call<SuperListBean<List<ADListItemBean>>> call, Throwable t) {
+
+            }
+
+            @Override
+            public void onError(Call<SuperListBean<List<ADListItemBean>>> call, Response<SuperListBean<List<ADListItemBean>>> response) {
+
+            }
+        });
+    }
 
     /**
      * 广告栏定义图片地址

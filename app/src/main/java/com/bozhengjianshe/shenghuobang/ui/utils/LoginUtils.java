@@ -10,6 +10,7 @@ import com.bozhengjianshe.shenghuobang.base.BaseContext;
 import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
 import com.bozhengjianshe.shenghuobang.ui.bean.SuperBean;
+import com.bozhengjianshe.shenghuobang.ui.bean.SuperUserBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.UserInfoBean;
 import com.bozhengjianshe.shenghuobang.ui.index.MainActivity;
 import com.bozhengjianshe.shenghuobang.utils.DialogUtils;
@@ -21,9 +22,9 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.Map;
 
+import okhttp3.FormBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -32,20 +33,21 @@ import retrofit2.Response;
  */
 
 public class LoginUtils {
-    static Call<SuperBean<UserInfoBean>> loginCall;
+    static Call<SuperUserBean<UserInfoBean>> loginCall;
     static Call<SuperBean<UserInfoBean>> thirdLoginCall;
     static boolean isSuccess;
 
     public static void commitlogin(final Context context, final String tel, String password) {
         DialogUtils.showDialog(context, "登陆...", false);
-        Map<String, String> map = new HashMap<>();
-        map.put("phone", tel);
-        map.put("password", password);
-        map.put("act", "ab472b2c55de6b8da");
-        loginCall = RestAdapterManager.getApi().login(map);
-        loginCall.enqueue(new JyCallBack<SuperBean<UserInfoBean>>() {
+        RequestBody formBody = new FormBody.Builder()
+                .add("phone", tel)
+                .add("password", password).add("act", "1").add("status", "1")
+                .build();
+
+        loginCall = RestAdapterManager.getApi().login(formBody);
+        loginCall.enqueue(new JyCallBack<SuperUserBean<UserInfoBean>>() {
             @Override
-            public void onSuccess(Call<SuperBean<UserInfoBean>> call, Response<SuperBean<UserInfoBean>> response) {
+            public void onSuccess(Call<SuperUserBean<UserInfoBean>> call, Response<SuperUserBean<UserInfoBean>> response) {
                 DialogUtils.closeDialog();
                 if (response != null && response.body() != null && response.body().getCode() == Constants.successCode) {
                     BaseContext.getInstance().setUserInfo(response.body().getData());
@@ -68,13 +70,13 @@ public class LoginUtils {
             }
 
             @Override
-            public void onError(Call<SuperBean<UserInfoBean>> call, Throwable t) {
+            public void onError(Call<SuperUserBean<UserInfoBean>> call, Throwable t) {
                 UIUtil.showToast("登陆失败~请稍后重试");
                 DialogUtils.closeDialog();
             }
 
             @Override
-            public void onError(Call<SuperBean<UserInfoBean>> call, Response<SuperBean<UserInfoBean>> response) {
+            public void onError(Call<SuperUserBean<UserInfoBean>> call, Response<SuperUserBean<UserInfoBean>> response) {
                 try {
                     DialogUtils.closeDialog();
                     ErrorMessageUtils.taostErrorMessage(context, response.errorBody().string(), "");

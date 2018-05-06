@@ -2,6 +2,7 @@ package com.bozhengjianshe.shenghuobang.ui.bean;
 
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by chen.zhiwei on 2017-6-26.
@@ -11,80 +12,40 @@ public class GoodsListBean  implements Serializable {
 
 
     /**
-     * id : 6
-     * fee : 100
-     * profit : 200
-     * ejfl : 13
-     * addtime : 2018-04-14 07:04:17
-     * thumbnail : files/idcard/20180414/5258.jpg
+     * thumbnail : files/idcard/20180412/3863.jpg
+     * cost : 500
      * serv : 1
-     * lb : 2
-     * cnum : 201804141957175013
-     * yjfl : 10
-     * cost : 100
-     * cname : 落地大窗帘
+     * ejfl : 30
+     * fee : 100
+     * cname : 閾剁墝鐤忛€氫笅姘撮亾
+     * cnum : 201804141957175017
+     * picture : [{"img":"files/idcard/20180427/7531.png","detail":"璇︽儏鍥剧墖-1"},{"img":"files/idcard/20180427/3416.png","detail":"璇︽儏鍥剧墖-2"},{"img":"files/idcard/20180427/7605.png","detail":"璇︽儏鍥剧墖-3"}]
+     * yjfl : 15
+     * addtime : 2018-04-12 08:04:04
+     * lb : 1
+     * sfyh : 2
+     * id : 5
+     * detail : files/idcard/20180412/0405.jpg
+     * sftj : 2
+     * profit : 200
      */
 
-    private int id;
-    private int fee;
-    private int profit;
-    private int ejfl;
-    private String addtime;
     private String thumbnail;
+    private int cost;
     private int serv;
-    private int lb;
+    private int ejfl;
+    private int fee;
+    private String cname;
     private String cnum;
     private int yjfl;
-    private int cost;
-    private String cname;
-    private boolean checked;
-
-    public boolean isChecked() {
-        return checked;
-    }
-
-    public void setChecked(boolean checked) {
-        this.checked = checked;
-    }
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getFee() {
-        return fee;
-    }
-
-    public void setFee(int fee) {
-        this.fee = fee;
-    }
-
-    public int getProfit() {
-        return profit;
-    }
-
-    public void setProfit(int profit) {
-        this.profit = profit;
-    }
-
-    public int getEjfl() {
-        return ejfl;
-    }
-
-    public void setEjfl(int ejfl) {
-        this.ejfl = ejfl;
-    }
-
-    public String getAddtime() {
-        return addtime;
-    }
-
-    public void setAddtime(String addtime) {
-        this.addtime = addtime;
-    }
+    private String addtime;
+    private int lb;
+    private int sfyh;
+    private int id;
+    private String detail;
+    private int sftj;
+    private int profit;
+    private List<PictureBean> picture;
 
     public String getThumbnail() {
         return thumbnail;
@@ -92,6 +53,14 @@ public class GoodsListBean  implements Serializable {
 
     public void setThumbnail(String thumbnail) {
         this.thumbnail = thumbnail;
+    }
+
+    public int getCost() {
+        return cost;
+    }
+
+    public void setCost(int cost) {
+        this.cost = cost;
     }
 
     public int getServ() {
@@ -102,12 +71,28 @@ public class GoodsListBean  implements Serializable {
         this.serv = serv;
     }
 
-    public int getLb() {
-        return lb;
+    public int getEjfl() {
+        return ejfl;
     }
 
-    public void setLb(int lb) {
-        this.lb = lb;
+    public void setEjfl(int ejfl) {
+        this.ejfl = ejfl;
+    }
+
+    public int getFee() {
+        return fee;
+    }
+
+    public void setFee(int fee) {
+        this.fee = fee;
+    }
+
+    public String getCname() {
+        return cname;
+    }
+
+    public void setCname(String cname) {
+        this.cname = cname;
     }
 
     public String getCnum() {
@@ -126,19 +111,104 @@ public class GoodsListBean  implements Serializable {
         this.yjfl = yjfl;
     }
 
-    public int getCost() {
-        return cost;
+    public String getAddtime() {
+        return addtime;
     }
 
-    public void setCost(int cost) {
-        this.cost = cost;
+    public void setAddtime(String addtime) {
+        this.addtime = addtime;
     }
 
-    public String getCname() {
-        return cname;
+    public int getLb() {
+        return lb;
     }
 
-    public void setCname(String cname) {
-        this.cname = cname;
+    public void setLb(int lb) {
+        this.lb = lb;
+    }
+
+    public int getSfyh() {
+        return sfyh;
+    }
+
+    public void setSfyh(int sfyh) {
+        this.sfyh = sfyh;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
+    }
+
+    public int getSftj() {
+        return sftj;
+    }
+
+    public void setSftj(int sftj) {
+        this.sftj = sftj;
+    }
+
+    public int getProfit() {
+        return profit;
+    }
+
+    public void setProfit(int profit) {
+        this.profit = profit;
+    }
+
+    public List<PictureBean> getPicture() {
+        return picture;
+    }
+
+    public void setPicture(List<PictureBean> picture) {
+        this.picture = picture;
+    }
+
+    public static class PictureBean implements Serializable{
+        /**
+         * img : files/idcard/20180427/7531.png
+         * detail : 璇︽儏鍥剧墖-1
+         */
+
+        private String img;
+        private String detail;
+
+        public String getImg() {
+            return img;
+        }
+
+        public void setImg(String img) {
+            this.img = img;
+        }
+
+        public String getDetail() {
+            return detail;
+        }
+
+        public void setDetail(String detail) {
+            this.detail = detail;
+        }
+    }
+
+
+    private boolean Checked;
+
+    public boolean isChecked() {
+        return Checked;
+    }
+
+    public void setChecked(boolean checked) {
+        Checked = checked;
     }
 }

@@ -64,9 +64,9 @@ public class RentOrderListAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final int position) {
         if (list != null) {
-//            ((ImageViewHolder) viewHolder).tv_state_title.setText(list.get(position).geto());
-            ((ImageViewHolder) viewHolder).tv_state.setText(list.get(position).getOrderStateCn());
-            ((ImageViewHolder) viewHolder).tv_service_address.setText(list.get(position).getReceiveAddress());
+            ((ImageViewHolder) viewHolder).tv_state_title.setText(list.get(position).getName());
+            ((ImageViewHolder) viewHolder).tv_state.setText(list.get(position).getState()+"");
+            ((ImageViewHolder) viewHolder).tv_service_address.setText(list.get(position).getLxradress());
             ((ImageViewHolder) viewHolder).tv_detail.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -261,6 +261,24 @@
         <activity
             android:name=".ui.activity.EditPhoneActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.EaseBaiduMapActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.AddAddressSelfActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.QuestionNormalActivity"
+            android:screenOrientation="portrait" />
+        <!-- 百度地图所需的service -->
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote" />
+        <!-- umeng appkey，可忽略 -->
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="kjLPkkQh7DqXqiQRv4RXClOB93NL8nAt" />
     </application>
 
 </manifest>

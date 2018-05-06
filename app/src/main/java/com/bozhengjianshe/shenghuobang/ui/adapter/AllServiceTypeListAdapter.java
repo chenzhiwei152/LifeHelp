@@ -100,7 +100,7 @@ public class AllServiceTypeListAdapter extends RecyclerView.Adapter<RecyclerView
                 ((ImageViewHolder) viewHolder).tv_title.setTextColor(context.getResources().getColor(R.color.color_000000));
                 ((ImageViewHolder) viewHolder).vv_divider.setBackgroundColor(context.getResources().getColor(R.color.color_000000));
             }
-            ((ImageViewHolder) viewHolder).tv_title.setText(list.get(position).getText() + "");
+            ((ImageViewHolder) viewHolder).tv_title.setText(list.get(position).getName() + "");
         }
     }
 

@@ -12,30 +12,30 @@ public class UserInfoBean {
      * phone : 18535365201
      * sex : 0
      * remark : 1
-     * tel : 
+     * tel :
      * state : 1
-     * sfzh : 
+     * sfzh :
      * password : 235fd542e85fdfce132b0c21997d0ed9
      * id : 3
      * time : 1524215016667
      * lasttime : 1524215016667
-     * wxopen : 
+     * wxopen :
      * townid : 0
-     * name : 
+     * name :
      * del : 1
-     * head : 
+     * head :
      * attention : 0
      * clientmemid : 0
      * proxyflag : 0
      * status : 1
-     * nickname : 
+     * nickname :
      * proviceid : 0
-     * beizhu : 
-     * emailstate : 
-     * lastip : 
+     * beizhu :
+     * emailstate :
+     * lastip :
      * cityid : 0
-     * adress : 
-     * email : 
+     * adress :
+     * email :
      * insid : 0
      * busid : 0
      */
@@ -69,6 +69,8 @@ public class UserInfoBean {
     public String email;
     public int insid;
     public int busid;
+    public String collects;//收藏id
+    public String commodities;//购物车
 
-  
+
 }

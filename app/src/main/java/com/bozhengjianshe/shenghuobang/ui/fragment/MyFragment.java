@@ -13,15 +13,16 @@ import com.bozhengjianshe.shenghuobang.base.BaseFragment;
 import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
 import com.bozhengjianshe.shenghuobang.ui.activity.AboutActivity;
-import com.bozhengjianshe.shenghuobang.ui.activity.AccountSafetyActivity;
 import com.bozhengjianshe.shenghuobang.ui.activity.CollectionActivity;
 import com.bozhengjianshe.shenghuobang.ui.activity.JoinsUsActivity;
 import com.bozhengjianshe.shenghuobang.ui.activity.LoginActivity;
 import com.bozhengjianshe.shenghuobang.ui.activity.MerchantOrderActivity;
 import com.bozhengjianshe.shenghuobang.ui.activity.OrderListActivity;
 import com.bozhengjianshe.shenghuobang.ui.activity.PersonInformationActivity;
+import com.bozhengjianshe.shenghuobang.ui.activity.QuestionNormalActivity;
 import com.bozhengjianshe.shenghuobang.utils.DialogUtils;
 import com.bozhengjianshe.shenghuobang.utils.ImageLoadedrManager;
+import com.bozhengjianshe.shenghuobang.utils.UIUtil;
 import com.bozhengjianshe.shenghuobang.view.TitleBar;
 
 import org.greenrobot.eventbus.EventBus;
@@ -65,6 +66,8 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
     TextView tv_setting;
     @BindView(R.id.rl_quit_login)
     RelativeLayout rl_quit_login;
+    @BindView(R.id.rl_help)
+    RelativeLayout rl_help;
     @BindView(R.id.tv_user_name)
     TextView tv_user_name;
     @BindView(R.id.rb_rank)
@@ -95,6 +98,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
         tv_info.setOnClickListener(this);
         rl_merchant_order.setOnClickListener(this);
         tv_collection.setOnClickListener(this);
+        rl_help.setOnClickListener(this);
         initTitle();
     }
 
@@ -174,12 +178,12 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
                 startActivity(new Intent(getActivity(), MerchantOrderActivity.class));
                 break;
             case R.id.rl_safety:
-                //账户安全
+                //常见问题
                 if (BaseContext.getInstance().getUserInfo() == null) {
                     startActivity(new Intent(getActivity(), LoginActivity.class));
                     return;
                 }
-                startActivity(new Intent(getActivity(), AccountSafetyActivity.class));
+                startActivity(new Intent(getActivity(), QuestionNormalActivity.class));
                 break;
             case R.id.rl_order:
 //                //加入我们
@@ -220,6 +224,10 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
                     return;
                 }
                 showExitDialog();
+                break;
+            case R.id.rl_help:
+                //客服
+                UIUtil.call(getActivity(),"10086");
                 break;
         }
     }

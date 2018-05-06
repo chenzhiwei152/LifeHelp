@@ -8,18 +8,15 @@ import android.widget.Button;
 
 import com.alibaba.fastjson.JSON;
 import com.bozhengjianshe.shenghuobang.R;
-import com.bozhengjianshe.shenghuobang.api.JyCallBack;
-import com.bozhengjianshe.shenghuobang.api.RestAdapterManager;
 import com.bozhengjianshe.shenghuobang.base.BaseActivity;
 import com.bozhengjianshe.shenghuobang.base.BaseContext;
 import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
 import com.bozhengjianshe.shenghuobang.ui.bean.GoodsDetailBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.ShoppingAddressListItemBean;
-import com.bozhengjianshe.shenghuobang.ui.bean.SuperBean;
+import com.bozhengjianshe.shenghuobang.ui.bean.SuperOrderBean;
 import com.bozhengjianshe.shenghuobang.utils.DialogUtils;
 import com.bozhengjianshe.shenghuobang.utils.LogUtils;
-import com.bozhengjianshe.shenghuobang.utils.NetUtil;
 import com.bozhengjianshe.shenghuobang.utils.UIUtil;
 import com.bozhengjianshe.shenghuobang.utils.timepicker.TimePickerView;
 import com.bozhengjianshe.shenghuobang.view.MenuItem;
@@ -27,14 +24,12 @@ import com.bozhengjianshe.shenghuobang.view.TitleBar;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.BindView;
 import retrofit2.Call;
-import retrofit2.Response;
 
 import static com.bozhengjianshe.shenghuobang.base.Constants.ADD_REQUEST_CODE;
 
@@ -57,7 +52,7 @@ public class CommitServiceOrderActivity extends BaseActivity implements View.OnC
     MenuItem mi_phone;
     @BindView(R.id.mi_addresss)
     MenuItem mi_addresss;
-    Call<SuperBean<String>> commitRentCall;
+    Call<SuperOrderBean<String>> commitRentCall;
     private String orderId;
     private GoodsDetailBean goodsBean;
     private String type;
@@ -163,10 +158,10 @@ public class CommitServiceOrderActivity extends BaseActivity implements View.OnC
     }
 
     private void setAddress(ShoppingAddressListItemBean bean) {
-        if (bean != null && !TextUtils.isEmpty(bean.getName()) && !TextUtils.isEmpty(bean.getPhone()) && !TextUtils.isEmpty(bean.getDetail())) {
-            mi_name.getRightText().setText(bean.getName());
-            mi_phone.getRightText().setText(bean.getPhone());
-            mi_addresss.getRightText().setText(bean.getDetail());
+        if (bean != null && !TextUtils.isEmpty(bean.getLxr()) && !TextUtils.isEmpty(bean.getLxdh()) && !TextUtils.isEmpty(bean.getLxxq())) {
+            mi_name.getRightText().setText(bean.getLxr());
+            mi_phone.getRightText().setText(bean.getLxdh());
+            mi_addresss.getRightText().setText(bean.getLxxq());
 //            ll_address.setVisibility(View.VISIBLE);
 //            ll_add_addresss.setVisibility(View.GONE);
         } else {
@@ -199,42 +194,42 @@ public class CommitServiceOrderActivity extends BaseActivity implements View.OnC
      * 提交订单
      */
     private void commitRentOrder() {
-        if (!NetUtil.isNetworkConnected(this)) {
-            UIUtil.showToast(R.string.net_state_error);
-            return;
-        }
-        DialogUtils.showDialog(CommitServiceOrderActivity.this, "获取订单...", false);
-        commitRentCall = RestAdapterManager.getApi().getRentOrder(getMap());
-        commitRentCall.enqueue(new JyCallBack<SuperBean<String>>() {
-            @Override
-            public void onSuccess(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
-                if (response != null && response.body() != null && response.body().getCode() == Constants.successCode) {
-                    LogUtils.e(response.body().getMsg());
-                    DialogUtils.closeDialog();
-                    orderId = response.body().getData();
-                    Intent intent = new Intent(CommitServiceOrderActivity.this, OrderDetailsActivity.class);
-                    intent.putExtra("orderId", orderId);
-                    startActivity(intent);
-                    finish();
-                }
-            }
-
-            @Override
-            public void onError(Call<SuperBean<String>> call, Throwable t) {
-                DialogUtils.closeDialog();
-                UIUtil.showToast(t.getMessage());
-            }
-
-            @Override
-            public void onError(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
-                DialogUtils.closeDialog();
-                try {
-                    UIUtil.showToast(response.errorBody().string());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+//        if (!NetUtil.isNetworkConnected(this)) {
+//            UIUtil.showToast(R.string.net_state_error);
+//            return;
+//        }
+//        DialogUtils.showDialog(CommitServiceOrderActivity.this, "获取订单...", false);
+//        commitRentCall = RestAdapterManager.getApi().getRentOrder(getMap());
+//        commitRentCall.enqueue(new JyCallBack<SuperOrderBean<String>>() {
+//            @Override
+//            public void onSuccess(Call<SuperOrderBean<String>> call, Response<SuperOrderBean<String>> response) {
+//                if (response != null && response.body() != null && response.body().getCode() == Constants.successCode) {
+//                    LogUtils.e(response.body().getMsg());
+//                    DialogUtils.closeDialog();
+//                    orderId = response.body().getData();
+//                    Intent intent = new Intent(CommitServiceOrderActivity.this, OrderDetailsActivity.class);
+//                    intent.putExtra("orderId", orderId);
+//                    startActivity(intent);
+//                    finish();
+//                }
+//            }
+//
+//            @Override
+//            public void onError(Call<SuperOrderBean<String>> call, Throwable t) {
+//                DialogUtils.closeDialog();
+//                UIUtil.showToast(t.getMessage());
+//            }
+//
+//            @Override
+//            public void onError(Call<SuperOrderBean<String>> call, Response<SuperOrderBean<String>> response) {
+//                DialogUtils.closeDialog();
+//                try {
+//                    UIUtil.showToast(response.errorBody().string());
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
     }
 
     private Map<String, String> getMap() {

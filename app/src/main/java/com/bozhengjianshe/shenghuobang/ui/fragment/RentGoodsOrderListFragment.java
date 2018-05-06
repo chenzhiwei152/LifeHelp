@@ -98,7 +98,7 @@ public class RentGoodsOrderListFragment extends BaseFragment {
                     swiperefreshlayout.finishRefresh();
                     swiperefreshlayout.finishLoadmore();
                 }
-                if (response != null && response.body() != null) {
+                if (response != null && response.body() != null&&response.body().getData()!=null) {
                     if (response.body().getData().size() > 0) {
                         if (pageNum == 1) {
                             rentOrderListAdapter.ClearData();

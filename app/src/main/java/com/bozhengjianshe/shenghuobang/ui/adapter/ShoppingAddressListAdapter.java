@@ -99,9 +99,10 @@ public class ShoppingAddressListAdapter extends RecyclerView.Adapter<RecyclerVie
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final int position) {
         if (list != null) {
 
-            ((ImageViewHolder) viewHolder).tv_address_name.setText(list.get(position).getName());
-            ((ImageViewHolder) viewHolder).tv_address_phone.setText(list.get(position).getPhone());
-            ((ImageViewHolder) viewHolder).tv_address_detail.setText(list.get(position).getDetail());
+            ((ImageViewHolder) viewHolder).tv_address_name.setText(list.get(position).getLxr());
+            ((ImageViewHolder) viewHolder).tv_address_phone.setText(list.get(position).getLxdh());
+            ((ImageViewHolder) viewHolder).tv_address_detail.setText(list.get(position).getLxxq());
+            ((ImageViewHolder) viewHolder).tv_address_selected.setText(list.get(position).getLxdz());
             ((ImageViewHolder) viewHolder).tv_address_edit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -109,9 +110,10 @@ public class ShoppingAddressListAdapter extends RecyclerView.Adapter<RecyclerVie
                     Intent intent = new Intent(context, ShoppingAddressEditActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putString("flag", "1");
-                    bundle.putString("phone", list.get(position).getPhone());
-                    bundle.putString("name", list.get(position).getName());
-                    bundle.putString("detail", list.get(position).getDetail());
+                    bundle.putString("phone", list.get(position).getLxdh());
+                    bundle.putString("name", list.get(position).getLxr());
+                    bundle.putString("detail", list.get(position).getLxxq());
+                    bundle.putString("selected", list.get(position).getLxdz());
                     bundle.putString("id", list.get(position).getId() + "");
                     intent.putExtras(bundle);
                     context.startActivity(intent);
@@ -154,6 +156,8 @@ public class ShoppingAddressListAdapter extends RecyclerView.Adapter<RecyclerVie
         TextView tv_address_phone;
         @BindView(R.id.tv_address_detail)
         TextView tv_address_detail;
+        @BindView(R.id.tv_address_selected)
+        TextView tv_address_selected;
         @BindView(R.id.ll_address)
         LinearLayout ll_address;
         @BindView(R.id.tv_address_edit)

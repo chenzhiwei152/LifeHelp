@@ -6,21 +6,28 @@ package com.bozhengjianshe.shenghuobang.ui.bean;
 
 public class AllServiceTypeBean {
 
-    /**
-     * id : 75
-     * parentId : 0
-     * text : 装修装饰
-     * deleteFlag : 0
-     * isLeaf : 0
-     * children : null
-     */
 
+
+    private String name;
+    private int rank;
     private int id;
-    private int parentId;
-    private String text;
-    private int deleteFlag;
-    private int isLeaf;
-    private String children;
+    private int mark;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getRank() {
+        return rank;
+    }
+
+    public void setRank(int rank) {
+        this.rank = rank;
+    }
 
     public int getId() {
         return id;
@@ -30,43 +37,11 @@ public class AllServiceTypeBean {
         this.id = id;
     }
 
-    public int getParentId() {
-        return parentId;
+    public int getMark() {
+        return mark;
     }
 
-    public void setParentId(int parentId) {
-        this.parentId = parentId;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public int getDeleteFlag() {
-        return deleteFlag;
-    }
-
-    public void setDeleteFlag(int deleteFlag) {
-        this.deleteFlag = deleteFlag;
-    }
-
-    public int getIsLeaf() {
-        return isLeaf;
-    }
-
-    public void setIsLeaf(int isLeaf) {
-        this.isLeaf = isLeaf;
-    }
-
-    public String getChildren() {
-        return children;
-    }
-
-    public void setChildren(String children) {
-        this.children = children;
+    public void setMark(int mark) {
+        this.mark = mark;
     }
 }

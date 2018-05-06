@@ -14,7 +14,7 @@ import com.bozhengjianshe.shenghuobang.ui.adapter.MerchantOrderItemAdapter;
 import butterknife.BindView;
 
 /**
- * 装修记录
+ * 商户订单
  * Created by chen.zhiwei on 2017-12-19.
  */
 

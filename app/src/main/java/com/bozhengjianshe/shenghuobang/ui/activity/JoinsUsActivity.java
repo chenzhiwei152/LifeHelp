@@ -13,6 +13,7 @@ import com.bozhengjianshe.shenghuobang.base.BaseContext;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
 import com.bozhengjianshe.shenghuobang.ui.bean.AllServiceTypeBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.SuperBean;
+import com.bozhengjianshe.shenghuobang.ui.bean.SuperGoodsListBean;
 import com.bozhengjianshe.shenghuobang.utils.DialogManager;
 import com.bozhengjianshe.shenghuobang.utils.LogUtils;
 import com.bozhengjianshe.shenghuobang.utils.UIUtil;
@@ -140,7 +141,7 @@ public class JoinsUsActivity extends BaseActivity implements View.OnClickListene
     private void initFatherServiceData() {
         List<String> value = new ArrayList<>();
         for (int i = 0; i < fatherServiceList.size(); i++) {
-            value.add(fatherServiceList.get(i).getText());
+            value.add(fatherServiceList.get(i).getName());
         }
         SelectDialog selectDialog = DialogManager.getInstance().creatSelectDialog(JoinsUsActivity.this, "选择服务范围", value, true);
         selectDialog.setResultListener(new SelectDialog.ResultListener() {
@@ -151,7 +152,7 @@ public class JoinsUsActivity extends BaseActivity implements View.OnClickListene
                     for (int i = 0; i < status.length; i++) {
                         if (status[i]) {
                             fatherId = fatherServiceList.get(i).getId() + "";
-                            mi_service_range.getRightText().setText(fatherServiceList.get(i).getText());
+                            mi_service_range.getRightText().setText(fatherServiceList.get(i).getName());
                         }
                     }
                 }
@@ -167,7 +168,7 @@ public class JoinsUsActivity extends BaseActivity implements View.OnClickListene
 
         List<String> value = new ArrayList<>();
         for (int i = 0; i < childServiceList.size(); i++) {
-            value.add(childServiceList.get(i).getText());
+            value.add(childServiceList.get(i).getName());
         }
         SelectDialog selectDialog = DialogManager.getInstance().creatSelectDialog(JoinsUsActivity.this, "选择服务内容", value, true);
         selectDialog.setResultListener(new SelectDialog.ResultListener() {
@@ -179,7 +180,7 @@ public class JoinsUsActivity extends BaseActivity implements View.OnClickListene
                     for (int i = 0; i < status.length; i++) {
                         if (status[i]) {
                             childId.add(childServiceList.get(i).getId() + "");
-                            childText += childServiceList.get(i).getText() + "、";
+                            childText += childServiceList.get(i).getName() + "、";
                         }
                     }
                     mi_service_content.getRightText().setText(childText);
@@ -253,10 +254,10 @@ public class JoinsUsActivity extends BaseActivity implements View.OnClickListene
      * 服务类型
      */
     private void getTyleList(final String id) {
-        Call<SuperBean<List<AllServiceTypeBean>>> getAllServiceTypeList = RestAdapterManager.getApi().getAllServiceTypeList(id, "2");
-        getAllServiceTypeList.enqueue(new JyCallBack<SuperBean<List<AllServiceTypeBean>>>() {
+        Call<SuperGoodsListBean<List<AllServiceTypeBean>>> getAllServiceTypeList = RestAdapterManager.getApi().getAllServiceTypeList(id);
+        getAllServiceTypeList.enqueue(new JyCallBack<SuperGoodsListBean<List<AllServiceTypeBean>>>() {
             @Override
-            public void onSuccess(Call<SuperBean<List<AllServiceTypeBean>>> call, Response<SuperBean<List<AllServiceTypeBean>>> response) {
+            public void onSuccess(Call<SuperGoodsListBean<List<AllServiceTypeBean>>> call, Response<SuperGoodsListBean<List<AllServiceTypeBean>>> response) {
                 if (response != null && response.body() != null && response.body().getData() != null && response.body().getData().size() > 0) {
                     if (id.equals("0")) {
                         fatherServiceList = response.body().getData();
@@ -270,12 +271,12 @@ public class JoinsUsActivity extends BaseActivity implements View.OnClickListene
             }
 
             @Override
-            public void onError(Call<SuperBean<List<AllServiceTypeBean>>> call, Throwable t) {
+            public void onError(Call<SuperGoodsListBean<List<AllServiceTypeBean>>> call, Throwable t) {
 
             }
 
             @Override
-            public void onError(Call<SuperBean<List<AllServiceTypeBean>>> call, Response<SuperBean<List<AllServiceTypeBean>>> response) {
+            public void onError(Call<SuperGoodsListBean<List<AllServiceTypeBean>>> call, Response<SuperGoodsListBean<List<AllServiceTypeBean>>> response) {
 
             }
         });

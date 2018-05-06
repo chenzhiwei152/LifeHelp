@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.StrictMode;
 
+import com.baidu.mapapi.SDKInitializer;
 import com.bozhengjianshe.shenghuobang.ui.activity.LoginActivity;
 import com.bozhengjianshe.shenghuobang.ui.bean.UserInfoBean;
 import com.bozhengjianshe.shenghuobang.utils.SharePreManager;
@@ -30,6 +31,8 @@ public class BaseContext extends Application {
     private static BaseContext instance;
     //用户信息
     public static UserInfoBean userInfo;
+
+    public static String city;
     public static int type = 0;//照片选择，分为最多九张和只选一张,1代表选择一张，其他九张
 //    private ResponseBodyBeanDao userInfoDao;
 //    private DaoMaster.DevOpenHelper mHelper;
@@ -84,7 +87,7 @@ public class BaseContext extends Application {
             }
         });
 
-
+        SDKInitializer.initialize(getApplicationContext());//百度地图
 
         //初始化数据库
 //        setDatabase();

@@ -1,7 +1,6 @@
 package com.bozhengjianshe.shenghuobang.ui.activity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -94,9 +93,12 @@ public class ShoppingAddressActivity extends BaseActivity {
                 DialogUtils.showOrderCancelMsg(ShoppingAddressActivity.this, "确定要删除吗？", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (bean != null && !TextUtils.isEmpty(bean.getId() + "")) {
-                            deleteAddress(bean.getId() + "");
+                        if (view.getTag().equals("确定")){
+                            if (bean != null && !TextUtils.isEmpty(bean.getId() + "")) {
+                                deleteAddress(bean.getId() + "");
+                            }
                         }
+
                     }
 
 //            @Override
@@ -150,8 +152,8 @@ public class ShoppingAddressActivity extends BaseActivity {
      */
     private void loadAddressData() {
         DialogUtils.showDialog(ShoppingAddressActivity.this, "加载中", false);
-        Map<String,String> map=new HashMap<>();
-        map.put("memberid",BaseContext.getInstance().getUserInfo().id);
+        Map<String, String> map = new HashMap<>();
+        map.put("memberid", BaseContext.getInstance().getUserInfo().id);
         call = RestAdapterManager.getApi().getAddressList(map);
         call.enqueue(new JyCallBack<SuperAddressListBean<List<ShoppingAddressListItemBean>>>() {
             @Override
@@ -198,7 +200,9 @@ public class ShoppingAddressActivity extends BaseActivity {
     }
 
     private void deleteAddress(String id) {
-        deleteCall = RestAdapterManager.getApi().deleteAddress(id);
+        Map<String,String> map=new HashMap<>();
+        map.put("id",id+"");
+        deleteCall = RestAdapterManager.getApi().deleteAddress(map);
         deleteCall.enqueue(new JyCallBack<ErrorBean>() {
             @Override
             public void onSuccess(Call<ErrorBean> call, Response<ErrorBean> response) {
@@ -231,17 +235,8 @@ public class ShoppingAddressActivity extends BaseActivity {
      * 初始化标题
      */
     private void initTitle() {
-        title_view.setTitle(R.string.app_name);
-        title_view.setTitleColor(Color.WHITE);
-        title_view.setLeftImageResource(R.mipmap.ic_title_back);
-//        title_view.setLeftText("返回");
-//        title_view.setLeftTextColor(Color.WHITE);
-        title_view.setLeftClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        title_view.setTitle("收货地址");
+        title_view.setShowDefaultRightValue();
         mCollectView = (ImageView) title_view.addAction(new TitleBar.ImageAction(R.mipmap.ic_add_new) {
             @Override
             public void performAction(View view) {
@@ -250,9 +245,6 @@ public class ShoppingAddressActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
-
-
-        title_view.setImmersive(true);
 
 
     }

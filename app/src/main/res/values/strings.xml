@@ -62,4 +62,8 @@
     <string name="google_plus_client_inavailable">Google+ 版本过低或者没有安装，需要升级或安装Google+才能使用！</string>
 
 
+    <string name="Network_error">网络出错</string>
+    <string name="Making_sure_your_location">正在定位……</string>
+    <string name="please_check">key 验证出错! 请在 AndroidManifest.xml 文件中检查 key 设置</string>
+
 </resources>

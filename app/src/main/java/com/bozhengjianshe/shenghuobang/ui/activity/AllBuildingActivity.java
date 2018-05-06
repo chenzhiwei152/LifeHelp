@@ -4,18 +4,19 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.TextView;
 
 import com.bozhengjianshe.shenghuobang.R;
 import com.bozhengjianshe.shenghuobang.api.JyCallBack;
 import com.bozhengjianshe.shenghuobang.api.RestAdapterManager;
 import com.bozhengjianshe.shenghuobang.base.BaseActivity;
+import com.bozhengjianshe.shenghuobang.base.BaseContext;
 import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
 import com.bozhengjianshe.shenghuobang.ui.adapter.AllServiceTypeListAdapter;
 import com.bozhengjianshe.shenghuobang.ui.adapter.MainListItemAdapter;
 import com.bozhengjianshe.shenghuobang.ui.bean.AllServiceTypeBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.GoodsListBean;
-import com.bozhengjianshe.shenghuobang.ui.bean.SuperBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.SuperGoodsListBean;
 import com.bozhengjianshe.shenghuobang.ui.listerner.CommonOnClickListerner;
 import com.bozhengjianshe.shenghuobang.utils.ErrorMessageUtils;
@@ -46,6 +47,8 @@ public class AllBuildingActivity extends BaseActivity {
     RecyclerView sf_content_listview;
     @BindView(R.id.swiperefreshlayout)
     SmartRefreshLayout swiperefreshlayout;
+    @BindView(R.id.tv_location)
+    TextView tv_location;
     AllServiceTypeListAdapter typeListAdapter;
     MainListItemAdapter contentListAdapter;
     private int pageNumber = 1;
@@ -67,6 +70,7 @@ public class AllBuildingActivity extends BaseActivity {
             classify = bundle.getString(Constants.homeTypeTag);
         }
         initTitle();
+        tv_location.setText(BaseContext.getInstance().city);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         rc_type_list.setLayoutManager(layoutManager);
         sf_content_listview.setLayoutManager(new LinearLayoutManager(this));
@@ -122,10 +126,10 @@ public class AllBuildingActivity extends BaseActivity {
     }
 
     private void getTyleList() {
-        Call<SuperBean<List<AllServiceTypeBean>>> getAllServiceTypeList = RestAdapterManager.getApi().getAllServiceTypeList("0", "2");
-        getAllServiceTypeList.enqueue(new JyCallBack<SuperBean<List<AllServiceTypeBean>>>() {
+        Call<SuperGoodsListBean<List<AllServiceTypeBean>>> getAllServiceTypeList = RestAdapterManager.getApi().getAllServiceTypeList("2");
+        getAllServiceTypeList.enqueue(new JyCallBack<SuperGoodsListBean<List<AllServiceTypeBean>>>() {
             @Override
-            public void onSuccess(Call<SuperBean<List<AllServiceTypeBean>>> call, Response<SuperBean<List<AllServiceTypeBean>>> response) {
+            public void onSuccess(Call<SuperGoodsListBean<List<AllServiceTypeBean>>> call, Response<SuperGoodsListBean<List<AllServiceTypeBean>>> response) {
                 if (response != null && response.body() != null && response.body().getData() != null && response.body().getData().size() > 0) {
                     typeListAdapter.ClearData();
                     typeListAdapter.addList(response.body().getData());
@@ -141,12 +145,12 @@ public class AllBuildingActivity extends BaseActivity {
             }
 
             @Override
-            public void onError(Call<SuperBean<List<AllServiceTypeBean>>> call, Throwable t) {
+            public void onError(Call<SuperGoodsListBean<List<AllServiceTypeBean>>> call, Throwable t) {
 
             }
 
             @Override
-            public void onError(Call<SuperBean<List<AllServiceTypeBean>>> call, Response<SuperBean<List<AllServiceTypeBean>>> response) {
+            public void onError(Call<SuperGoodsListBean<List<AllServiceTypeBean>>> call, Response<SuperGoodsListBean<List<AllServiceTypeBean>>> response) {
 
             }
         });

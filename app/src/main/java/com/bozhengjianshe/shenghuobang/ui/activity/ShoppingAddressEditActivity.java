@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 
 import com.bozhengjianshe.shenghuobang.R;
 import com.bozhengjianshe.shenghuobang.api.JyCallBack;
@@ -42,6 +43,10 @@ public class ShoppingAddressEditActivity extends BaseActivity {
     EditText etAddressPhone;
     @BindView(R.id.et_address_detail)
     EditText etAddressDetail;
+    @BindView(R.id.et_address_selected)
+    EditText et_address_selected;
+    @BindView(R.id.rl_selected)
+    RelativeLayout rl_selected;
     private String tag = "0";//0新增，1编辑
     private String id = "";
     Call<SuperBean<String>> call;
@@ -63,6 +68,7 @@ public class ShoppingAddressEditActivity extends BaseActivity {
             etAddressName.setText(bundle.getString("name", ""));
             etAddressPhone.setText(bundle.getString("phone", ""));
             etAddressDetail.setText(bundle.getString("detail", ""));
+            et_address_selected.setText(bundle.getString("selected",""));
             id = bundle.getString("id", "");
         }
         tv_commit.setOnClickListener(new View.OnClickListener() {
@@ -73,6 +79,12 @@ public class ShoppingAddressEditActivity extends BaseActivity {
                 }
             }
         });
+//        rl_selected.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                startActivity(new Intent(ShoppingAddressEditActivity.this, EaseBaiduMapActivity.class));
+//            }
+//        });
 
     }
 
@@ -99,12 +111,12 @@ public class ShoppingAddressEditActivity extends BaseActivity {
     private void commitData() {
         DialogUtils.showDialog(ShoppingAddressEditActivity.this, "上传中...", false);
         Map<String, String> map = new HashMap<>();
-        map.put("phone", etAddressPhone.getText().toString());
-        map.put("name", etAddressName.getText().toString());
-        map.put("detail", etAddressDetail.getText().toString());
-        map.put("userId", BaseContext.getInstance().getUserInfo().id);
+        map.put("lxdh", etAddressPhone.getText().toString());
+        map.put("lxr", etAddressName.getText().toString());
+        map.put("lxxq", etAddressDetail.getText().toString());
+        map.put("lxdz", et_address_selected.getText().toString());//联系人地址
+        map.put("memberid", BaseContext.getInstance().getUserInfo().id);
         if (tag.equals("1")) {
-
             map.put("id", id);//如果是编辑的话是之前的地址id
             call = RestAdapterManager.getApi().editAddress(map);
         } else {
@@ -115,18 +127,18 @@ public class ShoppingAddressEditActivity extends BaseActivity {
             public void onSuccess(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
                 DialogUtils.closeDialog();
                 if (response != null && response.body() != null) {
-                    if (response.body().state==Constants.successCode) {
-                        if (tag.equals("1")) {
-                            //编辑
-                            UIUtil.showToast("编辑成功");
-                        } else {
-                            //增加
-                            UIUtil.showToast("增加成功");
-                        }
+                    UIUtil.showToast(response.body().getMsg());
+                    if (response.body().state == Constants.successCode) {
+//                        if (tag.equals("1")) {
+//                            //编辑
+//                            UIUtil.showToast("编辑成功");
+//                        } else {
+//                            //增加
+//                            UIUtil.showToast("增加成功");
+//                        }
                         EventBus.getDefault().post(new EventBusCenter<Integer>(Constants.AddressUpdateSuccess));
                         finish();
                     } else {
-                        UIUtil.showToast("修改失败，请稍后重试");
                     }
                 } else {
                     UIUtil.showToast("修改失败，请稍后重试");
@@ -177,14 +189,14 @@ public class ShoppingAddressEditActivity extends BaseActivity {
                 finish();
             }
         });
-        title_view.addAction(new TitleBar.TextAction("确定") {
-            @Override
-            public void performAction(View view) {
-                if (checkData()) {
-                    commitData();
-                }
-            }
-        });
+//        title_view.addAction(new TitleBar.TextAction("确定") {
+//            @Override
+//            public void performAction(View view) {
+//                if (checkData()) {
+//                    commitData();
+//                }
+//            }
+//        });
         title_view.setImmersive(true);
     }
 

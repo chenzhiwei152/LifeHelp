@@ -8,19 +8,52 @@ import java.io.Serializable;
 
 public class ShoppingAddressListItemBean implements Serializable {
 
+
     /**
-     * id : 1
-     * name : 小明爸爸
-     * detail : 成都市武侯区341苑
-     * phone : 13691525924
-     * userId : 1
+     * lxdz : 噢噢噢哦哦默默噢噢噢哦哦
+     * lxdh : 13686958558
+     * lxr : 考虑考虑
+     * lxxq : 咯哦哦噢噢噢哦哦魔女UPSppsspp
+     * id : 4
      */
 
+    private String lxdz;
+    private String lxdh;
+    private String lxr;
+    private String lxxq;
     private int id;
-    private String name;
-    private String detail;
-    private String phone;
-    private int userId;
+
+    public String getLxdz() {
+        return lxdz;
+    }
+
+    public void setLxdz(String lxdz) {
+        this.lxdz = lxdz;
+    }
+
+    public String getLxdh() {
+        return lxdh;
+    }
+
+    public void setLxdh(String lxdh) {
+        this.lxdh = lxdh;
+    }
+
+    public String getLxr() {
+        return lxr;
+    }
+
+    public void setLxr(String lxr) {
+        this.lxr = lxr;
+    }
+
+    public String getLxxq() {
+        return lxxq;
+    }
+
+    public void setLxxq(String lxxq) {
+        this.lxxq = lxxq;
+    }
 
     public int getId() {
         return id;
@@ -28,37 +61,5 @@ public class ShoppingAddressListItemBean implements Serializable {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDetail() {
-        return detail;
-    }
-
-    public void setDetail(String detail) {
-        this.detail = detail;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
     }
 }
