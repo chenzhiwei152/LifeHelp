@@ -179,10 +179,10 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
 
 
     private void setSalePrice() {
-        ids="";
+        ids = "";
         for (int i = 0; i < goodsBean.size(); i++) {
-            ids+=goodsBean.get(i).getId();
-            ids+=",";
+            ids += goodsBean.get(i).getId();
+            ids += ",";
             if (goodsBean.get(i).getLb() == 1) {
                 //1 商品 2 服务
                 price += goodsBean.get(i).getProfit();
@@ -473,13 +473,15 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
         }
 
         RequestBody formBody = new FormBody.Builder()
-                .add("lxrxm", bean.getLxr())
-                .add("lxrdh", bean.getLxdh())
-                .add("lxradress", bean.getLxdz())
-                .add("extrafee", bean.getLxxq())
-                .add("commodity", ids)
-                .add("detail",  "1")
-                .add("memberid",   BaseContext.getInstance().getUserInfo().id)
+//                .add("lxrxm", bean.getLxr())
+//                .add("lxrdh", bean.getLxdh())
+//                .add("lxradress", bean.getLxdz())
+//                .add("extrafee", bean.getLxxq())
+                .add("addressid", bean.getId() + "")
+//                .add("commodity", ids)
+                .add("detail", JSON.toJSONString(goodsBean))
+                .add("mark", "1")
+                .add("memberid", BaseContext.getInstance().getUserInfo().id)
                 .build();
         LogUtils.e(JSON.toJSONString(formBody));
         DialogUtils.showDialog(CommitOrderActivity.this, "获取订单...", false);

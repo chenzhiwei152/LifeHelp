@@ -289,8 +289,8 @@ public interface JyApi {
     /**
      * 获取收藏id
      */
-    @GET(api + "updateMCollects" + suffix)
-    Call<CollectionBean> getCollection(@QueryMap RequestBody map);
+    @POST(api + "updateMCollects" + suffix)
+    Call<CollectionBean> getCollection(@Body RequestBody map);
 
     /**
      * 删除收藏
