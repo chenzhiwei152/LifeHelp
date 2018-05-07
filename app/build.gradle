@@ -87,7 +87,6 @@ dependencies {
     compile 'com.scwang.smartrefresh:SmartRefreshHeader:1.0.2-alpha-7'
     compile 'com.android.support:cardview-v7:26.0.0-beta1'
     compile files('libs/BaiduLBS_Android.jar')
-    compile files('libs/org.apache.http.legacy.jar')
 }
 def getDate() {
     def date = new Date()
