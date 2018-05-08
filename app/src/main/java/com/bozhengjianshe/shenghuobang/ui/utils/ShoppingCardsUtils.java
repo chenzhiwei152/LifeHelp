@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSON;
 import com.bozhengjianshe.shenghuobang.api.JyCallBack;
 import com.bozhengjianshe.shenghuobang.api.RestAdapterManager;
 import com.bozhengjianshe.shenghuobang.base.BaseContext;
+import com.bozhengjianshe.shenghuobang.base.CommitOrderBean;
 import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
 import com.bozhengjianshe.shenghuobang.ui.bean.CardCacheBean;
@@ -79,7 +80,7 @@ public class ShoppingCardsUtils {
         if (type.equals("delete")) {
             for (int i = 0; i < goodsListBeanAll.size(); i++) {
                 for (int j = 0; j < content.size(); j++) {
-                    if (goodsListBeanAll.get(i).getId() == content.get(j).getId()) {
+                    if (goodsListBeanAll.get(i).getId() .equals(content.get(j).getId()) ) {
                         goodsListBean.remove(content.get(j));
                     }
                 }
@@ -89,7 +90,7 @@ public class ShoppingCardsUtils {
             for (int j = 0; j < content.size(); j++) {
                 if (goodsListBean.contains(content.get(j))) {
                     for (int i = 0; i < goodsListBean.size(); i++) {
-                        if (goodsListBean.get(i).getId() == content.get(j).getId()) {
+                        if (goodsListBean.get(i).getId() .equals(content.get(j).getId()) ) {
                             int u = goodsListBean.get(i).getNum();
                             u += 1;
                             goodsListBean.get(i).setNum(u);
@@ -108,35 +109,64 @@ public class ShoppingCardsUtils {
         return JSON.toJSONString(goodsListBean);
     }
 
+    /**
+     * 商品详情转换成购物车的数据
+     *
+     * @param content
+     * @return
+     */
     public static List<CardCacheBean> changeBean(List<GoodsListBean> content) {
         List<CardCacheBean> CardCacheBean = new ArrayList<>();
         for (int i = 0; i < content.size(); i++) {
             CardCacheBean cardCacheBean = new CardCacheBean();
             cardCacheBean.setCname(content.get(i).getCname());
-            cardCacheBean.setDj(content.get(i).getCname());
-            cardCacheBean.setId(content.get(i).getCname());
-            cardCacheBean.setThumbnail(content.get(i).getCname());
+            cardCacheBean.setDj(content.get(i).getProfit()+"");
+            cardCacheBean.setId(content.get(i).getId()+"");
+            cardCacheBean.setThumbnail(content.get(i).getThumbnail());
             CardCacheBean.add(cardCacheBean);
         }
         return CardCacheBean;
 
     }
 
+    /**
+     * 获取当前用户下的购物车id
+     *
+     * @return
+     */
     public static String getIds() {
         String content = BaseContext.getInstance().getUserInfo().commodities;
-        if (TextUtils.isEmpty(content)){
+        if (TextUtils.isEmpty(content)) {
             return "";
         }
-        List<CardCacheBean> goodsListBean =new ArrayList<>();
+        List<CardCacheBean> goodsListBean = new ArrayList<>();
 
-        goodsListBean=   (List<CardCacheBean>) ParserUtil.parseArray(content, CardCacheBean.class);
+        goodsListBean = (List<CardCacheBean>) ParserUtil.parseArray(content, CardCacheBean.class);
         String ids = "";
-        if (goodsListBean!=null){
+        if (goodsListBean != null) {
             for (int i = 0; i < goodsListBean.size(); i++) {
                 ids += goodsListBean.get(i).getId();
                 ids += ",";
             }
         }
         return ids;
+    }
+
+    /**
+     * 商品详情转换成提交订单所需要的数据
+     */
+
+    public static List<CommitOrderBean> changeCommitBean(List<GoodsListBean> content) {
+        List<CommitOrderBean> CardCacheBean = new ArrayList<>();
+        for (int i = 0; i < content.size(); i++) {
+            CommitOrderBean cardCacheBean = new CommitOrderBean();
+            cardCacheBean.setName(content.get(i).getCname());
+            cardCacheBean.setDj(content.get(i).getProfit()+"");
+            cardCacheBean.setId(content.get(i).getId()+"");
+            cardCacheBean.setNum(content.get(i).getNum()+"");
+            cardCacheBean.setZj(content.get(i).getProfit() * content.get(i).getNum()+"");
+            CardCacheBean.add(cardCacheBean);
+        }
+        return CardCacheBean;
     }
 }

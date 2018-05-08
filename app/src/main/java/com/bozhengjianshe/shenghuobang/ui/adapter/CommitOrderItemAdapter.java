@@ -68,11 +68,11 @@ public class CommitOrderItemAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             ((ImageViewHolder) viewHolder).tv_price.setText("￥" + list.get(position).getProfit() + "");
 
 
-            ((ImageViewHolder) viewHolder).tv_all_price.setText("￥" + list.get(position).getProfit() + "");
+            ((ImageViewHolder) viewHolder).tv_all_price.setText("￥" + list.get(position).getProfit()*list.get(position).getNum() + "");
             if (list.get(position).getLb() == 1) {
                 // 1 商品 2 服务
                 ((ImageViewHolder) viewHolder).tv_goods_type.setText("商品");
-                ((ImageViewHolder) viewHolder).tv_number.setText("共1件商品");
+                ((ImageViewHolder) viewHolder).tv_number.setText("共"+list.get(position).getNum()+"件商品");
             } else {
                 ((ImageViewHolder) viewHolder).tv_goods_type.setText("服务");
                 ((ImageViewHolder) viewHolder).tv_number.setText("服务预约款");

@@ -115,53 +115,16 @@ public class ShoppingCartFragment extends BaseFragment {
             } else if (eventBusCenter.getEvenCode() == Constants.UPDATE_CARD_PRICE) {
                 //更新价格
                 CalculatePrice();
-            }else if (eventBusCenter.getEvenCode() == Constants.ADD_TO_CARD){
+            } else if (eventBusCenter.getEvenCode() == Constants.ADD_TO_CARD) {
                 getList();
             }
         }
     }
 
-//    /**
-//     * 获取列表
-//     */
-//    private void getCardList() {
-//        Map<String, String> map = new HashMap<>();
-//        map.put("commodities", "");
-//        map.put("id", BaseContext.getInstance().getUserInfo().id);
-//        Call<CardListBean> getCardList = RestAdapterManager.getApi().getCardList(map);
-//        getCardList.enqueue(new JyCallBack<CardListBean>() {
-//            @Override
-//            public void onSuccess(Call<CardListBean> call, Response<CardListBean> response) {
-//                swiperefreshlayout.finishRefresh();
-//                if (response.body() != null && !TextUtils.isEmpty(response.body().commodities)) {
-//                    getList(response.body().commodities);
-//                }
-//
-//
-//            }
-//
-//            @Override
-//            public void onError(Call<CardListBean> call, Throwable t) {
-//                swiperefreshlayout.finishRefresh();
-//                LogUtils.e(t.getMessage());
-//            }
-//
-//            @Override
-//            public void onError(Call<CardListBean> call, Response<CardListBean> response) {
-//                swiperefreshlayout.finishRefresh();
-//                try {
-//                    ErrorMessageUtils.taostErrorMessage(getActivity(), response.errorBody().string());
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
-//    }
 
     private void getList() {
         Map<String, String> map = new HashMap<>();
         map.put("ids", ShoppingCardsUtils.getIds());
-
         goodsListCall = RestAdapterManager.getApi().getGoodsList(map);
         goodsListCall.enqueue(new JyCallBack<SuperGoodsListBean<List<GoodsListBean>>>() {
             @Override

@@ -11,33 +11,33 @@ public class BuyOrderListItemBean implements Serializable {
 
 
     /**
-     * lxrdh : 18888888888
-     * count : 120
+     * lxrdh : 13685965478
+     * count : 0
      * del : 1
-     * lxrxm : 赵震
-     * lxradress : 北京芍药居北里7号楼
-     * addtime : 2018-04-14 09:04:53
+     * lxrxm : all咯
+     * lxradress : 阿狸裤子我我我我我老K咯我我了了了家里好好好了了
+     * addtime : 2018-05-08 11:05:08
      * name : null
-     * odnum : 2018041414098765
-     * id : 1
-     * state : 2
-     * detail : [{"zj":"15","dj":"5","num":"3","name":"金牌拖地"},{"zj":"15","dj":"5","num":"3","name":"金牌拖地"},{"zj":"15","dj":"5","num":"3","name":"金牌拖地"}]
-     * ncount : 100
-     * extrafee : 15
+     * odnum : 201805081127082608
+     * id : 36
+     * state : 1
+     * detail : [{"zj":"10","dj":"10","num":"1","name":"测试图片","id":"10"}]
+     * ncount : 30
+     * extrafee : 10
      */
 
     private String lxrdh;
-    private int count;
-    private int del;
+    private String count;
+    private String del;
     private String lxrxm;
     private String lxradress;
     private String addtime;
     private String name;
     private String odnum;
-    private int id;
-    private int state;
-    private int ncount;
-    private int extrafee;
+    private String id;
+    private String state;
+    private String ncount;
+    private String extrafee;
     private List<DetailBean> detail;
 
     public String getLxrdh() {
@@ -48,19 +48,19 @@ public class BuyOrderListItemBean implements Serializable {
         this.lxrdh = lxrdh;
     }
 
-    public int getCount() {
+    public String getCount() {
         return count;
     }
 
-    public void setCount(int count) {
+    public void setCount(String count) {
         this.count = count;
     }
 
-    public int getDel() {
+    public String getDel() {
         return del;
     }
 
-    public void setDel(int del) {
+    public void setDel(String del) {
         this.del = del;
     }
 
@@ -104,35 +104,35 @@ public class BuyOrderListItemBean implements Serializable {
         this.odnum = odnum;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public int getState() {
+    public String getState() {
         return state;
     }
 
-    public void setState(int state) {
+    public void setState(String state) {
         this.state = state;
     }
 
-    public int getNcount() {
+    public String getNcount() {
         return ncount;
     }
 
-    public void setNcount(int ncount) {
+    public void setNcount(String ncount) {
         this.ncount = ncount;
     }
 
-    public int getExtrafee() {
+    public String getExtrafee() {
         return extrafee;
     }
 
-    public void setExtrafee(int extrafee) {
+    public void setExtrafee(String extrafee) {
         this.extrafee = extrafee;
     }
 
@@ -146,16 +146,18 @@ public class BuyOrderListItemBean implements Serializable {
 
     public static class DetailBean {
         /**
-         * zj : 15
-         * dj : 5
-         * num : 3
-         * name : 金牌拖地
+         * zj : 10
+         * dj : 10
+         * num : 1
+         * name : 测试图片
+         * id : 10
          */
 
         private String zj;
         private String dj;
         private String num;
         private String name;
+        private String id;
 
         public String getZj() {
             return zj;
@@ -187,6 +189,14 @@ public class BuyOrderListItemBean implements Serializable {
 
         public void setName(String name) {
             this.name = name;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
         }
     }
 }

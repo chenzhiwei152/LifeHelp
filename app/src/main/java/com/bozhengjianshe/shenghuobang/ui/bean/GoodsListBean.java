@@ -45,6 +45,16 @@ public class GoodsListBean  implements Serializable {
     private String detail;
     private int sftj;
     private int profit;
+    private int num=1;
+
+    public int getNum() {
+        return num;
+    }
+
+    public void setNum(int num) {
+        this.num = num;
+    }
+
     private List<PictureBean> picture;
 
     public String getThumbnail() {

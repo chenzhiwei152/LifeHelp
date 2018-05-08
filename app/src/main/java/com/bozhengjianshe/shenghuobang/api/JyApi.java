@@ -7,8 +7,8 @@ import com.bozhengjianshe.shenghuobang.ui.bean.AllServiceTypeBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.BuyOrderListItemBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.CardListBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.CollectionBean;
+import com.bozhengjianshe.shenghuobang.ui.bean.CommitOrderResultBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.GoodsCommentsItemBean;
-import com.bozhengjianshe.shenghuobang.ui.bean.GoodsDetailBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.GoodsListBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.OrderDetailBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.QuestionBean;
@@ -52,7 +52,7 @@ public interface JyApi {
      */
     @POST(api + "login" + suffix)
 //    Call<SuperBean<UserInfoBean>> login(@Body Map<String, String> map);
-    Call<SuperUserBean<UserInfoBean>> login(@Body()RequestBody map);
+    Call<SuperUserBean<UserInfoBean>> login(@Body() RequestBody map);
 
 
     /**
@@ -140,7 +140,7 @@ public interface JyApi {
     /**
      * 删除收货地址
      *
-     * @param id
+     * @param
      * @return
      */
     @POST(api + "deleteMAddress" + suffix)
@@ -207,7 +207,6 @@ public interface JyApi {
     Call<SuperBean<String>> updateName(@Body Map<String, String> map);
 
 
-
     /*** 获取购物车列表id
      *
      *
@@ -215,8 +214,6 @@ public interface JyApi {
      */
     @POST(api + "updateMCommodities" + suffix)
     Call<CardListBean> getCardList(@Body RequestBody map);
-
-
 
 
     /**
@@ -232,11 +229,11 @@ public interface JyApi {
     /**
      * 获取订单详情
      *
-     * @param orderId
+     * @param
      * @return
      */
-    @GET("/api/order/getOrderDetail")
-    Call<SuperBean<OrderDetailBean>> getRentOrderDetails(@Query("orderId") String orderId);
+    @POST(api + "getOrderDetail" + suffix)
+    Call<SuperOrderBean<OrderDetailBean>> getRentOrderDetails(@Body RequestBody body);
 
     /**
      * 取消订单
@@ -256,7 +253,7 @@ public interface JyApi {
      * @return
      */
     @POST(api + "insertOrder" + suffix)
-    Call<SuperOrderBean<String>> getRentOrder(@Body RequestBody map);
+    Call<CommitOrderResultBean> getRentOrder(@Body RequestBody map);
 
 
     /**
@@ -265,8 +262,8 @@ public interface JyApi {
      * @param
      * @return
      */
-    @GET(api + "getOrderList" + suffix)
-    Call<SuperOrderListBean<List<BuyOrderListItemBean>>> getRentOrderList(@QueryMap Map<String, String> map);
+    @POST(api + "getOrderList" + suffix)
+    Call<SuperOrderListBean<List<BuyOrderListItemBean>>> getRentOrderList(@Body RequestBody map);
 
     /**
      * 获取所有服务分类

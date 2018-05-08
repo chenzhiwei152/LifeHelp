@@ -11,38 +11,130 @@ public class OrderDetailBean implements Serializable{
 
 
     /**
-     * id : 0
-     * userId : 0
-     * createTime : null
-     * receiveName : null
-     * receivePhone : null
-     * receiveAddress : null
-     * transportType : 0
-     * serviceTime : null
-     * orderState : 0
-     * orderStateCn : null
-     * outTradeNo : null
-     * serviceProviderId : 0
-     * orderType : 0
-     * orderAmount : 0
-     * products : [{"id":11,"orderId":12,"userId":0,"productId":9,"productType":1,"productPrice":233,"productName":"测试建材推荐","productCount":1,"productImg":"http://47.92.24.138:8080/upload/goodsImg/20171213105428022.jpg"}]
+     * lxrdh : 13685965478
+     * commodity : 10,
+     * lxrsfzh :
+     * del : 1
+     * managerid : 0
+     * imgsfzfro :
+     * imgsfzrev :
+     * odnum : 201805081119565118
+     * id : 34
+     * state : 1
+     * extrafee : 10
+     * tpbz :
+     * modtime : 0
+     * count : 0
+     * statemark :
+     * quality : 1
+     * lxrxm : all咯
+     * fczimglist :
+     * lxradress : 阿狸裤子我我我我我老K咯我我了了了家里好好好了了
+     * membersid : 0
+     * phone :
+     * lxrhyzk : 0
+     * lxrxb : 0
+     * detail : [{"zj":"10","dj":"10","num":"1","name":"测试图片","id":"10"}]
+     * time : 1525749596524
+     * ncount : 30
+     * age :
+     * mark :
+     * memberid : 4
      */
 
+    private String lxrdh;
+    private String commodity;
+    private String lxrsfzh;
+    private int del;
+    private int managerid;
+    private String imgsfzfro;
+    private String imgsfzrev;
+    private String odnum;
     private int id;
-    private int userId;
-    private String createTime;
-    private String receiveName;
-    private String receivePhone;
-    private String receiveAddress;
-    private int transportType;
-    private String serviceTime;
-    private int orderState;
-    private String orderStateCn;
-    private String outTradeNo;
-    private int serviceProviderId;
-    private int orderType;
-    private int orderAmount;
-    private List<ProductsBean> products;
+    private int state;
+    private int extrafee;
+    private String tpbz;
+    private int modtime;
+    private int count;
+    private String statemark;
+    private int quality;
+    private String lxrxm;
+    private String fczimglist;
+    private String lxradress;
+    private int membersid;
+    private String phone;
+    private int lxrhyzk;
+    private int lxrxb;
+    private long time;
+    private int ncount;
+    private String age;
+    private String mark;
+    private int memberid;
+    private List<DetailBean> detail;
+
+    public String getLxrdh() {
+        return lxrdh;
+    }
+
+    public void setLxrdh(String lxrdh) {
+        this.lxrdh = lxrdh;
+    }
+
+    public String getCommodity() {
+        return commodity;
+    }
+
+    public void setCommodity(String commodity) {
+        this.commodity = commodity;
+    }
+
+    public String getLxrsfzh() {
+        return lxrsfzh;
+    }
+
+    public void setLxrsfzh(String lxrsfzh) {
+        this.lxrsfzh = lxrsfzh;
+    }
+
+    public int getDel() {
+        return del;
+    }
+
+    public void setDel(int del) {
+        this.del = del;
+    }
+
+    public int getManagerid() {
+        return managerid;
+    }
+
+    public void setManagerid(int managerid) {
+        this.managerid = managerid;
+    }
+
+    public String getImgsfzfro() {
+        return imgsfzfro;
+    }
+
+    public void setImgsfzfro(String imgsfzfro) {
+        this.imgsfzfro = imgsfzfro;
+    }
+
+    public String getImgsfzrev() {
+        return imgsfzrev;
+    }
+
+    public void setImgsfzrev(String imgsfzrev) {
+        this.imgsfzrev = imgsfzrev;
+    }
+
+    public String getOdnum() {
+        return odnum;
+    }
+
+    public void setOdnum(String odnum) {
+        this.odnum = odnum;
+    }
 
     public int getId() {
         return id;
@@ -52,211 +144,219 @@ public class OrderDetailBean implements Serializable{
         this.id = id;
     }
 
-    public int getUserId() {
-        return userId;
+    public int getState() {
+        return state;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setState(int state) {
+        this.state = state;
     }
 
-    public String getCreateTime() {
-        return createTime;
+    public int getExtrafee() {
+        return extrafee;
     }
 
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
+    public void setExtrafee(int extrafee) {
+        this.extrafee = extrafee;
     }
 
-    public String getReceiveName() {
-        return receiveName;
+    public String getTpbz() {
+        return tpbz;
     }
 
-    public void setReceiveName(String receiveName) {
-        this.receiveName = receiveName;
+    public void setTpbz(String tpbz) {
+        this.tpbz = tpbz;
     }
 
-    public String getReceivePhone() {
-        return receivePhone;
+    public int getModtime() {
+        return modtime;
     }
 
-    public void setReceivePhone(String receivePhone) {
-        this.receivePhone = receivePhone;
+    public void setModtime(int modtime) {
+        this.modtime = modtime;
     }
 
-    public String getReceiveAddress() {
-        return receiveAddress;
+    public int getCount() {
+        return count;
     }
 
-    public void setReceiveAddress(String receiveAddress) {
-        this.receiveAddress = receiveAddress;
+    public void setCount(int count) {
+        this.count = count;
     }
 
-    public int getTransportType() {
-        return transportType;
+    public String getStatemark() {
+        return statemark;
     }
 
-    public void setTransportType(int transportType) {
-        this.transportType = transportType;
+    public void setStatemark(String statemark) {
+        this.statemark = statemark;
     }
 
-    public String getServiceTime() {
-        return serviceTime;
+    public int getQuality() {
+        return quality;
     }
 
-    public void setServiceTime(String serviceTime) {
-        this.serviceTime = serviceTime;
+    public void setQuality(int quality) {
+        this.quality = quality;
     }
 
-    public int getOrderState() {
-        return orderState;
+    public String getLxrxm() {
+        return lxrxm;
     }
 
-    public void setOrderState(int orderState) {
-        this.orderState = orderState;
+    public void setLxrxm(String lxrxm) {
+        this.lxrxm = lxrxm;
     }
 
-    public String getOrderStateCn() {
-        return orderStateCn;
+    public String getFczimglist() {
+        return fczimglist;
     }
 
-    public void setOrderStateCn(String orderStateCn) {
-        this.orderStateCn = orderStateCn;
+    public void setFczimglist(String fczimglist) {
+        this.fczimglist = fczimglist;
     }
 
-    public String getOutTradeNo() {
-        return outTradeNo;
+    public String getLxradress() {
+        return lxradress;
     }
 
-    public void setOutTradeNo(String outTradeNo) {
-        this.outTradeNo = outTradeNo;
+    public void setLxradress(String lxradress) {
+        this.lxradress = lxradress;
     }
 
-    public int getServiceProviderId() {
-        return serviceProviderId;
+    public int getMembersid() {
+        return membersid;
     }
 
-    public void setServiceProviderId(int serviceProviderId) {
-        this.serviceProviderId = serviceProviderId;
+    public void setMembersid(int membersid) {
+        this.membersid = membersid;
     }
 
-    public int getOrderType() {
-        return orderType;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setOrderType(int orderType) {
-        this.orderType = orderType;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
-    public int getOrderAmount() {
-        return orderAmount;
+    public int getLxrhyzk() {
+        return lxrhyzk;
     }
 
-    public void setOrderAmount(int orderAmount) {
-        this.orderAmount = orderAmount;
+    public void setLxrhyzk(int lxrhyzk) {
+        this.lxrhyzk = lxrhyzk;
     }
 
-    public List<ProductsBean> getProducts() {
-        return products;
+    public int getLxrxb() {
+        return lxrxb;
     }
 
-    public void setProducts(List<ProductsBean> products) {
-        this.products = products;
+    public void setLxrxb(int lxrxb) {
+        this.lxrxb = lxrxb;
     }
 
-    public static class ProductsBean implements Serializable{
+    public long getTime() {
+        return time;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
+    }
+
+    public int getNcount() {
+        return ncount;
+    }
+
+    public void setNcount(int ncount) {
+        this.ncount = ncount;
+    }
+
+    public String getAge() {
+        return age;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
+    }
+
+    public String getMark() {
+        return mark;
+    }
+
+    public void setMark(String mark) {
+        this.mark = mark;
+    }
+
+    public int getMemberid() {
+        return memberid;
+    }
+
+    public void setMemberid(int memberid) {
+        this.memberid = memberid;
+    }
+
+    public List<DetailBean> getDetail() {
+        return detail;
+    }
+
+    public void setDetail(List<DetailBean> detail) {
+        this.detail = detail;
+    }
+
+    public static class DetailBean {
         /**
-         * id : 11
-         * orderId : 12
-         * userId : 0
-         * productId : 9
-         * productType : 1
-         * productPrice : 233
-         * productName : 测试建材推荐
-         * productCount : 1
-         * productImg : http://47.92.24.138:8080/upload/goodsImg/20171213105428022.jpg
+         * zj : 10
+         * dj : 10
+         * num : 1
+         * name : 测试图片
+         * id : 10
          */
 
-        private int id;
-        private int orderId;
-        private int userId;
-        private int productId;
-        private int productType;
-        private int productPrice;
-        private String productName;
-        private int productCount;
-        private String productImg;
+        private String zj;
+        private String dj;
+        private String num;
+        private String name;
+        private String id;
 
-        public int getId() {
+        public String getZj() {
+            return zj;
+        }
+
+        public void setZj(String zj) {
+            this.zj = zj;
+        }
+
+        public String getDj() {
+            return dj;
+        }
+
+        public void setDj(String dj) {
+            this.dj = dj;
+        }
+
+        public String getNum() {
+            return num;
+        }
+
+        public void setNum(String num) {
+            this.num = num;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getId() {
             return id;
         }
 
-        public void setId(int id) {
+        public void setId(String id) {
             this.id = id;
-        }
-
-        public int getOrderId() {
-            return orderId;
-        }
-
-        public void setOrderId(int orderId) {
-            this.orderId = orderId;
-        }
-
-        public int getUserId() {
-            return userId;
-        }
-
-        public void setUserId(int userId) {
-            this.userId = userId;
-        }
-
-        public int getProductId() {
-            return productId;
-        }
-
-        public void setProductId(int productId) {
-            this.productId = productId;
-        }
-
-        public int getProductType() {
-            return productType;
-        }
-
-        public void setProductType(int productType) {
-            this.productType = productType;
-        }
-
-        public int getProductPrice() {
-            return productPrice;
-        }
-
-        public void setProductPrice(int productPrice) {
-            this.productPrice = productPrice;
-        }
-
-        public String getProductName() {
-            return productName;
-        }
-
-        public void setProductName(String productName) {
-            this.productName = productName;
-        }
-
-        public int getProductCount() {
-            return productCount;
-        }
-
-        public void setProductCount(int productCount) {
-            this.productCount = productCount;
-        }
-
-        public String getProductImg() {
-            return productImg;
-        }
-
-        public void setProductImg(String productImg) {
-            this.productImg = productImg;
         }
     }
 }

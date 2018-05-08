@@ -20,6 +20,7 @@ import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
 import com.bozhengjianshe.shenghuobang.ui.adapter.OrderGoodsItemAdapter;
 import com.bozhengjianshe.shenghuobang.ui.bean.OrderDetailBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.SuperBean;
+import com.bozhengjianshe.shenghuobang.ui.bean.SuperOrderBean;
 import com.bozhengjianshe.shenghuobang.utils.DialogUtils;
 import com.bozhengjianshe.shenghuobang.utils.LogUtils;
 import com.bozhengjianshe.shenghuobang.utils.NetUtil;
@@ -33,6 +34,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.BindView;
+import okhttp3.FormBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -68,7 +71,7 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
     private Call<SuperBean<String>> getRsaOrderCall;
     private String orderId;
     private String type;
-    Call<SuperBean<OrderDetailBean>> call;
+    Call<SuperOrderBean<OrderDetailBean>> call;
 
     @Override
     public int getContentViewLayoutId() {
@@ -116,14 +119,14 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
     private void initDate(OrderDetailBean orderDetailBean) {
         if (orderDetailBean != null) {
 
-            mi_name.getRightText().setText(orderDetailBean.getReceiveName());
-            mi_phone.getRightText().setText(orderDetailBean.getReceivePhone());
-            mi_addresss.getRightText().setText(orderDetailBean.getReceiveAddress());
-            tv_state.setText(orderDetailBean.getOrderStateCn());
-            tv_order_time.setText(orderDetailBean.getServiceTime());
-//            tv_deposit.setText(orderDetailBean.get());//定金
-            tv_real_pay.setText(orderDetailBean.getOrderAmount() + "");
-            goodsItemAdapter.addList(orderDetailBean.getProducts());
+//            mi_name.getRightText().setText(orderDetailBean.getReceiveName());
+//            mi_phone.getRightText().setText(orderDetailBean.getReceivePhone());
+//            mi_addresss.getRightText().setText(orderDetailBean.getReceiveAddress());
+//            tv_state.setText(orderDetailBean.getOrderStateCn());
+//            tv_order_time.setText(orderDetailBean.getServiceTime());
+////            tv_deposit.setText(orderDetailBean.get());//定金
+//            tv_real_pay.setText(orderDetailBean.getOrderAmount() + "");
+//            goodsItemAdapter.addList(orderDetailBean.getProducts());
         }
     }
 
@@ -136,21 +139,21 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
             return;
         }
         if (TextUtils.isEmpty(orderId)) {
-            UIUtil.showToast("dingdanid为空");
+            UIUtil.showToast("订单id为空");
             finish();
             return;
         }
+        RequestBody body = new FormBody.Builder()
+                .add("memberid", BaseContext.getInstance().getUserInfo().id)
+                .add("orderid", orderId)
+                .build();
         DialogUtils.showDialog(this, "加载中", false);
-//        if (type.equals("rent")) {
-        call = RestAdapterManager.getApi().getRentOrderDetails(orderId);
-//        } else {
-//            call = RestAdapterManager.getApi().getOrderDetails(orderId);
-//        }
+        call = RestAdapterManager.getApi().getRentOrderDetails(body);
 
 
-        call.enqueue(new JyCallBack<SuperBean<OrderDetailBean>>() {
+        call.enqueue(new JyCallBack<SuperOrderBean<OrderDetailBean>>() {
             @Override
-            public void onSuccess(Call<SuperBean<OrderDetailBean>> call, Response<SuperBean<OrderDetailBean>> response) {
+            public void onSuccess(Call<SuperOrderBean<OrderDetailBean>> call, Response<SuperOrderBean<OrderDetailBean>> response) {
                 DialogUtils.closeDialog();
                 if (response != null && response.body() != null) {
                     if (response.body().getCode() == Constants.successCode) {
@@ -168,13 +171,13 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
             }
 
             @Override
-            public void onError(Call<SuperBean<OrderDetailBean>> call, Throwable t) {
+            public void onError(Call<SuperOrderBean<OrderDetailBean>> call, Throwable t) {
                 DialogUtils.closeDialog();
                 UIUtil.showToast("获取数据异常");
             }
 
             @Override
-            public void onError(Call<SuperBean<OrderDetailBean>> call, Response<SuperBean<OrderDetailBean>> response) {
+            public void onError(Call<SuperOrderBean<OrderDetailBean>> call, Response<SuperOrderBean<OrderDetailBean>> response) {
                 DialogUtils.closeDialog();
                 UIUtil.showToast("获取数据异常");
             }
@@ -207,6 +210,7 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
             }
         });
     }
+
     private MyDialog myDialog;
 
     /**
@@ -220,6 +224,7 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
         myDialog.show();
         myDialog.setCancelable(false);
     }
+
     /**
      * 支付方式
      */
@@ -292,6 +297,7 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
         });
 
     }
+
     private void goNext() {
         if (!TextUtils.isEmpty(orderId)) {
             Intent intent = new Intent(this, OrderDetailsActivity.class);
@@ -341,6 +347,7 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
             }
         });
     }
+
     /**
      * 支付
      *
@@ -365,7 +372,7 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
                 @Override
                 public void onPayCancel() {
                     DialogUtils.closeDialog();
-                    UIUtil.showToast("取消了支付" );
+                    UIUtil.showToast("取消了支付");
                 }
             });
         } else if (payChannel == 1) {
@@ -386,12 +393,13 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
                 @Override
                 public void onPayCancel() {
                     DialogUtils.closeDialog();
-                    UIUtil.showToast("取消了支付" );
+                    UIUtil.showToast("取消了支付");
                 }
             });
         }
 
     }
+
     /**
      * 初始化标题
      */

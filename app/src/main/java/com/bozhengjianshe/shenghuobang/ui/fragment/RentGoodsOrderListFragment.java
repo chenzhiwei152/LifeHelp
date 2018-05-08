@@ -17,11 +17,11 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
+import okhttp3.FormBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -55,7 +55,7 @@ public class RentGoodsOrderListFragment extends BaseFragment {
         swiperefreshlayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
             public void onRefresh(RefreshLayout refreshlayout) {
-                pageNum = 1;
+//                pageNum = 1;
                 getOrderList();
             }
         });
@@ -88,9 +88,10 @@ public class RentGoodsOrderListFragment extends BaseFragment {
     }
 
     private void getOrderList() {
-        Map<String,String> map=new HashMap<>();
-        map.put("memberid",BaseContext.getInstance().getUserInfo().id);
-        orderListCall = RestAdapterManager.getApi().getRentOrderList(map);
+        RequestBody body= new FormBody.Builder()
+                .add("memberid",BaseContext.getInstance().getUserInfo().id)
+                .build();
+        orderListCall = RestAdapterManager.getApi().getRentOrderList(body);
         orderListCall.enqueue(new JyCallBack<SuperOrderListBean<List<BuyOrderListItemBean>>>() {
             @Override
             public void onSuccess(Call<SuperOrderListBean<List<BuyOrderListItemBean>>> call, Response<SuperOrderListBean<List<BuyOrderListItemBean>>> response) {
@@ -100,9 +101,7 @@ public class RentGoodsOrderListFragment extends BaseFragment {
                 }
                 if (response != null && response.body() != null&&response.body().getData()!=null) {
                     if (response.body().getData().size() > 0) {
-                        if (pageNum == 1) {
                             rentOrderListAdapter.ClearData();
-                        }
                         rentOrderListAdapter.addList(response.body().getData());
 //                        pageNum++;
                     } else {

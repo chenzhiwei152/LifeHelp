@@ -24,10 +24,11 @@ import com.bozhengjianshe.shenghuobang.base.BaseContext;
 import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
 import com.bozhengjianshe.shenghuobang.ui.adapter.CommitOrderItemAdapter;
+import com.bozhengjianshe.shenghuobang.ui.bean.CommitOrderResultBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.GoodsListBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.ShoppingAddressListItemBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.SuperBean;
-import com.bozhengjianshe.shenghuobang.ui.bean.SuperOrderBean;
+import com.bozhengjianshe.shenghuobang.ui.utils.ShoppingCardsUtils;
 import com.bozhengjianshe.shenghuobang.utils.DialogUtils;
 import com.bozhengjianshe.shenghuobang.utils.LogUtils;
 import com.bozhengjianshe.shenghuobang.utils.NetUtil;
@@ -103,13 +104,13 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
     private int count = 1;
     private int mxCount = 200;
     private List<GoodsListBean> goodsBean;
-    private int payChannel = 0;//支付通道0为支付宝1为微信
+    private int payChannel = 1;//支付通道1为支付宝2为微信
     private int totalMoney;//订单总额单位是分
     private int orderType;//订单类型0为购买1租
     private int deliverytype = 1;//0为快递配送，1为店铺自取
     private Call<SuperBean<String>> getRsaOrderCall;
     private String orderId;
-    Call<SuperOrderBean<String>> commitRentCall;
+    Call<CommitOrderResultBean> commitRentCall;
     ShoppingAddressListItemBean bean;
 
     @Override
@@ -282,10 +283,10 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
                 if (b) {
                     wxCheck.setChecked(false);
                     offLineCheck.setChecked(false);
-                    payChannel = 0;
+                    payChannel = 1;
                 } else {
                     aliCheck.setChecked(false);
-                    payChannel = 3;
+                    payChannel = 4;
                 }
             }
         });
@@ -295,10 +296,10 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
                 if (b) {
                     aliCheck.setChecked(false);
                     offLineCheck.setChecked(false);
-                    payChannel = 1;
+                    payChannel = 2;
                 } else {
                     wxCheck.setChecked(false);
-                    payChannel = 3;
+                    payChannel = 4;
                 }
             }
         });
@@ -308,10 +309,10 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
                 if (b) {
                     wxCheck.setChecked(false);
                     aliCheck.setChecked(false);
-                    payChannel = 2;
+                    payChannel = 3;
                 } else {
                     offLineCheck.setChecked(false);
-                    payChannel = 3;
+                    payChannel = 4;
                 }
             }
         });
@@ -319,15 +320,16 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
             @Override
             public void onClick(View view) {
                 if (!UIUtil.isFastDoubleClick()) {
-                    if (payChannel == 3) {
+                    if (payChannel == 4) {
                         UIUtil.showToast("请选择支付方式");
-                    } else if (payChannel == 2) {
+                    } else if (payChannel == 3) {
                         myDialog.dismiss();
                         goNext();
                     } else {
-                        getRSAOrderInfo();
+                        commitRentOrder((payChannel) + "");
                         myDialog.dismiss();
                     }
+
                 }
 
             }
@@ -397,7 +399,8 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
             case R.id.bt_commit:
                 if (checkData())
                     if (!UIUtil.isFastDoubleClick()) {
-                        commitRentOrder();
+
+                        payStyleDialog();
                     }
                 break;
             case R.id.rl_delivery_type:
@@ -466,49 +469,44 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
     /**
      * 提交订单
      */
-    private void commitRentOrder() {
+    private void commitRentOrder(final String type) {
         if (!NetUtil.isNetworkConnected(this)) {
             UIUtil.showToast(R.string.net_state_error);
             return;
         }
 
         RequestBody formBody = new FormBody.Builder()
-//                .add("lxrxm", bean.getLxr())
-//                .add("lxrdh", bean.getLxdh())
-//                .add("lxradress", bean.getLxdz())
-//                .add("extrafee", bean.getLxxq())
                 .add("addressid", bean.getId() + "")
-//                .add("commodity", ids)
-                .add("detail", JSON.toJSONString(goodsBean))
-                .add("mark", "1")
+                .add("detail", JSON.toJSONString(ShoppingCardsUtils.changeCommitBean(goodsBean)))
+                .add("mark", type)
                 .add("memberid", BaseContext.getInstance().getUserInfo().id)
                 .build();
         LogUtils.e(JSON.toJSONString(formBody));
         DialogUtils.showDialog(CommitOrderActivity.this, "获取订单...", false);
         commitRentCall = RestAdapterManager.getApi().getRentOrder(formBody);
-        commitRentCall.enqueue(new JyCallBack<SuperOrderBean<String>>() {
+        commitRentCall.enqueue(new JyCallBack<CommitOrderResultBean>() {
             @Override
-            public void onSuccess(Call<SuperOrderBean<String>> call, Response<SuperOrderBean<String>> response) {
+            public void onSuccess(Call<CommitOrderResultBean> call, Response<CommitOrderResultBean> response) {
                 DialogUtils.closeDialog();
-                UIUtil.showToast(response.body().getMsg());
-                if (response != null && response.body() != null && response.body().getCode() == Constants.successCode) {
-                    orderId = response.body().getData();
-                    Intent intent = new Intent(CommitOrderActivity.this, OrderDetailsActivity.class);
-                    intent.putExtra("orderId", orderId);
-                    startActivity(intent);
-                    finish();
-//                    payStyleDialog();
+//                UIUtil.showToast(response.body().getMsg());
+                if (response != null && response.body() != null && response.body().getState() == Constants.successCode) {
+                    if (response.body().getOrder() != null) {
+
+                        orderId = response.body().getOrder().getId() + "";
+                    }
+                    pay((type.equals("1") ? response.body().getAlipay() : response.body().getWxpay()));
+//
                 }
             }
 
             @Override
-            public void onError(Call<SuperOrderBean<String>> call, Throwable t) {
+            public void onError(Call<CommitOrderResultBean> call, Throwable t) {
                 DialogUtils.closeDialog();
                 UIUtil.showToast(t.getMessage());
             }
 
             @Override
-            public void onError(Call<SuperOrderBean<String>> call, Response<SuperOrderBean<String>> response) {
+            public void onError(Call<CommitOrderResultBean> call, Response<CommitOrderResultBean> response) {
                 DialogUtils.closeDialog();
                 try {
                     UIUtil.showToast(response.errorBody().string());
@@ -525,7 +523,7 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
      * @param string
      */
     private void pay(String string) {
-        if (payChannel == 0) {
+        if (payChannel == 1) {
             JPay.getIntance(this).toPay(JPay.PayMode.ALIPAY, string, new JPay.JPayListener() {
                 @Override
                 public void onPaySuccess() {
@@ -546,7 +544,7 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
                     Toast.makeText(CommitOrderActivity.this, "取消了支付", Toast.LENGTH_SHORT).show();
                 }
             });
-        } else if (payChannel == 1) {
+        } else if (payChannel == 2) {
             JPay.getIntance(this).toPay(JPay.PayMode.WXPAY, string, new JPay.JPayListener() {
                 @Override
                 public void onPaySuccess() {

@@ -71,7 +71,7 @@ public class RestAdapterManager {
      */
     private static Request.Builder addHeaders(Request.Builder builder) {
 
-//        builder.addHeader("content-type", "text/html;charset=UTF-8");
+        builder.addHeader("content-type", "text/html;charset=UTF-8");
         return builder;
 
     }

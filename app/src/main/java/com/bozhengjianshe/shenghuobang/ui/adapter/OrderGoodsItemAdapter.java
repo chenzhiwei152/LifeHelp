@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.bozhengjianshe.shenghuobang.R;
 import com.bozhengjianshe.shenghuobang.ui.bean.OrderDetailBean;
-import com.bozhengjianshe.shenghuobang.utils.ImageLoadedrManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +22,7 @@ import butterknife.ButterKnife;
  * Created by chenzhiwei 2016/6/14.
  */
 public class OrderGoodsItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private static List<OrderDetailBean.ProductsBean> list;
+    private static List<OrderDetailBean.DetailBean> list;
     private static Context context;
     private boolean isLight;
     private final LayoutInflater mLayoutInflater;
@@ -34,14 +33,14 @@ public class OrderGoodsItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         mLayoutInflater = LayoutInflater.from(context);
     }
 
-    public OrderGoodsItemAdapter(Context context, List<OrderDetailBean.ProductsBean> items) {
+    public OrderGoodsItemAdapter(Context context, List<OrderDetailBean.DetailBean> items) {
         this.context = context;
         this.list = new ArrayList<>();
         this.list.addAll(items);
         mLayoutInflater = LayoutInflater.from(context);
     }
 
-    public void addList(List<OrderDetailBean.ProductsBean> items) {
+    public void addList(List<OrderDetailBean.DetailBean> items) {
         this.list.addAll(items);
         notifyDataSetChanged();
     }
@@ -51,7 +50,7 @@ public class OrderGoodsItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         notifyDataSetChanged();
     }
 
-    public static List<OrderDetailBean.ProductsBean> getEntities() {
+    public static List<OrderDetailBean.DetailBean> getEntities() {
         return list;
     }
 
@@ -64,10 +63,10 @@ public class OrderGoodsItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final int position) {
         if (list != null) {
-            ImageLoadedrManager.getInstance().display(context, list.get(position).getProductImg(), ((ImageViewHolder) viewHolder).iv_goods);
-            ((ImageViewHolder) viewHolder).tv_count.setText("x"+list.get(position).getProductCount() + "");
-            ((ImageViewHolder) viewHolder).tv_price.setText(list.get(position).getProductPrice() + "");
-            ((ImageViewHolder) viewHolder).tv_goods_name.setText(list.get(position).getProductName());
+//            ImageLoadedrManager.getInstance().display(context, list.get(position).getProductImg(), ((ImageViewHolder) viewHolder).iv_goods);
+            ((ImageViewHolder) viewHolder).tv_count.setText("x"+list.get(position).getNum() + "");
+            ((ImageViewHolder) viewHolder).tv_price.setText(list.get(position).getZj() + "");
+            ((ImageViewHolder) viewHolder).tv_goods_name.setText(list.get(position).getName());
 //            ((ImageViewHolder) viewHolder).tv_detail.setOnClickListener(new View.OnClickListener() {
 //                @Override
 //                public void onClick(View v) {
