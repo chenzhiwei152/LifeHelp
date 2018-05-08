@@ -126,7 +126,7 @@ public class ShoppingCardListAdapter extends RecyclerView.Adapter<RecyclerView.V
     public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, final int position) {
         if (list != null) {
 
-//            ((ImageViewHolder) viewHolder).tv_number.setText(list.get(position).getProductCount() + "");
+            ((ImageViewHolder) viewHolder).tv_number.setText(list.get(position).getNum() + "");
             ((ImageViewHolder) viewHolder).tv_price.setText(list.get(position).getFee() + "");
             ((ImageViewHolder) viewHolder).tv_goods_name.setText(list.get(position).getCname());
             if (isEditMode) {

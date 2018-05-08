@@ -1,5 +1,7 @@
 package com.bozhengjianshe.shenghuobang.ui.fragment;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -13,6 +15,7 @@ import com.bozhengjianshe.shenghuobang.api.RestAdapterManager;
 import com.bozhengjianshe.shenghuobang.base.BaseFragment;
 import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
+import com.bozhengjianshe.shenghuobang.ui.activity.CommitOrderActivity;
 import com.bozhengjianshe.shenghuobang.ui.adapter.ShoppingCardListAdapter;
 import com.bozhengjianshe.shenghuobang.ui.bean.GoodsListBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.SuperGoodsListBean;
@@ -24,6 +27,7 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -84,6 +88,19 @@ public class ShoppingCartFragment extends BaseFragment {
             @Override
             public void myOnClick(Object data) {
                 deleteItem((GoodsListBean) data);
+            }
+        });
+        tv_calculate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//结算
+                if (getSelectedGoods().size() > 0) {
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("detail", (Serializable) getSelectedGoods());
+                    Intent intent = new Intent(getActivity(), CommitOrderActivity.class);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                }
             }
         });
     }
@@ -237,5 +254,17 @@ public class ShoppingCartFragment extends BaseFragment {
                 }
             }
         });
+    }
+
+    private List<GoodsListBean> getSelectedGoods() {
+        List<GoodsListBean> selected = new ArrayList<>();
+        if (listAdapter.getList() != null && listAdapter.getList().size() > 0) {
+            for (int i = 0; i < listAdapter.getList().size(); i++) {
+                if (listAdapter.getList().get(i).isChecked()) {
+                    selected.add(listAdapter.getList().get(i));
+                }
+            }
+        }
+        return selected;
     }
 }

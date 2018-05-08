@@ -313,15 +313,9 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
                 if (goodsBean != null) {
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("detail", (Serializable) goodsBeanList);
-//                    if (type.equals(Constants.typeService)) {
                     Intent intent = new Intent(this, CommitOrderActivity.class);
                     intent.putExtras(bundle);
                     startActivity(intent);
-//                    } else {
-//                        Intent intent = new Intent(this, CommitOrderActivity.class);
-//                        intent.putExtras(bundle);
-//                        startActivity(intent);
-//                    }
                 }
 
                 break;
