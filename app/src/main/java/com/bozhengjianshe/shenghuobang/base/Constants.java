@@ -10,8 +10,8 @@ public class Constants {
     public static final String APP_KEY = "c3c5a51f3a4c70827523f8";
     public static int ADD_REQUEST_CODE = 11;
     public static int successCode = 100;
-    public static String typeService = "2";
-    public static String typeGoods = "1";
+    public static String typeService = "1";
+    public static String typeGoods = "2";
     public static String homeTypeTag = "homeTypeTag";
 
     public static class ErrorCode {

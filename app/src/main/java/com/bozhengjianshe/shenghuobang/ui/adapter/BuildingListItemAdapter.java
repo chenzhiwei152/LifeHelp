@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bozhengjianshe.shenghuobang.R;
+import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.ui.activity.GoodsDetailsActivity;
 import com.bozhengjianshe.shenghuobang.ui.bean.GoodsListBean;
 import com.bozhengjianshe.shenghuobang.utils.ImageLoadedrManager;
@@ -86,7 +87,7 @@ public class BuildingListItemAdapter extends RecyclerView.Adapter<RecyclerView.V
                     Intent intent = new Intent(context, GoodsDetailsActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putString("id", list.get(position).getId()+"");
-                    bundle.putString("type", "1");
+                    bundle.putString("type", Constants.typeGoods);
                     intent.putExtras(bundle);
                     context.startActivity(intent);
                 }

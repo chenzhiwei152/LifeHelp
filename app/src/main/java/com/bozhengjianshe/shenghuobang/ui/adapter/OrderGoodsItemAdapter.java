@@ -1,14 +1,17 @@
 package com.bozhengjianshe.shenghuobang.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bozhengjianshe.shenghuobang.R;
+import com.bozhengjianshe.shenghuobang.ui.activity.OrderDetailsActivity;
 import com.bozhengjianshe.shenghuobang.ui.bean.OrderDetailBean;
 
 import java.util.ArrayList;
@@ -64,17 +67,17 @@ public class OrderGoodsItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final int position) {
         if (list != null) {
 //            ImageLoadedrManager.getInstance().display(context, list.get(position).getProductImg(), ((ImageViewHolder) viewHolder).iv_goods);
-            ((ImageViewHolder) viewHolder).tv_count.setText("x"+list.get(position).getNum() + "");
+            ((ImageViewHolder) viewHolder).tv_count.setText("x" + list.get(position).getNum() + "");
             ((ImageViewHolder) viewHolder).tv_price.setText(list.get(position).getZj() + "");
             ((ImageViewHolder) viewHolder).tv_goods_name.setText(list.get(position).getName());
-//            ((ImageViewHolder) viewHolder).tv_detail.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Intent intent=new Intent(context, OrderDetailsActivity.class);
-//                    intent.putExtra("orderId",list.get(position).getId()+"");
-//                    context.startActivity(intent);
-//                }
-//            });
+            ((ImageViewHolder) viewHolder).rl_content.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, OrderDetailsActivity.class);
+                    intent.putExtra("orderId", list.get(position).getId() + "");
+                    context.startActivity(intent);
+                }
+            });
 
         }
     }
@@ -86,8 +89,8 @@ public class OrderGoodsItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
 
     public static class ImageViewHolder extends RecyclerView.ViewHolder {
-        //        @BindView(R.id.tv_state_title)
-//        TextView tv_state_title;
+        @BindView(R.id.rl_content)
+        RelativeLayout rl_content;
         @BindView(R.id.tv_count)
         TextView tv_count;
         @BindView(R.id.tv_price)

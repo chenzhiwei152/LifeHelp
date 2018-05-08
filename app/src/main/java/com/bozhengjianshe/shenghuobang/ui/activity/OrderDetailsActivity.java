@@ -66,6 +66,8 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
     Button bt_cancel;
     @BindView(R.id.bt_pay)
     Button bt_pay;
+    @BindView(R.id.tv_state_title)
+    TextView tv_state_title;
     private OrderGoodsItemAdapter goodsItemAdapter;
     private int payChannel = 1;//支付通道0为支付宝1为微信
     private Call<SuperBean<String>> getRsaOrderCall;
@@ -119,14 +121,15 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
     private void initDate(OrderDetailBean orderDetailBean) {
         if (orderDetailBean != null) {
 
-//            mi_name.getRightText().setText(orderDetailBean.getReceiveName());
-//            mi_phone.getRightText().setText(orderDetailBean.getReceivePhone());
-//            mi_addresss.getRightText().setText(orderDetailBean.getReceiveAddress());
-//            tv_state.setText(orderDetailBean.getOrderStateCn());
-//            tv_order_time.setText(orderDetailBean.getServiceTime());
-////            tv_deposit.setText(orderDetailBean.get());//定金
-//            tv_real_pay.setText(orderDetailBean.getOrderAmount() + "");
-//            goodsItemAdapter.addList(orderDetailBean.getProducts());
+            mi_name.getRightText().setText(orderDetailBean.getLxrxm());
+            mi_phone.getRightText().setText(orderDetailBean.getLxrdh());
+            mi_addresss.getRightText().setText(orderDetailBean.getLxradress());
+            tv_state.setText(orderDetailBean.getState() + "");
+            tv_state_title.setText("订单号：" + orderDetailBean.getOdnum());
+            tv_order_time.setText(UIUtil.timeStamp2Date(orderDetailBean.getTime() + ""));
+//            tv_deposit.setText(orderDetailBean.get());//定金
+            tv_real_pay.setText(orderDetailBean.getExtrafee() + "");
+            goodsItemAdapter.addList(orderDetailBean.getDetail());
         }
     }
 

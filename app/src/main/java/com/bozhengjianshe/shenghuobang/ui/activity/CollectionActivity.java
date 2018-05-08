@@ -16,7 +16,6 @@ import com.bozhengjianshe.shenghuobang.base.BaseContext;
 import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
 import com.bozhengjianshe.shenghuobang.ui.adapter.CollectionItemAdapter;
-import com.bozhengjianshe.shenghuobang.ui.bean.CollectionItemBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.GoodsListBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.SuperBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.SuperGoodsListBean;
@@ -52,7 +51,7 @@ public class CollectionActivity extends BaseActivity {
     TitleBar title_view;
     CollectionItemAdapter contentListAdapter;
     private TextView action;
-    private CollectionItemBean bean;
+    private GoodsListBean bean;
     private Call<SuperGoodsListBean<List<GoodsListBean>>> goodsListCall;
 
     @Override
@@ -77,7 +76,7 @@ public class CollectionActivity extends BaseActivity {
         contentListAdapter.setOnClickListerner(new CommonOnClickListerner() {
             @Override
             public void myOnClick(Object data) {
-                bean = (CollectionItemBean) data;
+                bean = (GoodsListBean) data;
                 if (contentListAdapter.isEditMode()) {
                     DialogUtils.showOrderCancelMsg(CollectionActivity.this, "确认要删除该条目吗？", new View.OnClickListener() {
                         @Override
@@ -91,7 +90,7 @@ public class CollectionActivity extends BaseActivity {
                     Intent intent = new Intent(CollectionActivity.this, GoodsDetailsActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putString("id", bean.getId() + "");
-                    bundle.putString("type", bean.getProductType() + "");
+                    bundle.putString("type", bean.getLb() + "");
                     intent.putExtras(bundle);
                     startActivity(intent);
                 }
@@ -167,7 +166,7 @@ public class CollectionActivity extends BaseActivity {
     /**
      * 删除收藏
      */
-    private void deleteColloction(final CollectionItemBean bean) {
+    private void deleteColloction(final GoodsListBean bean) {
         Call<SuperBean<String>> deleteCollection = RestAdapterManager.getApi().deleteCollection(bean.getId() + "");
         deleteCollection.enqueue(new JyCallBack<SuperBean<String>>() {
             @Override

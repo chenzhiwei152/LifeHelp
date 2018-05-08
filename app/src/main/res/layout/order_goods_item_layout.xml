@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_eeeeee"
+    android:orientation="vertical">
+
     <RelativeLayout
+        android:id="@+id/rl_content"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:background="@color/color_ffffff"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="10dp">
@@ -24,7 +27,7 @@
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/iv_goods"
             android:ellipsize="end"
-            android:text="ddddddddddd" />
+            android:text="" />
 
         <LinearLayout
             android:id="@+id/ll_price"
@@ -33,19 +36,21 @@
             android:layout_below="@+id/tv_goods_name"
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/iv_goods"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/tv_price"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="fgdfgdfgdg" />
+                android:text=""
+                android:textColor="@color/color_f6c01c" />
 
             <TextView
                 android:id="@+id/tv_count"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="x1" />
+                android:layout_marginLeft="@dimen/dp_5"
+                android:text="" />
         </LinearLayout>
 
         <ImageView
