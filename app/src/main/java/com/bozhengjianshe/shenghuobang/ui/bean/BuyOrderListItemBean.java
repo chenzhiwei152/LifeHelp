@@ -35,7 +35,7 @@ public class BuyOrderListItemBean implements Serializable {
     private String name;
     private String odnum;
     private String id;
-    private String state;
+    private int state;
     private String ncount;
     private String extrafee;
     private List<DetailBean> detail;
@@ -112,11 +112,11 @@ public class BuyOrderListItemBean implements Serializable {
         this.id = id;
     }
 
-    public String getState() {
+    public int getState() {
         return state;
     }
 
-    public void setState(String state) {
+    public void setState(int state) {
         this.state = state;
     }
 

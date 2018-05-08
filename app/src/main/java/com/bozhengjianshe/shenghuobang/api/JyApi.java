@@ -27,14 +27,11 @@ import com.bozhengjianshe.shenghuobang.ui.bean.UserInfoBean;
 import java.util.List;
 import java.util.Map;
 
-import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
-import retrofit2.http.Multipart;
 import retrofit2.http.POST;
-import retrofit2.http.Part;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 
@@ -184,9 +181,8 @@ public interface JyApi {
      * @param file
      * @return
      */
-    @Multipart
     @POST(api + "updateMPhone" + suffix)
-    Call<SuperBean<String>> uploadFile(@Part List<MultipartBody.Part> file);
+    Call<SuperBean<String>> uploadFile(@Body RequestBody file);
 
     /**
      * 上传个人信息
@@ -239,11 +235,11 @@ public interface JyApi {
      * 取消订单
      * *
      *
-     * @param orderId
+     * @param
      * @return
      */
-    @GET("/api/order/cancleOrder")
-    Call<SuperBean<OrderDetailBean>> quitOrder(@Query("orderId") String orderId);
+    @POST(api + "getRegionList" + suffix)
+    Call<SuperOrderBean<OrderDetailBean>> quitOrder(@Body RequestBody body);
 
 
     /**

@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bozhengjianshe.shenghuobang.R;
@@ -21,6 +22,7 @@ import com.bozhengjianshe.shenghuobang.ui.adapter.OrderGoodsItemAdapter;
 import com.bozhengjianshe.shenghuobang.ui.bean.OrderDetailBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.SuperBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.SuperOrderBean;
+import com.bozhengjianshe.shenghuobang.ui.utils.OrderStateUtils;
 import com.bozhengjianshe.shenghuobang.utils.DialogUtils;
 import com.bozhengjianshe.shenghuobang.utils.LogUtils;
 import com.bozhengjianshe.shenghuobang.utils.NetUtil;
@@ -68,6 +70,8 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
     Button bt_pay;
     @BindView(R.id.tv_state_title)
     TextView tv_state_title;
+    @BindView(R.id.ll_button)
+    LinearLayout ll_button;
     private OrderGoodsItemAdapter goodsItemAdapter;
     private int payChannel = 1;//支付通道0为支付宝1为微信
     private Call<SuperBean<String>> getRsaOrderCall;
@@ -124,11 +128,20 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
             mi_name.getRightText().setText(orderDetailBean.getLxrxm());
             mi_phone.getRightText().setText(orderDetailBean.getLxrdh());
             mi_addresss.getRightText().setText(orderDetailBean.getLxradress());
-            tv_state.setText(orderDetailBean.getState() + "");
+            tv_state.setText(OrderStateUtils.getOrderStateDescribe(orderDetailBean.getState()));
             tv_state_title.setText("订单号：" + orderDetailBean.getOdnum());
             tv_order_time.setText(UIUtil.timeStamp2Date(orderDetailBean.getTime() + ""));
 //            tv_deposit.setText(orderDetailBean.get());//定金
             tv_real_pay.setText(orderDetailBean.getExtrafee() + "");
+            if (orderDetailBean.getState() == Constants.STATE_THREE) {
+                bt_cancel.setVisibility(View.VISIBLE);
+                bt_pay.setVisibility(View.VISIBLE);
+                ll_button.setVisibility(View.VISIBLE);
+            } else {
+                bt_cancel.setVisibility(View.GONE);
+                bt_pay.setVisibility(View.GONE);
+                ll_button.setVisibility(View.GONE);
+            }
             goodsItemAdapter.addList(orderDetailBean.getDetail());
         }
     }
@@ -193,22 +206,27 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
      */
     private void quitOrder() {
         DialogUtils.showDialog(OrderDetailsActivity.this, "", false);
-        Call<SuperBean<OrderDetailBean>> quitOrder = RestAdapterManager.getApi().quitOrder(orderId);
-        quitOrder.enqueue(new JyCallBack<SuperBean<OrderDetailBean>>() {
+        RequestBody body = new FormBody.Builder()
+                .add("memberid", BaseContext.getInstance().getUserInfo().id)
+                .add("orderid", orderId)
+                .add("state", Constants.STATE_FIVE + "")
+                .build();
+        Call<SuperOrderBean<OrderDetailBean>> quitOrder = RestAdapterManager.getApi().quitOrder(body);
+        quitOrder.enqueue(new JyCallBack<SuperOrderBean<OrderDetailBean>>() {
             @Override
-            public void onSuccess(Call<SuperBean<OrderDetailBean>> call, Response<SuperBean<OrderDetailBean>> response) {
+            public void onSuccess(Call<SuperOrderBean<OrderDetailBean>> call, Response<SuperOrderBean<OrderDetailBean>> response) {
                 DialogUtils.closeDialog();
                 UIUtil.showToast(response.body().getMsg());
-                finish();
+                initDate(response.body().getData());
             }
 
             @Override
-            public void onError(Call<SuperBean<OrderDetailBean>> call, Throwable t) {
+            public void onError(Call<SuperOrderBean<OrderDetailBean>> call, Throwable t) {
                 DialogUtils.closeDialog();
             }
 
             @Override
-            public void onError(Call<SuperBean<OrderDetailBean>> call, Response<SuperBean<OrderDetailBean>> response) {
+            public void onError(Call<SuperOrderBean<OrderDetailBean>> call, Response<SuperOrderBean<OrderDetailBean>> response) {
                 DialogUtils.closeDialog();
             }
         });

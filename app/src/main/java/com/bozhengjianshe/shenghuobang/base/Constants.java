@@ -1,5 +1,7 @@
 package com.bozhengjianshe.shenghuobang.base;
 
+import android.support.annotation.IntDef;
+
 /**
  * Created by sun.luwei on 2016/12/20.
  */
@@ -13,6 +15,7 @@ public class Constants {
     public static String typeService = "1";
     public static String typeGoods = "2";
     public static String homeTypeTag = "homeTypeTag";
+
 
     public static class ErrorCode {
         public static String check_code = "400001039";//验证码错误
@@ -33,5 +36,18 @@ public class Constants {
     public static final int LOCATION_CITY_SUCCESS = 0x30;//定位城市
     public static final int UPDATE_COLLECTION_SUCCESS = 0x31;//定位城市
 
+    /**
+     * 订单状态
+     * 1派单中、2服务中、3待付款、4待评价、5结束
+     */
+    public static final int STATE_ONE = 1;
+    public static final int STATE_TWO = 2;
+    public static final int STATE_THREE = 3;
+    public static final int STATE_FOUR = 4;
+    public static final int STATE_FIVE = 5;
 
+    // 自定义一个注解MyState
+    @IntDef({STATE_ONE, STATE_TWO, STATE_THREE,STATE_FOUR,STATE_FIVE})
+    public static @interface OrderState {
+    }
 }

@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.bozhengjianshe.shenghuobang.R;
 import com.bozhengjianshe.shenghuobang.ui.activity.OrderDetailsActivity;
 import com.bozhengjianshe.shenghuobang.ui.bean.BuyOrderListItemBean;
+import com.bozhengjianshe.shenghuobang.ui.utils.OrderStateUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +66,7 @@ public class RentOrderListAdapter extends RecyclerView.Adapter<RecyclerView.View
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final int position) {
         if (list != null) {
             ((ImageViewHolder) viewHolder).tv_state_title.setText(list.get(position).getName());
-            ((ImageViewHolder) viewHolder).tv_state.setText(list.get(position).getState()+"");
+            ((ImageViewHolder) viewHolder).tv_state.setText(OrderStateUtils.getOrderStateDescribe(list.get(position).getState())+"");
             ((ImageViewHolder) viewHolder).tv_service_address.setText(list.get(position).getLxradress());
             ((ImageViewHolder) viewHolder).tv_detail.setOnClickListener(new View.OnClickListener() {
                 @Override

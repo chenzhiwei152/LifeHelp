@@ -46,6 +46,15 @@ public class GoodsListBean  implements Serializable {
     private int sftj;
     private int profit;
     private int num=1;
+    private float freight;//运费
+
+    public float getFreight() {
+        return freight;
+    }
+
+    public void setFreight(float freight) {
+        this.freight = freight;
+    }
 
     public int getNum() {
         return num;

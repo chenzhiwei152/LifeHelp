@@ -206,14 +206,14 @@ public class PersonInformationActivity extends BaseActivity implements View.OnCl
     private void upLoadImage() {
         DialogUtils.showDialog(this, "上传中", false);
         List<MultipartBody.Part> parts = UploadFile.filesToMultipartBody(list);
-        upLoadImageCall = RestAdapterManager.getApi().uploadFile(parts);
+        upLoadImageCall = RestAdapterManager.getApi().uploadFile(UploadFile.filesToMultipartBody1(list));
         upLoadImageCall.enqueue(new JyCallBack<SuperBean<String>>() {
             @Override
             public void onSuccess(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
 //                UIUtil.showToast(response.body());
                 DialogUtils.closeDialog();
                 UIUtil.showToast(response.body().getMsg());
-                if (response != null && response.body() != null&&response.body().getCode()==Constants.successCode) {
+                if (response != null && response.body() != null && response.body().getCode() == Constants.successCode) {
                     if (!TextUtils.isEmpty(response.body().getData())) {
                         //上传图片成功
                         headimg = response.body().getData();
@@ -262,7 +262,7 @@ public class PersonInformationActivity extends BaseActivity implements View.OnCl
             LogUtils.e("image路径--" + list.get(0));
         }
 //        headIsChange = true;
-        if (list.size()>0){
+        if (list.size() > 0) {
             ImageLoadedrManager.getInstance().displayNoFilter(this, list.get(0), iv_head);
             bt_commit.performClick();
         }
