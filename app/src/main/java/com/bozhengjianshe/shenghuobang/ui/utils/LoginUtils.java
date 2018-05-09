@@ -9,6 +9,7 @@ import com.bozhengjianshe.shenghuobang.api.RestAdapterManager;
 import com.bozhengjianshe.shenghuobang.base.BaseContext;
 import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
+import com.bozhengjianshe.shenghuobang.ui.activity.MerchantOrderActivity;
 import com.bozhengjianshe.shenghuobang.ui.bean.SuperBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.SuperUserBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.UserInfoBean;
@@ -37,7 +38,7 @@ public class LoginUtils {
     static Call<SuperBean<UserInfoBean>> thirdLoginCall;
     static boolean isSuccess;
 
-    public static void commitlogin(final Context context, final String tel, String password,String type) {
+    public static void commitlogin(final Context context, final String tel, String password, final String type) {
         DialogUtils.showDialog(context, "登陆...", false);
         RequestBody formBody = new FormBody.Builder()
                 .add("phone", tel)
@@ -56,8 +57,13 @@ public class LoginUtils {
                     SharePreManager.instance(context).setUserInfo(response.body().getData());
                     SharePreManager.instance(context).setUserInfo(response.body().getData());
                     EventBus.getDefault().post(new EventBusCenter<Integer>(Constants.LOGIN_SUCCESS));
+                    Intent jmActivityIntent = null;
+                    if (type.equals("1")) {
 
-                    Intent jmActivityIntent = new Intent(context, MainActivity.class);
+                        jmActivityIntent = new Intent(context, MainActivity.class);
+                    } else if (type.equals("3")) {
+                        jmActivityIntent = new Intent(context, MerchantOrderActivity.class);
+                    }
                     context.startActivity(jmActivityIntent);
                     ((Activity) context).finish();
                 } else {

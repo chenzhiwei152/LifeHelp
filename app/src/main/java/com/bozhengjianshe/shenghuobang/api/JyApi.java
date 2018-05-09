@@ -61,7 +61,7 @@ public interface JyApi {
      * @return
      */
     @GET(api + "sendzcdx" + suffix)
-    Call<RegistCodeBean> getCheckCode(@QueryMap Map<String,String> map);
+    Call<RegistCodeBean> getCheckCode(@QueryMap Map<String, String> map);
 
     /**
      * 找回密码发送短信验证码
@@ -334,4 +334,10 @@ public interface JyApi {
      */
     @GET(api + "getAboutUs" + suffix)
     Call<AboutInfoBean> getAboutInfo();
+
+    /**
+     * 获取订单市场订单
+     */
+    @POST(api + "getOrderFwList" + suffix)
+    Call<SuperOrderListBean> getOrderList();
 }

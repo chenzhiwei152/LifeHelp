@@ -100,7 +100,5 @@ public class MerchantOrderActivity extends BaseActivity {
      */
     private void initTitle() {
         title_view.setTitle(R.string.app_name);
-        title_view.setShowDefaultRightValue();
-
     }
 }

@@ -123,7 +123,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     public void loadData() {
         UserInfoBean userInfo = BaseContext.getInstance().getUserInfo();
         if (null != userInfo) {
-            startActivity(new Intent(this, MainActivity.class));
+            if (userInfo.state == 1) {
+                startActivity(new Intent(this, MainActivity.class));
+            } else {
+                startActivity(new Intent(this, MerchantOrderActivity.class));
+            }
             finish();
         }
 //        if (null != userInfo) {
@@ -200,7 +204,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             Toast.makeText(this, "密码至少为6位", Toast.LENGTH_SHORT).show();
             return;
         }
-        LoginUtils.commitlogin(this, userName.getText().toString().trim(), passWord.getText().toString().trim(),type);
+        LoginUtils.commitlogin(this, userName.getText().toString().trim(), passWord.getText().toString().trim(), type);
 //        commitlogin();
 
     }

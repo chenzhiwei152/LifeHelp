@@ -7,9 +7,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.bozhengjianshe.shenghuobang.R;
+import com.bozhengjianshe.shenghuobang.base.BaseContext;
 import com.bozhengjianshe.shenghuobang.base.BaseFragment;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
 import com.bozhengjianshe.shenghuobang.ui.adapter.MerchantOrderItemAdapter;
+import com.bozhengjianshe.shenghuobang.utils.LogUtils;
 
 import butterknife.BindView;
 
@@ -57,6 +59,7 @@ public class MerchantOrderListFragment extends BaseFragment {
 //                startActivity(intent);
 //            }
 //        });
+        LogUtils.e(BaseContext.getInstance().getUserInfo().id);
     }
 
     @Override
@@ -65,16 +68,6 @@ public class MerchantOrderListFragment extends BaseFragment {
         if (bundle != null) {
             type = bundle.getInt(bundleName_type);
         }
-//        LogUtils.d("liu=================");
-//        orderList.add(new OrderItemBean("http://upload-images.jianshu.io/upload_images/3722695-5ad19f0c6b812be1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700",
-//                "2017-12-17", "张灿", "34545"));
-//        orderList.add(new OrderItemBean("https://image1.jyall.com/v1/tfs/T1TyxQB4hT1RXrhCrK.jpg",
-//                "2017-12-17", "张灿", "34545"));
-//        orderList.add(new OrderItemBean("http://upload-images.jianshu.io/upload_images/3722695-5ad19f0c6b812be1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700",
-//                "2017-12-17", "张灿", "34545"));
-//        orderList.add(new OrderItemBean("https://image1.jyall.com/v1/tfs/T1rxC_BQKT1RXrhCrK.jpg",
-//                "2017-12-17", "张灿", "34545"));
-//        adapter.setDatas(orderList);
     }
 
     @Override
@@ -89,6 +82,9 @@ public class MerchantOrderListFragment extends BaseFragment {
 
     @Override
     public void onMsgEvent(EventBusCenter eventBusCenter) {
+
+    }
+    private void getList(){
 
     }
 }
