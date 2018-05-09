@@ -60,8 +60,8 @@ public interface JyApi {
      * @param
      * @return
      */
-    @POST(api + "sendzcdx" + suffix)
-    Call<RegistCodeBean> getCheckCode(@Body RequestBody map);
+    @GET(api + "sendzcdx" + suffix)
+    Call<RegistCodeBean> getCheckCode(@QueryMap Map<String,String> map);
 
     /**
      * 找回密码发送短信验证码

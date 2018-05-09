@@ -128,11 +128,6 @@
             android:configChanges="orientation|keyboardHidden|navigation|screenSize"
             android:launchMode="singleTop"
             android:theme="@android:style/Theme.Translucent.NoTitleBar">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:scheme="wxcdf5dd516eaf1599" />
-            </intent-filter>
 
         </activity>
         <activity-alias
@@ -149,13 +144,13 @@
             android:configChanges="orientation|keyboardHidden|navigation|screenSize"
             android:exported="false"
             android:screenOrientation="behind"
-            android:windowSoftInputMode="adjustResize|stateHidden"></activity>
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name="com.alipay.sdk.app.H5AuthActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
             android:exported="false"
             android:screenOrientation="behind"
-            android:windowSoftInputMode="adjustResize|stateHidden"></activity>
+            android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <!-- alipay sdk end -->
         <activity
@@ -269,6 +264,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.QuestionNormalActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.RegistersServiceActivity"
             android:screenOrientation="portrait" />
         <!-- 百度地图所需的service -->
         <service

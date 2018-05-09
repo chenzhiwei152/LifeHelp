@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -49,9 +51,9 @@ import retrofit2.Response;
 
 /**
  * Created by chen.zhiwei on 2016/7/14.
- * 注册
+ * 注册 服务商
  */
-public class RegisterActivity extends BaseActivity implements
+public class RegistersServiceActivity extends BaseActivity implements
         View.OnClickListener {
     @BindView(R.id.user_name)
     CleanableEditText etPhone;
@@ -77,6 +79,12 @@ public class RegisterActivity extends BaseActivity implements
     CleanableEditText user_nick_name;
     @BindView(R.id.user_password)
     CleanableEditText user_password;
+    @BindView(R.id.user_contract)//联系人姓名
+            CleanableEditText user_contract;
+    @BindView(R.id.user_company)//公司名称
+            CleanableEditText user_company;
+    @BindView(R.id.user_company_address)//公司详细地址
+            CleanableEditText user_company_address;
     @BindView(R.id.iv_weixin)
     ImageView iv_weixin;
     @BindView(R.id.iv_qq)
@@ -85,17 +93,20 @@ public class RegisterActivity extends BaseActivity implements
     ImageView iv_sina;
     @BindView(R.id.tv_to_login)
     TextView tv_to_login;
-
-
+    @BindView(R.id.rg_group)
+    RadioGroup rg_group;
+    @BindView(R.id.rb_service)
+    RadioButton rb_service;
     CountDownTimer timer;
 
     boolean isCodeSended = false;
     Call<SuperBean<String>> call;//注册
     Call<RegistCodeBean> getCheckCodeCall;
+    private String type = "1";
 
     @Override
     public int getContentViewLayoutId() {
-        return R.layout.mine_regist_activity_layout;
+        return R.layout.service_regist_activity_layout;
     }
 
     @Override
@@ -120,6 +131,20 @@ public class RegisterActivity extends BaseActivity implements
         iv_weixin.setOnClickListener(this);
         iv_qq.setOnClickListener(this);
         tv_to_login.setOnClickListener(this);
+        rb_service.setChecked(true);
+        rg_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.rb_building:
+                        type = "2";
+                        break;
+                    case R.id.rb_service:
+                        type = "1";
+                        break;
+                }
+            }
+        });
     }
 
     @Override
@@ -168,17 +193,13 @@ public class RegisterActivity extends BaseActivity implements
         RequestBody formBody = new FormBody.Builder()
                 .add("phone", phoneNumber)
                 .build();
-        Map<String ,String> map=new HashMap<>();
-        map.put("phone",phoneNumber);
+        Map<String, String> map = new HashMap<>();
+        map.put("phone", phoneNumber);
         getCheckCodeCall = RestAdapterManager.getApi().getCheckCode(map);
         getCheckCodeCall.enqueue(new JyCallBack<RegistCodeBean>() {
             @Override
             public void onSuccess(Call<RegistCodeBean> call, Response<RegistCodeBean> response) {
-//                if (response != null && response.body().getState() == Constants.successCode) {
                 UIUtil.showToast(response.body().getMessage());
-//                } else {
-//                    UIUtil.showToast("发送验证码失败");
-//                }
             }
 
             @Override
@@ -196,11 +217,7 @@ public class RegisterActivity extends BaseActivity implements
     }
 
     private void initTitle() {
-
         titleView.setTitle(regist);
-//        titleView.setTitleColor(Color.WHITE);
-//        titleView.setBackgroundColor(getResources().getColor(R.color.color_ff6900));
-//        titleView.setImmersive(true);
     }
 
 
@@ -272,10 +289,7 @@ public class RegisterActivity extends BaseActivity implements
             UIUtil.showToast("验证码不能为空");
             return;
         }
-//        if (TextUtils.isEmpty(user_nick_name.getText())) {
-//            UIUtil.showToast("昵称不能为空");
-//            return;
-//        }
+
         if (TextUtils.isEmpty(user_password.getText())) {
             UIUtil.showToast("密码不能为空");
             return;
@@ -284,12 +298,27 @@ public class RegisterActivity extends BaseActivity implements
             Toast.makeText(this, "密码至少为6位", Toast.LENGTH_SHORT).show();
             return;
         }
-
+        if (TextUtils.isEmpty(user_contract.getText())) {
+            UIUtil.showToast("联系人不能为空");
+            return;
+        }
+        if (TextUtils.isEmpty(user_company.getText())) {
+            UIUtil.showToast("公司名称不能为空");
+            return;
+        }
+        if (TextUtils.isEmpty(user_company_address.getText())) {
+            UIUtil.showToast("公司地址不能为空");
+            return;
+        }
         RequestBody formBody = new FormBody.Builder()
                 .add("phone", etPhone.getText().toString())
                 .add("password", user_password.getText().toString())
                 .add("dxcode", etCode.getText().toString())
-                .add("status", "1")
+                .add("status", "2")
+                .add("proxyflag", type)
+                .add("name", user_contract.getText().toString())
+                .add("comname", user_company.getText().toString())
+                .add("adress", user_company_address.getText().toString())
                 .build();
         call = RestAdapterManager.getApi().reister(formBody);
 
@@ -300,7 +329,7 @@ public class RegisterActivity extends BaseActivity implements
 
                     if (response != null && response.body() != null) {
                         if (response.body().state == Constants.successCode) {
-                            Intent findPsIntent = new Intent(RegisterActivity.this, LoginActivity.class);
+                            Intent findPsIntent = new Intent(RegistersServiceActivity.this, LoginActivity.class);
                             timer.cancel();
                             findPsIntent.putExtra("phone", etPhone.getText().toString());
                             findPsIntent.putExtra("pwd", user_password.getText().toString());
@@ -323,7 +352,7 @@ public class RegisterActivity extends BaseActivity implements
             @Override
             public void onError(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
                 try {
-                    ErrorMessageUtils.taostErrorMessage(RegisterActivity.this, response.errorBody().string(), "");
+                    ErrorMessageUtils.taostErrorMessage(RegistersServiceActivity.this, response.errorBody().string(), "");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

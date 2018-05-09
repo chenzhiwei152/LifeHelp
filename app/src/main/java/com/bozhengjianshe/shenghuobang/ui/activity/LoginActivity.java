@@ -163,7 +163,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 startActivity(forgetIntent);
                 break;
             case R.id.regist_service_provider:
-                startActivity(new Intent(this, SelectMerchantActivity.class));
+                startActivity(new Intent(this, RegistersServiceActivity.class));
                 break;
 
 
