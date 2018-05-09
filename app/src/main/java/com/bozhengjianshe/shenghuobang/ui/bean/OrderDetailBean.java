@@ -7,7 +7,7 @@ import java.util.List;
  * Created by chen.zhiwei on 2017-7-5.
  */
 
-public class OrderDetailBean implements Serializable{
+public class OrderDetailBean implements Serializable {
 
 
     /**
@@ -318,6 +318,24 @@ public class OrderDetailBean implements Serializable{
         private String num;
         private String name;
         private String id;
+        private int lb;
+        private String thumbnail;
+
+        public int getLb() {
+            return lb;
+        }
+
+        public void setLb(int lb) {
+            this.lb = lb;
+        }
+
+        public String getThumbnail() {
+            return thumbnail;
+        }
+
+        public void setThumbnail(String thumbnail) {
+            this.thumbnail = thumbnail;
+        }
 
         public String getZj() {
             return zj;

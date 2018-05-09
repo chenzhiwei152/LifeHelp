@@ -101,7 +101,7 @@ public class CollectionItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             } else {
                 ((ImageViewHolder) viewHolder).tv_goods_name.setVisibility(View.GONE);
             }
-            ((ImageViewHolder) viewHolder).tv_price.setTextColor(list.get(position).getFee());
+            ((ImageViewHolder) viewHolder).tv_price.setText(list.get(position).getFee()+"");
             if (isEditMode) {
                 ((ImageViewHolder) viewHolder).iv_state.setImageResource(R.mipmap.ic_address_delect);
             } else {

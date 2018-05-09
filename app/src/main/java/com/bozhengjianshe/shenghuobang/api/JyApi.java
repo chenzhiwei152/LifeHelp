@@ -1,6 +1,7 @@
 package com.bozhengjianshe.shenghuobang.api;
 
 
+import com.bozhengjianshe.shenghuobang.bean.AboutInfoBean;
 import com.bozhengjianshe.shenghuobang.bean.ErrorBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.ADListItemBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.AllServiceTypeBean;
@@ -21,6 +22,7 @@ import com.bozhengjianshe.shenghuobang.ui.bean.SuperListBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.SuperOrderBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.SuperOrderListBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.SuperShoppingCardsBean;
+import com.bozhengjianshe.shenghuobang.ui.bean.SuperUrlBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.SuperUserBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.UserInfoBean;
 
@@ -181,17 +183,17 @@ public interface JyApi {
      * @param file
      * @return
      */
-    @POST(api + "updateMPhone" + suffix)
-    Call<SuperBean<String>> uploadFile(@Body RequestBody file);
+    @POST(api + "up" + suffix)
+    Call<SuperUrlBean<String>> uploadFile(@Body RequestBody file);
 
     /**
-     * 上传个人信息
+     * 修改用户头像
      *
      * @param map
      * @return
      */
-    @POST("/api/user/updateUserHeadImg")
-    Call<String> upLoadInfo(@Body Map<String, String> map);
+    @POST(api + "updateMHead" + suffix)
+    Call<SuperUrlBean<String>> upLoadInfo(@Body RequestBody map);
 
     /**
      * 修改姓名
@@ -200,7 +202,7 @@ public interface JyApi {
      * @return
      */
     @POST(api + "updateMName" + suffix)
-    Call<SuperBean<String>> updateName(@Body Map<String, String> map);
+    Call<SuperBean<String>> updateName(@Body RequestBody map);
 
 
     /*** 获取购物车列表id
@@ -326,4 +328,10 @@ public interface JyApi {
      */
     @POST(api + "updateMCommodities" + suffix)
     Call<SuperShoppingCardsBean<String>> updateShoppingCards(@Body RequestBody map);
+
+    /**
+     * 获取关于数据
+     */
+    @GET(api + "getAboutUs" + suffix)
+    Call<AboutInfoBean> getAboutInfo();
 }

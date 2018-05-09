@@ -38,9 +38,7 @@ import com.bozhengjianshe.shenghuobang.view.TitleBar;
 import com.jpay.JPay;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import okhttp3.FormBody;
@@ -100,7 +98,7 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
 
     //    private String tag;//rent,sale
     private String id;
-    private float price;
+    private double price;
     private int count = 1;
     private int mxCount = 200;
     private List<GoodsListBean> goodsBean;
@@ -184,9 +182,10 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
         for (int i = 0; i < goodsBean.size(); i++) {
             ids += goodsBean.get(i).getId();
             ids += ",";
-            if (goodsBean.get(i).getLb() == 1) {
-                //1 商品 2 服务
-                price += goodsBean.get(i).getProfit();
+            if (goodsBean.get(i).getLb() == 2) {
+                //1   服务  2商品
+                price += (goodsBean.get(i).getProfit() + goodsBean.get(i).getCost())*goodsBean.get(i).getNum();
+                price+=goodsBean.get(i).getFreight();//运费
             } else {
                 price += goodsBean.get(i).getFee();
             }
@@ -427,43 +426,6 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
         return true;
     }
 
-    /**
-     * 获取加密订单信息
-     */
-    private void getRSAOrderInfo() {
-        Map<String, String> map = new HashMap<>();
-        map.put("orderId", orderId);
-        map.put("userId", BaseContext.getInstance().getUserInfo().id);
-        map.put("payChannel", payChannel + "");
-        map.put("totalMoney", price + "");
-        map.put("orderType", orderType + "");
-        DialogUtils.showDialog(CommitOrderActivity.this, "加载...", false);
-        getRsaOrderCall = RestAdapterManager.getApi().getRsaOrderInfo(map);
-        getRsaOrderCall.enqueue(new JyCallBack<SuperBean<String>>() {
-            @Override
-            public void onSuccess(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
-                DialogUtils.closeDialog();
-                if (response != null && response.body() != null && response.body().getCode() == Constants.successCode) {
-                    LogUtils.e(response.body().getMsg());
-                    pay(response.body().getData());
-                } else {
-                    UIUtil.showToast("支付失败");
-                }
-            }
-
-            @Override
-            public void onError(Call<SuperBean<String>> call, Throwable t) {
-                DialogUtils.closeDialog();
-                UIUtil.showToast("支付失败");
-            }
-
-            @Override
-            public void onError(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
-                DialogUtils.closeDialog();
-                UIUtil.showToast("支付失败");
-            }
-        });
-    }
 
 
     /**

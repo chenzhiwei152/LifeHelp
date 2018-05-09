@@ -28,8 +28,8 @@ import butterknife.ButterKnife;
  * Created by chenzhiwei 2016/6/14.
  */
 public class BuildingListItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private  List<GoodsListBean> list;
-    private  Context context;
+    private List<GoodsListBean> list;
+    private Context context;
     private boolean isLight;
     private final LayoutInflater mLayoutInflater;
 
@@ -56,7 +56,7 @@ public class BuildingListItemAdapter extends RecyclerView.Adapter<RecyclerView.V
         notifyDataSetChanged();
     }
 
-    public  List<GoodsListBean> getEntities() {
+    public List<GoodsListBean> getEntities() {
         return list;
     }
 
@@ -81,12 +81,14 @@ public class BuildingListItemAdapter extends RecyclerView.Adapter<RecyclerView.V
             } else {
                 ((ImageViewHolder) viewHolder).tv_title.setVisibility(View.GONE);
             }
+            ((ImageViewHolder) viewHolder).tv_price.setText((list.get(position).getProfit()+list.get(position).getCost()) + "");
+            ((ImageViewHolder) viewHolder).tv_price_title.setText("/套");
             ((ImageViewHolder) viewHolder).iv_image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(context, GoodsDetailsActivity.class);
                     Bundle bundle = new Bundle();
-                    bundle.putString("id", list.get(position).getId()+"");
+                    bundle.putString("id", list.get(position).getId() + "");
                     bundle.putString("type", Constants.typeGoods);
                     intent.putExtras(bundle);
                     context.startActivity(intent);
@@ -106,6 +108,10 @@ public class BuildingListItemAdapter extends RecyclerView.Adapter<RecyclerView.V
         ImageView iv_image;
         @BindView(R.id.tv_title)
         TextView tv_title;
+        @BindView(R.id.tv_price_title)
+        TextView tv_price_title;
+        @BindView(R.id.tv_price)
+        TextView tv_price;
 
         ImageViewHolder(final View view) {
             super(view);

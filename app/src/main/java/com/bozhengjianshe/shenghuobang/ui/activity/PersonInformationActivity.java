@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -15,7 +16,7 @@ import com.bozhengjianshe.shenghuobang.base.BaseActivity;
 import com.bozhengjianshe.shenghuobang.base.BaseContext;
 import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
-import com.bozhengjianshe.shenghuobang.ui.bean.SuperBean;
+import com.bozhengjianshe.shenghuobang.ui.bean.SuperUrlBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.UserInfoBean;
 import com.bozhengjianshe.shenghuobang.utils.DialogUtils;
 import com.bozhengjianshe.shenghuobang.utils.ErrorMessageUtils;
@@ -25,7 +26,6 @@ import com.bozhengjianshe.shenghuobang.utils.UIUtil;
 import com.bozhengjianshe.shenghuobang.utils.UploadFile;
 import com.bozhengjianshe.shenghuobang.utils.photoTool.PhotoPicActivity;
 import com.bozhengjianshe.shenghuobang.utils.photoTool.TakingPicturesActivity;
-import com.bozhengjianshe.shenghuobang.view.CircularImageView;
 import com.bozhengjianshe.shenghuobang.view.MyDialog;
 import com.bozhengjianshe.shenghuobang.view.TitleBar;
 
@@ -35,12 +35,11 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
-import okhttp3.MultipartBody;
+import okhttp3.FormBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -64,10 +63,10 @@ public class PersonInformationActivity extends BaseActivity implements View.OnCl
     @BindView(R.id.bt_commit)
     Button bt_commit;
     @BindView(R.id.iv_head)
-    CircularImageView iv_head;
+    ImageView iv_head;
 
-    private Call<SuperBean<String>> upLoadImageCall;
-    private Call<String> upLoadInfoCall;
+    private Call<SuperUrlBean<String>> upLoadImageCall;
+    private Call<SuperUrlBean<String>> upLoadInfoCall;
     private String headimg;
     private String nickname;
     private String sex;
@@ -93,22 +92,6 @@ public class PersonInformationActivity extends BaseActivity implements View.OnCl
         tv_birthday.setOnClickListener(this);
         iv_head.setOnClickListener(this);
         tv_address.setOnClickListener(this);
-//        tv_sick_name.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable editable) {
-//                nickname = tv_sick_name.getText().toString();
-//            }
-//        });
     }
 
     @Override
@@ -116,11 +99,7 @@ public class PersonInformationActivity extends BaseActivity implements View.OnCl
         if (BaseContext.getInstance().getUserInfo() != null) {
 
             tv_sick_name.setText(BaseContext.getInstance().getUserInfo().name);
-//            if (!TextUtils.isEmpty(BaseContext.getInstance().getUserInfo().sex)) {
-//                tv_sex.setText(BaseContext.getInstance().getUserInfo().sex.equals("1") ? "男" : "女");
-//            }
-//            tv_birthday.setText(UIUtil.timeStamp2Date(BaseContext.getInstance().getUserInfo().birthday));
-            ImageLoadedrManager.getInstance().displayNoFilter(this, BaseContext.getInstance().getUserInfo().head, iv_head);
+            ImageLoadedrManager.getInstance().displayCycle(this, BaseContext.getInstance().getUserInfo().head, iv_head, R.mipmap.ic_head_default);
         }
     }
 
@@ -146,34 +125,26 @@ public class PersonInformationActivity extends BaseActivity implements View.OnCl
 //            return;
 //        }
         DialogUtils.showDialog(this, "上传中", false);
-        Map<String, String> map = new HashMap<>();
-        map.put("userId", BaseContext.getInstance().getUserInfo().id);
-//        map.put("nickname", nickname);
-//        map.put("sex", sex);
-//        map.put("birthday", birthday);
-        map.put("imgUrl", headimg);
-        upLoadInfoCall = RestAdapterManager.getApi().upLoadInfo(map);
-        upLoadInfoCall.enqueue(new JyCallBack<String>() {
+
+        RequestBody body = new FormBody.Builder()
+                .add("id", BaseContext.getInstance().getUserInfo().id)
+                .add("url", headimg)
+                .build();
+
+
+        upLoadInfoCall = RestAdapterManager.getApi().upLoadInfo(body);
+        upLoadInfoCall.enqueue(new JyCallBack<SuperUrlBean<String>>() {
             @Override
-            public void onSuccess(Call<String> call, Response<String> response) {
+            public void onSuccess(Call<SuperUrlBean<String>> call, Response<SuperUrlBean<String>> response) {
                 DialogUtils.closeDialog();
                 if (response != null && response.body() != null) {
-                    if (response.body().contains("1000")) {
-                        UIUtil.showToast("修改成功");
+                    UIUtil.showToast(response.body().message);
+                    if (response.body().state == Constants.successCode) {
                         UserInfoBean userInfo = BaseContext.getInstance().getUserInfo();
                         if (userInfo != null) {
-//                            if (!TextUtils.isEmpty(sex)) {
-//                                userInfo.sex = sex;
-//                            }
                             if (!TextUtils.isEmpty(headimg)) {
                                 userInfo.head = headimg;
                             }
-//                            if (!TextUtils.isEmpty(nickname)) {
-//                                userInfo.nickname = nickname;
-//                            }
-//                            if (!TextUtils.isEmpty(birthday)) {
-//                                userInfo.birthday = birthday;
-//                            }
                             BaseContext.getInstance().updateUserInfo(userInfo);
                         }
                         sex = "";
@@ -190,13 +161,13 @@ public class PersonInformationActivity extends BaseActivity implements View.OnCl
             }
 
             @Override
-            public void onError(Call<String> call, Throwable t) {
+            public void onError(Call<SuperUrlBean<String>> call, Throwable t) {
                 DialogUtils.closeDialog();
                 UIUtil.showToast("修改失败");
             }
 
             @Override
-            public void onError(Call<String> call, Response<String> response) {
+            public void onError(Call<SuperUrlBean<String>> call, Response<SuperUrlBean<String>> response) {
                 UIUtil.showToast("修改失败");
                 DialogUtils.closeDialog();
             }
@@ -205,11 +176,10 @@ public class PersonInformationActivity extends BaseActivity implements View.OnCl
 
     private void upLoadImage() {
         DialogUtils.showDialog(this, "上传中", false);
-        List<MultipartBody.Part> parts = UploadFile.filesToMultipartBody(list);
         upLoadImageCall = RestAdapterManager.getApi().uploadFile(UploadFile.filesToMultipartBody1(list));
-        upLoadImageCall.enqueue(new JyCallBack<SuperBean<String>>() {
+        upLoadImageCall.enqueue(new JyCallBack<SuperUrlBean<String>>() {
             @Override
-            public void onSuccess(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
+            public void onSuccess(Call<SuperUrlBean<String>> call, Response<SuperUrlBean<String>> response) {
 //                UIUtil.showToast(response.body());
                 DialogUtils.closeDialog();
                 UIUtil.showToast(response.body().getMsg());
@@ -223,13 +193,13 @@ public class PersonInformationActivity extends BaseActivity implements View.OnCl
             }
 
             @Override
-            public void onError(Call<SuperBean<String>> call, Throwable t) {
+            public void onError(Call<SuperUrlBean<String>> call, Throwable t) {
                 DialogUtils.closeDialog();
                 UIUtil.showToast("上传头像失败");
             }
 
             @Override
-            public void onError(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
+            public void onError(Call<SuperUrlBean<String>> call, Response<SuperUrlBean<String>> response) {
                 try {
                     DialogUtils.closeDialog();
                     ErrorMessageUtils.taostErrorMessage(PersonInformationActivity.this, response.errorBody().string(), "");

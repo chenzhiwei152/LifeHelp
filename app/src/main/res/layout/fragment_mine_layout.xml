@@ -57,14 +57,13 @@
                         android:id="@+id/iv_head"
                         android:layout_width="65dp"
                         android:layout_height="65dp"
-                        android:scaleType="centerInside"
-                        android:src="@mipmap/ic_head_default" />
+                        android:scaleType="centerInside" />
 
                     <TextView
                         android:id="@+id/tv_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="点击登录"
+                        android:text=""
                         android:textColor="@color/color_6e6e6e"
                         android:textSize="14sp" />
                 </LinearLayout>

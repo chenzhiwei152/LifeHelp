@@ -27,16 +27,15 @@
             android:layout_centerVertical="true"
             android:text="头像" />
 
-        <com.bozhengjianshe.shenghuobang.view.CircularImageView
+        <ImageView
             android:id="@+id/iv_head"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
             android:layout_alignParentRight="true"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:scaleType="centerInside"
-            android:src="@mipmap/ic_head_default"
-            app:border_width="2dp" />
+            android:src="@mipmap/ic_head_default" />
     </RelativeLayout>
 
     <View
@@ -73,7 +72,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="0.5dp"
         android:background="@color/color_eeeeee" />
 
     <RelativeLayout
@@ -104,7 +103,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="0.5dp"
         android:background="@color/color_eeeeee" />
 
     <RelativeLayout
@@ -135,7 +134,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="0.5dp"
         android:background="@color/color_eeeeee" />
 
     <RelativeLayout
@@ -163,7 +162,9 @@
             android:gravity="right"
             android:text="" />
     </RelativeLayout>
+
     <RelativeLayout
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/color_ffffff"

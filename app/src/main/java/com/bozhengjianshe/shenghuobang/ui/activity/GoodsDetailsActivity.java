@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -161,7 +162,7 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
             }
 
         });
-        setDefault();
+
     }
 
     /**
@@ -208,7 +209,7 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void setDefault() {
-        if (type.equals(Constants.typeService)) {
+        if (!TextUtils.isEmpty(type) && type.equals(Constants.typeService)) {
             //服务类
             tv_commit.setText("立即预约");
         } else {
@@ -264,12 +265,17 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
 
     private void setData() {
         if (goodsBean != null) {
-            if (goodsBean.getLb() == 1) {
-                tv_all_price.setText("￥" + goodsBean.getProfit());
+            type = goodsBean.getLb() + "";
+            setDefault();
+            if (goodsBean.getLb() == 2) {
+                tv_goods_price.setText((goodsBean.getProfit() + goodsBean.getCost()) + "");
+                tv_all_price.setText("￥" + (goodsBean.getProfit() + goodsBean.getCost() + goodsBean.getFreight()));
 
             } else {
+                tv_goods_price.setText((goodsBean.getFee()) + "");
                 tv_all_price.setText("￥" + goodsBean.getFee());
             }
+            tv_goods_name.setText(goodsBean.getCname());//标题
             List<String> pics = new ArrayList<>();
             for (int i = 0; i < goodsBean.getPicture().size(); i++) {
                 pics.add(goodsBean.getPicture().get(i).getImg());
@@ -417,9 +423,6 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
 
     private void initAD(final List<bannerBean> list) {
 
-        setPriceValue();
-
-
 //自定义你的Holder，实现更多复杂的界面，不一定是图片翻页，其他任何控件翻页亦可。
         kanner.setPages(
                 new CBViewHolderCreator<LocalImageHolderView>() {
@@ -438,18 +441,6 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
 
     }
 
-
-    private void setPriceValue() {
-        tv_goods_name.setText(goodsBean.getCname());//标题
-//        if (goodsBean.getPrice() > 0) {
-//            tv_member_price.setText("111" + "件");
-//            tv_member_price_title.setVisibility(View.VISIBLE);
-//        } else {
-//            tv_member_price.setText("");
-//            tv_member_price_title.setVisibility(View.GONE);
-//        }
-        tv_goods_price.setText(goodsBean.getProfit() + "");
-    }
 
     @Override
     protected void onDestroy() {

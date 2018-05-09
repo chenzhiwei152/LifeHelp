@@ -1,6 +1,8 @@
 package com.bozhengjianshe.shenghuobang.ui.bean;
 
 
+import android.text.TextUtils;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -8,7 +10,7 @@ import java.util.List;
  * Created by chen.zhiwei on 2017-6-26.
  */
 
-public class GoodsListBean  implements Serializable {
+public class GoodsListBean implements Serializable {
 
 
     /**
@@ -31,10 +33,10 @@ public class GoodsListBean  implements Serializable {
      */
 
     private String thumbnail;
-    private int cost;
+    private String cost;
     private int serv;
     private int ejfl;
-    private int fee;
+    private double fee;
     private String cname;
     private String cnum;
     private int yjfl;
@@ -43,12 +45,12 @@ public class GoodsListBean  implements Serializable {
     private int sfyh;
     private int id;
     private String detail;
-    private int sftj;
-    private int profit;
-    private int num=1;
-    private float freight;//运费
+    private double sftj;
+    private double profit;
+    private int num = 1;
+    private double freight;//运费
 
-    public float getFreight() {
+    public double getFreight() {
         return freight;
     }
 
@@ -74,11 +76,11 @@ public class GoodsListBean  implements Serializable {
         this.thumbnail = thumbnail;
     }
 
-    public int getCost() {
-        return cost;
+    public double getCost() {
+        return (TextUtils.isEmpty(cost)) ? 0.00 : Double.parseDouble(cost);
     }
 
-    public void setCost(int cost) {
+    public void setCost(String cost) {
         this.cost = cost;
     }
 
@@ -98,7 +100,7 @@ public class GoodsListBean  implements Serializable {
         this.ejfl = ejfl;
     }
 
-    public int getFee() {
+    public double getFee() {
         return fee;
     }
 
@@ -170,15 +172,15 @@ public class GoodsListBean  implements Serializable {
         this.detail = detail;
     }
 
-    public int getSftj() {
+    public double getSftj() {
         return sftj;
     }
 
-    public void setSftj(int sftj) {
+    public void setSftj(double sftj) {
         this.sftj = sftj;
     }
 
-    public int getProfit() {
+    public double getProfit() {
         return profit;
     }
 
@@ -194,7 +196,7 @@ public class GoodsListBean  implements Serializable {
         this.picture = picture;
     }
 
-    public static class PictureBean implements Serializable{
+    public static class PictureBean implements Serializable {
         /**
          * img : files/idcard/20180427/7531.png
          * detail : 璇︽儏鍥剧墖-1

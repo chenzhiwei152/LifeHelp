@@ -1,6 +1,5 @@
 package com.bozhengjianshe.shenghuobang.ui.activity;
 
-import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -73,7 +72,7 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
     @BindView(R.id.ll_button)
     LinearLayout ll_button;
     private OrderGoodsItemAdapter goodsItemAdapter;
-    private int payChannel = 1;//支付通道0为支付宝1为微信
+    private int payChannel = 1;//支付通道1为支付宝2为微信
     private Call<SuperBean<String>> getRsaOrderCall;
     private String orderId;
     private String type;
@@ -88,6 +87,7 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
     public void initViewsAndEvents() {
         initTitle();
         rv_list.setLayoutManager(new LinearLayoutManager(this));
+        rv_list.setNestedScrollingEnabled(false);
         goodsItemAdapter = new OrderGoodsItemAdapter(this);
         rv_list.setAdapter(goodsItemAdapter);
         try {
@@ -269,7 +269,7 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
                     payChannel = 1;
                 } else {
                     aliCheck.setChecked(false);
-                    payChannel = 3;
+                    payChannel = 4;
                 }
             }
         });
@@ -282,7 +282,7 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
                     payChannel = 2;
                 } else {
                     wxCheck.setChecked(false);
-                    payChannel = 3;
+                    payChannel = 4;
                 }
             }
         });
@@ -292,10 +292,10 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
                 if (b) {
                     wxCheck.setChecked(false);
                     aliCheck.setChecked(false);
-                    payChannel = 4;
+                    payChannel = 3;
                 } else {
                     offLineCheck.setChecked(false);
-                    payChannel = 3;
+                    payChannel = 4;
                 }
             }
         });
@@ -303,32 +303,20 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
             @Override
             public void onClick(View view) {
                 if (!UIUtil.isFastDoubleClick()) {
-                    if (payChannel == 3) {
+                    if (payChannel == 4) {
                         UIUtil.showToast("请选择支付方式");
-                    } else if (payChannel == 4) {
+                    } else if (payChannel == 3) {
                         myDialog.dismiss();
-                        goNext();
+//                        goNext();
                     } else {
-                        getRSAOrderInfo();
+//                        commitRentOrder((payChannel) + "");
                         myDialog.dismiss();
                     }
+
                 }
 
             }
         });
-
-    }
-
-    private void goNext() {
-        if (!TextUtils.isEmpty(orderId)) {
-            Intent intent = new Intent(this, OrderDetailsActivity.class);
-            intent.putExtra("orderId", orderId);
-//            intent.putExtra("type", tag);
-            startActivity(intent);
-            finish();
-        } else {
-            UIUtil.showToast("订单id为空");
-        }
 
     }
 
@@ -419,6 +407,10 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
             });
         }
 
+    }
+
+    private void goNext() {
+        loadData();
     }
 
     /**

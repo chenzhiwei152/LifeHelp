@@ -46,17 +46,17 @@ public class ImageLoadedrManager {
         Glide.with(context).load(url).placeholder(R.mipmap.ic_default).error(R.mipmap.ic_default).into(imageView);
     }
     public void display(Context context, String url, ImageView imageView) {
-        url= compatibleUrl(url);
+//        url= compatibleUrl(url);
         Glide.with(context).load(url).placeholder(R.mipmap.ic_default).error(R.mipmap.ic_default).into(imageView);
     }
 
     public void display(Context context, String url, ImageView imageView, int defaultId) {
-        url= compatibleUrl(url);
+//        url= compatibleUrl(url);
         Glide.with(context).load(url).placeholder(defaultId).into(imageView);
     }
 
     public void display(Context context, String url, ImageView imageView, int defaultId, int errorId) {
-        url= compatibleUrl(url);
+//        url= compatibleUrl(url);
         Glide.with(context).load(url).placeholder(defaultId).error(errorId).into(imageView);
     }
 
@@ -67,7 +67,7 @@ public class ImageLoadedrManager {
      * @param degree    加载圆角
      */
     public void displayRound(Context context, String url, ImageView imageView, int degree) {
-        url= compatibleUrl(url);
+//        url= compatibleUrl(url);
         Glide.with(context).load(url).placeholder(R.mipmap.ic_default).error(R.mipmap.ic_default).transform(new GlideRoundTransform(context, degree)).into(imageView);
     }
     /**
@@ -78,7 +78,7 @@ public class ImageLoadedrManager {
      * @param degree    加载圆角
      */
     public void displayRound(Context context, String url, ImageView imageView, int defaultId,int degree) {
-        url= compatibleUrl(url);
+//        url= compatibleUrl(url);
         Glide.with(context).load(url).placeholder(defaultId).error(defaultId).transform(new GlideRoundTransform(context, degree)).into(imageView);
     }
 
@@ -88,7 +88,7 @@ public class ImageLoadedrManager {
      * @param imageView 加载圆形
      */
     public void displayCycle(Context context, String url, ImageView imageView) {
-        url= compatibleUrl(url);
+//        url= compatibleUrl(url);
         Glide.with(context).load(url).placeholder(R.mipmap.ic_default).error(R.mipmap.ic_default).transform(new GlideCircleTransform(context)).into(imageView);
     }
 
@@ -101,7 +101,7 @@ public class ImageLoadedrManager {
      * @param borderColor
      */
     public void displayCycle(Context context, String url, ImageView imageView,int borderWidth, int borderColor) {
-        url= compatibleUrl(url);
+//        url= compatibleUrl(url);
         Glide.with(context).load(url).transform(new GlideCircleBorderTransform(context,borderWidth,borderColor)).into(imageView);
     }
 
@@ -115,7 +115,7 @@ public class ImageLoadedrManager {
      * @param borderColor
      */
     public void displayCycle(Context context, String url, ImageView imageView,int defaultId,int borderWidth, int borderColor) {
-        url= compatibleUrl(url);
+//        url= compatibleUrl(url);
         Glide.with(context).load(url).placeholder(defaultId).error(defaultId).transform(new GlideCircleBorderTransform(context,borderWidth,borderColor)).into(imageView);
     }
 
@@ -127,7 +127,7 @@ public class ImageLoadedrManager {
      * @param defaultId
      */
     public void displayCycle(Context context, String url, ImageView imageView,int defaultId) {
-       url= compatibleUrl(url);
+//       url= compatibleUrl(url);
         Glide.with(context).load(url).placeholder(defaultId).error(defaultId).transform(new GlideCircleTransform(context)).into(imageView);
     }
     /**

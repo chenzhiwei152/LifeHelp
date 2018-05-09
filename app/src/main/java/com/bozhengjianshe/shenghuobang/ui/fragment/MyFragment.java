@@ -97,6 +97,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
         rl_quit_login.setOnClickListener(this);
         tv_info.setOnClickListener(this);
         rl_merchant_order.setOnClickListener(this);
+        rl_merchant_order.setVisibility(View.GONE);
         tv_collection.setOnClickListener(this);
         rl_help.setOnClickListener(this);
         initTitle();
@@ -111,13 +112,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
         if (BaseContext.getInstance().getUserInfo() != null) {
             rl_quit_login.setVisibility(View.VISIBLE);
             tv_name.setText(BaseContext.getInstance().getUserInfo().name);
-//            if (BaseContext.getInstance().getUserInfo().vipgrade > 0) {
-//                rb_rank.setNumStars(BaseContext.getInstance().getUserInfo().vipgrade);
-//                rb_rank.setVisibility(View.VISIBLE);
-//            } else {
-//                rb_rank.setVisibility(View.GONE);
-//            }
-            ImageLoadedrManager.getInstance().display(getActivity(), BaseContext.getInstance().getUserInfo().head, ivHead, R.mipmap.ic_head_default, R.mipmap.ic_head_default);
+            ImageLoadedrManager.getInstance().displayCycle(getActivity(), BaseContext.getInstance().getUserInfo().head, ivHead);
         } else {
             rl_quit_login.setVisibility(View.GONE);
             tv_user_name.setText("点击登录");

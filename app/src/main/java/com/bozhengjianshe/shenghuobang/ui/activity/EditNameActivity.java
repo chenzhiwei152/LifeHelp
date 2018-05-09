@@ -12,16 +12,16 @@ import com.bozhengjianshe.shenghuobang.base.BaseContext;
 import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
 import com.bozhengjianshe.shenghuobang.ui.bean.SuperBean;
+import com.bozhengjianshe.shenghuobang.ui.bean.UserInfoBean;
 import com.bozhengjianshe.shenghuobang.utils.DialogUtils;
 import com.bozhengjianshe.shenghuobang.utils.UIUtil;
 import com.bozhengjianshe.shenghuobang.view.TitleBar;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import butterknife.BindView;
+import okhttp3.FormBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -70,17 +70,8 @@ public class EditNameActivity extends BaseActivity {
      * 初始化标题
      */
     private void initTitle(String title) {
-        title_view.setLeftImageResource(R.mipmap.ic_title_back);
         title_view.setTitle(title);
-//        title_view.setLeftText("返回");
-//        title_view.setLeftTextColor(Color.WHITE);
-        title_view.setLeftClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
-//        title_view.setBackgroundColor(getResources().getColor(R.color.color_ff6900));
+        title_view.setShowDefaultRightValue();
         title_view.addAction(new TitleBar.TextAction("确定") {
             @Override
             public void performAction(View view) {
@@ -91,21 +82,23 @@ public class EditNameActivity extends BaseActivity {
                 }
             }
         });
-        title_view.setImmersive(true);
     }
 
     private void upLoadInfo() {
 
         DialogUtils.showDialog(this, "上传中", false);
-        Map<String, String> map = new HashMap<>();
-        map.put("id", BaseContext.getInstance().getUserInfo().id);
-        map.put("name", et_name.getText().toString());
-        upLoadInfoCall = RestAdapterManager.getApi().updateName(map);
+        RequestBody body = new FormBody.Builder().add("id", BaseContext.getInstance().getUserInfo().id).add("name", et_name.getText().toString()).build();
+        upLoadInfoCall = RestAdapterManager.getApi().updateName(body);
         upLoadInfoCall.enqueue(new JyCallBack<SuperBean<String>>() {
             @Override
             public void onSuccess(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
                 DialogUtils.closeDialog();
                 if (response.body().getCode() == Constants.successCode) {
+                    UserInfoBean userInfo = BaseContext.getInstance().getUserInfo();
+                    if (userInfo != null) {
+                            userInfo.name = et_name.getText().toString();
+                        BaseContext.getInstance().updateUserInfo(userInfo);
+                    }
                     EventBus.getDefault().post(new EventBusCenter<Integer>(Constants.LOGIN_SUCCESS));
                     finish();
                 }

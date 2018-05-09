@@ -11,8 +11,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bozhengjianshe.shenghuobang.R;
-import com.bozhengjianshe.shenghuobang.ui.activity.OrderDetailsActivity;
+import com.bozhengjianshe.shenghuobang.ui.activity.GoodsDetailsActivity;
 import com.bozhengjianshe.shenghuobang.ui.bean.OrderDetailBean;
+import com.bozhengjianshe.shenghuobang.utils.ImageLoadedrManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,14 +67,14 @@ public class OrderGoodsItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final int position) {
         if (list != null) {
-//            ImageLoadedrManager.getInstance().display(context, list.get(position).getProductImg(), ((ImageViewHolder) viewHolder).iv_goods);
+            ImageLoadedrManager.getInstance().display(context, list.get(position).getThumbnail(), ((ImageViewHolder) viewHolder).iv_goods);
             ((ImageViewHolder) viewHolder).tv_count.setText("x" + list.get(position).getNum() + "");
-            ((ImageViewHolder) viewHolder).tv_price.setText(list.get(position).getZj() + "");
+            ((ImageViewHolder) viewHolder).tv_price.setText(list.get(position).getDj() + "");
             ((ImageViewHolder) viewHolder).tv_goods_name.setText(list.get(position).getName());
             ((ImageViewHolder) viewHolder).rl_content.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(context, OrderDetailsActivity.class);
+                    Intent intent = new Intent(context, GoodsDetailsActivity.class);
                     intent.putExtra("orderId", list.get(position).getId() + "");
                     context.startActivity(intent);
                 }

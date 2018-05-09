@@ -28,8 +28,8 @@ import butterknife.ButterKnife;
  * Created by chenzhiwei 2016/6/14.
  */
 public class MainListItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private  List<GoodsListBean> list;
-    private  Context context;
+    private List<GoodsListBean> list;
+    private Context context;
     private boolean isLight;
     private final LayoutInflater mLayoutInflater;
 
@@ -56,7 +56,7 @@ public class MainListItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         notifyDataSetChanged();
     }
 
-    public  List<GoodsListBean> getEntities() {
+    public List<GoodsListBean> getEntities() {
         return list;
     }
 
@@ -81,6 +81,8 @@ public class MainListItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             } else {
                 ((ImageViewHolder) viewHolder).tv_title.setVisibility(View.GONE);
             }
+            ((ImageViewHolder) viewHolder).tv_price.setText(list.get(position).getFee() + "");
+            ((ImageViewHolder) viewHolder).tv_price_title.setText("起/次");
             ((ImageViewHolder) viewHolder).iv_image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -106,6 +108,10 @@ public class MainListItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         ImageView iv_image;
         @BindView(R.id.tv_title)
         TextView tv_title;
+        @BindView(R.id.tv_price_title)
+        TextView tv_price_title;
+        @BindView(R.id.tv_price)
+        TextView tv_price;
 
         ImageViewHolder(final View view) {
             super(view);

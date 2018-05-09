@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.Headers;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -46,21 +47,17 @@ public class UploadFile {
         }
         MultipartBody.Builder mbody = new MultipartBody.Builder().setType(MultipartBody.FORM);
         mbody.addFormDataPart("type", "1");
-        List<File> fileList = new ArrayList<File>();
-        int i = 0;
+//        List<File> fileList = new ArrayList<File>();
         for (String path : listPath) {
             File file = new File(path);
             if (!file.exists()) {
                 break;
             }
-            fileList.add(file);
-            String fileType = file.getName().substring(file.getName().lastIndexOf(".") + 1, file.getName().length());
-            mbody.addFormDataPart("image" + i, file.getName(), RequestBody.create(MediaType.parse("fileType"), file));
-
-            i++;
+//            fileList.add(file);
+            mbody.addPart(Headers.of("Content-Disposition", "form-data; name=\"file\";filename=\"file.jpg\""), RequestBody.create(MediaType.parse("image/png"), file)
+            );
         }
-        RequestBody requestBody = mbody.build();
-        return requestBody;
+        return mbody.build();
     }
 
 

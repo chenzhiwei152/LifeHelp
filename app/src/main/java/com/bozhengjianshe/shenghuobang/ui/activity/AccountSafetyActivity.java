@@ -169,7 +169,7 @@ public class AccountSafetyActivity extends BaseActivity {
 
         RequestBody formBody = new FormBody.Builder()
                 .add("phone", BaseContext.getInstance().getUserInfo().phone)
-                .add("password", user_password.getText().toString())
+                .add("password", user_phone.getText().toString())
                 .add("qrnpassword", user_password.getText().toString())
                 .add("npassword", user_password.getText().toString())
                 .add("id", BaseContext.getInstance().getUserInfo().id)
@@ -180,11 +180,10 @@ public class AccountSafetyActivity extends BaseActivity {
             @Override
             public void onSuccess(Call<ErrorBean> call, Response<ErrorBean> response) {
                 if (response != null && response.body() != null) {
+                    UIUtil.showToast(response.body().message);
                     if (response.body().state == Constants.successCode) {
                         UIUtil.showToast(response.body().message);
                         finish();
-                    } else {
-                        UIUtil.showToast("修改密码失败~请稍后重试");
                     }
                 } else {
                     UIUtil.showToast("修改密码失败~请稍后重试");
