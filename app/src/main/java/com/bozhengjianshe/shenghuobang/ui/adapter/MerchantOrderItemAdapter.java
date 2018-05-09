@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bozhengjianshe.shenghuobang.R;
-import com.bozhengjianshe.shenghuobang.ui.bean.MemberRankBean;
+import com.bozhengjianshe.shenghuobang.ui.bean.BuyOrderListItemBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ import butterknife.ButterKnife;
  * Created by chenzhiwei 2016/6/14.
  */
 public class MerchantOrderItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private static List<MemberRankBean> list;
+    private static List<BuyOrderListItemBean> list;
     private static Context context;
     private boolean isLight;
     private final LayoutInflater mLayoutInflater;
@@ -30,14 +30,14 @@ public class MerchantOrderItemAdapter extends RecyclerView.Adapter<RecyclerView.
         mLayoutInflater = LayoutInflater.from(context);
     }
 
-    public MerchantOrderItemAdapter(Context context, List<MemberRankBean> items) {
+    public MerchantOrderItemAdapter(Context context, List<BuyOrderListItemBean> items) {
         this.context = context;
         this.list = new ArrayList<>();
         this.list.addAll(items);
         mLayoutInflater = LayoutInflater.from(context);
     }
 
-    public void addList(List<MemberRankBean> items) {
+    public void addList(List<BuyOrderListItemBean> items) {
         this.list.addAll(items);
         notifyDataSetChanged();
     }
@@ -47,7 +47,7 @@ public class MerchantOrderItemAdapter extends RecyclerView.Adapter<RecyclerView.
         notifyDataSetChanged();
     }
 
-    public static List<MemberRankBean> getEntities() {
+    public static List<BuyOrderListItemBean> getEntities() {
         return list;
     }
 
@@ -68,7 +68,7 @@ public class MerchantOrderItemAdapter extends RecyclerView.Adapter<RecyclerView.
 
     @Override
     public int getItemCount() {
-        return list == null ? 10 : list.size()+10;
+        return list == null ? 0 : list.size();
     }
 
 

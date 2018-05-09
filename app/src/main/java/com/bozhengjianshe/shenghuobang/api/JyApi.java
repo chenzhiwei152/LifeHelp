@@ -339,5 +339,5 @@ public interface JyApi {
      * 获取订单市场订单
      */
     @POST(api + "getOrderFwList" + suffix)
-    Call<SuperOrderListBean> getOrderList();
+    Call<SuperOrderListBean<List<BuyOrderListItemBean>>> getOrderList(@Body RequestBody body);
 }
