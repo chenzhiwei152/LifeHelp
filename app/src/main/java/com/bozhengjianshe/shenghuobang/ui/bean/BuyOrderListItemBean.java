@@ -38,7 +38,7 @@ public class BuyOrderListItemBean implements Serializable {
     private int state;
     private String ncount;
     private String extrafee;
-    private List<DetailBean> detail;
+    private List<OrderDetailBean.DetailBean> detail;
 
     public String getLxrdh() {
         return lxrdh;
@@ -136,67 +136,13 @@ public class BuyOrderListItemBean implements Serializable {
         this.extrafee = extrafee;
     }
 
-    public List<DetailBean> getDetail() {
+    public List<OrderDetailBean.DetailBean> getDetail() {
         return detail;
     }
 
-    public void setDetail(List<DetailBean> detail) {
+    public void setDetail(List<OrderDetailBean.DetailBean> detail) {
         this.detail = detail;
     }
 
-    public static class DetailBean {
-        /**
-         * zj : 10
-         * dj : 10
-         * num : 1
-         * name : 测试图片
-         * id : 10
-         */
 
-        private String zj;
-        private String dj;
-        private String num;
-        private String name;
-        private String id;
-
-        public String getZj() {
-            return zj;
-        }
-
-        public void setZj(String zj) {
-            this.zj = zj;
-        }
-
-        public String getDj() {
-            return dj;
-        }
-
-        public void setDj(String dj) {
-            this.dj = dj;
-        }
-
-        public String getNum() {
-            return num;
-        }
-
-        public void setNum(String num) {
-            this.num = num;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-    }
 }

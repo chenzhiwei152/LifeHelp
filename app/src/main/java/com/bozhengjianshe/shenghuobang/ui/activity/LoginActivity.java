@@ -123,7 +123,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     public void loadData() {
         UserInfoBean userInfo = BaseContext.getInstance().getUserInfo();
         if (null != userInfo) {
-            if (userInfo.state == 1) {
+            if (userInfo.status == 1) {
                 startActivity(new Intent(this, MainActivity.class));
             } else {
                 startActivity(new Intent(this, MerchantOrderActivity.class));

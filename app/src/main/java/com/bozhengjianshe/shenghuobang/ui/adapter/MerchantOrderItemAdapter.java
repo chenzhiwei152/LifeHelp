@@ -1,17 +1,21 @@
 package com.bozhengjianshe.shenghuobang.ui.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.bozhengjianshe.shenghuobang.R;
 import com.bozhengjianshe.shenghuobang.ui.bean.BuyOrderListItemBean;
+import com.bozhengjianshe.shenghuobang.view.MenuItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
@@ -60,9 +64,19 @@ public class MerchantOrderItemAdapter extends RecyclerView.Adapter<RecyclerView.
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final int position) {
         if (list != null) {
-
-//            ((ImageViewHolder) viewHolder).tv_rank1_title.setText(list.get(position).getName());
-//            ((ImageViewHolder) viewHolder).tv_rank.setText(list.get(position).getMoney()/100.00+"");
+            ((ImageViewHolder) viewHolder).tv_time.setText(list.get(position).getAddtime());
+            ((ImageViewHolder) viewHolder).mi_contract.getRightText().setText(list.get(position).getLxrxm());
+            ((ImageViewHolder) viewHolder).mi_tel.getRightText().setText(list.get(position).getLxrdh());
+            ((ImageViewHolder) viewHolder).mi_address.getRightText().setText(list.get(position).getLxradress());
+            ((ImageViewHolder) viewHolder).mi_serviced.getRightText().setText(list.get(position).getLxradress());
+            if (list.get(position).getDetail() != null && list.get(position).getDetail().size() > 0) {
+                LinearLayoutManager manager = new LinearLayoutManager(context);
+                ((ImageViewHolder) viewHolder).rv_list.setLayoutManager(manager);
+                OrderGoodsItemAdapter goodsItemAdapter;
+                goodsItemAdapter = new OrderGoodsItemAdapter(context);
+                ((ImageViewHolder) viewHolder).rv_list.setAdapter(goodsItemAdapter);
+                goodsItemAdapter.addList(list.get(position).getDetail());
+            }
         }
     }
 
@@ -73,10 +87,18 @@ public class MerchantOrderItemAdapter extends RecyclerView.Adapter<RecyclerView.
 
 
     public static class ImageViewHolder extends RecyclerView.ViewHolder {
-//        @BindView(R.id.tv_rank1_title)
-//        TextView tv_rank1_title;
-//        @BindView(R.id.tv_rank)
-//        TextView tv_rank;
+        @BindView(R.id.tv_time)
+        TextView tv_time;
+        @BindView(R.id.mi_contract)
+        MenuItem mi_contract;
+        @BindView(R.id.mi_tel)
+        MenuItem mi_tel;
+        @BindView(R.id.mi_address)
+        MenuItem mi_address;
+        @BindView(R.id.mi_serviced)
+        MenuItem mi_serviced;
+        @BindView(R.id.rv_list)
+        RecyclerView rv_list;
 
         ImageViewHolder(final View view) {
             super(view);

@@ -17,6 +17,10 @@ import com.bozhengjianshe.shenghuobang.ui.adapter.MerchantOrderItemAdapter;
 import com.bozhengjianshe.shenghuobang.ui.bean.BuyOrderListItemBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.SuperOrderListBean;
 import com.bozhengjianshe.shenghuobang.utils.LogUtils;
+import com.bozhengjianshe.shenghuobang.utils.UIUtil;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.List;
 
@@ -35,6 +39,8 @@ public class MerchantOrderListFragment extends BaseFragment {
 
     @BindView(R.id.rvOrderList)
     RecyclerView rvOrderList;
+    @BindView(R.id.smart_refresh)
+    SmartRefreshLayout smart_refresh;
     public static final String bundleName_type = "type";
     private int type = 0;
     private MerchantOrderItemAdapter orderItemAdapter;
@@ -60,6 +66,13 @@ public class MerchantOrderListFragment extends BaseFragment {
 
     @Override
     public void initViewsAndEvents() {
+        smart_refresh.setEnableLoadmore(false);
+        smart_refresh.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                getList();
+            }
+        });
         orderItemAdapter = new MerchantOrderItemAdapter(getContext());
         rvOrderList.setLayoutManager(new LinearLayoutManager(getContext()));
         rvOrderList.setAdapter(orderItemAdapter);
@@ -79,6 +92,7 @@ public class MerchantOrderListFragment extends BaseFragment {
         if (bundle != null) {
             type = bundle.getInt(bundleName_type);
         }
+        getList();
     }
 
     @Override
@@ -101,6 +115,8 @@ public class MerchantOrderListFragment extends BaseFragment {
         getOrderList.enqueue(new JyCallBack<SuperOrderListBean<List<BuyOrderListItemBean>>>() {
             @Override
             public void onSuccess(Call<SuperOrderListBean<List<BuyOrderListItemBean>>> call, Response<SuperOrderListBean<List<BuyOrderListItemBean>>> response) {
+                smart_refresh.finishRefresh();
+                UIUtil.showToast(response.body().message);
                 if (response.body().getCode()== Constants.successCode){
                     orderItemAdapter.ClearData();
                     orderItemAdapter.addList(response.body().getData());
@@ -109,12 +125,12 @@ public class MerchantOrderListFragment extends BaseFragment {
 
             @Override
             public void onError(Call<SuperOrderListBean<List<BuyOrderListItemBean>>> call, Throwable t) {
-
+                smart_refresh.finishRefresh();
             }
 
             @Override
             public void onError(Call<SuperOrderListBean<List<BuyOrderListItemBean>>> call, Response<SuperOrderListBean<List<BuyOrderListItemBean>>> response) {
-
+                smart_refresh.finishRefresh();
             }
         });
     }

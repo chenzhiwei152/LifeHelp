@@ -38,7 +38,7 @@ public class Constants {
 
     /**
      * 订单状态
-     * 1派单中、2服务中、3待付款、4待评价、5结束
+     * 1 待付款 2 进行中 3 代付尾款 4 待评价 5完成
      */
     public static final int STATE_ONE = 1;
     public static final int STATE_TWO = 2;
