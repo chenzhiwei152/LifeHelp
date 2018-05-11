@@ -179,6 +179,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
                     return;
                 }
                 startActivity(new Intent(getActivity(), QuestionNormalActivity.class));
+//                startActivity(new Intent(getActivity(), EaseBaiduMapActivity.class));
                 break;
             case R.id.rl_order:
 //                //加入我们

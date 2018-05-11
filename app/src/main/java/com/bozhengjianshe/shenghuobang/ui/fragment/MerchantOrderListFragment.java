@@ -1,7 +1,6 @@
 package com.bozhengjianshe.shenghuobang.ui.fragment;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -15,12 +14,18 @@ import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
 import com.bozhengjianshe.shenghuobang.ui.adapter.MerchantOrderItemAdapter;
 import com.bozhengjianshe.shenghuobang.ui.bean.BuyOrderListItemBean;
+import com.bozhengjianshe.shenghuobang.ui.bean.OrderDetailBean;
+import com.bozhengjianshe.shenghuobang.ui.bean.SuperOrderBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.SuperOrderListBean;
+import com.bozhengjianshe.shenghuobang.ui.listerner.CommonOnClickListerner;
+import com.bozhengjianshe.shenghuobang.utils.DialogUtils;
 import com.bozhengjianshe.shenghuobang.utils.LogUtils;
 import com.bozhengjianshe.shenghuobang.utils.UIUtil;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -36,7 +41,9 @@ import retrofit2.Response;
  */
 
 public class MerchantOrderListFragment extends BaseFragment {
-
+    protected boolean isViewInitiated; //UI初始化完成
+    protected boolean isVisibleToUser; //Fragment是当前窗体显示
+    protected boolean isDataInitiated; //是否获取了接口数据
     @BindView(R.id.rvOrderList)
     RecyclerView rvOrderList;
     @BindView(R.id.smart_refresh)
@@ -51,7 +58,7 @@ public class MerchantOrderListFragment extends BaseFragment {
      * @param type
      * @return
      */
-    public static Fragment createInstance(int type) {
+    public static MerchantOrderListFragment createInstance(int type) {
         Bundle bundle = new Bundle();
         bundle.putInt(bundleName_type, type);
         MerchantOrderListFragment fragment = new MerchantOrderListFragment();
@@ -76,13 +83,14 @@ public class MerchantOrderListFragment extends BaseFragment {
         orderItemAdapter = new MerchantOrderItemAdapter(getContext());
         rvOrderList.setLayoutManager(new LinearLayoutManager(getContext()));
         rvOrderList.setAdapter(orderItemAdapter);
-//        adapter.setOnItemClickListener(new DecorationRecordListAdapter.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(OrderItemBean bean, int position) {
-//                Intent intent = new Intent(getActivity(), OrderDetailActivity.class);
-//                startActivity(intent);
-//            }
-//        });
+        orderItemAdapter.setOnClickListerner(new CommonOnClickListerner() {
+            @Override
+            public void myOnClick(Object data) {
+                if (data != null) {
+                    updateOrder(((BuyOrderListItemBean) data).getId());
+                }
+            }
+        });
         LogUtils.e(BaseContext.getInstance().getUserInfo().id);
     }
 
@@ -92,7 +100,8 @@ public class MerchantOrderListFragment extends BaseFragment {
         if (bundle != null) {
             type = bundle.getInt(bundleName_type);
         }
-        getList();
+        isViewInitiated = true;
+        prepareFetchData();
     }
 
     @Override
@@ -109,16 +118,29 @@ public class MerchantOrderListFragment extends BaseFragment {
     public void onMsgEvent(EventBusCenter eventBusCenter) {
 
     }
-    private void getList(){
-        RequestBody body=new FormBody.Builder().add("memberid",BaseContext.getInstance().getUserInfo().id).build();
+
+    private void getList() {
+        String state = Constants.STATE_TWO + "";
+        switch (type) {
+            case 0:
+                state = Constants.STATE_TWO + "";
+                break;
+            case 1:
+                state = Constants.STATE_THREE + "," + Constants.STATE_FOUR;
+                break;
+            case 2:
+                state = Constants.STATE_FIVE + "";
+                break;
+        }
+        RequestBody body = new FormBody.Builder().add("state", state + "").add("memberid", BaseContext.getInstance().getUserInfo().id).build();
         Call<SuperOrderListBean<List<BuyOrderListItemBean>>> getOrderList = RestAdapterManager.getApi().getOrderList(body);
         getOrderList.enqueue(new JyCallBack<SuperOrderListBean<List<BuyOrderListItemBean>>>() {
             @Override
             public void onSuccess(Call<SuperOrderListBean<List<BuyOrderListItemBean>>> call, Response<SuperOrderListBean<List<BuyOrderListItemBean>>> response) {
                 smart_refresh.finishRefresh();
                 UIUtil.showToast(response.body().message);
-                if (response.body().getCode()== Constants.successCode){
-                    orderItemAdapter.ClearData();
+                orderItemAdapter.ClearData();
+                if (response.body().getCode() == Constants.successCode) {
                     orderItemAdapter.addList(response.body().getData());
                 }
             }
@@ -133,5 +155,61 @@ public class MerchantOrderListFragment extends BaseFragment {
                 smart_refresh.finishRefresh();
             }
         });
+    }
+
+    /**
+     * 处理接单
+     */
+    private void updateOrder(String orderId) {
+        String state = Constants.STATE_FOUR + "";
+        switch (type) {
+            case 0:
+                state = Constants.STATE_FOUR + "";
+                break;
+            case 1:
+                state = Constants.STATE_FIVE + "";
+                break;
+
+        }
+        DialogUtils.showDialog(getActivity(), "", false);
+        RequestBody body = new FormBody.Builder()
+                .add("memberid", BaseContext.getInstance().getUserInfo().id)
+                .add("orderid", orderId)
+                .add("state", state)
+                .build();
+        Call<SuperOrderBean<OrderDetailBean>> quitOrder = RestAdapterManager.getApi().quitOrder(body);
+        quitOrder.enqueue(new JyCallBack<SuperOrderBean<OrderDetailBean>>() {
+            @Override
+            public void onSuccess(Call<SuperOrderBean<OrderDetailBean>> call, Response<SuperOrderBean<OrderDetailBean>> response) {
+                DialogUtils.closeDialog();
+                UIUtil.showToast(response.body().getMsg());
+                EventBus.getDefault().post(new EventBusCenter<Integer>(Constants.UPDATE_ORDER_SUCCESS));
+                getList();
+            }
+
+            @Override
+            public void onError(Call<SuperOrderBean<OrderDetailBean>> call, Throwable t) {
+                DialogUtils.closeDialog();
+            }
+
+            @Override
+            public void onError(Call<SuperOrderBean<OrderDetailBean>> call, Response<SuperOrderBean<OrderDetailBean>> response) {
+                DialogUtils.closeDialog();
+            }
+        });
+    }
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        this.isVisibleToUser = isVisibleToUser;
+        prepareFetchData();
+    }
+    public boolean prepareFetchData() {
+
+        if (isVisibleToUser && isViewInitiated) {
+            getList();
+            isDataInitiated = true;
+            return true;
+        }
+        return false;
     }
 }

@@ -138,6 +138,7 @@
         android:background="@color/color_eeeeee" />
 
     <RelativeLayout
+        android:id="@+id/rl_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/color_ffffff"
@@ -164,7 +165,7 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:visibility="gone"
+        android:id="@+id/rl_service_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/color_ffffff"
@@ -198,4 +199,43 @@
         android:layout_marginTop="40dp"
         android:text="保存"
         android:visibility="gone" />
+    <View
+        android:id="@+id/vv_v"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/color_eeeeee" />
+    <RelativeLayout
+        android:id="@+id/rl_quit_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_ffffff"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/iv_quit_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/ic_my_abount"
+            android:visibility="invisible" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:text="退出账号"
+            android:textColor="@color/color_f6c11b"
+            android:textSize="15sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/ic_arrow_right"
+            android:visibility="gone" />
+    </RelativeLayout>
+
 </LinearLayout>

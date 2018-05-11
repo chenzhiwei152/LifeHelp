@@ -1,6 +1,5 @@
 package com.bozhengjianshe.shenghuobang.ui.adapter;
 
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
@@ -22,7 +21,7 @@ public class MerchantOrderListFragmentAdapter extends FragmentStatePagerAdapter 
     }
 
     @Override
-    public Fragment getItem(int position) {
+    public MerchantOrderListFragment getItem(int position) {
         int type = position;
         return MerchantOrderListFragment.createInstance(type);
     }

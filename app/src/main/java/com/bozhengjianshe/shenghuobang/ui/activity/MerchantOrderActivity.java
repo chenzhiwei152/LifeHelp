@@ -1,6 +1,7 @@
 package com.bozhengjianshe.shenghuobang.ui.activity;
 
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -100,5 +101,13 @@ public class MerchantOrderActivity extends BaseActivity {
      */
     private void initTitle() {
         title_view.setTitle(R.string.app_name);
+        title_view.addAction(new TitleBar.ImageAction(R.mipmap.ic_tab_me_normal) {
+            @Override
+            public void performAction(View view) {
+                Intent intent = new Intent(new Intent(MerchantOrderActivity.this, PersonInformationActivity.class));
+                intent.putExtra("from", "Merchant");
+                startActivity(intent);
+            }
+        });
     }
 }

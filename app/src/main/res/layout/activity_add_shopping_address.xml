@@ -10,142 +10,158 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:background="@color/color_eeeeee"
-        android:visibility="gone" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp">
-
-        <TextView
-            android:layout_width="70dp"
-            android:layout_height="wrap_content"
-            android:text="收货人" />
-
-        <EditText
-            android:id="@+id/et_address_name"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@null"
-            android:hint="请输入收货人姓名"
-            android:textColorHint="@color/color_b3b3b3"
-            android:textSize="14sp" />
-    </LinearLayout>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/color_eeeeee"
-        android:visibility="gone" />
+            <com.baidu.mapapi.map.MapView
+                android:id="@+id/bmapView"
+                android:layout_width="fill_parent"
+                android:layout_height="200dp"
+                android:clickable="true" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="@color/color_eeeeee"
+                android:visibility="gone" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp">
 
-        <TextView
-            android:layout_width="70dp"
-            android:layout_height="wrap_content"
-            android:text="联系电话" />
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:text="收货人" />
 
-        <EditText
-            android:id="@+id/et_address_phone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@null"
-            android:hint="请输入联系电话"
-            android:inputType="number"
-            android:textColorHint="@color/color_b3b3b3"
-            android:textSize="14sp" />
-    </LinearLayout>
+                <EditText
+                    android:id="@+id/et_address_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:hint="请输入收货人姓名"
+                    android:textColorHint="@color/color_b3b3b3"
+                    android:textSize="14sp" />
+            </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/color_eeeeee" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/color_eeeeee"
+                android:visibility="gone" />
 
-    <RelativeLayout
-        android:id="@+id/rl_selected"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp">
 
-        <TextView
-            android:id="@+id/tv_selected_title"
-            android:layout_width="70dp"
-            android:layout_height="wrap_content"
-            android:text="收货地址" />
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:text="联系电话" />
 
-        <EditText
-            android:id="@+id/et_address_selected"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@null"
-            android:hint="请输入收货地址"
-            android:layout_toRightOf="@+id/tv_selected_title"
-            android:textColorHint="@color/color_b3b3b3"
-            android:textSize="14sp" />
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:visibility="gone"
-            android:src="@mipmap/ic_arrow_right" />
-    </RelativeLayout>
+                <EditText
+                    android:id="@+id/et_address_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:hint="请输入联系电话"
+                    android:inputType="number"
+                    android:textColorHint="@color/color_b3b3b3"
+                    android:textSize="14sp" />
+            </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@color/color_eeeeee" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/color_eeeeee" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="top"
-        android:padding="10dp">
+            <RelativeLayout
+                android:id="@+id/rl_selected"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp">
 
-        <TextView
-            android:layout_width="70dp"
-            android:layout_height="wrap_content"
-            android:text="详细地址" />
+                <TextView
+                    android:id="@+id/tv_selected_title"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:text="收货地址" />
 
-        <EditText
-            android:id="@+id/et_address_detail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@null"
-            android:hint="请输入详细地址信息，如道路、门牌号、小区、楼栋号、单元室等"
-            android:textColorHint="@color/color_b3b3b3"
-            android:textSize="14sp" />
-    </LinearLayout>
+                <EditText
+                    android:id="@+id/et_address_selected"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/tv_selected_title"
+                    android:background="@null"
+                    android:hint="请输入收货地址"
+                    android:textColorHint="@color/color_b3b3b3"
+                    android:textSize="14sp" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/color_eeeeee" />
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@mipmap/ic_arrow_right"
+                    android:visibility="gone" />
+            </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:visibility="visible">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/color_eeeeee" />
 
-        <Button
-            android:id="@+id/tv_commit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginLeft="60dp"
-            android:layout_marginRight="60dp"
-            android:background="@drawable/bg_ff6900_solid"
-            android:text="保存"
-            android:textColor="@color/color_ffffff" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top"
+                android:padding="10dp">
 
-    </RelativeLayout>
+                <TextView
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:text="详细地址" />
+
+                <EditText
+                    android:id="@+id/et_address_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:hint="请输入详细地址信息，如道路、门牌号、小区、楼栋号、单元室等"
+                    android:textColorHint="@color/color_b3b3b3"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/color_eeeeee" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:visibility="visible">
+
+                <Button
+                    android:id="@+id/tv_commit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="60dp"
+                    android:layout_marginRight="60dp"
+                    android:background="@drawable/bg_ff6900_solid"
+                    android:text="保存"
+                    android:textColor="@color/color_ffffff" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+
 
 </LinearLayout>

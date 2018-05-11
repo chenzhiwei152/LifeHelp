@@ -8,6 +8,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 
+import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.BitmapDescriptorFactory;
+import com.baidu.mapapi.map.MapStatusUpdate;
+import com.baidu.mapapi.map.MapStatusUpdateFactory;
+import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.MarkerOptions;
+import com.baidu.mapapi.map.OverlayOptions;
+import com.baidu.mapapi.model.LatLng;
 import com.bozhengjianshe.shenghuobang.R;
 import com.bozhengjianshe.shenghuobang.api.JyCallBack;
 import com.bozhengjianshe.shenghuobang.api.RestAdapterManager;
@@ -47,6 +55,8 @@ public class ShoppingAddressEditActivity extends BaseActivity {
     EditText et_address_selected;
     @BindView(R.id.rl_selected)
     RelativeLayout rl_selected;
+    @BindView(R.id.bmapView)
+    MapView bmapView;
     private String tag = "0";//0新增，1编辑
     private String id = "";
     Call<SuperBean<String>> call;
@@ -68,7 +78,7 @@ public class ShoppingAddressEditActivity extends BaseActivity {
             etAddressName.setText(bundle.getString("name", ""));
             etAddressPhone.setText(bundle.getString("phone", ""));
             etAddressDetail.setText(bundle.getString("detail", ""));
-            et_address_selected.setText(bundle.getString("selected",""));
+            et_address_selected.setText(bundle.getString("selected", ""));
             id = bundle.getString("id", "");
         }
         tv_commit.setOnClickListener(new View.OnClickListener() {
@@ -90,17 +100,21 @@ public class ShoppingAddressEditActivity extends BaseActivity {
 
     @Override
     public void loadData() {
-
+        getLocation();
     }
 
     @Override
     public boolean isRegistEventBus() {
-        return false;
+        return true;
     }
 
     @Override
     public void onMsgEvent(EventBusCenter eventBusCenter) {
-
+        if (eventBusCenter != null) {
+            if (eventBusCenter.getEvenCode() == Constants.LOCATION_CITY_SUCCESS){
+                getLocation();
+            }
+        }
     }
 
     @Override
@@ -206,5 +220,27 @@ public class ShoppingAddressEditActivity extends BaseActivity {
             call.cancel();
         }
         super.onDestroy();
+    }
+
+
+    private void getLocation() {
+        if (BaseContext.getInstance().lastLocation == null) {
+            return;
+        }
+        BaiduMap mBaiduMap;
+        mBaiduMap = bmapView.getMap();
+        MapStatusUpdate msu = MapStatusUpdateFactory.zoomTo(15.0f);
+        mBaiduMap.setMapStatus(msu);
+        LatLng llA = new LatLng(BaseContext.getInstance().lastLocation.getLatitude(), BaseContext.getInstance().lastLocation.getLongitude());
+        OverlayOptions ooA = new MarkerOptions().position(llA).icon(BitmapDescriptorFactory
+                .fromResource(R.drawable.ease_icon_marka))
+                .zIndex(4).draggable(true);
+
+        mBaiduMap.clear();
+        mBaiduMap.addOverlay(ooA);
+        mBaiduMap.setMapStatus(MapStatusUpdateFactory.newLatLng(llA));
+        MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(llA, 17.0f);
+        mBaiduMap.animateMapStatus(u);
+
     }
 }

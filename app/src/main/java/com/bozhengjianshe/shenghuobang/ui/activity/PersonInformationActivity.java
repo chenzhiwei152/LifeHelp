@@ -16,6 +16,7 @@ import com.bozhengjianshe.shenghuobang.base.BaseActivity;
 import com.bozhengjianshe.shenghuobang.base.BaseContext;
 import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
+import com.bozhengjianshe.shenghuobang.ui.bean.MerchantServiceContentBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.SuperUrlBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.UserInfoBean;
 import com.bozhengjianshe.shenghuobang.utils.DialogUtils;
@@ -64,6 +65,16 @@ public class PersonInformationActivity extends BaseActivity implements View.OnCl
     Button bt_commit;
     @BindView(R.id.iv_head)
     ImageView iv_head;
+    @BindView(R.id.rl_service_content)
+    RelativeLayout rl_service_content;
+    @BindView(R.id.rl_address)
+    RelativeLayout rl_address;
+    @BindView(R.id.tv_service)
+    TextView tv_service;
+    @BindView(R.id.rl_quit_login)
+    RelativeLayout rl_quit_login;
+    @BindView(R.id.vv_v)
+    View vv_v;
 
     private Call<SuperUrlBean<String>> upLoadImageCall;
     private Call<SuperUrlBean<String>> upLoadInfoCall;
@@ -76,6 +87,8 @@ public class PersonInformationActivity extends BaseActivity implements View.OnCl
 
     private static final int resultCode_Photos = 10;//跳转到相册
     private static final int resultCode_Camera = 11;//跳转到相机
+    private String from = "";
+
 
     @Override
     public int getContentViewLayoutId() {
@@ -84,6 +97,20 @@ public class PersonInformationActivity extends BaseActivity implements View.OnCl
 
     @Override
     public void initViewsAndEvents() {
+        from = getIntent().getStringExtra("from");
+        if (!TextUtils.isEmpty(from) && from.equals("Merchant")) {
+            rl_service_content.setVisibility(View.VISIBLE);
+            rl_address.setVisibility(View.GONE);
+            getServiceContent();
+            rl_quit_login.setVisibility(View.VISIBLE);
+            vv_v.setVisibility(View.VISIBLE);
+        } else {
+            rl_quit_login.setVisibility(View.GONE);
+            rl_service_content.setVisibility(View.GONE);
+            vv_v.setVisibility(View.GONE);
+            rl_address.setVisibility(View.VISIBLE);
+        }
+
         initTitle();
         bt_commit.setOnClickListener(this);
         tv_sick_name.setOnClickListener(this);
@@ -92,6 +119,7 @@ public class PersonInformationActivity extends BaseActivity implements View.OnCl
         tv_birthday.setOnClickListener(this);
         iv_head.setOnClickListener(this);
         tv_address.setOnClickListener(this);
+        rl_quit_login.setOnClickListener(this);
     }
 
     @Override
@@ -281,7 +309,33 @@ public class PersonInformationActivity extends BaseActivity implements View.OnCl
             case R.id.tv_address:
                 startActivity(new Intent(this, ShoppingAddressActivity.class));
                 break;
+            case R.id.rl_quit_login:
+                if (BaseContext.getInstance().getUserInfo() == null) {
+//                    startActivity(new Intent(getActivity(), LoginActivity.class));
+                    return;
+                }
+                showExitDialog();
+                break;
         }
+    }
+    private void showExitDialog() {
+        DialogUtils.showOrderCancelMsg(this, "确定要退出登录吗？", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (view.getTag().equals("确定")) {
+                    BaseContext.getInstance().Exit();
+                    Intent i = new Intent(PersonInformationActivity.this, LoginActivity.class);
+                    startActivity(i);
+                    EventBus.getDefault().post(new EventBusCenter<Integer>(Constants.LOGIN_FAILURE));
+                }
+
+            }
+
+//            @Override
+//            public void callBack() {//退出登录
+//
+//            }
+        });
     }
 
     public static String getTime(Date date) {
@@ -385,5 +439,38 @@ public class PersonInformationActivity extends BaseActivity implements View.OnCl
 
         myDialog = new MyDialog(this, 0, 0, view, R.style.dialog);
         myDialog.show();
+    }
+
+    private void getServiceContent() {
+        RequestBody body = new FormBody.Builder()
+                .add("memberid", BaseContext.getInstance().getUserInfo().id)
+                .build();
+
+        Call<MerchantServiceContentBean> getServiceContent = RestAdapterManager.getApi().getServiceContent(body);
+        getServiceContent.enqueue(new JyCallBack<MerchantServiceContentBean>() {
+            @Override
+            public void onSuccess(Call<MerchantServiceContentBean> call, Response<MerchantServiceContentBean> response) {
+                if (response.body().getState() == Constants.successCode) {
+                    String content = "";
+                    if (response.body().getEjfl() != null) {
+                        for (String ss : response.body().getEjfl()) {
+                            content += ss;
+                            content += ",";
+                        }
+                    }
+                    tv_service.setText(content);
+                }
+            }
+
+            @Override
+            public void onError(Call<MerchantServiceContentBean> call, Throwable t) {
+
+            }
+
+            @Override
+            public void onError(Call<MerchantServiceContentBean> call, Response<MerchantServiceContentBean> response) {
+
+            }
+        });
     }
 }

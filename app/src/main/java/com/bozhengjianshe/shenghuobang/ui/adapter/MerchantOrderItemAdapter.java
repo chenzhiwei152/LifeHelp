@@ -6,10 +6,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.bozhengjianshe.shenghuobang.R;
+import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.ui.bean.BuyOrderListItemBean;
+import com.bozhengjianshe.shenghuobang.ui.listerner.CommonOnClickListerner;
 import com.bozhengjianshe.shenghuobang.view.MenuItem;
 
 import java.util.ArrayList;
@@ -27,6 +30,15 @@ public class MerchantOrderItemAdapter extends RecyclerView.Adapter<RecyclerView.
     private static Context context;
     private boolean isLight;
     private final LayoutInflater mLayoutInflater;
+    private CommonOnClickListerner onClickListerner;
+
+    public CommonOnClickListerner getOnClickListerner() {
+        return onClickListerner;
+    }
+
+    public void setOnClickListerner(CommonOnClickListerner onClickListerner) {
+        this.onClickListerner = onClickListerner;
+    }
 
     public MerchantOrderItemAdapter(Context context) {
         this.context = context;
@@ -69,13 +81,50 @@ public class MerchantOrderItemAdapter extends RecyclerView.Adapter<RecyclerView.
             ((ImageViewHolder) viewHolder).mi_tel.getRightText().setText(list.get(position).getLxrdh());
             ((ImageViewHolder) viewHolder).mi_address.getRightText().setText(list.get(position).getLxradress());
             ((ImageViewHolder) viewHolder).mi_serviced.getRightText().setText(list.get(position).getLxradress());
+            ((ImageViewHolder) viewHolder).mi_service_price.getRightText().setText("0.00");
+            if (list.get(position).getState() == Constants.STATE_TWO) {
+                ((ImageViewHolder) viewHolder).bt_accept.setText("接单");
+                ((ImageViewHolder) viewHolder).bt_accept.setVisibility(View.VISIBLE);
+                ((ImageViewHolder) viewHolder).bt_accept.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (onClickListerner != null) {
+                            onClickListerner.myOnClick(list.get(position));
+                        }
+                    }
+                });
+            }else if(list.get(position).getState() == Constants.STATE_THREE||list.get(position).getState() == Constants.STATE_FOUR){
+                ((ImageViewHolder) viewHolder).bt_accept.setText("结束服务");
+                ((ImageViewHolder) viewHolder).bt_accept.setVisibility(View.VISIBLE);
+                ((ImageViewHolder) viewHolder).bt_accept.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (onClickListerner != null) {
+                            onClickListerner.myOnClick(list.get(position));
+                        }
+                    }
+                });
+            } else {
+                ((ImageViewHolder) viewHolder).bt_accept.setVisibility(View.GONE);
+                ((ImageViewHolder) viewHolder).bt_accept.setOnClickListener(null);
+            }
+
+
             if (list.get(position).getDetail() != null && list.get(position).getDetail().size() > 0) {
                 LinearLayoutManager manager = new LinearLayoutManager(context);
                 ((ImageViewHolder) viewHolder).rv_list.setLayoutManager(manager);
                 OrderGoodsItemAdapter goodsItemAdapter;
                 goodsItemAdapter = new OrderGoodsItemAdapter(context);
+                goodsItemAdapter.setClickAble(false);
                 ((ImageViewHolder) viewHolder).rv_list.setAdapter(goodsItemAdapter);
                 goodsItemAdapter.addList(list.get(position).getDetail());
+
+
+                double price = 0.00;
+                for (int i = 0; i < list.get(position).getDetail().size(); i++) {
+                    price += list.get(position).getDetail().get(i).getZj();
+                    ((ImageViewHolder) viewHolder).mi_service_price.getRightText().setText(price + "");
+                }
             }
         }
     }
@@ -97,8 +146,12 @@ public class MerchantOrderItemAdapter extends RecyclerView.Adapter<RecyclerView.
         MenuItem mi_address;
         @BindView(R.id.mi_serviced)
         MenuItem mi_serviced;
+        @BindView(R.id.mi_service_price)
+        MenuItem mi_service_price;
         @BindView(R.id.rv_list)
         RecyclerView rv_list;
+        @BindView(R.id.bt_accept)
+        Button bt_accept;
 
         ImageViewHolder(final View view) {
             super(view);
@@ -109,6 +162,6 @@ public class MerchantOrderItemAdapter extends RecyclerView.Adapter<RecyclerView.
                 }
             });
         }
-    }
 
+    }
 }

@@ -6,12 +6,12 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.StrictMode;
 
+import com.baidu.location.BDLocation;
 import com.baidu.mapapi.SDKInitializer;
 import com.bozhengjianshe.shenghuobang.ui.activity.LoginActivity;
 import com.bozhengjianshe.shenghuobang.ui.bean.UserInfoBean;
 import com.bozhengjianshe.shenghuobang.utils.SharePreManager;
 import com.bozhengjianshe.shenghuobang.utils.Utils;
-import com.mob.MobSDK;
 import com.scwang.smartrefresh.header.MaterialHeader;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.DefaultRefreshFooterCreater;
@@ -33,6 +33,7 @@ public class BaseContext extends Application {
     public static UserInfoBean userInfo;
 
     public static String city;
+    public static BDLocation lastLocation;
     public static int type = 0;//照片选择，分为最多九张和只选一张,1代表选择一张，其他九张
 //    private ResponseBodyBeanDao userInfoDao;
 //    private DaoMaster.DevOpenHelper mHelper;
@@ -59,8 +60,9 @@ public class BaseContext extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        SDKInitializer.initialize(getApplicationContext());//百度地图
         instance = this;
-        MobSDK.init(this);
+//        MobSDK.init(this);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
             StrictMode.setVmPolicy(builder.build());
@@ -87,7 +89,7 @@ public class BaseContext extends Application {
             }
         });
 
-        SDKInitializer.initialize(getApplicationContext());//百度地图
+
 
         //初始化数据库
 //        setDatabase();

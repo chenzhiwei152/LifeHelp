@@ -95,6 +95,10 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
             type = getIntent().getExtras().getString("type");
         } catch (Exception e) {
         }
+        if (TextUtils.isEmpty(orderId)){
+            UIUtil.showToast("订单id为空");
+            finish();
+        }
         bt_pay.setOnClickListener(this);
         bt_cancel.setOnClickListener(this);
     }

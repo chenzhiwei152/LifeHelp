@@ -11,6 +11,7 @@ import com.bozhengjianshe.shenghuobang.ui.bean.CollectionBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.CommitOrderResultBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.GoodsCommentsItemBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.GoodsListBean;
+import com.bozhengjianshe.shenghuobang.ui.bean.MerchantServiceContentBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.OrderDetailBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.QuestionBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.RegistCodeBean;
@@ -340,4 +341,11 @@ public interface JyApi {
      */
     @POST(api + "getOrderFwList" + suffix)
     Call<SuperOrderListBean<List<BuyOrderListItemBean>>> getOrderList(@Body RequestBody body);
+    /**
+     * 获取服务商服务内容
+     */
+    @POST(api + "getMFwnr" + suffix)
+    Call<MerchantServiceContentBean> getServiceContent(@Body RequestBody body);
+
+
 }

@@ -30,6 +30,15 @@ public class OrderGoodsItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private static Context context;
     private boolean isLight;
     private final LayoutInflater mLayoutInflater;
+    private boolean clickAble = true;
+
+    public boolean isClickAble() {
+        return clickAble;
+    }
+
+    public void setClickAble(boolean clickAble) {
+        this.clickAble = clickAble;
+    }
 
     public OrderGoodsItemAdapter(Context context) {
         this.context = context;
@@ -71,15 +80,21 @@ public class OrderGoodsItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             ((ImageViewHolder) viewHolder).tv_count.setText("x" + list.get(position).getNum() + "");
             ((ImageViewHolder) viewHolder).tv_price.setText(list.get(position).getDj() + "");
             ((ImageViewHolder) viewHolder).tv_goods_name.setText(list.get(position).getName());
-            ((ImageViewHolder) viewHolder).rl_content.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(context, GoodsDetailsActivity.class);
-                    intent.putExtra("orderId", list.get(position).getId() + "");
-                    context.startActivity(intent);
-                }
-            });
+            if (clickAble) {
 
+                ((ImageViewHolder) viewHolder).rl_content.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(context, GoodsDetailsActivity.class);
+                        intent.putExtra("orderId", list.get(position).getId() + "");
+                        context.startActivity(intent);
+                    }
+                });
+                ((ImageViewHolder) viewHolder).iv_more.setVisibility(View.VISIBLE);
+            } else {
+                ((ImageViewHolder) viewHolder).rl_content.setOnClickListener(null);
+                ((ImageViewHolder) viewHolder).iv_more.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -100,6 +115,8 @@ public class OrderGoodsItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         TextView tv_goods_name;
         @BindView(R.id.iv_goods)
         ImageView iv_goods;
+        @BindView(R.id.iv_more)
+        ImageView iv_more;
 
         ImageViewHolder(final View view) {
             super(view);

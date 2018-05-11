@@ -113,7 +113,12 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
     @Override
     public void initViewsAndEvents() {
         initTitle();
-
+        type = getIntent().getStringExtra("type");
+        id = getIntent().getStringExtra("id");
+        if (TextUtils.isEmpty(id)){
+            UIUtil.showToast("商品id为空");
+            finish();
+        }
         kanner = (ConvenientBanner) findViewById(R.id.convenientBanner);
         bt_buy = (Button) findViewById(R.id.bt_buy);
         bt_exchange_state = (Button) findViewById(R.id.bt_exchange_state);
@@ -124,9 +129,6 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
         iv_add_card.setOnClickListener(this);
         iv_add_star.setOnClickListener(this);
         tv_commit.setOnClickListener(this);
-
-        type = getIntent().getStringExtra("type");
-        id = getIntent().getStringExtra("id");
 
         List<BaseFragment> fragmentList = new ArrayList<>();
         fragmentList.add(new GoodsDetailLeftFragment());

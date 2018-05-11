@@ -1,5 +1,7 @@
 package com.bozhengjianshe.shenghuobang.ui.bean;
 
+import android.text.TextUtils;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -337,8 +339,8 @@ public class OrderDetailBean implements Serializable {
             this.thumbnail = thumbnail;
         }
 
-        public String getZj() {
-            return zj;
+        public double getZj() {
+            return TextUtils.isEmpty(zj)? 0.00:Double.parseDouble(zj);
         }
 
         public void setZj(String zj) {

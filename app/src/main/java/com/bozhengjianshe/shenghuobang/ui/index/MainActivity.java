@@ -192,6 +192,7 @@ public class MainActivity extends BaseActivity {
                     String mDistrict = location.getDistrict();     //获取区
                     LogUtils.e("==requestLocation===", "myLocation: " + mCounty + "=" + mProvince + "=" + mCity + "=" + mDistrict);
                     BaseContext.getInstance().city=location.getCity();
+                    BaseContext.getInstance().lastLocation=location;
                     EventBus.getDefault().post(new EventBusCenter<Integer>(Constants.LOCATION_CITY_SUCCESS));
                 }
             }
