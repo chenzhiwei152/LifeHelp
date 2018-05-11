@@ -18,7 +18,16 @@ public class CardCacheBean {
     private String id;
     private String thumbnail;
     private String dj;
+    private String zj;
     private String cname;
+
+    public String getZj() {
+        return zj;
+    }
+
+    public void setZj(String zj) {
+        this.zj = zj;
+    }
 
     public int getNum() {
         return num;

@@ -21,6 +21,7 @@ import com.bozhengjianshe.shenghuobang.ui.bean.GoodsListBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.SuperGoodsListBean;
 import com.bozhengjianshe.shenghuobang.ui.listerner.CommonOnClickListerner;
 import com.bozhengjianshe.shenghuobang.utils.ErrorMessageUtils;
+import com.bozhengjianshe.shenghuobang.view.CleanableEditText;
 import com.bozhengjianshe.shenghuobang.view.TitleBar;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -50,6 +51,8 @@ public class AllServiceActivity extends BaseActivity {
     SmartRefreshLayout swiperefreshlayout;
     @BindView(R.id.tv_location)
     TextView tv_location;
+    @BindView(R.id.edit_search)
+    CleanableEditText edit_search;
     AllServiceTypeListAdapter typeListAdapter;
     MainListItemAdapter contentListAdapter;
     private int pageNumber = 1;
@@ -164,6 +167,7 @@ public class AllServiceActivity extends BaseActivity {
         Map<String, String> map = new HashMap<>();
         map.put("lb", "1");//1 查询服务类商品 为 2 查询建材类商品 不传值则全部查询
         map.put("yjfl", classify);//根据一级分类的id获取其目录下产品 不传值则全部查询
+        map.put("name", edit_search.getText().toString());
         goodsListCall = RestAdapterManager.getApi().getGoodsList(map);
         goodsListCall.enqueue(new JyCallBack<SuperGoodsListBean<List<GoodsListBean>>>() {
             @Override

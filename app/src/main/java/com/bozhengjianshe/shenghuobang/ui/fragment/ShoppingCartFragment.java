@@ -87,7 +87,7 @@ public class ShoppingCartFragment extends BaseFragment {
         listAdapter.setOnDeleteListerner(new CommonOnClickListerner() {
             @Override
             public void myOnClick(Object data) {
-                deleteItem((GoodsListBean) data);
+                updateItem((GoodsListBean) data, "delete");
             }
         });
         tv_calculate.setOnClickListener(new View.OnClickListener() {
@@ -130,7 +130,7 @@ public class ShoppingCartFragment extends BaseFragment {
                     rb_check_all.setChecked(false);
                 }
             } else if (eventBusCenter.getEvenCode() == Constants.UPDATE_CARD_PRICE) {
-                //更新价格
+                //更新
                 CalculatePrice();
             } else if (eventBusCenter.getEvenCode() == Constants.ADD_TO_CARD) {
                 getList();
@@ -179,15 +179,20 @@ public class ShoppingCartFragment extends BaseFragment {
     }
 
     /**
-     * 删除数据
+     * 更新数据
      */
-    private void deleteItem(final GoodsListBean bean) {
+    private void updateItem(final GoodsListBean bean, String type) {
         List<GoodsListBean> ids = new ArrayList<>();
         ids.add(bean);
-        ShoppingCardsUtils.updateShoppingCards(ids, "delete");
+        ShoppingCardsUtils.updateShoppingCards(ids, type);
+    }
+
+    private void updateItem(List<GoodsListBean> bean, String type) {
+        ShoppingCardsUtils.updateShoppingCards(bean, type);
     }
 
     private void CalculatePrice() {
+        updateItem(listAdapter.getList(), "add");
         if (listAdapter.getList() != null && listAdapter.getList().size() > 0) {
             for (int i = 0; i < listAdapter.getList().size(); i++) {
                 if (listAdapter.getList().get(i).isChecked()) {

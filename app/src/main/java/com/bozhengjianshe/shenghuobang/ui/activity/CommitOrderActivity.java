@@ -96,8 +96,6 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
 
     private String ids;
 
-    //    private String tag;//rent,sale
-    private String id;
     private double price;
     private int count = 1;
     private int mxCount = 200;

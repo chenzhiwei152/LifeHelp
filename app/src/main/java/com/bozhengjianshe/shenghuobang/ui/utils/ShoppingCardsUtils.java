@@ -65,6 +65,29 @@ public class ShoppingCardsUtils {
     private static String handleId(List<CardCacheBean> content, String type) {
         String ids = BaseContext.getInstance().getUserInfo().commodities;
         List<CardCacheBean> goodsListBean = new ArrayList<>();
+        if (TextUtils.isEmpty(ids)){
+            List<CardCacheBean> cache = new ArrayList<>();
+            for (int j = 0; j < content.size(); j++) {
+                if (goodsListBean.contains(content.get(j))) {
+                    for (int i = 0; i < goodsListBean.size(); i++) {
+                        if (goodsListBean.get(i).getId().equals(content.get(j).getId())) {
+                            int u = goodsListBean.get(i).getNum();
+                            u += 1;
+                            goodsListBean.get(i).setNum(u);
+                        }
+                    }
+                } else {
+                    cache.add(content.get(j));
+                }
+            }
+            if (cache.size() > 0) {
+                for (int i = 0; i < cache.size(); i++) {
+                    goodsListBean.add(cache.get(i));
+                }
+            }
+            return JSON.toJSONString(goodsListBean);
+        }
+
 
         goodsListBean = (List<CardCacheBean>) ParserUtil.parseArray(ids, CardCacheBean.class);
         List<CardCacheBean> goodsListBeanAll = new ArrayList<>();
@@ -80,7 +103,7 @@ public class ShoppingCardsUtils {
         if (type.equals("delete")) {
             for (int i = 0; i < goodsListBeanAll.size(); i++) {
                 for (int j = 0; j < content.size(); j++) {
-                    if (goodsListBeanAll.get(i).getId() .equals(content.get(j).getId()) ) {
+                    if (goodsListBeanAll.get(i).getId().equals(content.get(j).getId())) {
                         goodsListBean.remove(content.get(j));
                     }
                 }
@@ -90,7 +113,7 @@ public class ShoppingCardsUtils {
             for (int j = 0; j < content.size(); j++) {
                 if (goodsListBean.contains(content.get(j))) {
                     for (int i = 0; i < goodsListBean.size(); i++) {
-                        if (goodsListBean.get(i).getId() .equals(content.get(j).getId()) ) {
+                        if (goodsListBean.get(i).getId().equals(content.get(j).getId())) {
                             int u = goodsListBean.get(i).getNum();
                             u += 1;
                             goodsListBean.get(i).setNum(u);
@@ -120,9 +143,14 @@ public class ShoppingCardsUtils {
         for (int i = 0; i < content.size(); i++) {
             CardCacheBean cardCacheBean = new CardCacheBean();
             cardCacheBean.setCname(content.get(i).getCname());
-            cardCacheBean.setDj(content.get(i).getProfit()+"");
-            cardCacheBean.setId(content.get(i).getId()+"");
+            if (content.get(i).getLb() == 2) {
+                cardCacheBean.setDj((content.get(i).getProfit() + content.get(i).getCost()) + "");
+            } else {
+                cardCacheBean.setDj(content.get(i).getFee() + "");
+            }
+            cardCacheBean.setId(content.get(i).getId() + "");
             cardCacheBean.setThumbnail(content.get(i).getThumbnail());
+            cardCacheBean.setNum(content.get(i).getNum());
             CardCacheBean.add(cardCacheBean);
         }
         return CardCacheBean;
@@ -161,10 +189,10 @@ public class ShoppingCardsUtils {
         for (int i = 0; i < content.size(); i++) {
             CommitOrderBean cardCacheBean = new CommitOrderBean();
             cardCacheBean.setName(content.get(i).getCname());
-            cardCacheBean.setDj(content.get(i).getProfit()+"");
-            cardCacheBean.setId(content.get(i).getId()+"");
-            cardCacheBean.setNum(content.get(i).getNum()+"");
-            cardCacheBean.setZj(content.get(i).getProfit() * content.get(i).getNum()+"");
+            cardCacheBean.setDj(content.get(i).getProfit() + "");
+            cardCacheBean.setId(content.get(i).getId() + "");
+            cardCacheBean.setNum(content.get(i).getNum() + "");
+            cardCacheBean.setZj(content.get(i).getProfit() * content.get(i).getNum() + "");
             CardCacheBean.add(cardCacheBean);
         }
         return CardCacheBean;

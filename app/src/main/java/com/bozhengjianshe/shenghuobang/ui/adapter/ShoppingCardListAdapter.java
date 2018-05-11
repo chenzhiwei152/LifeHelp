@@ -127,7 +127,14 @@ public class ShoppingCardListAdapter extends RecyclerView.Adapter<RecyclerView.V
         if (list != null) {
 
             ((ImageViewHolder) viewHolder).tv_number.setText(list.get(position).getNum() + "");
-            ((ImageViewHolder) viewHolder).tv_price.setText(list.get(position).getFee() + "");
+            if (list.get(position).getLb() == 1) {
+
+                ((ImageViewHolder) viewHolder).tv_price.setText(list.get(position).getFee() + "");
+            } else {
+                ((ImageViewHolder) viewHolder).tv_price.setText((list.get(position).getCost()
+                        + list.get(position).getProfit()) + "");
+
+            }
             ((ImageViewHolder) viewHolder).tv_goods_name.setText(list.get(position).getCname());
             if (isEditMode) {
                 ((ImageViewHolder) viewHolder).rb_check.setVisibility(View.GONE);
@@ -170,6 +177,7 @@ public class ShoppingCardListAdapter extends RecyclerView.Adapter<RecyclerView.V
                         }
                         count--;
                         ((ImageViewHolder) viewHolder).tv_number.setText(count + "");
+                        list.get(position).setNum(count);
                         EventBus.getDefault().post(new EventBusCenter<>(Constants.UPDATE_CARD_PRICE));
                     }
                 }
@@ -186,6 +194,7 @@ public class ShoppingCardListAdapter extends RecyclerView.Adapter<RecyclerView.V
                         }
                         count++;
                         ((ImageViewHolder) viewHolder).tv_number.setText(count + "");
+                        list.get(position).setNum(count);
                         EventBus.getDefault().post(new EventBusCenter<>(Constants.UPDATE_CARD_PRICE));
                     }
 

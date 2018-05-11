@@ -65,6 +65,8 @@ public class CommitOrderItemAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final int position) {
         if (list != null) {
             ((ImageViewHolder) viewHolder).tv_title.setText(list.get(position).getCname());
+            ((ImageViewHolder) viewHolder).tv_number_per.setText("x "+list.get(position).getNum());
+
             ((ImageViewHolder) viewHolder).tv_price.setText("￥" + (list.get(position).getProfit() + list.get(position).getCost()) + "");
             ((ImageViewHolder) viewHolder).tv_all_price.setText("￥" + list.get(position).getProfit() * list.get(position).getNum() + "");
             if (list.get(position).getLb() == 2) {
