@@ -98,6 +98,9 @@ public class CollectionUtils {
                     ids += id;
                     ids += ",";
                 }
+            }else {
+                ids += id;
+                ids += ",";
             }
         }
         return ids;

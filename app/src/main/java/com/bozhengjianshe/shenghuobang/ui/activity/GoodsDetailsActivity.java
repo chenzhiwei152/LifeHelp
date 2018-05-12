@@ -19,14 +19,12 @@ import com.bozhengjianshe.shenghuobang.R;
 import com.bozhengjianshe.shenghuobang.api.JyCallBack;
 import com.bozhengjianshe.shenghuobang.api.RestAdapterManager;
 import com.bozhengjianshe.shenghuobang.base.BaseActivity;
-import com.bozhengjianshe.shenghuobang.base.BaseContext;
 import com.bozhengjianshe.shenghuobang.base.BaseFragment;
 import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
 import com.bozhengjianshe.shenghuobang.ui.adapter.GoodsDetailItemAdapter;
 import com.bozhengjianshe.shenghuobang.ui.adapter.IndexFragmentPagerAdapter;
 import com.bozhengjianshe.shenghuobang.ui.bean.GoodsListBean;
-import com.bozhengjianshe.shenghuobang.ui.bean.SuperBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.SuperGoodsListBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.bannerBean;
 import com.bozhengjianshe.shenghuobang.ui.fragment.GoodsDetailLeftFragment;
@@ -49,8 +47,6 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
-import okhttp3.FormBody;
-import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -367,28 +363,28 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
      */
     private void addCollection() {
 
-        RequestBody formBody = new FormBody.Builder()
-                .add("productId", goodsBean.getId() + "")
-                .add("productType", type).add("userId", BaseContext.getInstance().getUserInfo().id)
-                .build();
-
-        Call<SuperBean<String>> addCollection = RestAdapterManager.getApi().addCollection(formBody);
-        addCollection.enqueue(new JyCallBack<SuperBean<String>>() {
-            @Override
-            public void onSuccess(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
-                UIUtil.showToast(response.body().getMsg());
-            }
-
-            @Override
-            public void onError(Call<SuperBean<String>> call, Throwable t) {
-
-            }
-
-            @Override
-            public void onError(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
-
-            }
-        });
+//        RequestBody formBody = new FormBody.Builder()
+//                .add("productId", goodsBean.getId() + "")
+//                .add("productType", type).add("userId", BaseContext.getInstance().getUserInfo().id)
+//                .build();
+//
+//        Call<SuperBean<String>> addCollection = RestAdapterManager.getApi().addCollection(formBody);
+//        addCollection.enqueue(new JyCallBack<SuperBean<String>>() {
+//            @Override
+//            public void onSuccess(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
+//                UIUtil.showToast(response.body().getMsg());
+//            }
+//
+//            @Override
+//            public void onError(Call<SuperBean<String>> call, Throwable t) {
+//
+//            }
+//
+//            @Override
+//            public void onError(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
+//
+//            }
+//        });
         if (CollectionUtils.getIsInCollection(goodsBean.getId() + "")) {
             CollectionUtils.updateColloction(this, goodsBean.getId() + "", "delete");
         } else {
