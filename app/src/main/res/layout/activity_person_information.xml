@@ -186,7 +186,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_toRightOf="@+id/tv_service_title"
-            android:drawableRight="@mipmap/ic_arrow_right"
             android:gravity="right"
             android:text="" />
     </RelativeLayout>

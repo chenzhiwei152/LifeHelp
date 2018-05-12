@@ -158,9 +158,11 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.AllBuildingActivity"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.AllServiceActivity"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activity.FindPasswordActivity"

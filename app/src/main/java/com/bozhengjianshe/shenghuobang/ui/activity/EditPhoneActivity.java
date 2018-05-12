@@ -87,6 +87,7 @@ public class EditPhoneActivity extends BaseActivity {
     private void initTitle() {
 
         titleView.setTitle("修改手机号码");
+        titleView.setShowDefaultRightValue();
         titleView.addAction(new TitleBar.TextAction("确定") {
             @Override
             public void performAction(View view) {

@@ -15,6 +15,7 @@ public class Constants {
     public static String typeService = "1";
     public static String typeGoods = "2";
     public static String homeTypeTag = "homeTypeTag";
+    public static String phone="10086";
 
 
     public static class ErrorCode {

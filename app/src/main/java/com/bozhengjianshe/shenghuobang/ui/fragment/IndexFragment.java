@@ -82,6 +82,8 @@ public class IndexFragment extends BaseFragment {
     RelativeLayout rl_search_view;
     @BindView(R.id.tv_location)
     TextView tv_location;
+    @BindView(R.id.bt_customer)
+    ImageView bt_customer;
     List<bannerBean> list = new ArrayList<>();
     List<GoodsListBean> adList = new ArrayList<>();
     private MainListItemAdapter listAdapter;
@@ -134,6 +136,12 @@ public class IndexFragment extends BaseFragment {
         sf_recomment_listview.setAdapter(listAdapter1);
         edit_search.clearFocus();
         edit_search.setFocusable(false);
+        bt_customer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                UIUtil.call(getActivity(),Constants.phone);
+            }
+        });
 //        bt_search.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {

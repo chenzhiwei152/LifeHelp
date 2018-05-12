@@ -14,12 +14,12 @@ import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
 import com.bozhengjianshe.shenghuobang.ui.activity.AboutActivity;
 import com.bozhengjianshe.shenghuobang.ui.activity.CollectionActivity;
-import com.bozhengjianshe.shenghuobang.ui.activity.JoinsUsActivity;
 import com.bozhengjianshe.shenghuobang.ui.activity.LoginActivity;
 import com.bozhengjianshe.shenghuobang.ui.activity.MerchantOrderActivity;
 import com.bozhengjianshe.shenghuobang.ui.activity.OrderListActivity;
 import com.bozhengjianshe.shenghuobang.ui.activity.PersonInformationActivity;
 import com.bozhengjianshe.shenghuobang.ui.activity.QuestionNormalActivity;
+import com.bozhengjianshe.shenghuobang.ui.activity.RegistersServiceActivity;
 import com.bozhengjianshe.shenghuobang.utils.DialogUtils;
 import com.bozhengjianshe.shenghuobang.utils.ImageLoadedrManager;
 import com.bozhengjianshe.shenghuobang.utils.UIUtil;
@@ -183,7 +183,7 @@ public class MyFragment extends BaseFragment implements View.OnClickListener {
                 break;
             case R.id.rl_order:
 //                //加入我们
-                startActivity(new Intent(getActivity(), JoinsUsActivity.class));
+                startActivity(new Intent(getActivity(), RegistersServiceActivity.class));
                 break;
             case R.id.tv_collection:
                 //收藏

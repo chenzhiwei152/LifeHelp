@@ -137,7 +137,7 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
             tv_order_time.setText(UIUtil.timeStamp2Date(orderDetailBean.getTime() + ""));
 //            tv_deposit.setText(orderDetailBean.get());//定金
             tv_real_pay.setText(orderDetailBean.getExtrafee() + "");
-            if (orderDetailBean.getState() == Constants.STATE_ONE) {
+            if (orderDetailBean.getState() == Constants.STATE_ONE||orderDetailBean.getState() == Constants.STATE_THREE) {
                 if (orderDetailBean.getState() == Constants.STATE_THREE) {
                     bt_cancel.setVisibility(View.GONE);
                 } else {

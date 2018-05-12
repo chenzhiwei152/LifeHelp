@@ -104,7 +104,7 @@ public class GoodsListBean implements Serializable {
         return fee;
     }
 
-    public void setFee(int fee) {
+    public void setFee(double fee) {
         this.fee = fee;
     }
 
@@ -184,7 +184,7 @@ public class GoodsListBean implements Serializable {
         return profit;
     }
 
-    public void setProfit(int profit) {
+    public void setProfit(double profit) {
         this.profit = profit;
     }
 

@@ -3,8 +3,16 @@ package com.bozhengjianshe.shenghuobang.ui.activity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bozhengjianshe.shenghuobang.R;
 import com.bozhengjianshe.shenghuobang.api.JyCallBack;
@@ -20,7 +28,6 @@ import com.bozhengjianshe.shenghuobang.ui.bean.GoodsListBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.SuperGoodsListBean;
 import com.bozhengjianshe.shenghuobang.ui.listerner.CommonOnClickListerner;
 import com.bozhengjianshe.shenghuobang.utils.ErrorMessageUtils;
-import com.bozhengjianshe.shenghuobang.view.CleanableEditText;
 import com.bozhengjianshe.shenghuobang.view.TitleBar;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -51,7 +58,11 @@ public class AllBuildingActivity extends BaseActivity {
     @BindView(R.id.tv_location)
     TextView tv_location;
     @BindView(R.id.edit_search)
-    CleanableEditText edit_search;
+    EditText edit_search;
+    @BindView(R.id.bt_customer)
+    ImageView bt_customer;
+    @BindView(R.id.iv_clear)
+    ImageView iv_clear;
     AllServiceTypeListAdapter typeListAdapter;
     MainListItemAdapter contentListAdapter;
     private int pageNumber = 1;
@@ -72,6 +83,7 @@ public class AllBuildingActivity extends BaseActivity {
         if (bundle != null) {
             classify = bundle.getString(Constants.homeTypeTag);
         }
+        bt_customer.setVisibility(View.GONE);
         initTitle();
         tv_location.setText(BaseContext.getInstance().city);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -84,6 +96,7 @@ public class AllBuildingActivity extends BaseActivity {
 
         rc_type_list.setAdapter(typeListAdapter);
         sf_content_listview.setAdapter(contentListAdapter);
+        swiperefreshlayout.setEnableLoadmore(false);
         swiperefreshlayout.setOnRefreshLoadmoreListener(new OnRefreshLoadmoreListener() {
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
@@ -101,6 +114,52 @@ public class AllBuildingActivity extends BaseActivity {
             public void myOnClick(Object data) {
                 classify = ((AllServiceTypeBean) data).getId() + "";
                 pageNumber = 1;
+                getContentList();
+            }
+        });
+        edit_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_UNSPECIFIED) {
+
+                    String keytag = edit_search.getText().toString().trim();
+
+                    if (TextUtils.isEmpty(keytag)) {
+                        Toast.makeText(AllBuildingActivity.this, "请输入搜索关键字", Toast.LENGTH_SHORT).show();
+                        return false;
+                    }
+
+                    // 搜索功能主体
+                    getContentList();
+                    return true;
+                }
+                return false;
+            }
+        });
+        edit_search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (TextUtils.isEmpty(edit_search.getText().toString())) {
+                    iv_clear.setVisibility(View.GONE);
+                }else {
+                    iv_clear.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        iv_clear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                edit_search.setText("");
                 getContentList();
             }
         });
@@ -172,13 +231,13 @@ public class AllBuildingActivity extends BaseActivity {
             public void onSuccess(Call<SuperGoodsListBean<List<GoodsListBean>>> call, Response<SuperGoodsListBean<List<GoodsListBean>>> response) {
                 swiperefreshlayout.finishLoadmore();
                 swiperefreshlayout.finishRefresh();
-                if (pageNumber == 1) {
-                    contentListAdapter.ClearData();
-                }
-                if (response != null && response.body() != null &&response.body().getData() != null && response.body().getData().size() > 0) {
+//                if (pageNumber == 1) {
+                contentListAdapter.ClearData();
+//                }
+                if (response != null && response.body() != null && response.body().getData() != null && response.body().getData().size() > 0) {
                     contentListAdapter.addList(response.body().getData());
                     pageNumber++;
-                    swiperefreshlayout.setEnableLoadmore(true);
+                    swiperefreshlayout.setEnableLoadmore(false);
                 } else {
                     swiperefreshlayout.setEnableLoadmore(false);
                 }

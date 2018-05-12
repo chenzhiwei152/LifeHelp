@@ -310,10 +310,10 @@
                     android:layout_marginRight="10dp" />
 
                 <RadioGroup
-                    android:layout_marginTop="@dimen/dp_5"
                     android:id="@+id/rg_group"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_5"
                     android:orientation="horizontal">
 
                     <RadioButton
@@ -338,7 +338,7 @@
                 android:layout_marginTop="10dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <CheckBox
                     android:id="@+id/checkBox"
@@ -366,7 +366,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="30dp"
-                android:text="@string/regist" />
+                android:text="提交审核" />
 
             <TextView
                 android:id="@+id/tv_to_login"

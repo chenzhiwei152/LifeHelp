@@ -11,19 +11,19 @@ public class OrderStateUtils {
         String describe = "";
         switch (state) {
             case Constants.STATE_ONE:
-                describe = "派单中";
+                describe = "待付款";
                 break;
             case Constants.STATE_TWO:
-                describe = "服务中";
+                describe = "进行中";
                 break;
             case Constants.STATE_THREE:
-                describe = "待付款";
+                describe = "代付尾款";
                 break;
             case Constants.STATE_FOUR:
                 describe = "待评价";
                 break;
             case Constants.STATE_FIVE:
-                describe = "结束";
+                describe = "完成";
                 break;
         }
         return describe;

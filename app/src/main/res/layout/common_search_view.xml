@@ -21,9 +21,9 @@
             android:drawablePadding="@dimen/dp_3"
             android:text="北京" />
 
-        <com.bozhengjianshe.shenghuobang.view.CleanableEditText
+        <EditText
             android:id="@+id/edit_search"
-            style="@style/clearEditText_primary"
+            style="@style/clearEditText_primary1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -31,7 +31,9 @@
             android:layout_toLeftOf="@+id/bt_search"
             android:layout_toRightOf="@+id/tv_location"
             android:hint="请输入所需服务"
-            android:paddingLeft="25dp" />
+            android:imeOptions="actionSearch"
+            android:paddingLeft="25dp"
+            android:singleLine="true" />
 
         <ImageView
             android:id="@+id/iv_search"
