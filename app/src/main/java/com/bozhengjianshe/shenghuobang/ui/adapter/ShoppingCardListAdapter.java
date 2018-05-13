@@ -151,6 +151,7 @@ public class ShoppingCardListAdapter extends RecyclerView.Adapter<RecyclerView.V
                     EventBus.getDefault().post(new EventBusCenter<Integer>(Constants.UPDA_CARD_GOODS_SELECTED));
                 }
             });
+            //删除
             ((ImageViewHolder) viewHolder).iv_delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -178,7 +179,7 @@ public class ShoppingCardListAdapter extends RecyclerView.Adapter<RecyclerView.V
                         count--;
                         ((ImageViewHolder) viewHolder).tv_number.setText(count + "");
                         list.get(position).setNum(count);
-                        EventBus.getDefault().post(new EventBusCenter<>(Constants.UPDATE_CARD_PRICE));
+                        EventBus.getDefault().post(new EventBusCenter<>(Constants.REDUCE_NUMBER_CARD,list.get(position).getId()+""));
                     }
                 }
             });
@@ -195,7 +196,7 @@ public class ShoppingCardListAdapter extends RecyclerView.Adapter<RecyclerView.V
                         count++;
                         ((ImageViewHolder) viewHolder).tv_number.setText(count + "");
                         list.get(position).setNum(count);
-                        EventBus.getDefault().post(new EventBusCenter<>(Constants.UPDATE_CARD_PRICE));
+                        EventBus.getDefault().post(new EventBusCenter<>(Constants.ADD_NUMBER_CARD,list.get(position).getId()+""));
                     }
 
 

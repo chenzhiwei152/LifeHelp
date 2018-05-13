@@ -43,7 +43,7 @@
             android:id="@+id/tv_price_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="元/次"
+            android:text=""
             android:textColor="#4d4d4d"
             android:textSize="13sp" />
     </LinearLayout>

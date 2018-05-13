@@ -1,7 +1,6 @@
 package com.bozhengjianshe.shenghuobang.ui.activity;
 
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -23,15 +22,21 @@ import com.bozhengjianshe.shenghuobang.base.BaseContext;
 import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
 import com.bozhengjianshe.shenghuobang.ui.adapter.AllServiceTypeListAdapter;
-import com.bozhengjianshe.shenghuobang.ui.adapter.TypeListItemAdapter;
+import com.bozhengjianshe.shenghuobang.ui.adapter.MainListItemAdapter;
 import com.bozhengjianshe.shenghuobang.ui.bean.AllServiceTypeBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.GoodsListBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.SuperGoodsListBean;
 import com.bozhengjianshe.shenghuobang.ui.listerner.CommonOnClickListerner;
+import com.bozhengjianshe.shenghuobang.utils.ErrorMessageUtils;
 import com.bozhengjianshe.shenghuobang.view.TitleBar;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import retrofit2.Call;
@@ -41,7 +46,7 @@ import retrofit2.Response;
  * Created by chen.zhiwei on 2017-12-11.
  */
 
-public class AllServiceActivity extends BaseActivity {
+public class AllBuildingContentActivity extends BaseActivity {
     @BindView(R.id.title_view)
     TitleBar title_view;
     @BindView(R.id.rc_type_list)
@@ -59,18 +64,17 @@ public class AllServiceActivity extends BaseActivity {
     @BindView(R.id.iv_clear)
     ImageView iv_clear;
     AllServiceTypeListAdapter typeListAdapter;
-    TypeListItemAdapter contentListAdapter;
+    MainListItemAdapter contentListAdapter;
     private int pageNumber = 1;
     private int pageSize = 10;
     private String classify;
     private String keyWord;
-    private Call<SuperGoodsListBean<List<AllServiceTypeBean>>> getAllServiceTypeList;
     private Call<SuperGoodsListBean<List<GoodsListBean>>> goodsListCall;
 
 
     @Override
     public int getContentViewLayoutId() {
-        return R.layout.activity_all_service;
+        return R.layout.activity_all_building;
     }
 
     @Override
@@ -83,36 +87,34 @@ public class AllServiceActivity extends BaseActivity {
         initTitle();
         tv_location.setText(BaseContext.getInstance().city);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         rc_type_list.setLayoutManager(layoutManager);
-        sf_content_listview.setLayoutManager(new GridLayoutManager(this, 2));
+        sf_content_listview.setLayoutManager(new LinearLayoutManager(this));
         sf_content_listview.setNestedScrollingEnabled(false);
 
         typeListAdapter = new AllServiceTypeListAdapter(this);
-        contentListAdapter = new TypeListItemAdapter(this);
+        contentListAdapter = new MainListItemAdapter(this);
 
         rc_type_list.setAdapter(typeListAdapter);
         sf_content_listview.setAdapter(contentListAdapter);
         swiperefreshlayout.setEnableLoadmore(false);
-        swiperefreshlayout.setEnableRefresh(false);
-//        swiperefreshlayout.setOnRefreshLoadmoreListener(new OnRefreshLoadmoreListener() {
-//            @Override
-//            public void onLoadmore(RefreshLayout refreshlayout) {
-//                getContentList();
-//            }
-//
-//            @Override
-//            public void onRefresh(RefreshLayout refreshlayout) {
-//                pageNumber = 1;
-//                getContentList();
-//            }
-//        });
+        swiperefreshlayout.setOnRefreshLoadmoreListener(new OnRefreshLoadmoreListener() {
+            @Override
+            public void onLoadmore(RefreshLayout refreshlayout) {
+                getContentList();
+            }
+
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                pageNumber = 1;
+                getContentList();
+            }
+        });
         typeListAdapter.setOnClickListerner(new CommonOnClickListerner() {
             @Override
             public void myOnClick(Object data) {
                 classify = ((AllServiceTypeBean) data).getId() + "";
-                contentListAdapter.setSecondType(((AllServiceTypeBean) data).getId());
-                getContentList(classify);
+                pageNumber = 1;
+                getContentList();
             }
         });
         edit_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -123,12 +125,12 @@ public class AllServiceActivity extends BaseActivity {
                     String keytag = edit_search.getText().toString().trim();
 
                     if (TextUtils.isEmpty(keytag)) {
-                        Toast.makeText(AllServiceActivity.this, "请输入搜索关键字", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AllBuildingContentActivity.this, "请输入搜索关键字", Toast.LENGTH_SHORT).show();
                         return false;
                     }
 
                     // 搜索功能主体
-//                    getContentList();
+                    getContentList();
                     return true;
                 }
                 return false;
@@ -149,7 +151,7 @@ public class AllServiceActivity extends BaseActivity {
             public void afterTextChanged(Editable editable) {
                 if (TextUtils.isEmpty(edit_search.getText().toString())) {
                     iv_clear.setVisibility(View.GONE);
-                }else {
+                } else {
                     iv_clear.setVisibility(View.VISIBLE);
                 }
             }
@@ -158,14 +160,15 @@ public class AllServiceActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 edit_search.setText("");
+                getContentList();
             }
         });
-
     }
 
     @Override
     public void loadData() {
         getTyleList();
+        getContentList();
     }
 
     @Override
@@ -184,8 +187,11 @@ public class AllServiceActivity extends BaseActivity {
         return null;
     }
 
+    /**
+     * 获取分类列表
+     */
     private void getTyleList() {
-        getAllServiceTypeList = RestAdapterManager.getApi().getAllServiceTypeList("1");
+        Call<SuperGoodsListBean<List<AllServiceTypeBean>>> getAllServiceTypeList = RestAdapterManager.getApi().getAllServiceTypeList("2");
         getAllServiceTypeList.enqueue(new JyCallBack<SuperGoodsListBean<List<AllServiceTypeBean>>>() {
             @Override
             public void onSuccess(Call<SuperGoodsListBean<List<AllServiceTypeBean>>> call, Response<SuperGoodsListBean<List<AllServiceTypeBean>>> response) {
@@ -196,7 +202,6 @@ public class AllServiceActivity extends BaseActivity {
                         if ((response.body().getData().get(i).getId() + "").equals(classify)) {
                             typeListAdapter.setSelectedPosition(i);
                             rc_type_list.scrollToPosition(i);
-                            getContentList(classify);
                             break;
                         }
                     }
@@ -216,34 +221,46 @@ public class AllServiceActivity extends BaseActivity {
         });
     }
 
-    /**
-     * 获取三级分类
-     *
-     * @param threeLevelid
-     */
-    private void getContentList(String threeLevelid) {
+    private void getContentList() {
 
-        Call<SuperGoodsListBean<List<AllServiceTypeBean>>> getAllServiceTypeList = RestAdapterManager.getApi().getAllServiceTypeList(threeLevelid);
-        getAllServiceTypeList.enqueue(new JyCallBack<SuperGoodsListBean<List<AllServiceTypeBean>>>() {
+        Map<String, String> map = new HashMap<>();
+        map.put("lb", "2");//1 查询服务类商品 为 2 查询建材类商品 不传值则全部查询
+        map.put("yjfl", classify);//根据一级分类的id获取其目录下产品 不传值则全部查询
+        map.put("name", edit_search.getText().toString());
+        goodsListCall = RestAdapterManager.getApi().getGoodsList(map);
+
+        goodsListCall.enqueue(new JyCallBack<SuperGoodsListBean<List<GoodsListBean>>>() {
             @Override
-            public void onSuccess(Call<SuperGoodsListBean<List<AllServiceTypeBean>>> call, Response<SuperGoodsListBean<List<AllServiceTypeBean>>> response) {
+            public void onSuccess(Call<SuperGoodsListBean<List<GoodsListBean>>> call, Response<SuperGoodsListBean<List<GoodsListBean>>> response) {
+                swiperefreshlayout.finishLoadmore();
+                swiperefreshlayout.finishRefresh();
+//                if (pageNumber == 1) {
                 contentListAdapter.ClearData();
+//                }
                 if (response != null && response.body() != null && response.body().getData() != null && response.body().getData().size() > 0) {
-                    if (response.body() != null)
-                        contentListAdapter.addList(response.body().getData());
-
+                    contentListAdapter.addList(response.body().getData());
+                    pageNumber++;
+                    swiperefreshlayout.setEnableLoadmore(false);
+                } else {
+                    swiperefreshlayout.setEnableLoadmore(false);
                 }
-
             }
 
             @Override
-            public void onError(Call<SuperGoodsListBean<List<AllServiceTypeBean>>> call, Throwable t) {
-
+            public void onError(Call<SuperGoodsListBean<List<GoodsListBean>>> call, Throwable t) {
+                swiperefreshlayout.finishLoadmore();
+                swiperefreshlayout.finishRefresh();
             }
 
             @Override
-            public void onError(Call<SuperGoodsListBean<List<AllServiceTypeBean>>> call, Response<SuperGoodsListBean<List<AllServiceTypeBean>>> response) {
-
+            public void onError(Call<SuperGoodsListBean<List<GoodsListBean>>> call, Response<SuperGoodsListBean<List<GoodsListBean>>> response) {
+                swiperefreshlayout.finishLoadmore();
+                swiperefreshlayout.finishRefresh();
+                try {
+                    ErrorMessageUtils.taostErrorMessage(AllBuildingContentActivity.this, response.errorBody().string());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -253,18 +270,21 @@ public class AllServiceActivity extends BaseActivity {
      */
     private void initTitle() {
         title_view.setTitle("分类详情");
-        title_view.setShowDefaultRightValue();
+        title_view.setLeftImageResource(R.mipmap.ic_title_back);
+        title_view.setLeftClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+        title_view.setImmersive(true);
     }
 
     @Override
     protected void onDestroy() {
-        if (getAllServiceTypeList != null) {
-            getAllServiceTypeList.cancel();
-        }
         if (goodsListCall != null) {
             goodsListCall.cancel();
         }
         super.onDestroy();
-
     }
 }

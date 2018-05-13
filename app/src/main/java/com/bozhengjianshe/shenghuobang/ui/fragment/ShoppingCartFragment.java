@@ -12,13 +12,14 @@ import android.widget.TextView;
 import com.bozhengjianshe.shenghuobang.R;
 import com.bozhengjianshe.shenghuobang.api.JyCallBack;
 import com.bozhengjianshe.shenghuobang.api.RestAdapterManager;
+import com.bozhengjianshe.shenghuobang.base.BaseContext;
 import com.bozhengjianshe.shenghuobang.base.BaseFragment;
 import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
 import com.bozhengjianshe.shenghuobang.ui.activity.CommitOrderActivity;
 import com.bozhengjianshe.shenghuobang.ui.adapter.ShoppingCardListAdapter;
 import com.bozhengjianshe.shenghuobang.ui.bean.GoodsListBean;
-import com.bozhengjianshe.shenghuobang.ui.bean.SuperGoodsListBean;
+import com.bozhengjianshe.shenghuobang.ui.bean.SuperShoppingCardsBean;
 import com.bozhengjianshe.shenghuobang.ui.listerner.CommonOnClickListerner;
 import com.bozhengjianshe.shenghuobang.ui.utils.ShoppingCardsUtils;
 import com.bozhengjianshe.shenghuobang.utils.UIUtil;
@@ -29,13 +30,15 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
+import okhttp3.FormBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Response;
+
+import static com.bozhengjianshe.shenghuobang.base.Constants.REDUCE_NUMBER_CARD;
 
 /**
  * Created by chen.zhiwei on 2017-12-5.
@@ -55,7 +58,7 @@ public class ShoppingCartFragment extends BaseFragment {
     @BindView(R.id.tv_calculate)
     TextView tv_calculate;
     private TextView action;
-    private Call<SuperGoodsListBean<List<GoodsListBean>>> goodsListCall;
+    private Call<SuperShoppingCardsBean<List<GoodsListBean>>> goodsListCall;
 
     @Override
     protected int getContentViewLayoutId() {
@@ -87,7 +90,7 @@ public class ShoppingCartFragment extends BaseFragment {
         listAdapter.setOnDeleteListerner(new CommonOnClickListerner() {
             @Override
             public void myOnClick(Object data) {
-                updateItem((GoodsListBean) data, "delete");
+                deleteItem((GoodsListBean) data);
             }
         });
         tv_calculate.setOnClickListener(new View.OnClickListener() {
@@ -129,9 +132,11 @@ public class ShoppingCartFragment extends BaseFragment {
                 } else {
                     rb_check_all.setChecked(false);
                 }
-            } else if (eventBusCenter.getEvenCode() == Constants.UPDATE_CARD_PRICE) {
+            } else if (eventBusCenter.getEvenCode() == Constants.ADD_NUMBER_CARD) {
                 //更新
-                CalculatePrice();
+                ShoppingCardsUtils.updateItem((String) eventBusCenter.getData(), "add");
+            } else if (eventBusCenter.getEvenCode() == REDUCE_NUMBER_CARD) {
+                ShoppingCardsUtils.updateItem((String) eventBusCenter.getData(), "reduce");
             } else if (eventBusCenter.getEvenCode() == Constants.ADD_TO_CARD) {
                 getList();
             }
@@ -140,12 +145,11 @@ public class ShoppingCartFragment extends BaseFragment {
 
 
     private void getList() {
-        Map<String, String> map = new HashMap<>();
-        map.put("ids", ShoppingCardsUtils.getIds());
-        goodsListCall = RestAdapterManager.getApi().getGoodsList(map);
-        goodsListCall.enqueue(new JyCallBack<SuperGoodsListBean<List<GoodsListBean>>>() {
+        RequestBody body = new FormBody.Builder().add("memberid", BaseContext.getInstance().getUserInfo().id).build();
+        goodsListCall = RestAdapterManager.getApi().getShoppingCardList(body);
+        goodsListCall.enqueue(new JyCallBack<SuperShoppingCardsBean<List<GoodsListBean>>>() {
             @Override
-            public void onSuccess(Call<SuperGoodsListBean<List<GoodsListBean>>> call, Response<SuperGoodsListBean<List<GoodsListBean>>> response) {
+            public void onSuccess(Call<SuperShoppingCardsBean<List<GoodsListBean>>> call, Response<SuperShoppingCardsBean<List<GoodsListBean>>> response) {
                 swiperefreshlayout.finishRefresh();
                 if (response != null && response.body() != null && response.body().state == Constants.successCode) {
                     if (response.body().getData() != null && response.body().getData().size() > 0) {
@@ -162,7 +166,7 @@ public class ShoppingCartFragment extends BaseFragment {
             }
 
             @Override
-            public void onError(Call<SuperGoodsListBean<List<GoodsListBean>>> call, Throwable t) {
+            public void onError(Call<SuperShoppingCardsBean<List<GoodsListBean>>> call, Throwable t) {
                 if (swiperefreshlayout != null) {
                     swiperefreshlayout.finishRefresh();
                 }
@@ -170,7 +174,7 @@ public class ShoppingCartFragment extends BaseFragment {
             }
 
             @Override
-            public void onError(Call<SuperGoodsListBean<List<GoodsListBean>>> call, Response<SuperGoodsListBean<List<GoodsListBean>>> response) {
+            public void onError(Call<SuperShoppingCardsBean<List<GoodsListBean>>> call, Response<SuperShoppingCardsBean<List<GoodsListBean>>> response) {
                 if (swiperefreshlayout != null) {
                     swiperefreshlayout.finishRefresh();
                 }
@@ -179,20 +183,52 @@ public class ShoppingCartFragment extends BaseFragment {
     }
 
     /**
-     * 更新数据
+     * 删除购物车
      */
-    private void updateItem(final GoodsListBean bean, String type) {
-        List<GoodsListBean> ids = new ArrayList<>();
-        ids.add(bean);
-        ShoppingCardsUtils.updateShoppingCards(ids, type);
+    private void deleteItem(final GoodsListBean bean) {
+        Call<SuperShoppingCardsBean<List<GoodsListBean>>> deleteCall;
+        RequestBody body = new FormBody.Builder().add("memberid", BaseContext.getInstance().getUserInfo().id).add("comids", "" + bean.getId()).build();
+        deleteCall = RestAdapterManager.getApi().deleteCardList(body);
+        deleteCall.enqueue(new JyCallBack<SuperShoppingCardsBean<List<GoodsListBean>>>() {
+            @Override
+            public void onSuccess(Call<SuperShoppingCardsBean<List<GoodsListBean>>> call, Response<SuperShoppingCardsBean<List<GoodsListBean>>> response) {
+                swiperefreshlayout.finishRefresh();
+                getList();
+//                if (response != null && response.body() != null && response.body().state == Constants.successCode) {
+//                    if (response.body().getData() != null && response.body().getData().size() > 0) {
+//                        listAdapter.ClearData();
+//                        listAdapter.addList(response.body().getData());
+//                    }
+//
+//                } else {
+//                    try {
+//                        UIUtil.showToast(response.body().message);
+//                    } catch (Exception e) {
+//                    }
+//                }
+            }
+
+            @Override
+            public void onError(Call<SuperShoppingCardsBean<List<GoodsListBean>>> call, Throwable t) {
+                if (swiperefreshlayout != null) {
+                    swiperefreshlayout.finishRefresh();
+                }
+
+            }
+
+            @Override
+            public void onError(Call<SuperShoppingCardsBean<List<GoodsListBean>>> call, Response<SuperShoppingCardsBean<List<GoodsListBean>>> response) {
+                if (swiperefreshlayout != null) {
+                    swiperefreshlayout.finishRefresh();
+                }
+            }
+        });
+
     }
 
-    private void updateItem(List<GoodsListBean> bean, String type) {
-        ShoppingCardsUtils.updateShoppingCards(bean, type);
-    }
+
 
     private void CalculatePrice() {
-        updateItem(listAdapter.getList(), "add");
         if (listAdapter.getList() != null && listAdapter.getList().size() > 0) {
             for (int i = 0; i < listAdapter.getList().size(); i++) {
                 if (listAdapter.getList().get(i).isChecked()) {

@@ -86,7 +86,7 @@ public class OrderGoodsItemAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(context, GoodsDetailsActivity.class);
-                        intent.putExtra("orderId", list.get(position).getId() + "");
+                        intent.putExtra("id", list.get(position).getId() + "");
                         context.startActivity(intent);
                     }
                 });

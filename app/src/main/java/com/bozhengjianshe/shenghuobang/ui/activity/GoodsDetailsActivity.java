@@ -111,7 +111,7 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
         initTitle();
         type = getIntent().getStringExtra("type");
         id = getIntent().getStringExtra("id");
-        if (TextUtils.isEmpty(id)){
+        if (TextUtils.isEmpty(id)) {
             UIUtil.showToast("商品id为空");
             finish();
         }
@@ -220,11 +220,11 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
         DialogUtils.showDialog(this, "加载中", false);
         Map<String, String> map = new HashMap<>();
         map.put("ids", id + "");
-        if (type.equals(Constants.typeService)) {
-            map.put("lb", "1");
-        } else {
-            map.put("lb", "2");
-        }
+//        if (type.equals(Constants.typeService)) {
+//            map.put("lb", "1");
+//        } else {
+//            map.put("lb", "2");
+//        }
         call = RestAdapterManager.getApi().getGoodsList(map);
         call.enqueue(new JyCallBack<SuperGoodsListBean<List<GoodsListBean>>>() {
             @Override
@@ -308,7 +308,7 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
         switch (view.getId()) {
             case R.id.iv_add_card:
                 //加入购物车
-                ShoppingCardsUtils.updateShoppingCards(goodsBeanList, "add");
+                ShoppingCardsUtils.updateItem(goodsBean.getId() + "", "add");
                 break;
             case R.id.iv_add_star:
                 addCollection();

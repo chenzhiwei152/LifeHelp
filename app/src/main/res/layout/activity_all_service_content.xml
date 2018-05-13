@@ -10,12 +10,12 @@
         android:layout_height="wrap_content" />
 
     <include
-        android:visibility="gone"
         layout="@layout/common_search_view" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rc_type_list"
         android:layout_width="match_parent"
+        android:visibility="gone"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp" />

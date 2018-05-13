@@ -10,6 +10,7 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.bozhengjianshe.shenghuobang.R;
 import com.bozhengjianshe.shenghuobang.api.JyCallBack;
 import com.bozhengjianshe.shenghuobang.api.RestAdapterManager;
@@ -18,10 +19,12 @@ import com.bozhengjianshe.shenghuobang.base.BaseContext;
 import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
 import com.bozhengjianshe.shenghuobang.ui.adapter.OrderGoodsItemAdapter;
+import com.bozhengjianshe.shenghuobang.ui.bean.CommitOrderResultBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.OrderDetailBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.SuperBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.SuperOrderBean;
 import com.bozhengjianshe.shenghuobang.ui.utils.OrderStateUtils;
+import com.bozhengjianshe.shenghuobang.ui.utils.ShoppingCardsUtils;
 import com.bozhengjianshe.shenghuobang.utils.DialogUtils;
 import com.bozhengjianshe.shenghuobang.utils.LogUtils;
 import com.bozhengjianshe.shenghuobang.utils.NetUtil;
@@ -31,8 +34,7 @@ import com.bozhengjianshe.shenghuobang.view.MyDialog;
 import com.bozhengjianshe.shenghuobang.view.TitleBar;
 import com.jpay.JPay;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.io.IOException;
 
 import butterknife.BindView;
 import okhttp3.FormBody;
@@ -77,6 +79,8 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
     private String orderId;
     private String type;
     Call<SuperOrderBean<OrderDetailBean>> call;
+    Call<CommitOrderResultBean> commitRentCall;
+    OrderDetailBean orderDetailBean;
 
     @Override
     public int getContentViewLayoutId() {
@@ -95,7 +99,7 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
             type = getIntent().getExtras().getString("type");
         } catch (Exception e) {
         }
-        if (TextUtils.isEmpty(orderId)){
+        if (TextUtils.isEmpty(orderId)) {
             UIUtil.showToast("订单id为空");
             finish();
         }
@@ -136,8 +140,18 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
             tv_state_title.setText("订单号：" + orderDetailBean.getOdnum());
             tv_order_time.setText(UIUtil.timeStamp2Date(orderDetailBean.getTime() + ""));
 //            tv_deposit.setText(orderDetailBean.get());//定金
-            tv_real_pay.setText(orderDetailBean.getExtrafee() + "");
-            if (orderDetailBean.getState() == Constants.STATE_ONE||orderDetailBean.getState() == Constants.STATE_THREE) {
+
+            double price = 0.00f;
+            for (int i = 0; i < orderDetailBean.getDetail().size(); i++) {
+//                if (orderDetailBean.getDetail().get(i).getLb() == 2) {
+                //1   服务  2商品
+                price += (orderDetailBean.getDetail().get(i).getZj());
+//                } else {
+//                    price += orderDetailBean.getDetail().get(i).getFee();
+//                }
+            }
+            tv_real_pay.setText("￥" + price + "");
+            if (orderDetailBean.getState() == Constants.STATE_ONE || orderDetailBean.getState() == Constants.STATE_THREE) {
                 if (orderDetailBean.getState() == Constants.STATE_THREE) {
                     bt_cancel.setVisibility(View.GONE);
                 } else {
@@ -183,6 +197,7 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
                 if (response != null && response.body() != null) {
                     if (response.body().getCode() == Constants.successCode) {
                         try {
+                            orderDetailBean = response.body().getData();
                             initDate(response.body().getData());
                         } catch (Exception e) {
                         }
@@ -318,7 +333,7 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
                         myDialog.dismiss();
 //                        goNext();
                     } else {
-//                        commitRentOrder((payChannel) + "");
+                        commitRentOrder((payChannel) + "");
                         myDialog.dismiss();
                     }
 
@@ -331,37 +346,52 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
 
 
     /**
-     * 获取加密订单信息
+     * 提交订单
      */
-    private void getRSAOrderInfo() {
-        Map<String, String> map = new HashMap<>();
-        map.put("orderId", orderId);
-        map.put("userId", BaseContext.getInstance().getUserInfo().id);
-        map.put("payType", payChannel + "");
-        DialogUtils.showDialog(OrderDetailsActivity.this, "加载...", false);
-        getRsaOrderCall = RestAdapterManager.getApi().getRsaOrderInfo(map);
-        getRsaOrderCall.enqueue(new JyCallBack<SuperBean<String>>() {
+    private void commitRentOrder(final String type) {
+        if (!NetUtil.isNetworkConnected(this)) {
+            UIUtil.showToast(R.string.net_state_error);
+            return;
+        }
+
+        RequestBody formBody = new FormBody.Builder()
+//                .add("addressid", orderDetailBean.getId() + "")
+                .add("detail", JSON.toJSONString(ShoppingCardsUtils.changeCommitBean1(orderDetailBean.getDetail())))
+                .add("mark", type)
+                .add("memberid", BaseContext.getInstance().getUserInfo().id)
+                .build();
+        LogUtils.e(JSON.toJSONString(formBody));
+        DialogUtils.showDialog(OrderDetailsActivity.this, "获取订单...", false);
+        commitRentCall = RestAdapterManager.getApi().getRentOrder(formBody);
+        commitRentCall.enqueue(new JyCallBack<CommitOrderResultBean>() {
             @Override
-            public void onSuccess(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
+            public void onSuccess(Call<CommitOrderResultBean> call, Response<CommitOrderResultBean> response) {
                 DialogUtils.closeDialog();
-                if (response != null && response.body() != null && response.body().getCode() == Constants.successCode) {
-                    LogUtils.e(response.body().getMsg());
-                    pay(response.body().getData());
-                } else {
-                    UIUtil.showToast(response.body().getMsg());
+//                UIUtil.showToast(response.body().getMsg());
+                if (response != null && response.body() != null && response.body().getState() == Constants.successCode) {
+                    if (response.body().getOrder() != null) {
+
+                        orderId = response.body().getOrder().getId() + "";
+                    }
+                    pay((type.equals("1") ? response.body().getAlipay() : response.body().getWxpay()));
+//
                 }
             }
 
             @Override
-            public void onError(Call<SuperBean<String>> call, Throwable t) {
+            public void onError(Call<CommitOrderResultBean> call, Throwable t) {
                 DialogUtils.closeDialog();
-                UIUtil.showToast("支付失败");
+                UIUtil.showToast(t.getMessage());
             }
 
             @Override
-            public void onError(Call<SuperBean<String>> call, Response<SuperBean<String>> response) {
+            public void onError(Call<CommitOrderResultBean> call, Response<CommitOrderResultBean> response) {
                 DialogUtils.closeDialog();
-                UIUtil.showToast("支付失败");
+                try {
+                    UIUtil.showToast(response.errorBody().string());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

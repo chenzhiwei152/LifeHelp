@@ -14,7 +14,9 @@ public class Constants {
     public static int successCode = 100;
     public static String typeService = "1";
     public static String typeGoods = "2";
-    public static String homeTypeTag = "homeTypeTag";
+    public static String homeTypeTag = "homeTypeTagOne";
+    public static String homeTypeTagTwo = "homeTypeTagTwo";
+    public static String homeTypeTagThree = "homeTypeTagThree";
     public static String phone="10086";
 
 
@@ -37,6 +39,8 @@ public class Constants {
     public static final int LOCATION_CITY_SUCCESS = 0x30;//定位城市
     public static final int UPDATE_COLLECTION_SUCCESS = 0x31;//定位城市
     public static final int UPDATE_ORDER_SUCCESS = 0x32;//更新订单
+    public static final int ADD_NUMBER_CARD = 0x33;//增加购物车商品的数量
+    public static final int REDUCE_NUMBER_CARD = 0x34;//减少购物车商品的数量
 
     /**
      * 订单状态

@@ -22,21 +22,15 @@ import com.bozhengjianshe.shenghuobang.base.BaseContext;
 import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
 import com.bozhengjianshe.shenghuobang.ui.adapter.AllServiceTypeListAdapter;
-import com.bozhengjianshe.shenghuobang.ui.adapter.MainListItemAdapter;
+import com.bozhengjianshe.shenghuobang.ui.adapter.TypeListItemAdapter;
 import com.bozhengjianshe.shenghuobang.ui.bean.AllServiceTypeBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.GoodsListBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.SuperGoodsListBean;
 import com.bozhengjianshe.shenghuobang.ui.listerner.CommonOnClickListerner;
-import com.bozhengjianshe.shenghuobang.utils.ErrorMessageUtils;
 import com.bozhengjianshe.shenghuobang.view.TitleBar;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-import com.scwang.smartrefresh.layout.listener.OnRefreshLoadmoreListener;
 
-import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import retrofit2.Call;
@@ -64,7 +58,7 @@ public class AllBuildingActivity extends BaseActivity {
     @BindView(R.id.iv_clear)
     ImageView iv_clear;
     AllServiceTypeListAdapter typeListAdapter;
-    MainListItemAdapter contentListAdapter;
+    TypeListItemAdapter contentListAdapter;
     private int pageNumber = 1;
     private int pageSize = 10;
     private String classify;
@@ -92,29 +86,30 @@ public class AllBuildingActivity extends BaseActivity {
         sf_content_listview.setNestedScrollingEnabled(false);
 
         typeListAdapter = new AllServiceTypeListAdapter(this);
-        contentListAdapter = new MainListItemAdapter(this);
+        contentListAdapter = new TypeListItemAdapter(this);
 
         rc_type_list.setAdapter(typeListAdapter);
         sf_content_listview.setAdapter(contentListAdapter);
         swiperefreshlayout.setEnableLoadmore(false);
-        swiperefreshlayout.setOnRefreshLoadmoreListener(new OnRefreshLoadmoreListener() {
-            @Override
-            public void onLoadmore(RefreshLayout refreshlayout) {
-                getContentList();
-            }
-
-            @Override
-            public void onRefresh(RefreshLayout refreshlayout) {
-                pageNumber = 1;
-                getContentList();
-            }
-        });
+        swiperefreshlayout.setEnableRefresh(false);
+//        swiperefreshlayout.setOnRefreshLoadmoreListener(new OnRefreshLoadmoreListener() {
+//            @Override
+//            public void onLoadmore(RefreshLayout refreshlayout) {
+//                getContentList();
+//            }
+//
+//            @Override
+//            public void onRefresh(RefreshLayout refreshlayout) {
+//                pageNumber = 1;
+//                getContentList();
+//            }
+//        });
         typeListAdapter.setOnClickListerner(new CommonOnClickListerner() {
             @Override
             public void myOnClick(Object data) {
                 classify = ((AllServiceTypeBean) data).getId() + "";
-                pageNumber = 1;
-                getContentList();
+                contentListAdapter.setSecondType(((AllServiceTypeBean) data).getId());
+                getContentList(classify);
             }
         });
         edit_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -130,7 +125,7 @@ public class AllBuildingActivity extends BaseActivity {
                     }
 
                     // 搜索功能主体
-                    getContentList();
+//                    getContentList();
                     return true;
                 }
                 return false;
@@ -151,7 +146,7 @@ public class AllBuildingActivity extends BaseActivity {
             public void afterTextChanged(Editable editable) {
                 if (TextUtils.isEmpty(edit_search.getText().toString())) {
                     iv_clear.setVisibility(View.GONE);
-                }else {
+                } else {
                     iv_clear.setVisibility(View.VISIBLE);
                 }
             }
@@ -160,7 +155,7 @@ public class AllBuildingActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 edit_search.setText("");
-                getContentList();
+//                getContentList();
             }
         });
     }
@@ -168,7 +163,7 @@ public class AllBuildingActivity extends BaseActivity {
     @Override
     public void loadData() {
         getTyleList();
-        getContentList();
+//        getContentList();
     }
 
     @Override
@@ -187,6 +182,9 @@ public class AllBuildingActivity extends BaseActivity {
         return null;
     }
 
+    /**
+     * 获取二级分类列表
+     */
     private void getTyleList() {
         Call<SuperGoodsListBean<List<AllServiceTypeBean>>> getAllServiceTypeList = RestAdapterManager.getApi().getAllServiceTypeList("2");
         getAllServiceTypeList.enqueue(new JyCallBack<SuperGoodsListBean<List<AllServiceTypeBean>>>() {
@@ -199,6 +197,7 @@ public class AllBuildingActivity extends BaseActivity {
                         if ((response.body().getData().get(i).getId() + "").equals(classify)) {
                             typeListAdapter.setSelectedPosition(i);
                             rc_type_list.scrollToPosition(i);
+                            getContentList(classify);
                             break;
                         }
                     }
@@ -218,46 +217,34 @@ public class AllBuildingActivity extends BaseActivity {
         });
     }
 
-    private void getContentList() {
+    /**
+     * 获取三级分类
+     *
+     * @param threeLevelid
+     */
+    private void getContentList(String threeLevelid) {
 
-        Map<String, String> map = new HashMap<>();
-        map.put("lb", "2");//1 查询服务类商品 为 2 查询建材类商品 不传值则全部查询
-        map.put("yjfl", classify);//根据一级分类的id获取其目录下产品 不传值则全部查询
-        map.put("name", edit_search.getText().toString());
-        goodsListCall = RestAdapterManager.getApi().getGoodsList(map);
-
-        goodsListCall.enqueue(new JyCallBack<SuperGoodsListBean<List<GoodsListBean>>>() {
+        Call<SuperGoodsListBean<List<AllServiceTypeBean>>> getAllServiceTypeList = RestAdapterManager.getApi().getAllServiceTypeList(threeLevelid);
+        getAllServiceTypeList.enqueue(new JyCallBack<SuperGoodsListBean<List<AllServiceTypeBean>>>() {
             @Override
-            public void onSuccess(Call<SuperGoodsListBean<List<GoodsListBean>>> call, Response<SuperGoodsListBean<List<GoodsListBean>>> response) {
-                swiperefreshlayout.finishLoadmore();
-                swiperefreshlayout.finishRefresh();
-//                if (pageNumber == 1) {
+            public void onSuccess(Call<SuperGoodsListBean<List<AllServiceTypeBean>>> call, Response<SuperGoodsListBean<List<AllServiceTypeBean>>> response) {
                 contentListAdapter.ClearData();
-//                }
                 if (response != null && response.body() != null && response.body().getData() != null && response.body().getData().size() > 0) {
-                    contentListAdapter.addList(response.body().getData());
-                    pageNumber++;
-                    swiperefreshlayout.setEnableLoadmore(false);
-                } else {
-                    swiperefreshlayout.setEnableLoadmore(false);
+                    if (response.body() != null)
+                        contentListAdapter.addList(response.body().getData());
+
                 }
+
             }
 
             @Override
-            public void onError(Call<SuperGoodsListBean<List<GoodsListBean>>> call, Throwable t) {
-                swiperefreshlayout.finishLoadmore();
-                swiperefreshlayout.finishRefresh();
+            public void onError(Call<SuperGoodsListBean<List<AllServiceTypeBean>>> call, Throwable t) {
+
             }
 
             @Override
-            public void onError(Call<SuperGoodsListBean<List<GoodsListBean>>> call, Response<SuperGoodsListBean<List<GoodsListBean>>> response) {
-                swiperefreshlayout.finishLoadmore();
-                swiperefreshlayout.finishRefresh();
-                try {
-                    ErrorMessageUtils.taostErrorMessage(AllBuildingActivity.this, response.errorBody().string());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            public void onError(Call<SuperGoodsListBean<List<AllServiceTypeBean>>> call, Response<SuperGoodsListBean<List<AllServiceTypeBean>>> response) {
+
             }
         });
     }

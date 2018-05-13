@@ -12,6 +12,15 @@ public class AllServiceTypeBean {
     private int rank;
     private int id;
     private int mark;
+    private String thumbnail;
+
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
+    }
 
     public String getName() {
         return name;

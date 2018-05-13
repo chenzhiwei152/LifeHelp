@@ -11,6 +11,7 @@ import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
 import com.bozhengjianshe.shenghuobang.ui.bean.CardCacheBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.GoodsListBean;
+import com.bozhengjianshe.shenghuobang.ui.bean.OrderDetailBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.SuperShoppingCardsBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.UserInfoBean;
 import com.bozhengjianshe.shenghuobang.utils.ParserUtil;
@@ -25,6 +26,8 @@ import okhttp3.FormBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Response;
+
+import static com.bozhengjianshe.shenghuobang.base.Constants.ADD_TO_CARD;
 
 /**
  * Created by Administrator on 2018/5/6 0006.
@@ -46,7 +49,7 @@ public class ShoppingCardsUtils {
                     UserInfoBean userInfo = BaseContext.getInstance().getUserInfo();
                     userInfo.commodities = handleId(changeBean(ids), type);
                     BaseContext.getInstance().setUserInfo(userInfo);
-                    EventBus.getDefault().post(new EventBusCenter<>(Constants.ADD_TO_CARD));
+                    EventBus.getDefault().post(new EventBusCenter<>(ADD_TO_CARD));
                 }
             }
 
@@ -65,7 +68,7 @@ public class ShoppingCardsUtils {
     private static String handleId(List<CardCacheBean> content, String type) {
         String ids = BaseContext.getInstance().getUserInfo().commodities;
         List<CardCacheBean> goodsListBean = new ArrayList<>();
-        if (TextUtils.isEmpty(ids)){
+        if (TextUtils.isEmpty(ids)) {
             List<CardCacheBean> cache = new ArrayList<>();
             for (int j = 0; j < content.size(); j++) {
                 if (goodsListBean.contains(content.get(j))) {
@@ -189,12 +192,72 @@ public class ShoppingCardsUtils {
         for (int i = 0; i < content.size(); i++) {
             CommitOrderBean cardCacheBean = new CommitOrderBean();
             cardCacheBean.setName(content.get(i).getCname());
-            cardCacheBean.setDj(content.get(i).getProfit() + "");
+            if (content.get(i).getLb() == 2) {
+                cardCacheBean.setDj((content.get(i).getProfit() + content.get(i).getCost()) + "");
+                cardCacheBean.setZj((content.get(i).getProfit() + content.get(i).getCost()) * content.get(i).getNum() + "");
+            } else {
+                cardCacheBean.setDj((content.get(i).getFee()) + "");
+                cardCacheBean.setZj(content.get(i).getFee() * content.get(i).getNum() + "");
+            }
             cardCacheBean.setId(content.get(i).getId() + "");
             cardCacheBean.setNum(content.get(i).getNum() + "");
-            cardCacheBean.setZj(content.get(i).getProfit() * content.get(i).getNum() + "");
+
             CardCacheBean.add(cardCacheBean);
         }
         return CardCacheBean;
+    }
+
+    /**
+     * 商品详情转换成提交订单所需要的数据
+     */
+
+    public static List<CommitOrderBean> changeCommitBean1(List<OrderDetailBean.DetailBean> content) {
+        List<CommitOrderBean> CardCacheBean = new ArrayList<>();
+        for (int i = 0; i < content.size(); i++) {
+            CommitOrderBean cardCacheBean = new CommitOrderBean();
+            cardCacheBean.setName(content.get(i).getName());
+            cardCacheBean.setDj((content.get(i).getDj()));
+            cardCacheBean.setId(content.get(i).getId() + "");
+            cardCacheBean.setNum(content.get(i).getNum() + "");
+            cardCacheBean.setZj(content.get(i).getZj() + "");
+            CardCacheBean.add(cardCacheBean);
+        }
+        return CardCacheBean;
+    }
+
+    /**
+     * 更新数量
+     *
+     * @param type
+     */
+    public static void updateItem(String id, String type) {
+        Call<SuperShoppingCardsBean<List<GoodsListBean>>> updateCall;
+        RequestBody body = new FormBody.Builder().add("memberid", BaseContext.getInstance().getUserInfo().id).add("comid", id).build();
+        if (type.equals("add")) {
+            updateCall = RestAdapterManager.getApi().addCardList(body);
+        } else {
+            updateCall = RestAdapterManager.getApi().reduceCardList(body);
+        }
+
+        updateCall.enqueue(new JyCallBack<SuperShoppingCardsBean<List<GoodsListBean>>>() {
+            @Override
+            public void onSuccess(Call<SuperShoppingCardsBean<List<GoodsListBean>>> call, Response<SuperShoppingCardsBean<List<GoodsListBean>>> response) {
+                try {
+                    UIUtil.showToast(response.body().getMsg());
+                    EventBus.getDefault().post(new EventBusCenter<>(Constants.ADD_TO_CARD));
+                } catch (Exception e) {
+
+                }
+            }
+
+            @Override
+            public void onError(Call<SuperShoppingCardsBean<List<GoodsListBean>>> call, Throwable t) {
+
+            }
+
+            @Override
+            public void onError(Call<SuperShoppingCardsBean<List<GoodsListBean>>> call, Response<SuperShoppingCardsBean<List<GoodsListBean>>> response) {
+            }
+        });
     }
 }

@@ -165,6 +165,42 @@ public interface JyApi {
     @GET(api + "getComList" + suffix)
     Call<SuperGoodsListBean<List<GoodsListBean>>> getGoodsList(@QueryMap Map<String, String> map);
 
+    /**
+     * 获取购物车列表
+     *
+     * @param
+     * @return
+     */
+    @POST(api + "getMCommodities" + suffix)
+    Call<SuperShoppingCardsBean<List<GoodsListBean>>> getShoppingCardList(@Body RequestBody map);
+
+    /**
+     * 减少购物车商品数量
+     *
+     * @param
+     * @return
+     */
+    @POST(api + "reduceMCommodities" + suffix)
+    Call<SuperShoppingCardsBean<List<GoodsListBean>>> reduceCardList(@Body RequestBody map);
+
+    /**
+     * 增加购物车商品数量
+     *
+     * @param
+     * @return
+     */
+    @POST(api + "addMCommodities" + suffix)
+    Call<SuperShoppingCardsBean<List<GoodsListBean>>> addCardList(@Body RequestBody map);
+
+    /**
+     * 删除购物车列表
+     *
+     * @param
+     * @return
+     */
+    @POST(api + "deleteMCommodities" + suffix)
+    Call<SuperShoppingCardsBean<List<GoodsListBean>>> deleteCardList(@Body RequestBody map);
+
 
     /**
      * 首页服务广告信息
@@ -341,6 +377,7 @@ public interface JyApi {
      */
     @POST(api + "getOrderFwList" + suffix)
     Call<SuperOrderListBean<List<BuyOrderListItemBean>>> getOrderList(@Body RequestBody body);
+
     /**
      * 获取服务商服务内容
      */
