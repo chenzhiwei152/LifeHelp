@@ -68,7 +68,7 @@ public class OrderDetailBean implements Serializable {
     private int lxrhyzk;
     private int lxrxb;
     private long time;
-    private int ncount;
+    private double ncount;
     private String age;
     private String mark;
     private int memberid;
@@ -266,11 +266,11 @@ public class OrderDetailBean implements Serializable {
         this.time = time;
     }
 
-    public int getNcount() {
+    public double getNcount() {
         return ncount;
     }
 
-    public void setNcount(int ncount) {
+    public void setNcount(double ncount) {
         this.ncount = ncount;
     }
 

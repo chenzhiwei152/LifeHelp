@@ -32,7 +32,25 @@ public class TypeListItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private Context context;
     private boolean isLight;
     private final LayoutInflater mLayoutInflater;
+    private String superType;
+    private String oneType;
     private int secondType;
+
+    public String getSuperType() {
+        return superType;
+    }
+
+    public void setSuperType(String superType) {
+        this.superType = superType;
+    }
+
+    public String getOneType() {
+        return oneType;
+    }
+
+    public void setOneType(String oneType) {
+        this.oneType = oneType;
+    }
 
     public int getSecondType() {
         return secondType;
@@ -100,8 +118,9 @@ public class TypeListItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 //                    bundle.putString("id", list.get(position).getId() + "");
 //                    bundle.putString("type", Constants.typeService);
                     bundle.putString(Constants.homeTypeTagThree, list.get(position).getId() + "");//三级
-                    bundle.putString(Constants.homeTypeTag, list.get(position).getMark() + "");//一级
+                    bundle.putString(Constants.homeTypeTag, oneType + "");//一级
                     bundle.putString(Constants.homeTypeTagTwo, secondType + "");//二级
+                    bundle.putString(Constants.homeTypeTagSuper, superType + "");//dingji
                     bundle.putString("title", list.get(position).getName()+ "");
                     intent.putExtras(bundle);
                     context.startActivity(intent);

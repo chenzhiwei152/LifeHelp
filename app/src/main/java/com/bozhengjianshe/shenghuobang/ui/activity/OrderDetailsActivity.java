@@ -141,16 +141,16 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
             tv_order_time.setText(UIUtil.timeStamp2Date(orderDetailBean.getTime() + ""));
 //            tv_deposit.setText(orderDetailBean.get());//定金
 
-            double price = 0.00f;
-            for (int i = 0; i < orderDetailBean.getDetail().size(); i++) {
-//                if (orderDetailBean.getDetail().get(i).getLb() == 2) {
-                //1   服务  2商品
-                price += (orderDetailBean.getDetail().get(i).getZj());
-//                } else {
-//                    price += orderDetailBean.getDetail().get(i).getFee();
-//                }
-            }
-            tv_real_pay.setText("￥" + price + "");
+//            double price = 0.00f;
+//            for (int i = 0; i < orderDetailBean.getDetail().size(); i++) {
+////                if (orderDetailBean.getDetail().get(i).getLb() == 2) {
+//                //1   服务  2商品
+//                price += (orderDetailBean.getDetail().get(i).getZj());
+////                } else {
+////                    price += orderDetailBean.getDetail().get(i).getFee();
+////                }
+//            }
+            tv_real_pay.setText("￥" + orderDetailBean.getNcount() + "");
             if (orderDetailBean.getState() == Constants.STATE_ONE || orderDetailBean.getState() == Constants.STATE_THREE) {
                 if (orderDetailBean.getState() == Constants.STATE_THREE) {
                     bt_cancel.setVisibility(View.GONE);

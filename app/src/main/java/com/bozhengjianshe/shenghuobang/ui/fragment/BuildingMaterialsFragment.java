@@ -167,7 +167,7 @@ public class BuildingMaterialsFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 Bundle bundle1 = new Bundle();
-                bundle1.putString(Constants.homeTypeTag,"1");
+                bundle1.putString(Constants.homeTypeTag,"22");
                 Intent intent=new Intent(getActivity(),AllBuildingActivity.class);
                 intent.putExtras(bundle1);
                 startActivity(intent);
@@ -231,16 +231,16 @@ public class BuildingMaterialsFragment extends BaseFragment {
         menus.add(Home2);
 
         Bundle bundle3 = new Bundle();
-        bundle3.putString(Constants.homeTypeTag,"28");
+        bundle3.putString(Constants.homeTypeTag,"23");
         MainMenuInfo Home3 = new MainMenuInfo("水电材料", R.mipmap.ic_home_13, AllBuildingActivity.class, bundle3);
         menus.add(Home3);
 
         Bundle bundle4 = new Bundle();
-        bundle4.putString(Constants.homeTypeTag,"25");
+        bundle4.putString(Constants.homeTypeTag,"24");
         MainMenuInfo Home4 = new MainMenuInfo("装修装饰", R.mipmap.ic_home_14, AllBuildingActivity.class, bundle4);
         menus.add(Home4);
         Bundle bundle5 = new Bundle();
-        bundle5.putString(Constants.homeTypeTag,"27");
+        bundle5.putString(Constants.homeTypeTag,"2");
         MainMenuInfo Home5 = new MainMenuInfo("灯饰照明", R.mipmap.ic_home_15, AllBuildingActivity.class, bundle5);
         menus.add(Home5);
 

@@ -104,12 +104,14 @@ public class AllBuildingActivity extends BaseActivity {
 //                getContentList();
 //            }
 //        });
+        contentListAdapter.setSuperType("2");
+        contentListAdapter.setOneType(classify);
         typeListAdapter.setOnClickListerner(new CommonOnClickListerner() {
             @Override
             public void myOnClick(Object data) {
-                classify = ((AllServiceTypeBean) data).getId() + "";
+//                classify = ((AllServiceTypeBean) data).getId() + "";
                 contentListAdapter.setSecondType(((AllServiceTypeBean) data).getId());
-                getContentList(classify);
+                getContentList(((AllServiceTypeBean) data).getId()+"");
             }
         });
         edit_search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -186,21 +188,23 @@ public class AllBuildingActivity extends BaseActivity {
      * 获取二级分类列表
      */
     private void getTyleList() {
-        Call<SuperGoodsListBean<List<AllServiceTypeBean>>> getAllServiceTypeList = RestAdapterManager.getApi().getAllServiceTypeList("2");
+        Call<SuperGoodsListBean<List<AllServiceTypeBean>>> getAllServiceTypeList = RestAdapterManager.getApi().getAllServiceTypeList(classify);
         getAllServiceTypeList.enqueue(new JyCallBack<SuperGoodsListBean<List<AllServiceTypeBean>>>() {
             @Override
             public void onSuccess(Call<SuperGoodsListBean<List<AllServiceTypeBean>>> call, Response<SuperGoodsListBean<List<AllServiceTypeBean>>> response) {
                 if (response != null && response.body() != null && response.body().getData() != null && response.body().getData().size() > 0) {
                     typeListAdapter.ClearData();
                     typeListAdapter.addList(response.body().getData());
-                    for (int i = 0; i < response.body().getData().size(); i++) {
-                        if ((response.body().getData().get(i).getId() + "").equals(classify)) {
-                            typeListAdapter.setSelectedPosition(i);
-                            rc_type_list.scrollToPosition(i);
-                            getContentList(classify);
-                            break;
-                        }
+//                    for (int i = 0; i < response.body().getData().size(); i++) {
+//                        if ((response.body().getData().get(i).getId() + "").equals(classify)) {
+//                            typeListAdapter.setSelectedPosition(i);
+//                            rc_type_list.scrollToPosition(i);
+                    if (response.body().getData() != null && response.body().getData().size() > 0) {
+                        getContentList(response.body().getData().get(0).getId() + "");
                     }
+//                            break;
+//                        }
+//                    }
                 }
 
             }

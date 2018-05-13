@@ -17,6 +17,7 @@ public class Constants {
     public static String homeTypeTag = "homeTypeTagOne";
     public static String homeTypeTagTwo = "homeTypeTagTwo";
     public static String homeTypeTagThree = "homeTypeTagThree";
+    public static String homeTypeTagSuper = "homeTypeTagSuper";
     public static String phone="10086";
 
 
