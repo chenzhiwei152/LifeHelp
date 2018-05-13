@@ -12,14 +12,14 @@ public class AllServiceTypeBean {
     private int rank;
     private int id;
     private int mark;
-    private String thumbnail;
+    private String linkurl;
 
-    public String getThumbnail() {
-        return thumbnail;
+    public String getLinkurl() {
+        return linkurl;
     }
 
-    public void setThumbnail(String thumbnail) {
-        this.thumbnail = thumbnail;
+    public void setLinkurl(String linkurl) {
+        this.linkurl = linkurl;
     }
 
     public String getName() {

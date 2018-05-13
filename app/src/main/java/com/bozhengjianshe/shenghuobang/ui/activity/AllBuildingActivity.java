@@ -21,7 +21,7 @@ import com.bozhengjianshe.shenghuobang.base.BaseActivity;
 import com.bozhengjianshe.shenghuobang.base.BaseContext;
 import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
-import com.bozhengjianshe.shenghuobang.ui.adapter.AllServiceTypeListAdapter;
+import com.bozhengjianshe.shenghuobang.ui.adapter.AllBuildingTypeListAdapter;
 import com.bozhengjianshe.shenghuobang.ui.adapter.TypeListItemAdapter;
 import com.bozhengjianshe.shenghuobang.ui.bean.AllServiceTypeBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.GoodsListBean;
@@ -57,7 +57,7 @@ public class AllBuildingActivity extends BaseActivity {
     ImageView bt_customer;
     @BindView(R.id.iv_clear)
     ImageView iv_clear;
-    AllServiceTypeListAdapter typeListAdapter;
+    AllBuildingTypeListAdapter typeListAdapter;
     TypeListItemAdapter contentListAdapter;
     private int pageNumber = 1;
     private int pageSize = 10;
@@ -85,7 +85,7 @@ public class AllBuildingActivity extends BaseActivity {
         sf_content_listview.setLayoutManager(new LinearLayoutManager(this));
         sf_content_listview.setNestedScrollingEnabled(false);
 
-        typeListAdapter = new AllServiceTypeListAdapter(this);
+        typeListAdapter = new AllBuildingTypeListAdapter(this);
         contentListAdapter = new TypeListItemAdapter(this);
 
         rc_type_list.setAdapter(typeListAdapter);

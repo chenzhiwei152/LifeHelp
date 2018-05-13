@@ -97,7 +97,7 @@ public class TypeListItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final int position) {
         if (list != null) {
             try {
-                ImageLoadedrManager.getInstance().display(context, list.get(position).getThumbnail(), ((ImageViewHolder) viewHolder).iv_image);
+                ImageLoadedrManager.getInstance().display(context, list.get(position).getLinkurl(), ((ImageViewHolder) viewHolder).iv_image);
             } catch (Exception e) {
 
             }
