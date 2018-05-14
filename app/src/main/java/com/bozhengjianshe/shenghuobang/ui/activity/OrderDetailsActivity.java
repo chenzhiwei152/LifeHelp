@@ -150,7 +150,7 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
 ////                    price += orderDetailBean.getDetail().get(i).getFee();
 ////                }
 //            }
-            tv_real_pay.setText("￥" + orderDetailBean.getNcount() + "");
+            tv_real_pay.setText(getResources().getString(R.string.money)+ String.format("%.2f", orderDetailBean.getNcount()) + "");
             if (orderDetailBean.getState() == Constants.STATE_ONE || orderDetailBean.getState() == Constants.STATE_THREE) {
                 if (orderDetailBean.getState() == Constants.STATE_THREE) {
                     bt_cancel.setVisibility(View.GONE);

@@ -266,12 +266,12 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
             type = goodsBean.getLb() + "";
             setDefault();
             if (goodsBean.getLb() == 2) {
-                tv_goods_price.setText((goodsBean.getProfit() + goodsBean.getCost()) + "");
-                tv_all_price.setText("￥" + (goodsBean.getProfit() + goodsBean.getCost() + goodsBean.getFreight()));
+                tv_goods_price.setText(getResources().getString(R.string.money)+(goodsBean.getProfit() + goodsBean.getCost()) + "");
+                tv_all_price.setText(getResources().getString(R.string.money) +String.format("%.2f", (goodsBean.getProfit() + goodsBean.getCost() + goodsBean.getFreight())));
 
             } else {
-                tv_goods_price.setText((goodsBean.getFee()) + "");
-                tv_all_price.setText("￥" + goodsBean.getFee());
+                tv_goods_price.setText(getResources().getString(R.string.money)+String.format("%.2f", (goodsBean.getFee())) + "");
+                tv_all_price.setText(getResources().getString(R.string.money)+String.format("%.2f", goodsBean.getFee())+"");
             }
             tv_goods_name.setText(goodsBean.getCname());//标题
             List<String> pics = new ArrayList<>();

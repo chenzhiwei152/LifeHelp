@@ -189,7 +189,7 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
             }
 
         }
-        tv_all_price.setText("￥" + price);
+        tv_all_price.setText(getResources().getString(R.string.money) + String.format("%.2f", price)+"");
     }
 
     @Override

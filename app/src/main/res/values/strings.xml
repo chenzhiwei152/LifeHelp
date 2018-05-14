@@ -31,10 +31,6 @@
     <string name="main_tab_name_property">物业</string>
 
 
-
-
-
-
     <string name="sm_item_auth">ShareSDK授权demo</string>
     <string name="not_yet_authorized">尚未授权</string>
     <string name="close_info_dialog">关闭信息界面</string>
@@ -65,5 +61,5 @@
     <string name="Network_error">网络出错</string>
     <string name="Making_sure_your_location">正在定位……</string>
     <string name="please_check">key 验证出错! 请在 AndroidManifest.xml 文件中检查 key 设置</string>
-
+    <string name="money">¥</string>
 </resources>

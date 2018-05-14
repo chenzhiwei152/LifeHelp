@@ -351,6 +351,7 @@ public class BuildingMaterialsFragment extends BaseFragment {
                     for (int i = 0; i < response.body().getData().size(); i++) {
                         bannerBean bannerBean = new bannerBean();
                         bannerBean.setImage(response.body().getData().get(i).img);
+                        bannerBean.setId(response.body().getData().get(i).detail);
                         list.add(bannerBean);
                     }
                     initAD(list);
