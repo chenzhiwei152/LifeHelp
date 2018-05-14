@@ -69,7 +69,6 @@ public class AllServiceContentActivity extends BaseActivity {
     private String classifyOne;
     private String classifyTwo;
     private String classifyThree;
-    private String classifySuper;
     String title = "";
     private String keyWord;
     private Call<SuperGoodsListBean<List<AllServiceTypeBean>>> getAllServiceTypeList;
@@ -88,7 +87,6 @@ public class AllServiceContentActivity extends BaseActivity {
             classifyOne = bundle.getString(Constants.homeTypeTag);
             classifyTwo = bundle.getString(Constants.homeTypeTagTwo);
             classifyThree = bundle.getString(Constants.homeTypeTagThree);
-            classifySuper = bundle.getString(Constants.homeTypeTagSuper);
             title = bundle.getString("title","商品列表");
         }
         bt_customer.setVisibility(View.GONE);
@@ -230,10 +228,9 @@ public class AllServiceContentActivity extends BaseActivity {
     private void getContentList() {
 
         Map<String, String> map = new HashMap<>();
-        map.put("lb", classifySuper);//1 查询服务类商品 为 2 查询建材类商品 不传值则全部查询
-        map.put("yjfl", classifyOne);//根据一级分类的id获取其目录下产品 不传值则全部查询
-        map.put("ejfl", classifyTwo);//根据一级分类的id获取其目录下产品 不传值则全部查询
-        map.put("sjfl", classifyThree);//根据一级分类的id获取其目录下产品 不传值则全部查询
+        map.put("lb", classifyOne);//1 查询服务类商品 为 2 查询建材类商品 不传值则全部查询
+        map.put("yjfl", classifyTwo);//根据一级分类的id获取其目录下产品 不传值则全部查询
+        map.put("ejfl", classifyThree);//根据一级分类的id获取其目录下产品 不传值则全部查询
         map.put("name", edit_search.getText().toString());
         goodsListCall = RestAdapterManager.getApi().getGoodsList(map);
         goodsListCall.enqueue(new JyCallBack<SuperGoodsListBean<List<GoodsListBean>>>() {

@@ -107,11 +107,12 @@ public class AllServiceActivity extends BaseActivity {
 //                getContentList();
 //            }
 //        });
-        contentListAdapter.setSuperType("1");
-        contentListAdapter.setOneType(classify);
+        contentListAdapter.setOneType("1");
         typeListAdapter.setOnClickListerner(new CommonOnClickListerner() {
             @Override
             public void myOnClick(Object data) {
+                classify=((AllServiceTypeBean) data).getId()+"";
+                contentListAdapter.setSecondType(((AllServiceTypeBean) data).getId());
                 contentListAdapter.setSecondType(((AllServiceTypeBean) data).getId());
                 getContentList(((AllServiceTypeBean) data).getId()+"");
             }
@@ -186,15 +187,23 @@ public class AllServiceActivity extends BaseActivity {
     }
 
     private void getTyleList() {
-        getAllServiceTypeList = RestAdapterManager.getApi().getAllServiceTypeList(classify);
+        getAllServiceTypeList = RestAdapterManager.getApi().getAllServiceTypeList("1");
         getAllServiceTypeList.enqueue(new JyCallBack<SuperGoodsListBean<List<AllServiceTypeBean>>>() {
             @Override
             public void onSuccess(Call<SuperGoodsListBean<List<AllServiceTypeBean>>> call, Response<SuperGoodsListBean<List<AllServiceTypeBean>>> response) {
                 if (response != null && response.body() != null && response.body().getData() != null && response.body().getData().size() > 0) {
                     typeListAdapter.ClearData();
                     typeListAdapter.addList(response.body().getData());
-                    if (response.body().getData() != null && response.body().getData().size() > 0) {
-                        getContentList(response.body().getData().get(0).getId() + "");
+//                    if (response.body().getData() != null && response.body().getData().size() > 0) {
+//                        getContentList(response.body().getData().get(0).getId() + "");
+//                    }
+                    for (int i = 0; i < response.body().getData().size(); i++) {
+                        if ((response.body().getData().get(i).getId() + "").equals(classify)) {
+                            typeListAdapter.setSelectedPosition(i);
+                            rc_type_list.scrollToPosition(i);
+                            getContentList(classify);
+                            break;
+                        }
                     }
                 }
 
