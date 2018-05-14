@@ -108,11 +108,11 @@ public class AllServiceActivity extends BaseActivity {
 //            }
 //        });
         contentListAdapter.setOneType("1");
+        contentListAdapter.setSecondType(Integer.parseInt(classify));
         typeListAdapter.setOnClickListerner(new CommonOnClickListerner() {
             @Override
             public void myOnClick(Object data) {
                 classify=((AllServiceTypeBean) data).getId()+"";
-                contentListAdapter.setSecondType(((AllServiceTypeBean) data).getId());
                 contentListAdapter.setSecondType(((AllServiceTypeBean) data).getId());
                 getContentList(((AllServiceTypeBean) data).getId()+"");
             }

@@ -105,6 +105,7 @@ public class AllBuildingActivity extends BaseActivity {
 //            }
 //        });
         contentListAdapter.setOneType("2");
+        contentListAdapter.setSecondType(Integer.parseInt(classify));
         typeListAdapter.setOnClickListerner(new CommonOnClickListerner() {
             @Override
             public void myOnClick(Object data) {
