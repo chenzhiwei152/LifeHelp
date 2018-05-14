@@ -228,8 +228,11 @@ public class AllServiceContentActivity extends BaseActivity {
     private void getContentList() {
 
         Map<String, String> map = new HashMap<>();
+        if (!TextUtils.isEmpty(classifyOne))
         map.put("lb", classifyOne);//1 查询服务类商品 为 2 查询建材类商品 不传值则全部查询
+        if (!TextUtils.isEmpty(classifyTwo))
         map.put("yjfl", classifyTwo);//根据一级分类的id获取其目录下产品 不传值则全部查询
+        if (!TextUtils.isEmpty(classifyThree))
         map.put("ejfl", classifyThree);//根据一级分类的id获取其目录下产品 不传值则全部查询
         map.put("name", edit_search.getText().toString());
         goodsListCall = RestAdapterManager.getApi().getGoodsList(map);

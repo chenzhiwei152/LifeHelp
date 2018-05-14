@@ -28,6 +28,7 @@ import com.bozhengjianshe.shenghuobang.base.BaseFragment;
 import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
 import com.bozhengjianshe.shenghuobang.ui.activity.AllServiceActivity;
+import com.bozhengjianshe.shenghuobang.ui.activity.AllServiceContentActivity;
 import com.bozhengjianshe.shenghuobang.ui.activity.GoodsDetailsActivity;
 import com.bozhengjianshe.shenghuobang.ui.adapter.MainListItemAdapter;
 import com.bozhengjianshe.shenghuobang.ui.adapter.MainMenusAdapter;
@@ -181,8 +182,8 @@ public class IndexFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 Bundle bundle1 = new Bundle();
-                bundle1.putString(Constants.homeTypeTag, "14");
-                Intent intent = new Intent(getActivity(), AllServiceActivity.class);
+//                bundle1.putString(Constants.homeTypeTag, "14");
+                Intent intent = new Intent(getActivity(), AllServiceContentActivity.class);
                 intent.putExtras(bundle1);
                 startActivity(intent);
             }
