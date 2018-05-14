@@ -65,22 +65,21 @@ public class CommitOrderItemAdapter extends RecyclerView.Adapter<RecyclerView.Vi
     public void onBindViewHolder(RecyclerView.ViewHolder viewHolder, final int position) {
         if (list != null) {
             ((ImageViewHolder) viewHolder).tv_title.setText(list.get(position).getCname());
-            ((ImageViewHolder) viewHolder).tv_number_per.setText("x "+list.get(position).getNum());
+            ((ImageViewHolder) viewHolder).tv_number_per.setText("x " + list.get(position).getNum());
 
-            ((ImageViewHolder) viewHolder).tv_price.setText("￥" + (list.get(position).getProfit() + list.get(position).getCost()) + "");
-            ((ImageViewHolder) viewHolder).tv_all_price.setText("￥" + list.get(position).getProfit() * list.get(position).getNum() + "");
             if (list.get(position).getLb() == 2) {
                 // 1   服务  2商品
                 ((ImageViewHolder) viewHolder).tv_goods_type.setText("商品");
                 ((ImageViewHolder) viewHolder).tv_number.setText("共" + list.get(position).getNum() + "件商品");
-                ((ImageViewHolder) viewHolder).tv_price.setText("￥" + (list.get(position).getProfit() + list.get(position).getCost()) + "");
-                ((ImageViewHolder) viewHolder).tv_all_price.setText("￥" + ((list.get(position).getProfit() + list.get(position).getCost()) * list.get(position).getNum() + (list.get(position).getFreight())) + "");
-
+                double d = (list.get(position).getProfit() + list.get(position).getCost());
+                double all = d* list.get(position).getNum();
+                ((ImageViewHolder) viewHolder).tv_price.setText(context.getResources().getString(R.string.money) + d + "");
+                ((ImageViewHolder) viewHolder).tv_all_price.setText(context.getResources().getString(R.string.money) + all+ "");
             } else {
                 ((ImageViewHolder) viewHolder).tv_goods_type.setText("服务");
                 ((ImageViewHolder) viewHolder).tv_number.setText("服务预约款");
-                ((ImageViewHolder) viewHolder).tv_price.setText("￥" + (list.get(position).getFee()) + "");
-                ((ImageViewHolder) viewHolder).tv_all_price.setText("￥" + list.get(position).getFee() * list.get(position).getNum() + "");
+                ((ImageViewHolder) viewHolder).tv_price.setText(context.getResources().getString(R.string.money) + (list.get(position).getFee()) + "");
+                ((ImageViewHolder) viewHolder).tv_all_price.setText(context.getResources().getString(R.string.money) + list.get(position).getFee() * list.get(position).getNum() + "");
 
             }
 
