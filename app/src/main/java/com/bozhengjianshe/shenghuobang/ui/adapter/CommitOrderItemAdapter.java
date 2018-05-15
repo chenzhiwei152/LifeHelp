@@ -80,10 +80,7 @@ public class CommitOrderItemAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 ((ImageViewHolder) viewHolder).tv_number.setText("服务预约款");
                 ((ImageViewHolder) viewHolder).tv_price.setText(context.getResources().getString(R.string.money) + (list.get(position).getFee()) + "");
                 ((ImageViewHolder) viewHolder).tv_all_price.setText(context.getResources().getString(R.string.money) + list.get(position).getFee() * list.get(position).getNum() + "");
-
             }
-
-
             ImageLoadedrManager.getInstance().display(context, list.get(position).getThumbnail(), ((ImageViewHolder) viewHolder).iv_goods);
         }
     }

@@ -289,6 +289,14 @@ public interface JyApi {
      */
     @POST(api + "insertOrder" + suffix)
     Call<CommitOrderResultBean> getRentOrder(@Body RequestBody map);
+    /**
+     * 补交款项的提交订单
+     *
+     * @param map
+     * @return
+     */
+    @POST(api + "jxzf" + suffix)
+    Call<CommitOrderResultBean> getRentOrderAgain(@Body RequestBody map);
 
 
     /**

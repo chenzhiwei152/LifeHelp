@@ -67,6 +67,7 @@ public class GoodsListBean implements Serializable {
     }
 
     private List<PictureBean> picture;
+    private List<PictureBean> sowing;
 
     public String getThumbnail() {
         return thumbnail;
@@ -194,6 +195,18 @@ public class GoodsListBean implements Serializable {
 
     public void setPicture(List<PictureBean> picture) {
         this.picture = picture;
+    }
+
+    public void setFreight(double freight) {
+        this.freight = freight;
+    }
+
+    public List<PictureBean> getSowing() {
+        return sowing;
+    }
+
+    public void setSowing(List<PictureBean> sowing) {
+        this.sowing = sowing;
     }
 
     public static class PictureBean implements Serializable {

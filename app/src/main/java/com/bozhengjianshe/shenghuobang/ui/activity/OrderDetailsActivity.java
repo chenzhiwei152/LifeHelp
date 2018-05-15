@@ -150,7 +150,7 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
 ////                    price += orderDetailBean.getDetail().get(i).getFee();
 ////                }
 //            }
-            tv_real_pay.setText(getResources().getString(R.string.money)+ String.format("%.2f", orderDetailBean.getNcount()) + "");
+            tv_real_pay.setText(getResources().getString(R.string.money) + String.format("%.2f", orderDetailBean.getNcount()) + "");
             if (orderDetailBean.getState() == Constants.STATE_ONE || orderDetailBean.getState() == Constants.STATE_THREE) {
                 if (orderDetailBean.getState() == Constants.STATE_THREE) {
                     bt_cancel.setVisibility(View.GONE);
@@ -353,16 +353,26 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
             UIUtil.showToast(R.string.net_state_error);
             return;
         }
+        RequestBody formBody;
+        if (orderDetailBean.getState() == Constants.STATE_THREE) {
+            formBody = new FormBody.Builder()
+                    .add("orderid", orderDetailBean.getId() + "")
+                    .add("mark", type)
+                    .add("memberid", BaseContext.getInstance().getUserInfo().id)
+                    .build();
+            commitRentCall = RestAdapterManager.getApi().getRentOrderAgain(formBody);
+        } else {
+            formBody = new FormBody.Builder()
+                    .add("detail", JSON.toJSONString(ShoppingCardsUtils.changeCommitBean1(orderDetailBean.getDetail())))
+                    .add("mark", type)
+                    .add("memberid", BaseContext.getInstance().getUserInfo().id)
+                    .build();
+            commitRentCall = RestAdapterManager.getApi().getRentOrder(formBody);
+        }
 
-        RequestBody formBody = new FormBody.Builder()
-//                .add("addressid", orderDetailBean.getId() + "")
-                .add("detail", JSON.toJSONString(ShoppingCardsUtils.changeCommitBean1(orderDetailBean.getDetail())))
-                .add("mark", type)
-                .add("memberid", BaseContext.getInstance().getUserInfo().id)
-                .build();
         LogUtils.e(JSON.toJSONString(formBody));
         DialogUtils.showDialog(OrderDetailsActivity.this, "获取订单...", false);
-        commitRentCall = RestAdapterManager.getApi().getRentOrder(formBody);
+
         commitRentCall.enqueue(new JyCallBack<CommitOrderResultBean>() {
             @Override
             public void onSuccess(Call<CommitOrderResultBean> call, Response<CommitOrderResultBean> response) {

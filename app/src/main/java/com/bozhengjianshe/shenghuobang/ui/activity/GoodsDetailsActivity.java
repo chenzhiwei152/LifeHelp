@@ -279,11 +279,11 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
                 pics.add(goodsBean.getPicture().get(i).getImg());
             }
             EventBus.getDefault().post(new EventBusCenter<>(Constants.UPDA_GOODS_DETAIL_H5, pics));
-            if (goodsBean.getPicture() != null) {
+            if (goodsBean.getSowing() != null) {
                 //广告位
-                for (int i = 0; i < goodsBean.getPicture().size(); i++) {
+                for (int i = 0; i < goodsBean.getSowing().size(); i++) {
                     bannerBean bannerBean = new bannerBean();
-                    bannerBean.setImage(goodsBean.getPicture().get(i).getImg());
+                    bannerBean.setImage(goodsBean.getSowing().get(i).getImg());
                     list.add(bannerBean);
                 }
                 //初始化广告栏
