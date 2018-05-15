@@ -45,7 +45,7 @@ public class GoodsListBean implements Serializable {
     private int sfyh;
     private int id;
     private String detail;
-    private double sftj;
+    private int sftj;
     private double profit;
     private int num = 1;
     private double freight;//运费
@@ -173,11 +173,11 @@ public class GoodsListBean implements Serializable {
         this.detail = detail;
     }
 
-    public double getSftj() {
+    public int getSftj() {
         return sftj;
     }
 
-    public void setSftj(double sftj) {
+    public void setSftj(int sftj) {
         this.sftj = sftj;
     }
 
@@ -212,7 +212,6 @@ public class GoodsListBean implements Serializable {
     public static class PictureBean implements Serializable {
         /**
          * img : files/idcard/20180427/7531.png
-         * detail : 璇︽儏鍥剧墖-1
          */
 
         private String img;

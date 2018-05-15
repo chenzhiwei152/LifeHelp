@@ -168,7 +168,7 @@ public class BuildingMaterialsFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 Bundle bundle1 = new Bundle();
-//                bundle1.putString(Constants.homeTypeTag,"22");
+                bundle1.putString(Constants.homeTypeTag,"2");
                 Intent intent=new Intent(getActivity(),AllServiceContentActivity.class);
                 intent.putExtras(bundle1);
                 startActivity(intent);
