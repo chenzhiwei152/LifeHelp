@@ -277,7 +277,7 @@ public interface JyApi {
      * @param
      * @return
      */
-    @POST(api + "getRegionList" + suffix)
+    @POST(api + "updateOrder" + suffix)
     Call<SuperOrderBean<OrderDetailBean>> quitOrder(@Body RequestBody body);
 
 

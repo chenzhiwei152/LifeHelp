@@ -11,7 +11,7 @@ public class OrderStateUtils {
         String describe = "";
         switch (state) {
             case Constants.STATE_ONE:
-                describe = "待付款";
+                describe = "已下单";
                 break;
             case Constants.STATE_TWO:
                 describe = "进行中";

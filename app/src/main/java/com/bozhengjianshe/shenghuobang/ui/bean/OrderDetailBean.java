@@ -54,6 +54,7 @@ public class OrderDetailBean implements Serializable {
     private String odnum;
     private int id;
     private int state;
+    private int payment;//1 代付款  2，已付款
     private int extrafee;
     private String tpbz;
     private int modtime;
@@ -76,6 +77,14 @@ public class OrderDetailBean implements Serializable {
 
     public String getLxrdh() {
         return lxrdh;
+    }
+
+    public int getPayment() {
+        return payment;
+    }
+
+    public void setPayment(int payment) {
+        this.payment = payment;
     }
 
     public void setLxrdh(String lxrdh) {

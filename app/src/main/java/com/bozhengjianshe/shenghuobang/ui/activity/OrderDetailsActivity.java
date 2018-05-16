@@ -151,13 +151,19 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
 ////                }
 //            }
             tv_real_pay.setText(getResources().getString(R.string.money) + String.format("%.2f", orderDetailBean.getNcount()) + "");
-            if (orderDetailBean.getState() == Constants.STATE_ONE || orderDetailBean.getState() == Constants.STATE_THREE) {
-                if (orderDetailBean.getState() == Constants.STATE_THREE) {
+            if (orderDetailBean.getState() == Constants.STATE_ONE) {
+                if (orderDetailBean.getPayment() == 2) {
+                    //已付款
                     bt_cancel.setVisibility(View.GONE);
+                    bt_pay.setVisibility(View.GONE);
+                    ll_button.setVisibility(View.GONE);
                 } else {
                     bt_cancel.setVisibility(View.VISIBLE);
+                    bt_pay.setVisibility(View.VISIBLE);
+                    ll_button.setVisibility(View.VISIBLE);
                 }
-                bt_cancel.setVisibility(View.VISIBLE);
+            } else if (orderDetailBean.getState() == Constants.STATE_THREE) {
+                bt_cancel.setVisibility(View.GONE);
                 bt_pay.setVisibility(View.VISIBLE);
                 ll_button.setVisibility(View.VISIBLE);
             } else {
@@ -424,7 +430,7 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
                 @Override
                 public void onPayError(int error_code, String message) {
                     DialogUtils.closeDialog();
-                    UIUtil.showToast("支付失败>" + error_code + " " + message);
+                    UIUtil.showToast("支付失败>");
                 }
 
                 @Override
@@ -445,7 +451,7 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
                 @Override
                 public void onPayError(int error_code, String message) {
                     DialogUtils.closeDialog();
-                    UIUtil.showToast("支付失败>" + error_code + " " + message);
+                    UIUtil.showToast("支付失败>");
                 }
 
                 @Override
