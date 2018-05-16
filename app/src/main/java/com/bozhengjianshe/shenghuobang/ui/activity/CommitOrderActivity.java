@@ -97,6 +97,7 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
     private String ids;
 
     private double price;
+    private double yunfei;
     private int count = 1;
     private int mxCount = 200;
     private List<GoodsListBean> goodsBean;
@@ -188,6 +189,7 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
                     price += (goodsBean.get(i).getProfit() + goodsBean.get(i).getCost()) * goodsBean.get(i).getNum();
                     if ((goodsBean.get(i).getSfkxd() == 2)) {
                         price += goodsBean.get(i).getFreight()* goodsBean.get(i).getNum();//运费
+                        yunfei+= goodsBean.get(i).getFreight()* goodsBean.get(i).getNum();
                     }
                 } else {
                     price += goodsBean.get(i).getFee();
@@ -201,12 +203,13 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
                     //1   服务  2商品
                     price += (goodsBean.get(i).getProfit() + goodsBean.get(i).getCost()) * goodsBean.get(i).getNum();
                     price += (goodsBean.get(i).getFreight())* goodsBean.get(i).getNum();//运费
+                    yunfei+= goodsBean.get(i).getFreight()* goodsBean.get(i).getNum();
                 } else {
                     price += goodsBean.get(i).getFee();
                 }
             }
         }
-        tv_all_price.setText(getResources().getString(R.string.money) + String.format("%.2f", price) + "");
+        tv_all_price.setText(getResources().getString(R.string.money) + String.format("%.2f", price) + "(含运费"+getResources().getString(R.string.money)+yunfei+")");
     }
 
     private boolean isContailsService(List<GoodsListBean> beans) {
