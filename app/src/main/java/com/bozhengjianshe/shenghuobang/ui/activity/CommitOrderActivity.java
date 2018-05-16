@@ -176,20 +176,46 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
 
 
     private void setSalePrice() {
-        ids = "";
-        for (int i = 0; i < goodsBean.size(); i++) {
-            ids += goodsBean.get(i).getId();
-            ids += ",";
-            if (goodsBean.get(i).getLb() == 2) {
-                //1   服务  2商品
-                price += (goodsBean.get(i).getProfit() + goodsBean.get(i).getCost())*goodsBean.get(i).getNum();
-                price+=goodsBean.get(i).getFreight();//运费
-            } else {
-                price += goodsBean.get(i).getFee();
-            }
 
+        ids = "";
+        if (isContailsService(goodsBean)) {
+            //有服务类
+            for (int i = 0; i < goodsBean.size(); i++) {
+                ids += goodsBean.get(i).getId();
+                ids += ",";
+                if (goodsBean.get(i).getLb() == 2) {
+                    //1   服务  2商品
+                    price += (goodsBean.get(i).getProfit() + goodsBean.get(i).getCost()) * goodsBean.get(i).getNum();
+                    if ((goodsBean.get(i).getSfkxd() == 2)) {
+                        price += goodsBean.get(i).getFreight()* goodsBean.get(i).getNum();//运费
+                    }
+                } else {
+                    price += goodsBean.get(i).getFee();
+                }
+            }
+        } else {
+            for (int i = 0; i < goodsBean.size(); i++) {
+                ids += goodsBean.get(i).getId();
+                ids += ",";
+                if (goodsBean.get(i).getLb() == 2) {
+                    //1   服务  2商品
+                    price += (goodsBean.get(i).getProfit() + goodsBean.get(i).getCost()) * goodsBean.get(i).getNum();
+                    price += (goodsBean.get(i).getFreight())* goodsBean.get(i).getNum();//运费
+                } else {
+                    price += goodsBean.get(i).getFee();
+                }
+            }
         }
-        tv_all_price.setText(getResources().getString(R.string.money) + String.format("%.2f", price)+"");
+        tv_all_price.setText(getResources().getString(R.string.money) + String.format("%.2f", price) + "");
+    }
+
+    private boolean isContailsService(List<GoodsListBean> beans) {
+        for (int i = 0; i < beans.size(); i++) {
+            if (beans.get(i).getLb() == 1) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -423,7 +449,6 @@ public class CommitOrderActivity extends BaseActivity implements View.OnClickLis
 
         return true;
     }
-
 
 
     /**

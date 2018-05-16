@@ -49,6 +49,15 @@ public class GoodsListBean implements Serializable {
     private double profit;
     private int num = 1;
     private double freight;//运费
+    private int sfkxd; //是否可携带 1是 2否
+
+    public int getSfkxd() {
+        return sfkxd;
+    }
+
+    public void setSfkxd(int sfkxd) {
+        this.sfkxd = sfkxd;
+    }
 
     public double getFreight() {
         return freight;
