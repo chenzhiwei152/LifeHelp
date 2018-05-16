@@ -271,7 +271,11 @@ public class IndexFragment extends BaseFragment {
 
     private void getList(final int tag) {
         Map<String, String> map = new HashMap<>();
-        map.put("sftj", tag + "");//1 时查询推荐产品 2时为非推荐商品 不传值则全部查询
+        if(tag==1){
+            map.put("sftj", tag + "");//1 时查询推荐产品 2时为非推荐商品 不传值则全部查询
+        }else {
+            map.put("sfyh", "1");
+        }
         map.put("lb", "1");//1 查询服务类商品 为 2 查询建材类商品 不传值则全部查询
         goodsListCall = RestAdapterManager.getApi().getGoodsList(map);
         goodsListCall.enqueue(new JyCallBack<SuperGoodsListBean<List<GoodsListBean>>>() {
