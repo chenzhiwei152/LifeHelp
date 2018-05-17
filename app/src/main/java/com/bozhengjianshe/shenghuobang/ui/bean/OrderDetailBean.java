@@ -57,7 +57,7 @@ public class OrderDetailBean implements Serializable {
     private int payment;//1 代付款  2，已付款
     private int extrafee;
     private String tpbz;
-    private int modtime;
+    private String modtime;
     private int count;
     private String statemark;
     private int quality;
@@ -68,7 +68,7 @@ public class OrderDetailBean implements Serializable {
     private String phone;
     private int lxrhyzk;
     private int lxrxb;
-    private long time;
+    private String time;
     private double ncount;
     private String age;
     private String mark;
@@ -179,11 +179,11 @@ public class OrderDetailBean implements Serializable {
         this.tpbz = tpbz;
     }
 
-    public int getModtime() {
+    public String getModtime() {
         return modtime;
     }
 
-    public void setModtime(int modtime) {
+    public void setModtime(String modtime) {
         this.modtime = modtime;
     }
 
@@ -267,11 +267,11 @@ public class OrderDetailBean implements Serializable {
         this.lxrxb = lxrxb;
     }
 
-    public long getTime() {
+    public String getTime() {
         return time;
     }
 
-    public void setTime(long time) {
+    public void setTime(String time) {
         this.time = time;
     }
 
