@@ -8,9 +8,9 @@
     <include layout="@layout/kanner" />
 
     <LinearLayout
-        android:background="@color/color_ffffff"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/color_ffffff"
         android:orientation="vertical"
         android:padding="10dp">
 
@@ -30,8 +30,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:textColor="@color/color_f6c01c"
-                android:text="" />
+                android:text=""
+                android:textColor="@color/color_f6c01c" />
 
         </RelativeLayout>
 
@@ -65,7 +65,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@+id/tv_price"
-                android:text="月售：" />
+                android:text="月售："
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/tv_member_price"
@@ -102,20 +103,33 @@
             android:textSize="16sp"
             android:visibility="gone" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="产品详情"
-            android:textSize="20sp"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/tv_goods_detail_describe"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="16sp"
-            android:visibility="gone" />
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_ff6900_solid"
+                android:padding="@dimen/dp_3"
+                android:text=""
+                android:textColor="@color/color_333333"
+                android:textSize="16sp"
+                android:visibility="visible" />
+
+            <TextView
+
+                android:id="@+id/tv_goods_detail_describe"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/tv_title"
+                android:text=""
+                android:textSize="16sp"
+                android:visibility="visible" />
+        </RelativeLayout>
+
     </LinearLayout>
 </LinearLayout>

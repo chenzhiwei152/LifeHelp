@@ -72,6 +72,8 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
     TextView tv_commit;
     @BindView(R.id.tv_all_price)
     TextView tv_all_price;
+    @BindView(R.id.tv_title)
+    TextView tv_title;
     private ConvenientBanner kanner;
     List<bannerBean> list = new ArrayList<>();
     private GoodsDetailItemAdapter listAdapter;
@@ -125,6 +127,7 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
         iv_add_card.setOnClickListener(this);
         iv_add_star.setOnClickListener(this);
         tv_commit.setOnClickListener(this);
+        tv_title.setOnClickListener(this);
 
         List<BaseFragment> fragmentList = new ArrayList<>();
         fragmentList.add(new GoodsDetailLeftFragment());
@@ -210,9 +213,13 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
         if (!TextUtils.isEmpty(type) && type.equals(Constants.typeService)) {
             //服务类
             tv_commit.setText("立即预约");
+            tv_title.setText("建材库");
+            tv_goods_detail_describe.setText("服务价格为维修人工费，不包含材料配件费。如需购买材料，请前往建材库");
         } else {
             //建材城
+            tv_title.setText("服务商城");
             tv_commit.setText("立即购买");
+            tv_goods_detail_describe.setText("标注价格为建材价格以及快递价格，如需相关服务，请前往服务商城");
         }
     }
 
@@ -266,12 +273,12 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
             type = goodsBean.getLb() + "";
             setDefault();
             if (goodsBean.getLb() == 2) {
-                tv_goods_price.setText(getResources().getString(R.string.money)+(goodsBean.getProfit() + goodsBean.getCost()) + "");
-                tv_all_price.setText(getResources().getString(R.string.money) +String.format("%.2f", (goodsBean.getProfit() + goodsBean.getCost() + goodsBean.getFreight())));
+                tv_goods_price.setText(getResources().getString(R.string.money) + (goodsBean.getProfit() + goodsBean.getCost()) + "");
+                tv_all_price.setText(getResources().getString(R.string.money) + String.format("%.2f", (goodsBean.getProfit() + goodsBean.getCost() + goodsBean.getFreight())));
 
             } else {
-                tv_goods_price.setText(getResources().getString(R.string.money)+String.format("%.2f", (goodsBean.getFee())) + "");
-                tv_all_price.setText(getResources().getString(R.string.money)+String.format("%.2f", goodsBean.getFee())+"");
+                tv_goods_price.setText(getResources().getString(R.string.money) + String.format("%.2f", (goodsBean.getFee())) + "");
+                tv_all_price.setText(getResources().getString(R.string.money) + String.format("%.2f", goodsBean.getFee()) + "");
             }
             tv_goods_name.setText(goodsBean.getCname());//标题
             List<String> pics = new ArrayList<>();
@@ -322,6 +329,21 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
                     startActivity(intent);
                 }
 
+                break;
+            case R.id.tv_title:
+                if (tv_title.getText().equals("建材库")) {
+                    Bundle bundle1 = new Bundle();
+                    bundle1.putString(Constants.homeTypeTag, "22");
+                    Intent intent = new Intent(this, AllBuildingActivity.class);
+                    intent.putExtras(bundle1);
+                    startActivity(intent);
+                }else {
+                    Bundle bundle1 = new Bundle();
+                    bundle1.putString(Constants.homeTypeTag, "14");
+                    Intent intent = new Intent(this, AllServiceActivity.class);
+                    intent.putExtras(bundle1);
+                    startActivity(intent);
+                }
                 break;
         }
     }
