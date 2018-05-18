@@ -14,16 +14,11 @@
         android:orientation="vertical"
         android:padding="10dp">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tv_goods_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_toLeftOf="@+id/tv_goods_price"
-                android:text="" />
 
             <TextView
                 android:id="@+id/tv_goods_price"
@@ -33,7 +28,16 @@
                 android:text=""
                 android:textColor="@color/color_f6c01c" />
 
-        </RelativeLayout>
+            <TextView
+                android:id="@+id/tv_goods_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                android:text=""
+                android:textColor="#1a1a1a"
+                android:textSize="16sp" />
+
+        </LinearLayout>
 
 
         <RelativeLayout
@@ -103,9 +107,15 @@
             android:textSize="16sp"
             android:visibility="gone" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_0.5"
+            android:background="@color/color_ebebeb" />
+
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10">
 
             <TextView
                 android:id="@+id/tv_title"
@@ -114,20 +124,23 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/bg_ff6900_solid"
-                android:padding="@dimen/dp_3"
+                android:paddingBottom="@dimen/dp_5"
+                android:paddingLeft="@dimen/dp_10"
+                android:paddingRight="@dimen/dp_10"
+                android:paddingTop="@dimen/dp_5"
                 android:text=""
-                android:textColor="@color/color_333333"
-                android:textSize="16sp"
+                android:textColor="@color/color_ffffff"
+                android:textSize="13sp"
                 android:visibility="visible" />
 
             <TextView
-
                 android:id="@+id/tv_goods_detail_describe"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@+id/tv_title"
                 android:text=""
-                android:textSize="16sp"
+                android:textColor="@color/color_999999"
+                android:textSize="13sp"
                 android:visibility="visible" />
         </RelativeLayout>
 

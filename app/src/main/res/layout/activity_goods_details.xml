@@ -12,6 +12,7 @@
 
 
     <android.support.v4.widget.NestedScrollView
+        android:id="@+id/nes_scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/title_view">
@@ -29,6 +30,7 @@
                 android:id="@+id/tabLayout"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/tabHeight"
+                android:layout_marginTop="@dimen/dp_10"
                 android:layout_weight="0"
                 android:background="@color/color_ffffff"
                 app:tabGravity="fill"
@@ -123,7 +125,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal">
 
@@ -131,28 +133,60 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="4"
-            android:background="@color/color_f6c01c"
-            android:gravity="center">
+            android:background="@color/color_ffffff"
+            android:gravity="center_vertical">
 
-            <ImageView
-                android:id="@+id/iv_add_card"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:src="@mipmap/ic_tab_card_normal" />
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/dp_5">
 
-            <ImageView
-                android:id="@+id/iv_add_star"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:layout_marginRight="20dp"
-                android:src="@mipmap/ic_stars" />
+                <ImageView
+                    android:id="@+id/iv_add_star"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/icon_uncollect" />
+
+                <TextView
+                    android:id="@+id/tv_collection_tip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="收藏" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="@dimen/dp_5">
+
+
+                <ImageView
+                    android:id="@+id/iv_add_card"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/ic_tab_card_normal" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="加入购物车" />
+            </LinearLayout>
+
 
             <TextView
                 android:id="@+id/tv_all_price"
                 style="@style/TextFourth"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_40"
+                android:visibility="gone"
+                android:gravity="right"
                 android:text="" />
         </LinearLayout>
 
@@ -162,7 +196,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/color_000000"
+            android:background="@color/color_f6c01c"
             android:gravity="center"
             android:text="立即预约" />
     </LinearLayout>

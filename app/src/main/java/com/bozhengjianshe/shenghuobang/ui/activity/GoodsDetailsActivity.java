@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.NestedScrollView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -74,6 +75,8 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
     TextView tv_all_price;
     @BindView(R.id.tv_title)
     TextView tv_title;
+    @BindView(R.id.nes_scroll)
+    NestedScrollView nes_scroll;
     private ConvenientBanner kanner;
     List<bannerBean> list = new ArrayList<>();
     private GoodsDetailItemAdapter listAdapter;
@@ -90,7 +93,8 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
     private IndexFragmentPagerAdapter adapter;
     @BindView(R.id.ll_content)
     LinearLayout ll_content;
-
+    @BindView(R.id.tv_collection_tip)
+    TextView tv_collection_tip;
     public static int mCurrentTab = 0;
     private String[] tabNames = {"详情", "评价"};
     @BindView(R.id.viewpager)
@@ -149,6 +153,7 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
                 int position = mTabLayout.getSelectedTabPosition();//tab.getPosition();
                 mCurrentTab = position;
                 viewPager.setCurrentItem(position, false);
+//                nes_scroll.smoothScrollTo(0,0);
 //                EventBus.getDefault().post(new EventBusCenter<Integer>(Constants.CHECK_AGREE));
             }
 
@@ -173,10 +178,10 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
      */
     private void setViewPagerWrapContentHeight(int childViewHeight) {
 
-        int viewPagerIndex = ll_content.indexOfChild(viewPager);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, childViewHeight);//这里设置params的高度。
-        ll_content.removeView(viewPager);
-        ll_content.addView(viewPager, viewPagerIndex, params);//使用这个params
+//        int viewPagerIndex = ll_content.indexOfChild(viewPager);
+//        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, childViewHeight);//这里设置params的高度。
+//        ll_content.removeView(viewPager);
+//        ll_content.addView(viewPager, viewPagerIndex, params);//使用这个params
     }
 
     @Override
@@ -306,7 +311,7 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
      * 初始化标题
      */
     private void initTitle() {
-        title_view.setTitle(R.string.app_name);
+        title_view.setTitle("商品详情");
         title_view.setShowDefaultRightValue();
     }
 
@@ -337,7 +342,7 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
                     Intent intent = new Intent(this, AllBuildingActivity.class);
                     intent.putExtras(bundle1);
                     startActivity(intent);
-                }else {
+                } else {
                     Bundle bundle1 = new Bundle();
                     bundle1.putString(Constants.homeTypeTag, "14");
                     Intent intent = new Intent(this, AllServiceActivity.class);
@@ -416,9 +421,11 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
 
     private void setStar() {
         if (CollectionUtils.getIsInCollection(goodsBean.getId() + "")) {
-            iv_add_star.setBackground(getResources().getDrawable(R.mipmap.ic_stars));
+            iv_add_star.setImageResource(R.mipmap.icon_collect);
+            tv_collection_tip.setText("已收藏");
         } else {
-            iv_add_star.setBackground(getResources().getDrawable(R.mipmap.ic_stars));
+            iv_add_star.setImageResource(R.mipmap.icon_uncollect);
+            tv_collection_tip.setText("收藏");
         }
     }
 
