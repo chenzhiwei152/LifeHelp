@@ -1,6 +1,7 @@
 package com.bozhengjianshe.shenghuobang.ui.fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -51,6 +52,30 @@ public class MerchantOrderListFragment extends BaseFragment {
     public static final String bundleName_type = "type";
     private int type = 0;
     private MerchantOrderItemAdapter orderItemAdapter;
+    private Handler handler = new Handler() {
+        public void handleMessage(android.os.Message msg) {
+            switch (msg.what) {
+                case 0:
+                    // 移除所有的msg.what为0等消息，保证只有一个循环消息队列再跑
+                    handler.removeMessages(0);
+                    // app的功能逻辑处理
+                    getList();
+                    // 再次发出msg，循环更新
+                    handler.sendEmptyMessageDelayed(0, 30000);
+                    break;
+
+                case 1:
+                    // 直接移除，定时器停止
+                    handler.removeMessages(0);
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+
+    };
 
     /**
      * 创建fragment
@@ -143,6 +168,7 @@ public class MerchantOrderListFragment extends BaseFragment {
                 if (response.body().getCode() == Constants.successCode) {
                     orderItemAdapter.addList(response.body().getData());
                 }
+                handler.sendEmptyMessage(0);
             }
 
             @Override
@@ -198,11 +224,13 @@ public class MerchantOrderListFragment extends BaseFragment {
             }
         });
     }
+
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         this.isVisibleToUser = isVisibleToUser;
         prepareFetchData();
     }
+
     public boolean prepareFetchData() {
 
         if (isVisibleToUser && isViewInitiated) {
@@ -211,5 +239,17 @@ public class MerchantOrderListFragment extends BaseFragment {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        handler.sendEmptyMessage(1);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        handler.sendEmptyMessage(0);
     }
 }
