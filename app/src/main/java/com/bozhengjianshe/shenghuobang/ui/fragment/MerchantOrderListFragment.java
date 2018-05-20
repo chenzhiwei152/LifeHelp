@@ -126,7 +126,7 @@ public class MerchantOrderListFragment extends BaseFragment {
             type = bundle.getInt(bundleName_type);
         }
         isViewInitiated = true;
-        prepareFetchData();
+//        prepareFetchData();
     }
 
     @Override
@@ -157,6 +157,7 @@ public class MerchantOrderListFragment extends BaseFragment {
                 state = Constants.STATE_FIVE + "";
                 break;
         }
+        LogUtils.e("Gets","ceshi------"+state);
         RequestBody body = new FormBody.Builder().add("state", state + "").add("memberid", BaseContext.getInstance().getUserInfo().id).build();
         Call<SuperOrderListBean<List<BuyOrderListItemBean>>> getOrderList = RestAdapterManager.getApi().getOrderList(body);
         getOrderList.enqueue(new JyCallBack<SuperOrderListBean<List<BuyOrderListItemBean>>>() {
@@ -168,7 +169,6 @@ public class MerchantOrderListFragment extends BaseFragment {
                 if (response.body().getCode() == Constants.successCode) {
                     orderItemAdapter.addList(response.body().getData());
                 }
-                handler.sendEmptyMessage(0);
             }
 
             @Override
@@ -228,7 +228,7 @@ public class MerchantOrderListFragment extends BaseFragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         this.isVisibleToUser = isVisibleToUser;
-        prepareFetchData();
+        handler.sendEmptyMessage(0);
     }
 
     public boolean prepareFetchData() {
