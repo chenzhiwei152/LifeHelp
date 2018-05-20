@@ -59,7 +59,7 @@ public class MerchantOrderListFragment extends BaseFragment {
                     // 移除所有的msg.what为0等消息，保证只有一个循环消息队列再跑
                     handler.removeMessages(0);
                     // app的功能逻辑处理
-                    getList();
+                    prepareFetchData();
                     // 再次发出msg，循环更新
                     handler.sendEmptyMessageDelayed(0, 30000);
                     break;
