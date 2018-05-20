@@ -228,7 +228,7 @@ public class BuildingMaterialsFragment extends BaseFragment {
 
         Bundle bundle2 = new Bundle();
         bundle2.putString(Constants.homeTypeTag,"23");
-        MainMenuInfo Home2 = new MainMenuInfo("五金门窗", R.mipmap.ic_home_12, AllBuildingActivity.class, bundle2);
+        MainMenuInfo Home2 = new MainMenuInfo("五金建材", R.mipmap.ic_home_12, AllBuildingActivity.class, bundle2);
         menus.add(Home2);
 
         Bundle bundle3 = new Bundle();
@@ -238,7 +238,7 @@ public class BuildingMaterialsFragment extends BaseFragment {
 
         Bundle bundle4 = new Bundle();
         bundle4.putString(Constants.homeTypeTag,"24");
-        MainMenuInfo Home4 = new MainMenuInfo("装修装饰", R.mipmap.ic_home_14, AllBuildingActivity.class, bundle4);
+        MainMenuInfo Home4 = new MainMenuInfo("装修建材", R.mipmap.ic_home_14, AllBuildingActivity.class, bundle4);
         menus.add(Home4);
         Bundle bundle5 = new Bundle();
         bundle5.putString(Constants.homeTypeTag,"2");
