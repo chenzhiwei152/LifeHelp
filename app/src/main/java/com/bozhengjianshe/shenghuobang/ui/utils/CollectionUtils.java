@@ -107,6 +107,9 @@ public class CollectionUtils {
     }
 
     public static boolean getIsInCollection(String id) {
+        if (BaseContext.getInstance().getUserInfo()==null){
+            return false;
+        }
         String ids = BaseContext.getInstance().getUserInfo().collects;
         if (TextUtils.isEmpty(ids) || TextUtils.isEmpty(id)) {
             return false;

@@ -41,7 +41,7 @@
             android:value="99d41d780cbd3671367ee840d2381578" />
 
         <activity
-            android:name="com.bozhengjianshe.shenghuobang.ui.activity.LoginActivity"
+            android:name="com.bozhengjianshe.shenghuobang.ui.index.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppStartLoadTranslucent"
             android:windowSoftInputMode="adjustUnspecified|stateHidden">
@@ -182,7 +182,7 @@
             android:name=".ui.activity.RegisterActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.index.MainActivity"
+            android:name=".ui.activity.LoginActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
         <activity

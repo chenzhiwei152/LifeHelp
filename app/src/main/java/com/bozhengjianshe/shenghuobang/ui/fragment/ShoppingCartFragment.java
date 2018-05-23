@@ -145,6 +145,10 @@ public class ShoppingCartFragment extends BaseFragment {
 
 
     private void getList() {
+        if (BaseContext.getInstance().getUserInfo() == null) {
+            swiperefreshlayout.finishRefresh();
+            return;
+        }
         RequestBody body = new FormBody.Builder().add("memberid", BaseContext.getInstance().getUserInfo().id).build();
         goodsListCall = RestAdapterManager.getApi().getShoppingCardList(body);
         goodsListCall.enqueue(new JyCallBack<SuperShoppingCardsBean<List<GoodsListBean>>>() {
@@ -225,7 +229,6 @@ public class ShoppingCartFragment extends BaseFragment {
         });
 
     }
-
 
 
     private void CalculatePrice() {

@@ -20,6 +20,7 @@ import com.bozhengjianshe.shenghuobang.R;
 import com.bozhengjianshe.shenghuobang.api.JyCallBack;
 import com.bozhengjianshe.shenghuobang.api.RestAdapterManager;
 import com.bozhengjianshe.shenghuobang.base.BaseActivity;
+import com.bozhengjianshe.shenghuobang.base.BaseContext;
 import com.bozhengjianshe.shenghuobang.base.BaseFragment;
 import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
@@ -320,19 +321,33 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
         switch (view.getId()) {
             case R.id.iv_add_card:
                 //加入购物车
-                ShoppingCardsUtils.updateItem(goodsBean.getId() + "", "add");
+                if (BaseContext.getInstance().getUserInfo()!=null){
+                    ShoppingCardsUtils.updateItem(goodsBean.getId() + "", "add");
+                }else {
+                    startActivity(new Intent(this,LoginActivity.class));
+                }
+
                 break;
             case R.id.iv_add_star:
-                addCollection();
+                if (BaseContext.getInstance().getUserInfo()!=null){
+                    addCollection();
+                }else {
+                    startActivity(new Intent(this,LoginActivity.class));
+                }
                 break;
             case R.id.tv_commit:
-                if (goodsBean != null) {
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("detail", (Serializable) goodsBeanList);
-                    Intent intent = new Intent(this, CommitOrderActivity.class);
-                    intent.putExtras(bundle);
-                    startActivity(intent);
+                if (BaseContext.getInstance().getUserInfo()!=null){
+                    if (goodsBean != null) {
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("detail", (Serializable) goodsBeanList);
+                        Intent intent = new Intent(this, CommitOrderActivity.class);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                    }
+                }else {
+                    startActivity(new Intent(this,LoginActivity.class));
                 }
+
 
                 break;
             case R.id.tv_title:

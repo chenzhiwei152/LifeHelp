@@ -1,6 +1,7 @@
 package com.bozhengjianshe.shenghuobang.ui.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,11 +9,13 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bozhengjianshe.shenghuobang.R;
 import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
+import com.bozhengjianshe.shenghuobang.ui.activity.GoodsDetailsActivity;
 import com.bozhengjianshe.shenghuobang.ui.bean.GoodsListBean;
 import com.bozhengjianshe.shenghuobang.ui.listerner.CommonOnClickListerner;
 import com.bozhengjianshe.shenghuobang.utils.ImageLoadedrManager;
@@ -151,6 +154,14 @@ public class ShoppingCardListAdapter extends RecyclerView.Adapter<RecyclerView.V
                     EventBus.getDefault().post(new EventBusCenter<Integer>(Constants.UPDA_CARD_GOODS_SELECTED));
                 }
             });
+            ((ImageViewHolder) viewHolder).rl_content.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, GoodsDetailsActivity.class);
+                    intent.putExtra("id", list.get(position).getId() + "");
+                    context.startActivity(intent);
+                }
+            });
             //删除
             ((ImageViewHolder) viewHolder).iv_delete.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -179,7 +190,7 @@ public class ShoppingCardListAdapter extends RecyclerView.Adapter<RecyclerView.V
                         count--;
                         ((ImageViewHolder) viewHolder).tv_number.setText(count + "");
                         list.get(position).setNum(count);
-                        EventBus.getDefault().post(new EventBusCenter<>(Constants.REDUCE_NUMBER_CARD,list.get(position).getId()+""));
+                        EventBus.getDefault().post(new EventBusCenter<>(Constants.REDUCE_NUMBER_CARD, list.get(position).getId() + ""));
                     }
                 }
             });
@@ -196,7 +207,7 @@ public class ShoppingCardListAdapter extends RecyclerView.Adapter<RecyclerView.V
                         count++;
                         ((ImageViewHolder) viewHolder).tv_number.setText(count + "");
                         list.get(position).setNum(count);
-                        EventBus.getDefault().post(new EventBusCenter<>(Constants.ADD_NUMBER_CARD,list.get(position).getId()+""));
+                        EventBus.getDefault().post(new EventBusCenter<>(Constants.ADD_NUMBER_CARD, list.get(position).getId() + ""));
                     }
 
 
@@ -230,6 +241,8 @@ public class ShoppingCardListAdapter extends RecyclerView.Adapter<RecyclerView.V
         ImageView iv_add;
         @BindView(R.id.iv_minus)
         ImageView iv_minus;
+        @BindView(R.id.rl_content)
+        RelativeLayout rl_content;
 
         ImageViewHolder(final View view) {
             super(view);
