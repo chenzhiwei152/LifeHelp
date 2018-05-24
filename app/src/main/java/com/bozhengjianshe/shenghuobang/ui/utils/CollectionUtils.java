@@ -10,6 +10,7 @@ import com.bozhengjianshe.shenghuobang.base.Constants;
 import com.bozhengjianshe.shenghuobang.base.EventBusCenter;
 import com.bozhengjianshe.shenghuobang.ui.bean.CollectionBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.UserInfoBean;
+import com.bozhengjianshe.shenghuobang.utils.DialogUtils;
 import com.bozhengjianshe.shenghuobang.utils.ErrorMessageUtils;
 import com.bozhengjianshe.shenghuobang.utils.UIUtil;
 
@@ -33,9 +34,11 @@ public class CollectionUtils {
      * type       delete 删除收藏     add   增加收藏
      */
     public static void updateColloction(final Context context, String id, String type) {
+
         if (TextUtils.isEmpty(id)) {
             return;
         }
+        DialogUtils.showDialog(context,"加载中",false);
         final String ids = handleID(id, type);
         RequestBody formBody = new FormBody.Builder()
                 .add("collects", ids)
@@ -47,6 +50,7 @@ public class CollectionUtils {
         getCollection.enqueue(new JyCallBack<CollectionBean>() {
             @Override
             public void onSuccess(Call<CollectionBean> call, Response<CollectionBean> response) {
+                DialogUtils.closeDialog();
                 UIUtil.showToast(response.body().message);
                 if (response.body().state == Constants.successCode) {
                     UserInfoBean userInfo = BaseContext.getInstance().getUserInfo();
@@ -60,11 +64,13 @@ public class CollectionUtils {
 
             @Override
             public void onError(Call<CollectionBean> call, Throwable t) {
+                DialogUtils.closeDialog();
             }
 
             @Override
             public void onError(Call<CollectionBean> call, Response<CollectionBean> response) {
                 try {
+                    DialogUtils.closeDialog();
                     ErrorMessageUtils.taostErrorMessage(context, response.errorBody().string());
                 } catch (IOException e) {
                     e.printStackTrace();

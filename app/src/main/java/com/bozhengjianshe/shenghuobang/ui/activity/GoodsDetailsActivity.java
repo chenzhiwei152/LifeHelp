@@ -100,7 +100,10 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
     private String[] tabNames = {"详情", "评价"};
     @BindView(R.id.viewpager)
     ViewPager viewPager;
-
+    @BindView(R.id.ll_add_card)
+    LinearLayout ll_add_card;
+    @BindView(R.id.ll_add_star)
+    LinearLayout ll_add_star;
     @BindView(R.id.tabLayout)
     TabLayout mTabLayout;
 
@@ -133,6 +136,8 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
         iv_add_star.setOnClickListener(this);
         tv_commit.setOnClickListener(this);
         tv_title.setOnClickListener(this);
+        ll_add_card.setOnClickListener(this);
+        ll_add_star.setOnClickListener(this);
 
         List<BaseFragment> fragmentList = new ArrayList<>();
         fragmentList.add(new GoodsDetailLeftFragment());
@@ -319,24 +324,24 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.iv_add_card:
+            case R.id.ll_add_card:
                 //加入购物车
-                if (BaseContext.getInstance().getUserInfo()!=null){
-                    ShoppingCardsUtils.updateItem(goodsBean.getId() + "", "add");
-                }else {
-                    startActivity(new Intent(this,LoginActivity.class));
+                if (BaseContext.getInstance().getUserInfo() != null) {
+                    ShoppingCardsUtils.updateItem(this, goodsBean.getId() + "", "add");
+                } else {
+                    startActivity(new Intent(this, LoginActivity.class));
                 }
 
                 break;
-            case R.id.iv_add_star:
-                if (BaseContext.getInstance().getUserInfo()!=null){
+            case R.id.ll_add_star:
+                if (BaseContext.getInstance().getUserInfo() != null) {
                     addCollection();
-                }else {
-                    startActivity(new Intent(this,LoginActivity.class));
+                } else {
+                    startActivity(new Intent(this, LoginActivity.class));
                 }
                 break;
             case R.id.tv_commit:
-                if (BaseContext.getInstance().getUserInfo()!=null){
+                if (BaseContext.getInstance().getUserInfo() != null) {
                     if (goodsBean != null) {
                         Bundle bundle = new Bundle();
                         bundle.putSerializable("detail", (Serializable) goodsBeanList);
@@ -344,8 +349,8 @@ public class GoodsDetailsActivity extends BaseActivity implements View.OnClickLi
                         intent.putExtras(bundle);
                         startActivity(intent);
                     }
-                }else {
-                    startActivity(new Intent(this,LoginActivity.class));
+                } else {
+                    startActivity(new Intent(this, LoginActivity.class));
                 }
 
 

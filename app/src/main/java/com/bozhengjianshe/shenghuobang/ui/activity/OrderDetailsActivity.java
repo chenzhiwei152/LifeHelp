@@ -150,7 +150,7 @@ public class OrderDetailsActivity extends BaseActivity implements View.OnClickLi
 ////                    price += orderDetailBean.getDetail().get(i).getFee();
 ////                }
 //            }
-            tv_real_pay.setText(getResources().getString(R.string.money) + String.format("%.2f", orderDetailBean.getNcount()) + "");
+            tv_real_pay.setText(getResources().getString(R.string.money) + String.format("%.2f", orderDetailBean.getNcount()) + "(含运费"+getResources().getString(R.string.money)+String.format("%.2f", orderDetailBean.getExtrafee())+")");
             if (orderDetailBean.getState() == Constants.STATE_ONE) {
                 if (orderDetailBean.getPayment() == 2) {
                     //已付款

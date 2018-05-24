@@ -63,7 +63,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:layout_toLeftOf="@+id/bt_customer"
-            android:background="@drawable/bg_bbb_ffd2b2_5"
+            android:background="@drawable/bg_bbb_ffffff_5"
             android:text="搜索"
             android:visibility="gone" />
 

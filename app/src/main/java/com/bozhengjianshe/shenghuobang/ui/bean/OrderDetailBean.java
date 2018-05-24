@@ -55,7 +55,7 @@ public class OrderDetailBean implements Serializable {
     private int id;
     private int state;
     private int payment;//1 代付款  2，已付款
-    private int extrafee;
+    private double extrafee;
     private String tpbz;
     private String modtime;
     private int count;
@@ -163,11 +163,11 @@ public class OrderDetailBean implements Serializable {
         this.state = state;
     }
 
-    public int getExtrafee() {
+    public double getExtrafee() {
         return extrafee;
     }
 
-    public void setExtrafee(int extrafee) {
+    public void setExtrafee(double extrafee) {
         this.extrafee = extrafee;
     }
 

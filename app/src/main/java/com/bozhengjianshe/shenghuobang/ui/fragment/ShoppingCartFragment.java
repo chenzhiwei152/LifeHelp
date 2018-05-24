@@ -6,7 +6,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.bozhengjianshe.shenghuobang.R;
@@ -52,11 +51,15 @@ public class ShoppingCartFragment extends BaseFragment {
     RecyclerView sf_listview;
     @BindView(R.id.swiperefreshlayout)
     SmartRefreshLayout swiperefreshlayout;
-    private double mTotalPrice;
+//    private double mTotalPrice;
+    private double price;
+    private double yunfei;
     @BindView(R.id.rb_check_all)
     CheckBox rb_check_all;
     @BindView(R.id.tv_calculate)
     TextView tv_calculate;
+    @BindView(R.id.tv_price)
+    TextView tv_price;
     private TextView action;
     private Call<SuperShoppingCardsBean<List<GoodsListBean>>> goodsListCall;
 
@@ -80,11 +83,17 @@ public class ShoppingCartFragment extends BaseFragment {
 
         listAdapter = new ShoppingCardListAdapter(getActivity());
         sf_listview.setAdapter(listAdapter);
-        rb_check_all.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//        rb_check_all.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+////                rb_check_all.setChecked(b);
+//
+//            }
+//        });
+        rb_check_all.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                rb_check_all.setChecked(b);
-                setIsAllChecked(b);
+            public void onClick(View v) {
+                setIsAllChecked(rb_check_all.isChecked());
             }
         });
         listAdapter.setOnDeleteListerner(new CommonOnClickListerner() {
@@ -132,11 +141,14 @@ public class ShoppingCartFragment extends BaseFragment {
                 } else {
                     rb_check_all.setChecked(false);
                 }
+                setSalePrice();
             } else if (eventBusCenter.getEvenCode() == Constants.ADD_NUMBER_CARD) {
                 //更新
-                ShoppingCardsUtils.updateItem((String) eventBusCenter.getData(), "add");
+                ShoppingCardsUtils.updateItem(getActivity(),(String) eventBusCenter.getData(), "add");
+                setSalePrice();
             } else if (eventBusCenter.getEvenCode() == REDUCE_NUMBER_CARD) {
-                ShoppingCardsUtils.updateItem((String) eventBusCenter.getData(), "reduce");
+                ShoppingCardsUtils.updateItem(getActivity(),(String) eventBusCenter.getData(), "reduce");
+                setSalePrice();
             } else if (eventBusCenter.getEvenCode() == Constants.ADD_TO_CARD) {
                 getList();
             }
@@ -231,17 +243,46 @@ public class ShoppingCartFragment extends BaseFragment {
     }
 
 
-    private void CalculatePrice() {
-        if (listAdapter.getList() != null && listAdapter.getList().size() > 0) {
-            for (int i = 0; i < listAdapter.getList().size(); i++) {
-                if (listAdapter.getList().get(i).isChecked()) {
-//                    mTotalPrice += listAdapter.getList().get(i).getProductPrice();
+    private void setSalePrice() {
+        price=0;
+        yunfei=0;
+        List<GoodsListBean> goodsBean=getSelected();
+        if (isContailsService(goodsBean)) {
+            //有服务类
+            for (int i = 0; i < goodsBean.size(); i++) {
+                if (goodsBean.get(i).getLb() == 2) {
+                    //1   服务  2商品
+                    price += (goodsBean.get(i).getProfit() + goodsBean.get(i).getCost()) * goodsBean.get(i).getNum();
+                    if ((goodsBean.get(i).getSfkxd() == 2)) {
+                        price += goodsBean.get(i).getFreight()* goodsBean.get(i).getNum();//运费
+                        yunfei+= goodsBean.get(i).getFreight()* goodsBean.get(i).getNum();
+                    }
+                } else {
+                    price += goodsBean.get(i).getFee();
+                }
+            }
+        } else {
+            for (int i = 0; i < goodsBean.size(); i++) {
+                if (goodsBean.get(i).getLb() == 2) {
+                    //1   服务  2商品
+                    price += (goodsBean.get(i).getProfit() + goodsBean.get(i).getCost()) * goodsBean.get(i).getNum();
+                    price += (goodsBean.get(i).getFreight())* goodsBean.get(i).getNum();//运费
+                    yunfei+= goodsBean.get(i).getFreight()* goodsBean.get(i).getNum();
+                } else {
+                    price += goodsBean.get(i).getFee();
                 }
             }
         }
-
+        tv_price.setText(getResources().getString(R.string.money) + String.format("%.2f", price) + "(含运费"+getResources().getString(R.string.money)+yunfei+")");
     }
-
+    private boolean isContailsService(List<GoodsListBean> beans) {
+        for (int i = 0; i < beans.size(); i++) {
+            if (beans.get(i).getLb() == 1) {
+                return true;
+            }
+        }
+        return false;
+    }
     /**
      * 获取选中的bean
      *

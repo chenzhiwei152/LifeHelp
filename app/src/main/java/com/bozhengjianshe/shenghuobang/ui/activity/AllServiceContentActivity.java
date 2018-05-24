@@ -62,6 +62,8 @@ public class AllServiceContentActivity extends BaseActivity {
     ImageView bt_customer;
     @BindView(R.id.iv_clear)
     ImageView iv_clear;
+    @BindView(R.id.bt_search)
+            TextView bt_search;
     //    AllServiceTypeListAdapter typeListAdapter;
     MainListItemAdapter contentListAdapter;
     private int pageNumber = 1;
@@ -158,8 +160,10 @@ public class AllServiceContentActivity extends BaseActivity {
             public void afterTextChanged(Editable editable) {
                 if (TextUtils.isEmpty(edit_search.getText().toString())) {
                     iv_clear.setVisibility(View.GONE);
+                    bt_search.setVisibility(View.GONE);
                 } else {
                     iv_clear.setVisibility(View.VISIBLE);
+                    bt_search.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -170,7 +174,20 @@ public class AllServiceContentActivity extends BaseActivity {
                 getContentList();
             }
         });
+        bt_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String keytag = edit_search.getText().toString().trim();
 
+                if (TextUtils.isEmpty(keytag)) {
+                    Toast.makeText(AllServiceContentActivity.this, "请输入搜索关键字", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                // 搜索功能主体
+                getContentList();
+            }
+        });
     }
 
     @Override

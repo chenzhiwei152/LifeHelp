@@ -1,5 +1,6 @@
 package com.bozhengjianshe.shenghuobang.ui.utils;
 
+import android.content.Context;
 import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSON;
@@ -14,6 +15,7 @@ import com.bozhengjianshe.shenghuobang.ui.bean.GoodsListBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.OrderDetailBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.SuperShoppingCardsBean;
 import com.bozhengjianshe.shenghuobang.ui.bean.UserInfoBean;
+import com.bozhengjianshe.shenghuobang.utils.DialogUtils;
 import com.bozhengjianshe.shenghuobang.utils.ParserUtil;
 import com.bozhengjianshe.shenghuobang.utils.UIUtil;
 
@@ -230,7 +232,8 @@ public class ShoppingCardsUtils {
      *
      * @param type
      */
-    public static void updateItem(String id, String type) {
+    public static void updateItem(Context context,String id, String type) {
+        DialogUtils.showDialog(context, "加载中", false);
         Call<SuperShoppingCardsBean<List<GoodsListBean>>> updateCall;
         RequestBody body = new FormBody.Builder().add("memberid", BaseContext.getInstance().getUserInfo().id).add("comid", id).build();
         if (type.equals("add")) {
@@ -243,6 +246,7 @@ public class ShoppingCardsUtils {
             @Override
             public void onSuccess(Call<SuperShoppingCardsBean<List<GoodsListBean>>> call, Response<SuperShoppingCardsBean<List<GoodsListBean>>> response) {
                 try {
+                    DialogUtils.closeDialog();
                     UIUtil.showToast(response.body().getMsg());
                     EventBus.getDefault().post(new EventBusCenter<>(Constants.ADD_TO_CARD));
                 } catch (Exception e) {
@@ -252,11 +256,12 @@ public class ShoppingCardsUtils {
 
             @Override
             public void onError(Call<SuperShoppingCardsBean<List<GoodsListBean>>> call, Throwable t) {
-
+                DialogUtils.closeDialog();
             }
 
             @Override
             public void onError(Call<SuperShoppingCardsBean<List<GoodsListBean>>> call, Response<SuperShoppingCardsBean<List<GoodsListBean>>> response) {
+                DialogUtils.closeDialog();
             }
         });
     }
